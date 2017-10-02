@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddTokenCellident" rowHeight="99" id="KGk-i7-Jjw" customClass="AddTokenCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="98.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BTC" translatesAutoresizingMaskIntoConstraints="NO" id="jLU-Ww-hTE">
+                        <rect key="frame" x="40" y="32.5" width="35" height="35"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12t-ZY-kyb">
+                        <rect key="frame" x="143" y="39" width="34.5" height="23"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list_btn_default" translatesAutoresizingMaskIntoConstraints="NO" id="6Fy-zb-gvn">
+                        <rect key="frame" x="273" y="39.5" width="22" height="22"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P5W-8i-4Vk">
+                        <rect key="frame" x="20" y="97.5" width="280" height="1"/>
+                        <color key="backgroundColor" red="0.92549019607843142" green="0.92549019607843142" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="SKI-It-KgT"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="12t-ZY-kyb" firstAttribute="centerY" secondItem="jLU-Ww-hTE" secondAttribute="centerY" id="14F-wb-NzQ"/>
+                    <constraint firstAttribute="trailing" secondItem="6Fy-zb-gvn" secondAttribute="trailing" constant="25" id="6Ra-Jc-M2l"/>
+                    <constraint firstItem="12t-ZY-kyb" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="8En-gz-Vgp"/>
+                    <constraint firstAttribute="bottom" secondItem="P5W-8i-4Vk" secondAttribute="bottom" id="GVp-QZ-8h0"/>
+                    <constraint firstItem="6Fy-zb-gvn" firstAttribute="centerY" secondItem="12t-ZY-kyb" secondAttribute="centerY" id="NEB-Xn-4VN"/>
+                    <constraint firstItem="jLU-Ww-hTE" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Ptp-QK-mnM"/>
+                    <constraint firstAttribute="trailing" secondItem="P5W-8i-4Vk" secondAttribute="trailing" constant="20" id="Qel-hP-D1E"/>
+                    <constraint firstItem="P5W-8i-4Vk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="a5v-LZ-Rst"/>
+                    <constraint firstItem="jLU-Ww-hTE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="32" id="pDK-6K-8zu"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="headImage" destination="jLU-Ww-hTE" id="Q88-4x-2Zo"/>
+                <outlet property="seletedImage" destination="6Fy-zb-gvn" id="L3R-nD-7Pl"/>
+                <outlet property="titleLB" destination="12t-ZY-kyb" id="BpJ-LR-hg2"/>
+            </connections>
+            <point key="canvasLocation" x="25" y="79.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="BTC" width="35" height="35"/>
+        <image name="list_btn_default" width="22" height="22"/>
+    </resources>
+</document>

@@ -1,0 +1,8 @@
+framework module "Unichain" {
+	header "ref.h"
+    header "Unichain.objc.h"
+    header "Universe.objc.h"
+    header "Unichain.h"
+
+    export *
+}

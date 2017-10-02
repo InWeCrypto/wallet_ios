@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddEthOrBtcVC">
+            <connections>
+                <outlet property="sureButton" destination="M1n-jy-Lcj" id="wgk-f8-YaC"/>
+                <outlet property="typeImage" destination="dZe-Pr-sxx" id="GOj-C5-QlX"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M1n-jy-Lcj">
+                    <rect key="frame" x="25" y="493" width="270" height="45"/>
+                    <color key="backgroundColor" red="0.13725490200000001" green="0.1529411765" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="juU-pp-bSa"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="添加新钱包">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="6"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="addButtonCilick:" destination="-1" eventType="touchUpInside" id="whq-SQ-vvB"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krh-nQ-Dyx">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="493"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BTC_pic_add" translatesAutoresizingMaskIntoConstraints="NO" id="dZe-Pr-sxx">
+                            <rect key="frame" x="27.5" y="132" width="265" height="229"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="dZe-Pr-sxx" firstAttribute="centerY" secondItem="krh-nQ-Dyx" secondAttribute="centerY" id="7GS-zF-Nn4"/>
+                        <constraint firstItem="dZe-Pr-sxx" firstAttribute="centerX" secondItem="krh-nQ-Dyx" secondAttribute="centerX" id="Ewv-22-jf2"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="krh-nQ-Dyx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1hd-XB-BJq"/>
+                <constraint firstItem="M1n-jy-Lcj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="25" id="DiX-Ii-wAE"/>
+                <constraint firstItem="M1n-jy-Lcj" firstAttribute="top" secondItem="krh-nQ-Dyx" secondAttribute="bottom" id="I8c-bw-gGX"/>
+                <constraint firstItem="krh-nQ-Dyx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SVN-mp-FPb"/>
+                <constraint firstAttribute="bottom" secondItem="M1n-jy-Lcj" secondAttribute="bottom" constant="30" id="Urz-7p-d2i"/>
+                <constraint firstAttribute="trailing" secondItem="M1n-jy-Lcj" secondAttribute="trailing" constant="25" id="bks-3X-3U5"/>
+                <constraint firstAttribute="trailing" secondItem="krh-nQ-Dyx" secondAttribute="trailing" id="cJF-HO-oNc"/>
+            </constraints>
+            <point key="canvasLocation" x="-41" y="-9"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="BTC_pic_add" width="265" height="229"/>
+    </resources>
+</document>

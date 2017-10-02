@@ -1,0 +1,146 @@
+/* 
+  Localizable.strings
+  FBG
+
+  Created by mac on 2017/7/28.
+  Copyright © 2017年 ButtonRoot. All rights reserved.
+*/
+
+//中文
+
+"english" = "chainese";
+
+/*
+ 导航
+ */
+"Wallet" = "钱包";
+"Quotation" = "行情";
+"Find" = "发现";
+"My" = "我的";
+
+/*
+ 通用
+ */
+"Hot Purse" = "热钱包";
+"Cold Purse" = "冷钱包";
+"Determine" = "确定";
+"Cancel" = "取消";
+"Complete" = "提示";
+"Please input a password" = "请输入密码";
+
+"Scan" = "扫一扫";
+"No Camera Privileges" = "没有相机权限";
+"Please go to settings - Privacy - camera for sweeping authorization" = "请去设置-隐私-相机中对扫一扫授权";
+"Well" = "好的";
+"The viewfinder frame is aligned with the two-dimensional code and automatically scans" = "将取景框对准二维码，即可自动扫描";
+"Flashlight" = "手电";
+"Scan Result" = "扫描结果";
+"Only FBG related information can be scanned" = "只能扫描FBG相关信息";
+
+/*
+ 钱包
+ */
+"Total Assets" = "总资产";
+"Add Wallet" = " 添加钱包";
+"     Scan     " = "  扫一扫  ";
+"Import Wallet" = " 导入钱包";
+"Not Backedup" = "未备份";
+"Observe" = "观察";
+
+"ETH Wallet" = "ETH 钱包";
+"BTC Wallet" = "ETH 钱包";
+"Token Wallet" = "代币钱包";
+"Add New Wallet" = "添加新钱包";
+"Wallet Name" = "钱包名称";
+"Password Setting" = "设定密码";
+"Repeat Password" = "重复输入密码";
+"Case letters and numbers of not less than 8 digits are required" = "需包含不少于8位数的大小写字母及数字";
+"Confirm Add" = "确认添加";
+"Add Success" = "添加成功";
+"Please enter the wallet in time and backup the seed to ensure the safety of the wallet. Once the seed is backed up, it will disappear on the APP. It should be kept in mind, otherwise the wallet can not be retrieved" = "请及时进入钱包并备份助记词保障钱包的安全，助记词一经备份则会在APP上消失，需要牢记，否则钱包无法找回";
+"Enter The Wallet And Start Backup" = "进入钱包开始备份";
+
+
+"Safety Code" = "助记词";
+"Private Key" = "私匙";
+"Observation" = "观察";
+"Seed" = "种子";
+
+"Add KeyStore" = "添加KeyStore";
+"Copy and paste the contents of the keystore file, you can also scan the two-dimensional code through the upper right corner, enter the information" = "复制粘贴keystore文件内容，也可通过右上角扫描二维码，将信息录入";
+"Add Security Code" = "添加助记词";
+"Please enter a security code, separated by space" = "请输入助记词，按空格分隔";
+"Add Plaintext Private Key" = "添加明文私钥";
+"Please enter the explicit private key" = "请输入明文私钥";
+"Add Observation Wallet" = "添加观察钱包";
+"Watch the wallet, you only need to import the wallet address, you can conduct day-to-day account management and transactions. Large assets suggest cold wallet or other means of management, to avoid leakage, stolen" = "观察钱包只需要导入钱包地址即可，可进行日常的账户管理以及交易。大额资产建议使用冷钱包或其他途径管理，避免泄露被盗";
+"Add Seed" = "添加种子";
+"Please enter seeds, separated by spaces" = "请输入种子，按空格分隔";
+"Begin Import" = "开始导入";
+
+"Wallet Details" = "钱包详情";
+"Wallet Address" = "钱包地址";
+"Transfer Accounts" = "转账";
+"Receivables" = "收款";
+"Transaction Record" = "交易记录";
+"All Assets" = "全部资产";
+"Backup Mnemonic" = "备份助记词";
+"Backup Keystore" = "备份keystore";
+"Delete Wallet" = "删除钱包";
+"Delete" = "删除";
+"Top" = "置顶";
+"Repeat enter security code to verify the correctness of the wallet security code" = "重复输入助记词，确认钱包助记词的正确性";
+"Backup security code and delete records" = "备份助记词 并删除记录";
+"Please keep in mind the following account security code, which is the effective way to retrieve the wallet, the wallet is once forgot to be able to retrieve account failure, please remember the security code and copied down, no longer appear this operation is not reversible and backup" = "请牢记下面的账户助记词，这是找回钱包的有效方式，一旦忘记则钱包无法找回，账户失效 ，此助记词请记好并抄录下来，此操作不可逆且备份后不会再出现";
+"I remember" = "我记好了";
+"You can't retrieve your wallet after you delete it. Please be careful" = "删除后无法找回钱包，请慎重";
+
+"Transfer wallet address" = "转账钱包地址";
+"Please enter a transfer address" = "请输入转账地址";
+"Transfer amount" = "转账金额";
+"GASCost" = "GAS费用";
+"Slow" = "慢";
+"Fast" = "快";
+"Remarks" = "备注";
+"Please input remarks" = "请输入备注";
+
+"Transfer Confirmation" = "转账确认";
+"Additional service charge:" = "另附手续费:";
+"Order number:" = "订单号:";
+"Transfer Account" = "转 账";
+
+"Edit amount" = "编辑金额";
+"Copy collection address" = "复制收款地址";
+
+"Receipt Confirmation" = "收款确认";
+
+"Collection details" = "收款详情";
+"Transfer details" = "转账详情";
+"Transfer party wallet address" = "转账方钱包地址";
+"Payee's wallet address" = "收款方钱包地址";
+"Transaction time" = "交易时间";
+"Payment date" = "到账时间";
+
+"Add Token" = "添加代币";
+"All tokens" = "全部代币";
+"Complete" = "完成";
+
+"Scan" = "扫描";
+/*
+ 行情
+ */
+"Add Quotes" = "添加行情";
+"Edit Quotes" = "编辑行情";
+"Add" = "添加";
+"Remind" = "提醒";
+"Edit" = "编辑";
+
+
+/*
+ 发现
+ */
+
+
+/*
+ 我的
+ */

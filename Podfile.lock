@@ -1,0 +1,66 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - Charts (3.0.2):
+    - Charts/Core (= 3.0.2)
+  - Charts/Core (3.0.2)
+  - IQKeyboardManager (4.0.10)
+  - JKBigInteger (0.0.1)
+  - JSONModel (1.7.0)
+  - MBProgressHUD (1.0.0)
+  - MJRefresh (3.1.12)
+  - QBImagePickerController (3.4.0)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+  - TTTAttributedLabel (2.0.0)
+  - UMengAnalytics-NO-IDFA (4.2.5)
+  - YUSegment (1.0.1)
+  - YYCache (1.0.4)
+
+DEPENDENCIES:
+  - AFNetworking (~> 3.1.0)
+  - Charts (~> 3.0.2)
+  - IQKeyboardManager (~> 4.0.8)
+  - JKBigInteger (~> 0.0.1)
+  - JSONModel (~> 1.7.0)
+  - MBProgressHUD (~> 1.0.0)
+  - MJRefresh (~> 3.1.12)
+  - QBImagePickerController (~> 3.4.0)
+  - SDWebImage (~> 3.8.2)
+  - TTTAttributedLabel
+  - UMengAnalytics-NO-IDFA
+  - YUSegment (~> 1.0.1)
+  - YYCache (~> 1.0.4)
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Charts: 236d6ccdd0ce6feae151d89e829a7397381a21fd
+  IQKeyboardManager: 593ee99b88381f4b9ccb22bd680f22606351bd41
+  JKBigInteger: 7f3894ca331bf271a8e2ee0d5329707ca6eda6e0
+  JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
+  UMengAnalytics-NO-IDFA: 16666e32edce5be44ae5b14aaaa7f3582e09d6ab
+  YUSegment: 6e527a2e4ad60404ef67bd766b4dcf6d59419c9c
+  YYCache: 8105b6638f5e849296c71f331ff83891a4942952
+
+PODFILE CHECKSUM: 7e8ad43ad03840c76de7ecef316eddb9f38d10d3
+
+COCOAPODS: 1.2.1

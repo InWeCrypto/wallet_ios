@@ -1,0 +1,106 @@
+//
+//  FBG-PrefixHeader.pch
+//  FBG
+//
+//  Created by mac on 2017/7/12.
+//  Copyright © 2017年 ButtonRoot. All rights reserved.
+//
+
+#ifndef FBG_PrefixHeader_pch
+#define FBG_PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#define NavigationBar_HEIGHT 44
+
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
+#define CurrentSystemVersion ([[UIDevice currentDevice] systemVersion])
+#define CurrentLanguage ([[NSLocale preferredLanguages] objectAtIndex:0])
+
+#ifdef DEBUG
+#define NSLog(FORMAT, ...) fprintf(__stderrp,"%s %s:%d\t%s\t%s\n",__TIME__,[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, __FUNCTION__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else
+#define NSLog(...)
+#endif
+
+//G－C－D
+#define BACK(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block)
+#define MAIN(block) dispatch_async(dispatch_get_main_queue(),block)
+
+// 不堵塞线程并在主线程的延迟执行 timer:延迟时间，单位：秒；与主线程同步
+#define GCDMainDelay(timer,block) dispatch_after(dispatch_time(DISPATCH_TIME_NOW, INT64_C(timer) * NSEC_PER_SEC), dispatch_get_main_queue(), block)
+
+// 将code调到主线程执行，与主线程同步
+#define GCDMain(block) dispatch_async(dispatch_get_main_queue(), block)
+
+#define USER_DEFAULT [NSUserDefaults standardUserDefaults] // 获取 NSUserDefaults  对象
+#define ImageNamed(_pointer) [UIImage imageNamed:[UIUtil imageName:_pointer]] // 传入图片名称,获取UIImage
+
+/** 弱引用*/
+#define kWeakSelf(type)   __weak typeof(type) weak##type = type;
+/** 强引用*/
+#define kStrongSelf(type) __strong typeof(type) type = weak##type;
+
+#define Default_Person_Image [UIImage imageNamed:@"默认头像"]
+#define Default_NoData_Image [UIImage imageNamed:@"暂无数据"]
+#define Default_General_Image [UIImage imageNamed:@"tao"]
+
+//测试环境
+#define APIEHEAD @"https://ropsten.unichain.io/api/"  //网络请求头
+#define IMAGEHEAD @"https://ropsten.unichain.io/"  //图片头
+//正式环境
+#define APIEHEAD1 @"https://mainnet.unichain.io/api/"  //网络请求头 mainnet.unichain.io
+#define IMAGEHEAD1 @"https://mainnet.unichain.io/"  //图片头
+
+#define APP_APIEHEAD  [[NSUserDefaults standardUserDefaults]stringForKey:@"appNetWorkApi"]  //网络状态
+#define APP_WALLETSTATUS  [[NSUserDefaults standardUserDefaults]stringForKey:@"appWalletStatus"]   //钱包状态
+#define APP_DEVICEID  [[NSUserDefaults standardUserDefaults]stringForKey:@"appDeviceId"]    //推送注册id 用于登录
+
+#define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
+
+#import "LCProgressHUD.h"
+#import "CoustromViewController.h"
+#import "NSArray+Tool.h"
+#import "NSDictionary+Tool.h"
+#import "NSMutableString+Tool.h"
+#import "NSObject+Tool.h"
+#import "UIColor+Tool.h"
+#import "UIImage+Tool.h"
+#import "UIView+Tool.h"
+#import "NSString+Tool.h"
+#import "UIViewController+Tool.h"
+#import "UIButton+SDSetImage.h"
+#import "UIImageView+SDSetImage.h"
+#import "UserSignData.h"
+#import "ObjcRuntime.h"
+#import "PPNetworkHelper.h"
+#import "PassWordView.h"
+#import "AlertView.h"
+#import "AAGlobalMacro.h"
+#import "UIScrollView+EmptyDataSet.h"
+#include <Unichain/Unichain.h>
+#import "PDKeyChain.h"
+#import "JKBigInteger.h"
+#import "JKBigDecimal.h"
+
+//微信登录
+// access_token openid refresh_token unionid
+
+#define WXDoctor_App_ID @"wxd1931d4a0e462***"  // 注册微信时的AppID
+#define WXDoctor_App_Secret @"d0dd6b58da42cbc4f4b715c70e65c***" // 注册时得到的AppSecret
+#define WXPatient_App_ID @"wxbd02bfeea4292***"
+#define WXPatient_App_Secret @"4a788217f363358276309ab655707***"
+#define WX_ACCESS_TOKEN @"access_token"
+#define WX_OPEN_ID @"openid"
+#define WX_REFRESH_TOKEN @"refresh_token"
+#define WX_UNION_ID @"unionid"
+#define WX_BASE_URL @"https://api.weixin.qq.com/sns"
+
+#define UM_APP_KEY @"5986b5fbe88bad254a000528"
+
+#import "LoginVC.h"
+#import "AppDelegate.h"
+
+#endif /* FBG_PrefixHeader_pch */
