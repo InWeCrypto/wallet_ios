@@ -306,6 +306,7 @@
 		A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB11F56553000C2F9AF /* CloudPushSDK.framework */; };
 		A8FEACB51F56553100C2F9AF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB21F56553000C2F9AF /* UTDID.framework */; };
 		A8FEACB71F568DE500C2F9AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8FEACB61F568DE500C2F9AF /* Assets.xcassets */; };
+		BFF65B311FA3429800A8EAF1 /* HomePage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFF65B301FA3429800A8EAF1 /* HomePage.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -840,6 +841,7 @@
 		A8FEACB11F56553000C2F9AF /* CloudPushSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CloudPushSDK.framework; sourceTree = "<group>"; };
 		A8FEACB21F56553000C2F9AF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		A8FEACB61F568DE500C2F9AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BFF65B301FA3429800A8EAF1 /* HomePage.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomePage.storyboard; sourceTree = "<group>"; };
 		C4EF8E3460E908B2B9C8C464 /* Pods_FBG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FBG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC5F2772DAD63E3E2FD339E4 /* Pods-FBG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FBG.release.xcconfig"; path = "Pods/Target Support Files/Pods-FBG/Pods-FBG.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -919,6 +921,7 @@
 				0F0CFDE91F15E54100476A86 /* AppDelegate.m */,
 				0F0CFDEB1F15E54100476A86 /* ViewController.h */,
 				0F0CFDEC1F15E54100476A86 /* ViewController.m */,
+				BFF65B301FA3429800A8EAF1 /* HomePage.storyboard */,
 				A8B4DA731F61705D00FC8EC7 /* LaunchScreen.storyboard */,
 				A8FEACB61F568DE500C2F9AF /* Assets.xcassets */,
 				0F0CFE1C1F15FA0C00476A86 /* FBG-PrefixHeader.pch */,
@@ -1972,6 +1975,7 @@
 				0FD2A85E1F2A343A00C210D3 /* AddOtherWalletVC.xib in Resources */,
 				0FB9DD1E1F1FA03F005CEA39 /* ConfirmationTransferVC.xib in Resources */,
 				0FD2A8681F2A3EAB00C210D3 /* ScanVC.xib in Resources */,
+				BFF65B311FA3429800A8EAF1 /* HomePage.storyboard in Resources */,
 				0FB9DD231F1FA76E005CEA39 /* ReceivablesVC.xib in Resources */,
 				A8D982BB1F4206A90080DFF8 /* LookWalletCodeView.xib in Resources */,
 				A8CD776D1F32449400005027 /* QuotationCell.xib in Resources */,
