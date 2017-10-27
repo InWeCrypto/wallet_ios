@@ -306,6 +306,7 @@
 		A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB11F56553000C2F9AF /* CloudPushSDK.framework */; };
 		A8FEACB51F56553100C2F9AF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB21F56553000C2F9AF /* UTDID.framework */; };
 		A8FEACB71F568DE500C2F9AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8FEACB61F568DE500C2F9AF /* Assets.xcassets */; };
+		BFCC267F1FA3883C00EF33F0 /* HomePageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCC267E1FA3883C00EF33F0 /* HomePageTableViewController.m */; };
 		BFF65B311FA3429800A8EAF1 /* HomePage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFF65B301FA3429800A8EAF1 /* HomePage.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -841,6 +842,8 @@
 		A8FEACB11F56553000C2F9AF /* CloudPushSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CloudPushSDK.framework; sourceTree = "<group>"; };
 		A8FEACB21F56553000C2F9AF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		A8FEACB61F568DE500C2F9AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BFCC267D1FA3883C00EF33F0 /* HomePageTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageTableViewController.h; sourceTree = "<group>"; };
+		BFCC267E1FA3883C00EF33F0 /* HomePageTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageTableViewController.m; sourceTree = "<group>"; };
 		BFF65B301FA3429800A8EAF1 /* HomePage.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomePage.storyboard; sourceTree = "<group>"; };
 		C4EF8E3460E908B2B9C8C464 /* Pods_FBG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FBG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC5F2772DAD63E3E2FD339E4 /* Pods-FBG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FBG.release.xcconfig"; path = "Pods/Target Support Files/Pods-FBG/Pods-FBG.release.xcconfig"; sourceTree = "<group>"; };
@@ -922,6 +925,8 @@
 				0F0CFDEB1F15E54100476A86 /* ViewController.h */,
 				0F0CFDEC1F15E54100476A86 /* ViewController.m */,
 				BFF65B301FA3429800A8EAF1 /* HomePage.storyboard */,
+				BFCC267D1FA3883C00EF33F0 /* HomePageTableViewController.h */,
+				BFCC267E1FA3883C00EF33F0 /* HomePageTableViewController.m */,
 				A8B4DA731F61705D00FC8EC7 /* LaunchScreen.storyboard */,
 				A8FEACB61F568DE500C2F9AF /* Assets.xcassets */,
 				0F0CFE1C1F15FA0C00476A86 /* FBG-PrefixHeader.pch */,
@@ -1866,7 +1871,7 @@
 				TargetAttributes = {
 					0F0CFDE11F15E54100476A86 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = L44XCS63SL;
+						DevelopmentTeam = 4XH337X4G3;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -2082,6 +2087,7 @@
 				A8AAFBE31F3FFB0E00724FF6 /* WalletOrderModel.m in Sources */,
 				0FDCACB61F20FAEF0090D12A /* TransactionInfoVC.m in Sources */,
 				0F0CFE581F161F4C00476A86 /* ZFTabBarViewController.m in Sources */,
+				BFCC267F1FA3883C00EF33F0 /* HomePageTableViewController.m in Sources */,
 				A8CD77781F32453300005027 /* SetValueFormatter.m in Sources */,
 				0FAC290D1F2F7C4A009B3EC9 /* AABar.m in Sources */,
 				A84475B51F332317003C7BDB /* ModifyNicknameVC.m in Sources */,
@@ -2443,7 +2449,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = L44XCS63SL;
+				DEVELOPMENT_TEAM = 4XH337X4G3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2483,7 +2489,7 @@
 					"\"YYCache\"",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = capital.fbg.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xianliang.sports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
@@ -2498,7 +2504,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = L44XCS63SL;
+				DEVELOPMENT_TEAM = 4XH337X4G3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2538,7 +2544,7 @@
 					"\"YYCache\"",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = capital.fbg.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xianliang.sports;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";

@@ -26,7 +26,6 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 #import <YYCache/YYCache.h>
 #import "CDNavigationController.h"
 #import "MessageVC.h"
-
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 {
     // iOS 10通知中心
@@ -60,34 +59,36 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     //添加网络状态提醒
     [self netNotification];
     
-    //键盘处理
-    [self configureBoardManager];
+    [self goToTabbar];
     
-    //白色导航
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
-    if ([APP_WALLETSTATUS isEqualToString:@"HOT"])
-    {
-        //未使用过冷钱包
-        if ([UserSignData share].user.token)
-        {
-            [self goToTabbar];
-        }
-        else
-        {
-            [self showLoginController];
-        }
-    }
-    else
-    {
-        //始终进入冷钱包
-        [UserSignData share].user.isCode = YES;
-        [[UserSignData share] storageData:[UserSignData share].user];
-        YYCache * dataCache = [YYCache cacheWithName:@"FBGNetworkResponseCache"];
-        [dataCache removeAllObjects];
-        
-        [self goToTabbar];
-    }
+//    //键盘处理
+//    [self configureBoardManager];
+//
+//    //白色导航
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+//
+//    if ([APP_WALLETSTATUS isEqualToString:@"HOT"])
+//    {
+//        //未使用过冷钱包
+//        if ([UserSignData share].user.token)
+//        {
+//            [self goToTabbar];
+//        }
+//        else
+//        {
+//            [self showLoginController];
+//        }
+//    }
+//    else
+//    {
+//        //始终进入冷钱包
+//        [UserSignData share].user.isCode = YES;
+//        [[UserSignData share] storageData:[UserSignData share].user];
+//        YYCache * dataCache = [YYCache cacheWithName:@"FBGNetworkResponseCache"];
+//        [dataCache removeAllObjects];
+//
+//        [self goToTabbar];
+//    }
     
     //友盟统计
     UMConfigInstance.appKey = UM_APP_KEY;

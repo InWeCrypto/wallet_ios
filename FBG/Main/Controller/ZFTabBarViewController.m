@@ -13,7 +13,7 @@
 #import "WalletHomeVC.h"
 #import "MyTVC.h"
 #import "QuotationVC.h"
-
+#import "HomePageTableViewController.h"
 @interface ZFTabBarViewController () <ZFTabBarDelegate>
 /**
  *  自定义的tabbar
@@ -84,7 +84,9 @@
 - (void)setupAllChildViewControllers
 {
     // 1.钱包
-    WalletHomeVC *home = [[WalletHomeVC alloc] init];
+//    WalletHomeVC *home = [[WalletHomeVC alloc] init];
+    UIStoryboard *SB = [UIStoryboard storyboardWithName:@"HomePage" bundle:nil];
+    HomePageTableViewController *home = [SB instantiateViewControllerWithIdentifier:@"HomePageTableViewController"];
     home.tabBarItem.badgeValue = @"";
     [self setupChildViewController:home title:@"我的资产" imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
     
