@@ -64,7 +64,8 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     [self configureBoardManager];
     
     //白色导航
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    /* 2017/11/3修改 UI更新 不需要白色显示
+     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;*/
     
     if ([APP_WALLETSTATUS isEqualToString:@"HOT"])
     {
