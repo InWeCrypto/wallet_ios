@@ -189,9 +189,7 @@
         _sureButton.frame = CGRectMake(20, SCREEN_HEIGHT - 75 - 64, SCREEN_WIDTH - 40, 45);
         [_sureButton setTitle:@"确  定" forState: UIControlStateNormal];
         [_sureButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _sureButton.backgroundColor = [UIColor colorWithHexString:@"232772"];
-        _sureButton.layer.cornerRadius = 6;
-        _sureButton.layer.masksToBounds = YES;
+        _sureButton.backgroundColor = [UIColor colorWithHexString:@"008C55"];
         [_sureButton addTarget:self action:@selector(sureButtonCilick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _sureButton;

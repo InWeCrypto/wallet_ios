@@ -96,23 +96,23 @@
 
 - (void)weChatLogin
 {
-    NSString * device;
-    if (![NSString isNulllWithObject:[PDKeyChain load:@"APP_DEVICEID"]])
-    {
-        device = [PDKeyChain load:@"APP_DEVICEID"];
-    }
-    else
-    {
-        if (!APP_DEVICEID)
-        {
-            [LCProgressHUD showMessage:@"暂未获取到DeviceToken"];
-            return;
-        }
-        else
-        {
-            device = APP_DEVICEID;
-        }
-    }
+    NSString * device = @"3d58d93462dc6c21e9c9b732d9d78eeec486cc3ffe66e40d8a5e74a42d415f0f";
+//    if (![NSString isNulllWithObject:[PDKeyChain load:@"APP_DEVICEID"]])
+//    {
+//        device = [PDKeyChain load:@"APP_DEVICEID"];
+//    }
+//    else
+//    {
+//        if (!APP_DEVICEID)
+//        {
+//            [LCProgressHUD showMessage:@"暂未获取到DeviceToken"];
+//            return;
+//        }
+//        else
+//        {
+//            device = APP_DEVICEID;
+//        }
+//    }
     
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
     [parametersDic setObject:device forKey:@"open_id"];

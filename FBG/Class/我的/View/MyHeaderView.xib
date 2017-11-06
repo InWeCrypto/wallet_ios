@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="默认头像" translatesAutoresizingMaskIntoConstraints="NO" id="Zzw-Sa-1v7">
-                    <rect key="frame" x="23" y="81.666666666666657" width="76" height="75.999999999999972"/>
+                    <rect key="frame" x="149.66666666666666" y="47.333333333333343" width="76" height="76"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="76" id="2Nn-QU-jaP"/>
                         <constraint firstAttribute="width" secondItem="Zzw-Sa-1v7" secondAttribute="height" id="Pyn-cF-4tL"/>
@@ -37,15 +37,18 @@
                     </constraints>
                     <state key="normal" image="btn_edit"/>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sheila" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="csK-zC-7HV">
-                    <rect key="frame" x="112" y="109" width="243" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sheila" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="csK-zC-7HV">
+                    <rect key="frame" x="77.666666666666686" y="131" width="220" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="220" id="NSW-IX-G2L"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已登录" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Oc-sk-eH1">
-                    <rect key="frame" x="112" y="140" width="37" height="15"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.71764705880000002" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已登录" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Oc-sk-eH1">
+                    <rect key="frame" x="169" y="160" width="37" height="15"/>
+                    <color key="backgroundColor" red="0.0" green="0.5490196078431373" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="6K1-OG-TNU"/>
                         <constraint firstAttribute="width" constant="37" id="9Hi-Zw-XgD"/>
@@ -61,17 +64,16 @@
                     </userDefinedRuntimeAttributes>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.1215686275" green="0.1215686275" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="1Oc-sk-eH1" firstAttribute="leading" secondItem="csK-zC-7HV" secondAttribute="leading" id="DX5-gJ-6SG"/>
-                <constraint firstItem="1Oc-sk-eH1" firstAttribute="top" secondItem="csK-zC-7HV" secondAttribute="bottom" constant="10" id="IKC-74-GpB"/>
+                <constraint firstItem="csK-zC-7HV" firstAttribute="top" secondItem="Zzw-Sa-1v7" secondAttribute="bottom" constant="7.5" id="6CD-pW-qJU"/>
+                <constraint firstAttribute="bottom" secondItem="1Oc-sk-eH1" secondAttribute="bottom" constant="15" id="BNf-27-xQy"/>
+                <constraint firstItem="1Oc-sk-eH1" firstAttribute="centerX" secondItem="csK-zC-7HV" secondAttribute="centerX" id="GVd-Vh-sbF"/>
+                <constraint firstItem="1Oc-sk-eH1" firstAttribute="top" secondItem="csK-zC-7HV" secondAttribute="bottom" constant="8" id="HtE-jk-jwS"/>
                 <constraint firstItem="7aY-by-6Pw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="Jyq-dG-VyV"/>
-                <constraint firstItem="Zzw-Sa-1v7" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" multiplier="1.25" id="OYL-xR-Jpp"/>
-                <constraint firstItem="Zzw-Sa-1v7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="23" id="P6C-sp-EAC"/>
+                <constraint firstItem="Zzw-Sa-1v7" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="M6d-3S-aoc"/>
                 <constraint firstAttribute="trailing" secondItem="7aY-by-6Pw" secondAttribute="trailing" id="SbS-Xe-iK3"/>
-                <constraint firstItem="csK-zC-7HV" firstAttribute="centerY" secondItem="Zzw-Sa-1v7" secondAttribute="centerY" id="U53-1a-bcr"/>
-                <constraint firstAttribute="trailing" secondItem="csK-zC-7HV" secondAttribute="trailing" constant="20" id="YSb-xC-fXy"/>
-                <constraint firstItem="csK-zC-7HV" firstAttribute="leading" secondItem="Zzw-Sa-1v7" secondAttribute="trailing" constant="13" id="uge-dY-VYv"/>
+                <constraint firstItem="1Oc-sk-eH1" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="XJW-0C-zXu"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -85,6 +87,6 @@
     </objects>
     <resources>
         <image name="btn_edit" width="18" height="18"/>
-        <image name="默认头像" width="65" height="65"/>
+        <image name="默认头像" width="64" height="64"/>
     </resources>
 </document>

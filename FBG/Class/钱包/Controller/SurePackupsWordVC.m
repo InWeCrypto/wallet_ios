@@ -292,7 +292,7 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
     titleView.textAlignment = NSTextAlignmentCenter;
     
     titleView.textColor = [UIColor whiteColor];
-    titleView.backgroundColor = [UIColor colorWithHexString:@"232772"];
+    titleView.backgroundColor = [UIColor colorWithHexString:@"008C55"];
     
     return cell;
 }

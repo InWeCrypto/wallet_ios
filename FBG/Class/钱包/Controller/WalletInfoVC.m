@@ -54,7 +54,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"Wallet Details", nil);
+    self.title = NSLocalizedString(@"My Property", nil);
     self.view.backgroundColor = [UIColor backgroudColor];
     
     //获取通知中心单例对象
@@ -474,7 +474,7 @@
     }
     else
     {
-        self.title = NSLocalizedString(@"Wallet Details", nil);
+        self.title = NSLocalizedString(@"My Property", nil);
     }
 }
 

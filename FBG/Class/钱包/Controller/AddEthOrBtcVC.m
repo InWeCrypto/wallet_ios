@@ -33,7 +33,7 @@
         self.typeImage.image = [UIImage imageNamed:@"BTC_pic_add"];
     }
     self.title = NSLocalizedString(@"Add Wallet", nil);
-    [self.sureButton setTitle:NSLocalizedString(@"Add New Wallet", nil) forState:UIControlStateNormal];
+//    [self.sureButton setTitle:NSLocalizedString(@"Add New Wallet", nil) forState:UIControlStateNormal];
 }
 
 - (IBAction)addButtonCilick:(id)sender

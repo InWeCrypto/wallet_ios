@@ -8,6 +8,7 @@
 
 #import "MyTVC.h"
 #import "MyHeaderView.h"
+#import "DBHBrowserViewController.h"
 #import "MailListVC.h"
 #import "ICOListVC.h"
 #import "RateSettingTVC.h"
@@ -32,6 +33,10 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     self.tableView.tableHeaderView = self.headerView;
+    
+    UIView *statusview = [[UIView alloc] initWithFrame:CGRectMake(0, -20, SCREEN_WIDTH, 20)];
+    statusview.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:statusview];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,6 +79,12 @@
     NSInteger row = indexPath.row;
     if (sec == 0 && row == 0)
     {
+        //浏览器
+        DBHBrowserViewController *browserViewController = [[DBHBrowserViewController alloc] init];
+        [self.navigationController pushViewController:browserViewController animated:YES];
+    }
+    else if (sec == 1 && row == 0)
+    {
         //通讯录
         MailListVC * vc = [[MailListVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
@@ -85,13 +96,13 @@
 //        [self.navigationController pushViewController:vc animated:YES];
 //        
 //    }
-    else if (sec == 1 && row == 0)
+    else if (sec == 2 && row == 0)
     {
         //货币单位
         MonetaryUnitVC * vc = [[MonetaryUnitVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
-    else if (sec == 2 && row == 0)
+    else if (sec == 3 && row == 0)
     {
         //网络切换
         [self.choseNetView showWithView:nil];
@@ -99,7 +110,7 @@
 //        RateSettingTVC * vc = [[UIStoryboard storyboardWithName:@"RateSettingTVC" bundle:nil] instantiateViewControllerWithIdentifier:@"RateSettingTVC"];
 //        [self.navigationController pushViewController:vc animated:YES];
     }
-    else if (sec == 3 && row == 0)
+    else if (sec == 4 && row == 0)
     {
         //关于
         AboutVC * vc = [[AboutVC alloc] init];
@@ -118,13 +129,13 @@
     if (isNotTset)
     {
         //正式
-        [[NSUserDefaults standardUserDefaults] setObject:@"https://mainnet.unichain.io/api/" forKey:@"appNetWorkApi"];
+        [[NSUserDefaults standardUserDefaults] setObject:APIEHEAD1 forKey:@"appNetWorkApi"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else
     {
         //测试
-        [[NSUserDefaults standardUserDefaults] setObject:@"https://ropsten.unichain.io/api/" forKey:@"appNetWorkApi"];
+        [[NSUserDefaults standardUserDefaults] setObject:APIEHEAD forKey:@"appNetWorkApi"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     [[AppDelegate delegate] showLoginController];
