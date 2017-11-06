@@ -138,10 +138,7 @@ static NetworkStatus _status;
             {
                 [[AppDelegate delegate] showLoginController];
             }
-            else
-            {
-                failure([responseObject objectForKey:@"msg"]);
-            }
+            failure([responseObject objectForKey:@"msg"]);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
     {
@@ -199,10 +196,8 @@ static NetworkStatus _status;
             {
                 [[AppDelegate delegate] showLoginController];
             }
-            else
-            {
-                failure([responseObject objectForKey:@"msg"]);
-            }
+            failure([responseObject objectForKey:@"msg"]);
+            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
@@ -258,10 +253,7 @@ static NetworkStatus _status;
             {
                 [[AppDelegate delegate] showLoginController];
             }
-            else
-            {
-                failure([responseObject objectForKey:@"msg"]);
-            }
+            failure([responseObject objectForKey:@"msg"]);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
     {
@@ -320,10 +312,7 @@ static NetworkStatus _status;
             {
                 [[AppDelegate delegate] showLoginController];
             }
-            else
-            {
-                failure([responseObject objectForKey:@"msg"]);
-            }
+            failure([responseObject objectForKey:@"msg"]);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
     {

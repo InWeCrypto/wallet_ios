@@ -62,20 +62,20 @@
     
     NSString * min = [NSString DecimalFuncWithOperatorType:2
                                                     first:[NSString DecimalFuncWithOperatorType:3
-                                                                                          first:[NSString DecimalFuncWithOperatorType:2 first:@"0.00002520" secend:@"1000000000000000000" value:8]
+                                                                                          first:[NSString DecimalFuncWithOperatorType:2 first:@"0.00002520" secend:@"1000000000000000000" value:18]
                                                                                          secend:@"21000"
-                                                                                          value:8]
+                                                                                          value:18]
                                                    secend:@"90000"
-                                                    value:8];
+                                                    value:18];
     NSString * max = [NSString DecimalFuncWithOperatorType:2
                                                      first:[NSString DecimalFuncWithOperatorType:3
-                                                                                           first:[NSString DecimalFuncWithOperatorType:2 first:@"0.00252012" secend:@"1000000000000000000" value:8]
+                                                                                           first:[NSString DecimalFuncWithOperatorType:2 first:@"0.00252012" secend:@"1000000000000000000" value:18]
                                                                                           secend:@"21000"
-                                                                                           value:8]
+                                                                                           value:18]
                                                     secend:@"90000"
-                                                     value:8];
-    self.gasSlider.minimumValue = [[NSString DecimalFuncWithOperatorType:3 first:[NSString stringWithFormat:@"%@",min] secend:@"1000000000000000000" value:8] floatValue];
-    self.gasSlider.maximumValue = [[NSString DecimalFuncWithOperatorType:3 first:[NSString stringWithFormat:@"%@",max] secend:@"1000000000000000000" value:8] floatValue];
+                                                     value:18];
+    self.gasSlider.minimumValue = [[NSString DecimalFuncWithOperatorType:3 first:[NSString stringWithFormat:@"%@",min] secend:@"1000000000000000000" value:18] floatValue];
+    self.gasSlider.maximumValue = [[NSString DecimalFuncWithOperatorType:3 first:[NSString stringWithFormat:@"%@",max] secend:@"1000000000000000000" value:18] floatValue];
     self.gasSlider.continuous = YES;// 设置可连续变化
     
     if (!self.defaultGasNum)
@@ -102,8 +102,8 @@
              per = [[responseObject objectForKey:@"gasPrice"] substringFromIndex:2];
          }
 
-         self.gasPrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:per] secend:@"1000000000000000000" value:8];
-         self.totleGasPrice = [NSString DecimalFuncWithOperatorType:2 first:self.gasPrice secend:[NSString stringWithFormat:@"%d",self.defaultGasNum] value:8];
+         self.gasPrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:per] secend:@"1000000000000000000" value:18];
+         self.totleGasPrice = [NSString DecimalFuncWithOperatorType:2 first:self.gasPrice secend:[NSString stringWithFormat:@"%d",self.defaultGasNum] value:18];
          self.priceLB.text = self.totleGasPrice;
          
          [self.gasSlider setValue:[self.totleGasPrice floatValue]];
@@ -166,7 +166,7 @@
     //滑块  0.00002520   ~  0.00252012    * 21000 单位
     if ((long)(self.gasSlider.value * 100000000) % 5 == 0)
     {
-        self.gasPrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString stringWithFormat:@"%f",self.gasSlider.value] secend:[NSString stringWithFormat:@"%d",self.defaultGasNum] value:0];
+        self.gasPrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString stringWithFormat:@"%f",self.gasSlider.value] secend:[NSString stringWithFormat:@"%d",self.defaultGasNum] value:18];
         self.totleGasPrice = [NSString stringWithFormat:@"%f",self.gasSlider.value];
         self.priceLB.text = self.totleGasPrice;
     }
@@ -191,12 +191,12 @@
         [LCProgressHUD showMessage:@"请输入价格"];
         return;
     }
-    NSString * priceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:self.priceTF.text secend:@"1000000000000000000" value:8];
-    NSString * gasPriceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:self.gasPrice secend:@"1000000000000000000" value:8];
-    NSString * totleGasPriceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:gasPriceWeiValue secend:@"90000" value:8];
+    NSString * priceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:self.priceTF.text secend:@"1000000000000000000" value:18];
+    NSString * gasPriceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:self.gasPrice secend:@"1000000000000000000" value:18];
+    NSString * totleGasPriceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:gasPriceWeiValue secend:@"90000" value:18];
     
-    NSString * duibiPriceWeiValue = [NSString DecimalFuncWithOperatorType:0 first:priceWeiValue secend:totleGasPriceWeiValue value:8];
-    NSString * banlacePriceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:@"1000000000000000000" value:8];
+    NSString * duibiPriceWeiValue = [NSString DecimalFuncWithOperatorType:0 first:priceWeiValue secend:totleGasPriceWeiValue value:18];
+    NSString * banlacePriceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:@"1000000000000000000" value:18];
     if (self.tokenModel)
     {
         //代币判断余额   手续费 <= ether钱包余额    转账金额 <= 代币余额
@@ -206,14 +206,14 @@
             return;
         }
         
-        NSComparisonResult result = [NSString DecimalFuncComparefirst:priceWeiValue secend:[NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:@"1000000000000000000" value:8]];
+        NSComparisonResult result = [NSString DecimalFuncComparefirst:priceWeiValue secend:[NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:@"1000000000000000000" value:18]];
         if (result ==NSOrderedDescending)
         {
             [LCProgressHUD showMessage:@"代币余额不足"];
             return;
         }
         
-        NSComparisonResult result1 = [NSString DecimalFuncComparefirst:totleGasPriceWeiValue secend:[NSString DecimalFuncWithOperatorType:2 first:self.walletBanlacePrice secend:@"1000000000000000000" value:8]];
+        NSComparisonResult result1 = [NSString DecimalFuncComparefirst:totleGasPriceWeiValue secend:[NSString DecimalFuncWithOperatorType:2 first:self.walletBanlacePrice secend:@"1000000000000000000" value:18]];
         if (result1 ==NSOrderedDescending)
         {
             [LCProgressHUD showMessage:@"钱包余额不足"];

@@ -170,16 +170,16 @@
 
 - (void)upUserWithImg:(NSString *)img nickName:(NSString *)nickName sex:(NSString *)sex
 {
-    if (nickName.length > 12)
-    {
-        [LCProgressHUD showMessage:@"请输入2~12位非特殊字符的昵称"];
-        return;
-    }
-    if (![NSString isNickName:nickName])
-    {
-        [LCProgressHUD showMessage:@"请输入2~12位非特殊字符的昵称"];
-        return;
-    }
+//    if (nickName.length > 12)
+//    {
+//        [LCProgressHUD showMessage:@"请输入2~12位非特殊字符的昵称"];
+//        return;
+//    }
+//    if (![NSString isNickName:nickName])
+//    {
+//        [LCProgressHUD showMessage:@"请输入2~12位非特殊字符的昵称"];
+//        return;
+//    }
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     [dic setObject:nickName forKey:@"nickname"];
     [dic setObject:img forKey:@"img"];

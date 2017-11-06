@@ -20,9 +20,9 @@
     self.delegate = self;
     //设置导航栏背景颜色
     UINavigationBar *bar = self.navigationBar;
-    bar.tintColor = [UIColor colorWithHexString:@"333333"];
-    [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"333333"]}];
-    [self.navigationBar setBackgroundImage:[self imageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+    bar.tintColor = [UIColor whiteColor];
+    [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    [self.navigationBar setBackgroundImage:[self imageWithColor:[UIColor colorWithHexString:@"2f2f2f"]] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
 }
 

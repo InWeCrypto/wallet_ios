@@ -257,7 +257,7 @@
     //当前最大块号  //轮询这个
     [PPNetworkHelper POST:@"extend/blockNumber" parameters:nil hudString:nil success:^(id responseObject)
      {
-         self.maxBlockNumber = [NSString stringWithFormat:@"%@",[NSString numberHexString:[responseObject objectForKey:@"value"]]];
+         self.maxBlockNumber = [NSString stringWithFormat:@"%@",[NSString numberHexString:[[responseObject objectForKey:@"value"] substringFromIndex:2]]];
          
          NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
          [parametersDic setObject:@(self.model.id) forKey:@"wallet_id"];

@@ -115,7 +115,7 @@
     }
     
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-    [parametersDic setObject:@"1" forKey:@"open_id"];
+    [parametersDic setObject:device forKey:@"open_id"];
     
     [PPNetworkHelper POST:@"auth" parameters:parametersDic hudString:@"登录中..." success:^(id responseObject)
      {

@@ -86,22 +86,22 @@
     // 1.钱包
     WalletHomeVC *home = [[WalletHomeVC alloc] init];
     home.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:home title:@"资产" imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
+    [self setupChildViewController:home title:@"我的资产" imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
     
-    // 2.浏览器
+    // 2.行情
     QuotationVC * quotation = [[QuotationVC alloc] init];
     quotation.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:quotation title:NSLocalizedString(@"Browser", nil) imageName:@"tab_hangqing_nor" selectedImageName:@"tab_hangqing_pre"];
+    [self setupChildViewController:quotation title:NSLocalizedString(@"Quotation", nil) imageName:@"tab_hangqing_nor" selectedImageName:@"tab_hangqing_pre"];
     
-    // 3.资讯
+    // 3.发现
     FindVC *home1 = [[FindVC alloc] init];
     home1.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:home1 title:NSLocalizedString(@"Information", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
+    [self setupChildViewController:home1 title:NSLocalizedString(@"Find", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
     
-    // 4.定制
+    // 4.我的
     MyTVC * my = [[UIStoryboard storyboardWithName:@"MyTVC" bundle:nil] instantiateViewControllerWithIdentifier:@"MyTVC"];
     my.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:my title:NSLocalizedString(@"Customization", nil) imageName:@"tab_wode_nor" selectedImageName:@"tab_wode_pre"];
+    [self setupChildViewController:my title:NSLocalizedString(@"My", nil) imageName:@"tab_wode_nor" selectedImageName:@"tab_wode_pre"];
 }
 
 /**
@@ -115,9 +115,7 @@
 - (void)setupChildViewController:(UIViewController *)childVc title:(NSString *)title imageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName
 {
     // 1.设置控制器的属性
-    childVc.title = [title isEqualToString:@"资产"] ? @"" : title;
-    // 设置标题
-    childVc.tabBarItem.title = title;
+    childVc.title = title;
     // 设置图标
     childVc.tabBarItem.image = [UIImage imageNamed:imageName];
     // 设置选中的图标

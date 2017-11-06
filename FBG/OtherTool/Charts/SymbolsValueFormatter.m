@@ -19,6 +19,6 @@
 - (NSString *)stringForValue:(double)value axis:(ChartAxisBase *)axis
 {
     
-    return [NSString stringWithFormat:@"%ld",(NSInteger)value];
+    return [NSString stringWithFormat:@"%.2f",(double)value];
 }
 @end

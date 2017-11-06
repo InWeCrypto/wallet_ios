@@ -314,7 +314,7 @@
 
 - (void)chartValueSelected:(ChartViewBase * _Nonnull)chartView entry:(ChartDataEntry * _Nonnull)entry highlight:(ChartHighlight * _Nonnull)highlight {
     
-    _markY.text = [NSString stringWithFormat:@"%ld",(long)entry.y];
+    _markY.text = [NSString stringWithFormat:@"%.2f",(double)entry.y];
     //将点击的数据滑动到中间
     [_lineView centerViewToAnimatedWithXValue:entry.x yValue:entry.y axis:[_lineView.data getDataSetByIndex:highlight.dataSetIndex].axisDependency duration:0.3];
     

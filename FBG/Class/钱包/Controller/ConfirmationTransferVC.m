@@ -150,7 +150,7 @@
                                                        {
                                                            //生成data
                                                            NSError * error;
-                                                           NSString * gas = [SystemConvert decimalToHex:[SystemConvert decimalToHex:[NSString stringWithFormat:@"%ld",(long)[[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:0] integerValue]]]];
+                                                           NSString * gas = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]];
                                                            
                                                            NSData * data = [Wallet transferToken:self.nonce
                                                                                   gasPriceString:[NSString stringWithFormat:@"0x%@",gas]
@@ -194,11 +194,11 @@
                                                   //子线程异步执行下载任务，防止主线程卡顿
                                                   NSError * error;
                                                   NSString * price = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]];
-                                                  NSString * gas = [SystemConvert decimalToHex:[NSString stringWithFormat:@"%ld",(long)[[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:0] integerValue]]];
+                                                  NSString * gas = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]];
                                                   
                                                   NSData * data = [Wallet transferCurrency:self.nonce
                                                                             gasPriceString:self.isCodeWallet ? self.ox_gas : [NSString stringWithFormat:@"0x%@",[gas lowercaseString]]
-                                                                            gasLimitString:@"0x66c81"
+                                                                            gasLimitString:@"0x15f90"
                                                                                         to:self.address
                                                                               amountString:self.isCodeWallet ? self.ox_Price : [NSString stringWithFormat:@"0x%@",price]
                                                                                      error:&error];
@@ -342,7 +342,7 @@
     {
         //观察钱包转账
         NSString * price = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]]];
-        NSString * gas = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[NSString stringWithFormat:@"%ld",(long)[[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:0] integerValue]]]];
+        NSString * gas = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]]];
         if (self.tokenModel)
         {
             //钱包代币转账
