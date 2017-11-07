@@ -61,7 +61,12 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor backgroudColor];
+    
+    return headerView;
+}
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 8;

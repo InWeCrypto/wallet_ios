@@ -308,6 +308,7 @@
 		A8FEACB71F568DE500C2F9AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8FEACB61F568DE500C2F9AF /* Assets.xcassets */; };
 		D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */; };
 		D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */; };
+		D5CF792F1FB1580F009CBCB2 /* DBHWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -847,6 +848,8 @@
 		D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserViewController.m; sourceTree = "<group>"; };
 		D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserTableViewCell.h; sourceTree = "<group>"; };
 		D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserTableViewCell.m; sourceTree = "<group>"; };
+		D5CF792D1FB1580F009CBCB2 /* DBHWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWebViewController.h; sourceTree = "<group>"; };
+		D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWebViewController.m; sourceTree = "<group>"; };
 		DC5F2772DAD63E3E2FD339E4 /* Pods-FBG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FBG.release.xcconfig"; path = "Pods/Target Support Files/Pods-FBG/Pods-FBG.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1633,6 +1636,8 @@
 				A84475841F32BE0E003C7BDB /* ICOTranSuccesVC.h */,
 				A84475851F32BE0E003C7BDB /* ICOTranSuccesVC.m */,
 				A84475861F32BE0E003C7BDB /* ICOTranSuccesVC.xib */,
+				D5CF792D1FB1580F009CBCB2 /* DBHWebViewController.h */,
+				D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2032,13 +2037,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FBG-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C12A7E8FC1E0B3D9D37034C6 /* [CP] Embed Pods Frameworks */ = {
@@ -2047,9 +2055,36 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FBG/Pods-FBG-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
+				"${BUILT_PRODUCTS_DIR}/JKBigInteger/JKBigInteger.framework",
+				"${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/TTTAttributedLabel/TTTAttributedLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/YUSegment/YUSegment.framework",
+				"${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKBigInteger.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONModel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTTAttributedLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YUSegment.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCache.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2177,6 +2212,7 @@
 				0FAE3CD31F1CF88800BB343A /* WalletInfoHeaderView.m in Sources */,
 				A80713571F5563CE00C5B862 /* MASViewConstraint.m in Sources */,
 				0FDD5F271F2D671600228CE0 /* PassWordView.m in Sources */,
+				D5CF792F1FB1580F009CBCB2 /* DBHWebViewController.m in Sources */,
 				0FAC29231F2F7C4A009B3EC9 /* AAYAxis.m in Sources */,
 				0F0CFDEA1F15E54100476A86 /* AppDelegate.m in Sources */,
 				0FAC29121F2F7C4A009B3EC9 /* AALabels.m in Sources */,

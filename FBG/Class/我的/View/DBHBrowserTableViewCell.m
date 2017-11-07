@@ -34,6 +34,23 @@
 - (void)setUI {
     [self.contentView addSubview:self.leftImageView];
     [self.contentView addSubview:self.titleLabel];
+    [self.contentView addSubview:self.bottomLineView];
+    
+    WEAKSELF
+    [self.leftImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(35);
+        make.centerY.equalTo(weakSelf.contentView);
+    }];
+    [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.leftImageView.mas_right).offset(22);
+        make.centerY.equalTo(weakSelf.contentView);
+    }];
+    [self.bottomLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(19.5);
+        make.right.offset(- 20.5);
+        make.height.offset(1);
+        make.bottom.equalTo(weakSelf.contentView);
+    }];
 }
 
 #pragma mark ------ Getters And Setters ------

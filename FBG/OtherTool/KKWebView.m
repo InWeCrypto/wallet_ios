@@ -55,7 +55,7 @@
             self.navigationItem.leftBarButtonItem = leftBarButtonItem;
             [self.navigationItem.leftBarButtonItem setTintColor:[UIColor lightGrayColor]];
             
-            UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_share"] style:UIBarButtonItemStyleDone target:self action:@selector(rightButton)];
+            UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_刷新"] style:UIBarButtonItemStyleDone target:self action:@selector(rightButton)];
             self.navigationItem.rightBarButtonItem = rightBarButtonItem;
         }
     }
@@ -118,26 +118,29 @@
 
 - (void)rightButton
 {
+    // 刷新
+    [self.webView reload];
+    
     //分享
-    NSArray* activityItems = [[NSArray alloc] initWithObjects:_urlStr,nil];
-    
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-    //applicationActivities可以指定分享的应用，不指定为系统默认支持的
-    
-    kWeakSelf(activityVC)
-    activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError)
-    {
-        if(completed)
-        {
-            NSLog(@"Share success");
-        }
-        else
-        {
-            NSLog(@"Cancel the share");
-        }
-        [weakactivityVC dismissViewControllerAnimated:YES completion:nil];
-    };
-    [self presentViewController:activityVC animated:YES completion:nil];
+//    NSArray* activityItems = [[NSArray alloc] initWithObjects:_urlStr,nil];
+//
+//    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+//    //applicationActivities可以指定分享的应用，不指定为系统默认支持的
+//
+//    kWeakSelf(activityVC)
+//    activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError)
+//    {
+//        if(completed)
+//        {
+//            NSLog(@"Share success");
+//        }
+//        else
+//        {
+//            NSLog(@"Cancel the share");
+//        }
+//        [weakactivityVC dismissViewControllerAnimated:YES completion:nil];
+//    };
+//    [self presentViewController:activityVC animated:YES completion:nil];
 }
 
 - (void)buttonClicked
@@ -410,6 +413,13 @@
     [self.webView removeObserver:self forKeyPath:@"title"];
 }
 
+- (void)setIsHiddenRefresh:(BOOL)isHiddenRefresh {
+    _isHiddenRefresh = isHiddenRefresh;
+    
+    if (_isHiddenRefresh) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
 
 - (ChoseWalletView *)choseWalletView
 {

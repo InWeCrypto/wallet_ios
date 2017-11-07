@@ -48,15 +48,15 @@
 - (void)pushWebViewWithUrl:(NSString *)url title:(NSString *)title
 {
     NSString * api;
-    if ([APP_APIEHEAD isEqualToString:@"https://ropsten.unichain.io/api/"])
+    if ([APP_APIEHEAD isEqualToString:APIEHEAD])
     {
         //测试
-        api = IMAGEHEAD;
+        api = APIEHEAD;
     }
     else
     {
         //正式
-        api = IMAGEHEAD1;
+        api = APIEHEAD1;
     }
     KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",api,url]];
     vc.title = title;

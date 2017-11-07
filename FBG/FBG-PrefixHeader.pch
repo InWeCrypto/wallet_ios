@@ -40,6 +40,7 @@
 
 /** 弱引用*/
 #define kWeakSelf(type)   __weak typeof(type) weak##type = type;
+#define WEAKSELF __weak typeof(self)weakSelf = self;
 /** 强引用*/
 #define kStrongSelf(type) __strong typeof(type) type = weak##type;
 
@@ -84,6 +85,7 @@
 #import "PDKeyChain.h"
 #import "JKBigInteger.h"
 #import "JKBigDecimal.h"
+#import "Masonry.h"
 
 //微信登录
 // access_token openid refresh_token unionid

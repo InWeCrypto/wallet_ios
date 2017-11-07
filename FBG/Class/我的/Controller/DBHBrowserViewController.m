@@ -8,6 +8,8 @@
 
 #import "DBHBrowserViewController.h"
 
+#import "KKWebView.h"
+
 #import "DBHBrowserTableViewCell.h"
 
 static NSString * const kDBHBrowserTableViewCellIdentifier = @"kDBHBrowserTableViewCellIdentifier";
@@ -16,6 +18,7 @@ static NSString * const kDBHBrowserTableViewCellIdentifier = @"kDBHBrowserTableV
 
 @property (nonatomic, strong) UITableView *tableView;
 
+@property (nonatomic, copy) NSArray *urlArray;
 @property (nonatomic, copy) NSArray *titleArray;
 
 @end
@@ -50,7 +53,15 @@ static NSString * const kDBHBrowserTableViewCellIdentifier = @"kDBHBrowserTableV
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [self pushWebViewWithUrl:self.urlArray[indexPath.row] title:self.titleArray[indexPath.row]];
+}
+
+#pragma mark ------ Private Methods ------
+- (void)pushWebViewWithUrl:(NSString *)url title:(NSString *)title
+{
+    KKWebView * vc = [[KKWebView alloc] initWithUrl:url];
+    vc.title = title;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -69,6 +80,14 @@ static NSString * const kDBHBrowserTableViewCellIdentifier = @"kDBHBrowserTableV
     return _tableView;
 }
 
+- (NSArray *)urlArray {
+    if (!_urlArray) {
+        _urlArray = @[@"https://blockchain.info",
+                        @"https://ethscan.io",
+                        @"https://neotracker.io"];
+    }
+    return _urlArray;
+}
 - (NSArray *)titleArray {
     if (!_titleArray) {
         _titleArray = @[@"BLOCKCHAIN",

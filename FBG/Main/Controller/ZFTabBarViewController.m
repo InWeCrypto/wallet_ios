@@ -8,7 +8,8 @@
 
 #import "ZFTabBarViewController.h"
 #import "ZFTabBar.h"
-#import "FindVC.h"
+//#import "FindVC.h"
+#import "DBHWebViewController.h"
 #import "CDNavigationController.h"
 #import "WalletHomeVC.h"
 #import "MyTVC.h"
@@ -89,7 +90,7 @@
     [self setupChildViewController:quotation title:NSLocalizedString(@"Market", nil) imageName:@"tab_hangqing_nor" selectedImageName:@"tab_hangqing_pre"];
     
     // 2.资讯
-    FindVC *home1 = [[FindVC alloc] init];
+    DBHWebViewController *home1 = [[DBHWebViewController alloc] initWithUrl:@"http://inwecrypto.com/"];
     home1.tabBarItem.badgeValue = @"";
     [self setupChildViewController:home1 title:NSLocalizedString(@"Information", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
     
