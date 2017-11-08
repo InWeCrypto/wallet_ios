@@ -97,6 +97,11 @@
 {
     //确定按钮
     [self  canel];
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"] isEqualToString:(self.isNotTest ? APIEHEAD1 : APIEHEAD)]) {
+        return;
+    }
+    
     if ([self.delegate respondsToSelector:@selector(sureButtonCilickWithTest:)])
     {
         [self.delegate sureButtonCilickWithTest:self.isNotTest];

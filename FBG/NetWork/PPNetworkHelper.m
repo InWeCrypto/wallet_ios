@@ -223,11 +223,12 @@ static NetworkStatus _status;
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
+    NSString * requestUrl= [[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"] stringByAppendingPathComponent:URL];
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
     PPLog(@"❤️POST URL❤️ = %@",URL);
     PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
     
-    return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    return [manager POST:requestUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
     {

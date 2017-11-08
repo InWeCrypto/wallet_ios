@@ -8,7 +8,8 @@
 
 #import "ZFTabBarViewController.h"
 #import "ZFTabBar.h"
-#import "FindVC.h"
+//#import "FindVC.h"
+#import "DBHWebViewController.h"
 #import "CDNavigationController.h"
 #import "WalletHomeVC.h"
 #import "MyTVC.h"
@@ -83,25 +84,25 @@
  */
 - (void)setupAllChildViewControllers
 {
-    // 1.钱包
-    WalletHomeVC *home = [[WalletHomeVC alloc] init];
-    home.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:home title:@"我的资产" imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
-    
-    // 2.行情
+    // 1.行情
     QuotationVC * quotation = [[QuotationVC alloc] init];
     quotation.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:quotation title:NSLocalizedString(@"Quotation", nil) imageName:@"tab_hangqing_nor" selectedImageName:@"tab_hangqing_pre"];
+    [self setupChildViewController:quotation title:NSLocalizedString(@"Market", nil) imageName:@"tab_hangqing_nor" selectedImageName:@"tab_hangqing_pre"];
     
-    // 3.发现
-    FindVC *home1 = [[FindVC alloc] init];
+    // 2.资讯
+    DBHWebViewController *home1 = [[DBHWebViewController alloc] initWithUrl:@"http://inwecrypto.com/"];
     home1.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:home1 title:NSLocalizedString(@"Find", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
+    [self setupChildViewController:home1 title:NSLocalizedString(@"Information", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
     
-    // 4.我的
+    // 3.资产
+    WalletHomeVC *home = [[WalletHomeVC alloc] init];
+    home.tabBarItem.badgeValue = @"";
+    [self setupChildViewController:home title:@"资产" imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
+    
+    // 4.定制
     MyTVC * my = [[UIStoryboard storyboardWithName:@"MyTVC" bundle:nil] instantiateViewControllerWithIdentifier:@"MyTVC"];
     my.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:my title:NSLocalizedString(@"My", nil) imageName:@"tab_wode_nor" selectedImageName:@"tab_wode_pre"];
+    [self setupChildViewController:my title:NSLocalizedString(@"Custom", nil) imageName:@"tab_wode_nor" selectedImageName:@"tab_wode_pre"];
 }
 
 /**

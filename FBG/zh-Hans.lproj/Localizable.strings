@@ -14,9 +14,9 @@
  导航
  */
 "Wallet" = "钱包";
-"Quotation" = "行情";
-"Find" = "发现";
-"My" = "我的";
+"Market" = "行情";
+"Information" = "资讯";
+"Custom" = "定制";
 
 /*
  通用
@@ -78,6 +78,7 @@
 "Please enter seeds, separated by spaces" = "请输入种子，按空格分隔";
 "Begin Import" = "开始导入";
 
+"My Property" = "我的资产";
 "Wallet Details" = "钱包详情";
 "Wallet Address" = "钱包地址";
 "Transfer Accounts" = "转账";

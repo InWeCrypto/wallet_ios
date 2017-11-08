@@ -28,8 +28,8 @@
 {
     // Drawing code
     self.passWorldTF.delegate = self;
-    self.layer.cornerRadius = 10;
-    self.layer.masksToBounds = YES;
+//    self.layer.cornerRadius = 10;
+//    self.layer.masksToBounds = YES;
     
     [self.canelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
     [self.commitButton setTitle:NSLocalizedString(@"Determine", nil) forState:UIControlStateNormal];

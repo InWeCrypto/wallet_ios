@@ -306,6 +306,9 @@
 		A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB11F56553000C2F9AF /* CloudPushSDK.framework */; };
 		A8FEACB51F56553100C2F9AF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB21F56553000C2F9AF /* UTDID.framework */; };
 		A8FEACB71F568DE500C2F9AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8FEACB61F568DE500C2F9AF /* Assets.xcassets */; };
+		D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */; };
+		D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */; };
+		D5CF792F1FB1580F009CBCB2 /* DBHWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -841,6 +844,12 @@
 		A8FEACB21F56553000C2F9AF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		A8FEACB61F568DE500C2F9AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4EF8E3460E908B2B9C8C464 /* Pods_FBG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FBG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D53812E91FB07DAF009D681E /* DBHBrowserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserViewController.h; sourceTree = "<group>"; };
+		D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserViewController.m; sourceTree = "<group>"; };
+		D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserTableViewCell.h; sourceTree = "<group>"; };
+		D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserTableViewCell.m; sourceTree = "<group>"; };
+		D5CF792D1FB1580F009CBCB2 /* DBHWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWebViewController.h; sourceTree = "<group>"; };
+		D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWebViewController.m; sourceTree = "<group>"; };
 		DC5F2772DAD63E3E2FD339E4 /* Pods-FBG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FBG.release.xcconfig"; path = "Pods/Target Support Files/Pods-FBG/Pods-FBG.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1270,6 +1279,8 @@
 				A80713111F55371E00C5B862 /* AboutVC.h */,
 				A80713121F55371E00C5B862 /* AboutVC.m */,
 				A80713131F55371F00C5B862 /* AboutVC.xib */,
+				D53812E91FB07DAF009D681E /* DBHBrowserViewController.h */,
+				D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1302,6 +1313,8 @@
 				A85A01B11F35D0CD002F0141 /* MonetaryUnitCell.h */,
 				A85A01B21F35D0CD002F0141 /* MonetaryUnitCell.m */,
 				A85A01B31F35D0CD002F0141 /* MonetaryUnitCell.xib */,
+				D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */,
+				D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1623,6 +1636,8 @@
 				A84475841F32BE0E003C7BDB /* ICOTranSuccesVC.h */,
 				A84475851F32BE0E003C7BDB /* ICOTranSuccesVC.m */,
 				A84475861F32BE0E003C7BDB /* ICOTranSuccesVC.xib */,
+				D5CF792D1FB1580F009CBCB2 /* DBHWebViewController.h */,
+				D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1858,13 +1873,14 @@
 		0F0CFDDA1F15E54100476A86 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = DBH;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = ButtonRoot;
 				TargetAttributes = {
 					0F0CFDE11F15E54100476A86 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = L44XCS63SL;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = A586DWSV4P;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -2021,13 +2037,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FBG-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C12A7E8FC1E0B3D9D37034C6 /* [CP] Embed Pods Frameworks */ = {
@@ -2036,9 +2055,36 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FBG/Pods-FBG-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
+				"${BUILT_PRODUCTS_DIR}/JKBigInteger/JKBigInteger.framework",
+				"${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/TTTAttributedLabel/TTTAttributedLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/YUSegment/YUSegment.framework",
+				"${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKBigInteger.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONModel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTTAttributedLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YUSegment.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCache.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2166,6 +2212,7 @@
 				0FAE3CD31F1CF88800BB343A /* WalletInfoHeaderView.m in Sources */,
 				A80713571F5563CE00C5B862 /* MASViewConstraint.m in Sources */,
 				0FDD5F271F2D671600228CE0 /* PassWordView.m in Sources */,
+				D5CF792F1FB1580F009CBCB2 /* DBHWebViewController.m in Sources */,
 				0FAC29231F2F7C4A009B3EC9 /* AAYAxis.m in Sources */,
 				0F0CFDEA1F15E54100476A86 /* AppDelegate.m in Sources */,
 				0FAC29121F2F7C4A009B3EC9 /* AALabels.m in Sources */,
@@ -2204,6 +2251,7 @@
 				A8DC9B451F58428D006984D4 /* CommitOrderVC.m in Sources */,
 				0FE474151F28E378009E1DF8 /* AddWalletChoseTypeVC.m in Sources */,
 				0F0CFE5B1F161F4C00476A86 /* ZFTabBarButton.m in Sources */,
+				D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */,
 				0F0CFE441F15FD0800476A86 /* PPNetworkHelper.m in Sources */,
 				0FDCAC921F20CF460090D12A /* ObjcRuntime.m in Sources */,
 				0FB8E0011F263004003D1BF9 /* RateSettingTVC.m in Sources */,
@@ -2235,6 +2283,7 @@
 				0FE4741F1F28E940009E1DF8 /* AddWalletInfoVC.m in Sources */,
 				0FAC29101F2F7C4A009B3EC9 /* AADataLabels.m in Sources */,
 				0FAC28FF1F2F7C4A009B3EC9 /* AAChartModel.m in Sources */,
+				D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */,
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,
 				0FAE3CCF1F1CF78600BB343A /* WalletInfoVC.m in Sources */,
 				A80713141F55371F00C5B862 /* AboutVC.m in Sources */,
@@ -2438,8 +2487,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: 18280053620@163.com (Z4WT5TBJ76)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = L44XCS63SL;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = A586DWSV4P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2479,9 +2530,10 @@
 					"\"YYCache\"",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = capital.fbg.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "59110785-46dc-4ae7-9cb0-8156582876d6";
+				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 			};
 			name = Debug;
@@ -2494,7 +2546,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = L44XCS63SL;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = A586DWSV4P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2534,9 +2587,10 @@
 					"\"YYCache\"",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = capital.fbg.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "59110785-46dc-4ae7-9cb0-8156582876d6";
+				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 			};
 			name = Release;

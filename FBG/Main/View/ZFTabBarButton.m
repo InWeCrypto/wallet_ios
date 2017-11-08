@@ -12,7 +12,7 @@
 // 按钮的默认文字颜色
 #define  ZFTabBarButtonTitleColor (iOS7 ? [UIColor colorWithHexString:@"afafb0"] : [UIColor colorWithHexString:@"afafb0"])
 // 按钮的选中文字颜色
-#define  ZFTabBarButtonTitleSelectedColor [UIColor colorWithHexString:@"232772"]
+#define  ZFTabBarButtonTitleSelectedColor [UIColor colorWithHexString:@"128B57"]
 
 #import "ZFTabBarButton.h"
 #import "ZFBadgeButton.h"

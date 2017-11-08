@@ -421,7 +421,7 @@
         [_transferButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _transferButton.titleLabel.font = [UIFont systemFontOfSize:14];
         [_transferButton setImage:[UIImage imageNamed:@"转账"] forState:UIControlStateNormal];
-        _transferButton.backgroundColor = [UIColor colorWithHexString:@"fdd930"];
+        _transferButton.backgroundColor = [UIColor colorWithHexString:@"EA642F"];
         [_transferButton addTarget:self action:@selector(transferButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     return _transferButton;
@@ -438,7 +438,7 @@
         [_receivablesButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _receivablesButton.titleLabel.font = [UIFont systemFontOfSize:14];
         [_receivablesButton setImage:[UIImage imageNamed:@"收款"] forState:UIControlStateNormal];
-        _receivablesButton.backgroundColor = [UIColor colorWithHexString:@"232772"];
+        _receivablesButton.backgroundColor = [UIColor colorWithHexString:@"008C55"];
         [_receivablesButton addTarget:self action:@selector(receivablesButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     return _receivablesButton;

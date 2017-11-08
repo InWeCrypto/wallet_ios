@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddEthOrBtcVC">
             <connections>
                 <outlet property="sureButton" destination="M1n-jy-Lcj" id="wgk-f8-YaC"/>
-                <outlet property="typeImage" destination="dZe-Pr-sxx" id="GOj-C5-QlX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,53 +21,86 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M1n-jy-Lcj">
-                    <rect key="frame" x="25" y="493" width="270" height="45"/>
-                    <color key="backgroundColor" red="0.13725490200000001" green="0.1529411765" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="45" id="juU-pp-bSa"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <state key="normal" title="添加新钱包">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="6"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="addButtonCilick:" destination="-1" eventType="touchUpInside" id="whq-SQ-vvB"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krh-nQ-Dyx">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="493"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BTC_pic_add" translatesAutoresizingMaskIntoConstraints="NO" id="dZe-Pr-sxx">
-                            <rect key="frame" x="27.5" y="132" width="265" height="229"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_热钱包" translatesAutoresizingMaskIntoConstraints="NO" id="6t0-T1-vDG" userLabel="hotImageView">
+                            <rect key="frame" x="45" y="55" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="FJY-cl-rd5"/>
+                                <constraint firstAttribute="width" constant="70" id="ntN-ec-J9Z"/>
+                            </constraints>
                         </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_冷钱包" translatesAutoresizingMaskIntoConstraints="NO" id="6gK-cU-waS" userLabel="coldImageView">
+                            <rect key="frame" x="205" y="55" width="70" height="70"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="热钱包" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Euw-re-5d3" userLabel="hotLabel">
+                            <rect key="frame" x="57.5" y="132.5" width="46" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="冷钱包" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3yE-vl-G8d" userLabel="coldLabel">
+                            <rect key="frame" x="219" y="133.5" width="43" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M1n-jy-Lcj" userLabel="hotWalletButton">
+                            <rect key="frame" x="45" y="55" width="70" height="96"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="eIs-8s-6Sf"/>
+                                <constraint firstAttribute="height" constant="96" id="lcS-Av-wkD"/>
+                            </constraints>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="6"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="addButtonCilick:" destination="-1" eventType="touchUpInside" id="whq-SQ-vvB"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K27-24-3Dn" userLabel="coldWalletButton">
+                            <rect key="frame" x="205" y="55" width="70" height="96"/>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="dZe-Pr-sxx" firstAttribute="centerY" secondItem="krh-nQ-Dyx" secondAttribute="centerY" id="7GS-zF-Nn4"/>
-                        <constraint firstItem="dZe-Pr-sxx" firstAttribute="centerX" secondItem="krh-nQ-Dyx" secondAttribute="centerX" id="Ewv-22-jf2"/>
+                        <constraint firstItem="K27-24-3Dn" firstAttribute="top" secondItem="6gK-cU-waS" secondAttribute="top" id="08N-MP-3KA"/>
+                        <constraint firstItem="3yE-vl-G8d" firstAttribute="bottom" secondItem="K27-24-3Dn" secondAttribute="bottom" id="2dM-8B-4fD"/>
+                        <constraint firstItem="M1n-jy-Lcj" firstAttribute="centerX" secondItem="krh-nQ-Dyx" secondAttribute="centerX" multiplier="0.5" id="DFA-Df-QgB"/>
+                        <constraint firstItem="K27-24-3Dn" firstAttribute="centerY" secondItem="M1n-jy-Lcj" secondAttribute="centerY" id="I2s-fU-LEo"/>
+                        <constraint firstItem="Euw-re-5d3" firstAttribute="bottom" secondItem="M1n-jy-Lcj" secondAttribute="bottom" id="K9H-Xz-VQH"/>
+                        <constraint firstItem="K27-24-3Dn" firstAttribute="height" secondItem="M1n-jy-Lcj" secondAttribute="height" id="KVP-25-5mJ"/>
+                        <constraint firstItem="6t0-T1-vDG" firstAttribute="top" secondItem="M1n-jy-Lcj" secondAttribute="top" id="NZ2-h8-Hne"/>
+                        <constraint firstItem="6gK-cU-waS" firstAttribute="width" secondItem="6t0-T1-vDG" secondAttribute="width" id="PhK-YY-AMn"/>
+                        <constraint firstItem="K27-24-3Dn" firstAttribute="width" secondItem="M1n-jy-Lcj" secondAttribute="width" id="R7q-qt-9Ir"/>
+                        <constraint firstItem="6gK-cU-waS" firstAttribute="height" secondItem="6t0-T1-vDG" secondAttribute="height" id="UY5-x4-9D2"/>
+                        <constraint firstItem="M1n-jy-Lcj" firstAttribute="top" secondItem="krh-nQ-Dyx" secondAttribute="top" constant="55" id="Zth-Ez-bh2"/>
+                        <constraint firstItem="3yE-vl-G8d" firstAttribute="centerX" secondItem="K27-24-3Dn" secondAttribute="centerX" id="adu-aK-nNg"/>
+                        <constraint firstItem="6t0-T1-vDG" firstAttribute="centerX" secondItem="M1n-jy-Lcj" secondAttribute="centerX" id="eSY-gp-Atn"/>
+                        <constraint firstItem="K27-24-3Dn" firstAttribute="centerX" secondItem="krh-nQ-Dyx" secondAttribute="centerX" multiplier="1.5" id="f4Z-F5-Q3g"/>
+                        <constraint firstItem="Euw-re-5d3" firstAttribute="centerX" secondItem="M1n-jy-Lcj" secondAttribute="centerX" id="hCt-qN-UWv"/>
+                        <constraint firstItem="K27-24-3Dn" firstAttribute="centerX" secondItem="6gK-cU-waS" secondAttribute="centerX" id="xVk-AU-W1w"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="krh-nQ-Dyx" secondAttribute="bottom" constant="75" id="0bR-7m-1TV"/>
                 <constraint firstItem="krh-nQ-Dyx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1hd-XB-BJq"/>
-                <constraint firstItem="M1n-jy-Lcj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="25" id="DiX-Ii-wAE"/>
-                <constraint firstItem="M1n-jy-Lcj" firstAttribute="top" secondItem="krh-nQ-Dyx" secondAttribute="bottom" id="I8c-bw-gGX"/>
                 <constraint firstItem="krh-nQ-Dyx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SVN-mp-FPb"/>
-                <constraint firstAttribute="bottom" secondItem="M1n-jy-Lcj" secondAttribute="bottom" constant="30" id="Urz-7p-d2i"/>
-                <constraint firstAttribute="trailing" secondItem="M1n-jy-Lcj" secondAttribute="trailing" constant="25" id="bks-3X-3U5"/>
                 <constraint firstAttribute="trailing" secondItem="krh-nQ-Dyx" secondAttribute="trailing" id="cJF-HO-oNc"/>
             </constraints>
             <point key="canvasLocation" x="-41" y="-9"/>
         </view>
     </objects>
     <resources>
-        <image name="BTC_pic_add" width="265" height="229"/>
+        <image name="icon_冷钱包" width="70" height="70"/>
+        <image name="icon_热钱包" width="70" height="70"/>
     </resources>
 </document>

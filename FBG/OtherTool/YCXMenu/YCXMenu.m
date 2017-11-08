@@ -23,7 +23,7 @@ NSString * const YCXMenuDidDisappearNotification = @"YCXMenuDidDisappearNotifica
 #define kSeparatorInsetLeft     0
 #define kSeparatorInsetRight    0
 #define kSeparatorHeight        0.5
-#define kSeparatorColor [UIColor colorWithRed:0.44 green:0.44 blue:0.44 alpha:1]
+#define kSeparatorColor [UIColor colorWithHexString:@"008C55"]
 #define kMenuViewInsetTop       0
 #define kMenuViewInsetBottom    0
 
@@ -467,7 +467,7 @@ typedef enum {
             titleLabel.text = menuItem.title;
             titleLabel.font = menuItem.titleFont ? menuItem.titleFont : titleFont;
             titleLabel.textAlignment = menuItem.alignment;
-            titleLabel.textColor = menuItem.foreColor ? menuItem.foreColor : [UIColor colorWithHexString:@"333333"];
+            titleLabel.textColor = menuItem.foreColor ? menuItem.foreColor : [UIColor colorWithHexString:@"008C55"];
             titleLabel.backgroundColor = [UIColor clearColor];
             titleLabel.autoresizingMask = UIViewAutoresizingNone;
             [itemView addSubview:titleLabel];

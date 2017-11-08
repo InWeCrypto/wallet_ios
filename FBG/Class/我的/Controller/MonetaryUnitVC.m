@@ -32,6 +32,7 @@
     self.coustromTableView.emptyDataSetDelegate = self;
     
     [self.view addSubview:self.coustromTableView];
+    [self.view addSubview:self.sureButton];
     self.dataSource = [[NSMutableArray alloc] init];
     
     MonetaryUnitModel * model = [[MonetaryUnitModel alloc] init];
@@ -84,6 +85,25 @@
 - (void)sureButtonClicked
 {
     //保存
+    MonetaryUnitModel * model = self.dataSource[_selIndex.row];
+//    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+//    [parametersDic setObject:@(model.id) forKey:@"monetary_unit_id"];
+    
+    [LCProgressHUD showMessage:@"设置成功"];
+    [UserSignData share].user.walletUnitType = model.id;
+    [[UserSignData share] storageData:[UserSignData share].user];
+    [self.navigationController popViewControllerAnimated:YES];
+    
+//    [PPNetworkHelper POST:@"monetary-unit" parameters:parametersDic hudString:@"设置中..." success:^(id responseObject)
+//     {
+//         [LCProgressHUD showMessage:@"设置成功"];
+//         [UserSignData share].user.walletUnitType = model.id;
+//         [[UserSignData share] storageData:[UserSignData share].user];
+//         [self.navigationController popViewControllerAnimated:YES];
+//     } failure:^(NSString *error)
+//     {
+//         [LCProgressHUD showFailure:error];
+//     }];
 }
 
 #pragma mark - DZNEmptyDataSetSource Methods
@@ -170,26 +190,6 @@
     //当前选择的打勾
     MonetaryUnitCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.statusImage.image = [UIImage imageNamed:@"list_btn_selected"];
-    
-    MonetaryUnitModel * model = self.dataSource[_selIndex.row];
-    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-    [parametersDic setObject:@(model.id) forKey:@"monetary_unit_id"];
-    
-    [LCProgressHUD showMessage:@"设置成功"];
-    [UserSignData share].user.walletUnitType = model.id;
-    [[UserSignData share] storageData:[UserSignData share].user];
-    
-    /*
-    [PPNetworkHelper POST:@"monetary-unit" parameters:parametersDic hudString:@"设置中..." success:^(id responseObject)
-    {
-        [LCProgressHUD showMessage:@"设置成功"];
-        [UserSignData share].user.walletUnitType = model.id;
-        [[UserSignData share] storageData:[UserSignData share].user];
-    } failure:^(NSString *error)
-    {
-        [LCProgressHUD showFailure:error];
-    }];
-     */
 }
 
 #pragma mark -- get
@@ -215,12 +215,10 @@
     if (!_sureButton)
     {
         _sureButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _sureButton.frame = CGRectMake(20, SCREEN_HEIGHT - 75, SCREEN_WIDTH - 40, 45);
+        _sureButton.frame = CGRectMake(25, SCREEN_HEIGHT - 64 - 49 - 48.5, SCREEN_WIDTH - 50, 44);
         [_sureButton setTitle:@"保  存" forState: UIControlStateNormal];
         [_sureButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _sureButton.backgroundColor = [UIColor colorWithHexString:@"232772"];
-        _sureButton.layer.cornerRadius = 6;
-        _sureButton.layer.masksToBounds = YES;
+        _sureButton.backgroundColor = [UIColor colorWithHexString:@"008C55"];
         [_sureButton addTarget:self action:@selector(sureButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     return _sureButton;
