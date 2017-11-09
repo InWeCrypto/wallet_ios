@@ -309,6 +309,7 @@
 		D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */; };
 		D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */; };
 		D5CF792F1FB1580F009CBCB2 /* DBHWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */; };
+		D5E2B0E81FB4771800A8FE59 /* DBHMyHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5E2B0E71FB4771700A8FE59 /* DBHMyHeaderView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -850,6 +851,8 @@
 		D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserTableViewCell.m; sourceTree = "<group>"; };
 		D5CF792D1FB1580F009CBCB2 /* DBHWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWebViewController.h; sourceTree = "<group>"; };
 		D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWebViewController.m; sourceTree = "<group>"; };
+		D5E2B0E61FB4771700A8FE59 /* DBHMyHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMyHeaderView.h; sourceTree = "<group>"; };
+		D5E2B0E71FB4771700A8FE59 /* DBHMyHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMyHeaderView.m; sourceTree = "<group>"; };
 		DC5F2772DAD63E3E2FD339E4 /* Pods-FBG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FBG.release.xcconfig"; path = "Pods/Target Support Files/Pods-FBG/Pods-FBG.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1315,6 +1318,8 @@
 				A85A01B31F35D0CD002F0141 /* MonetaryUnitCell.xib */,
 				D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */,
 				D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */,
+				D5E2B0E61FB4771700A8FE59 /* DBHMyHeaderView.h */,
+				D5E2B0E71FB4771700A8FE59 /* DBHMyHeaderView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2197,6 +2202,7 @@
 				A81A5AE01F3A115B0015CC0D /* KKWebView.m in Sources */,
 				A85A01BB1F35D9FE002F0141 /* ICOOrderListModel.m in Sources */,
 				A81A5AD41F3A05210015CC0D /* MessageVC.m in Sources */,
+				D5E2B0E81FB4771800A8FE59 /* DBHMyHeaderView.m in Sources */,
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
 				A83303751F346F24000C08B4 /* UIScrollView+EmptyDataSet.m in Sources */,
 				A8CD77791F32453300005027 /* SymbolsValueFormatter.m in Sources */,

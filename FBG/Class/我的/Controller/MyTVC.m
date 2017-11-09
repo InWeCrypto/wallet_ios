@@ -7,7 +7,7 @@
 //
 
 #import "MyTVC.h"
-#import "MyHeaderView.h"
+//#import "MyHeaderView.h"
 #import "DBHBrowserViewController.h"
 #import "MailListVC.h"
 #import "ICOListVC.h"
@@ -17,9 +17,12 @@
 #import "ChoseNetView.h"
 #import "AboutVC.h"
 
+#import "DBHMyHeaderView.h"
+
 @interface MyTVC () <ChoseNetViewDelegate>
 
-@property (nonatomic, strong) MyHeaderView * headerView;
+@property (nonatomic, strong) DBHMyHeaderView *headerView;
+//@property (nonatomic, strong) MyHeaderView * headerView;
 @property (nonatomic, strong) ChoseNetView * choseNetView;
 
 @end
@@ -33,10 +36,6 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     self.tableView.tableHeaderView = self.headerView;
-    
-    UIView *statusview = [[UIView alloc] initWithFrame:CGRectMake(0, -20, SCREEN_WIDTH, 20)];
-    statusview.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:statusview];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -44,14 +43,17 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
-    [self.headerView.headImage sdsetImageWithHeaderimg:[UserSignData share].user.img];
-    self.headerView.nameLB.text = [UserSignData share].user.nickname;
+    [self.headerView.headImageView sdsetImageWithHeaderimg:[UserSignData share].user.img];
+    self.headerView.nameLabel.text = [UserSignData share].user.nickname;
+    
+    [self setStatusBarBackgroundColor:[UIColor whiteColor]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [self setStatusBarBackgroundColor:[UIColor clearColor]];
 }
 
 - (void)editButtonClick
@@ -146,22 +148,45 @@
     [[AppDelegate delegate] showLoginController];
 }
 
+#pragma mark ------ Private Methdos ------
+/**
+ 设置状态栏颜色
+ */
+- (void)setStatusBarBackgroundColor:(UIColor *)color {
+    
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+        statusBar.backgroundColor = color;
+    }
+}
+
 #pragma mark -- get
-- (MyHeaderView *)headerView
-{
-    if (!_headerView)
-    {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"MyHeaderView" owner:self options:nil];
-        _headerView = [nib objectAtIndex:0];
-        _headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 220);
-        [_headerView.editButton addTarget:self action:@selector(editButtonClick) forControlEvents:UIControlEventTouchUpInside];
-        UITapGestureRecognizer * singleRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editButtonClick)];
-        singleRecognizer.numberOfTapsRequired = 1; // 单击
-        [_headerView.headImage addGestureRecognizer:singleRecognizer];
-        _headerView.headImage.userInteractionEnabled = YES;
+- (DBHMyHeaderView *)headerView {
+    if (!_headerView) {
+        _headerView = [[DBHMyHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOSIZE(170))];
+        
+        WEAKSELF
+        [_headerView clickButtonBlock:^() {
+            [weakSelf editButtonClick];
+        }];
     }
     return _headerView;
 }
+//- (MyHeaderView *)headerView
+//{
+//    if (!_headerView)
+//    {
+//        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"MyHeaderView" owner:self options:nil];
+//        _headerView = [nib objectAtIndex:0];
+//        _headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 170);
+//        [_headerView.editButton addTarget:self action:@selector(editButtonClick) forControlEvents:UIControlEventTouchUpInside];
+//        UITapGestureRecognizer * singleRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editButtonClick)];
+//        singleRecognizer.numberOfTapsRequired = 1; // 单击
+//        [_headerView.headImage addGestureRecognizer:singleRecognizer];
+//        _headerView.headImage.userInteractionEnabled = YES;
+//    }
+//    return _headerView;
+//}
 
 - (ChoseNetView *)choseNetView
 {

@@ -13,11 +13,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MyHeaderView">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="190"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="170"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="默认头像" translatesAutoresizingMaskIntoConstraints="NO" id="Zzw-Sa-1v7">
-                    <rect key="frame" x="149.66666666666666" y="47.333333333333343" width="76" height="76"/>
+                    <rect key="frame" x="149.66666666666666" y="27.333333333333329" width="76" height="76"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="76" id="2Nn-QU-jaP"/>
                         <constraint firstAttribute="width" secondItem="Zzw-Sa-1v7" secondAttribute="height" id="Pyn-cF-4tL"/>
@@ -30,7 +30,7 @@
                     </userDefinedRuntimeAttributes>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7aY-by-6Pw">
-                    <rect key="frame" x="315" y="20" width="60" height="44"/>
+                    <rect key="frame" x="315" y="0.0" width="60" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="cHx-S9-FXR"/>
                         <constraint firstAttribute="height" constant="44" id="hyv-EJ-p5C"/>
@@ -38,7 +38,7 @@
                     <state key="normal" image="btn_edit"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sheila" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="csK-zC-7HV">
-                    <rect key="frame" x="77.666666666666686" y="131" width="220" height="21"/>
+                    <rect key="frame" x="77.666666666666686" y="111" width="220" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="220" id="NSW-IX-G2L"/>
                     </constraints>
@@ -47,7 +47,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已登录" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Oc-sk-eH1">
-                    <rect key="frame" x="169" y="160" width="37" height="15"/>
+                    <rect key="frame" x="169" y="140" width="37" height="15"/>
                     <color key="backgroundColor" red="0.0" green="0.5490196078431373" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="6K1-OG-TNU"/>
@@ -70,7 +70,7 @@
                 <constraint firstAttribute="bottom" secondItem="1Oc-sk-eH1" secondAttribute="bottom" constant="15" id="BNf-27-xQy"/>
                 <constraint firstItem="1Oc-sk-eH1" firstAttribute="centerX" secondItem="csK-zC-7HV" secondAttribute="centerX" id="GVd-Vh-sbF"/>
                 <constraint firstItem="1Oc-sk-eH1" firstAttribute="top" secondItem="csK-zC-7HV" secondAttribute="bottom" constant="8" id="HtE-jk-jwS"/>
-                <constraint firstItem="7aY-by-6Pw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="Jyq-dG-VyV"/>
+                <constraint firstItem="7aY-by-6Pw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Jyq-dG-VyV"/>
                 <constraint firstItem="Zzw-Sa-1v7" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="M6d-3S-aoc"/>
                 <constraint firstAttribute="trailing" secondItem="7aY-by-6Pw" secondAttribute="trailing" id="SbS-Xe-iK3"/>
                 <constraint firstItem="1Oc-sk-eH1" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="XJW-0C-zXu"/>
