@@ -27,6 +27,14 @@
     self.title = @"手续费率设置";
     
     [self.view addSubview:self.sureButton];
+    
+    WEAKSELF
+    [self.sureButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view).offset(- AUTOSIZE(25));
+        make.height.offset(AUTOSIZE(44));
+        make.centerX.equalTo(weakSelf.view);
+        make.bottom.offset(- AUTOSIZE(47));
+    }];
 }
 
 - (void)sureButtonClicked

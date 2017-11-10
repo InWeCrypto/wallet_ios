@@ -31,13 +31,18 @@
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_add"] style:UIBarButtonItemStyleDone target:self action:@selector(rightButton)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     
-    self.coustromTableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - 46);
     self.coustromTableView.rowHeight = 100;
     [self addpull2RefreshWithTableView:self.coustromTableView WithIsInset:NO];
     
     self.dataSource = [[NSMutableArray alloc] init];
+    
     [self.view addSubview:self.coustromTableView];
     
+    WEAKSELF
+    [self.coustromTableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(weakSelf.view);
+        make.center.equalTo(weakSelf.view);
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

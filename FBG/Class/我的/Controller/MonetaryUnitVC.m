@@ -62,6 +62,14 @@
     [self.dataSource addObject:model1];
     [self.coustromTableView reloadData];
     
+    WEAKSELF
+    [self.sureButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view).offset(- AUTOSIZE(25));
+        make.height.offset(AUTOSIZE(44));
+        make.centerX.equalTo(weakSelf.view);
+        make.bottom.offset(- AUTOSIZE(47));
+    }];
+    
     /*
     [PPNetworkHelper GET:@"monetary-unit" parameters:nil hudString:@"获取中..." success:^(id responseObject)
      {

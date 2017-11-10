@@ -34,6 +34,12 @@
 #pragma mark ------ UI ------
 - (void)setUI {
     [self.view addSubview:self.webView];
+    
+    WEAKSELF
+    [self.webView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(weakSelf.view);
+        make.center.equalTo(weakSelf.view);
+    }];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -109,7 +115,7 @@
 #pragma mark ------ Getters And Setters ------
 - (WKWebView *)webView {
     if (!_webView) {
-        _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64)];
+        _webView = [[WKWebView alloc] init];
         _webView.backgroundColor = [UIColor whiteColor];
         _webView.UIDelegate = self;
         _webView.navigationDelegate = self;

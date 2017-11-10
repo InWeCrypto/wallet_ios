@@ -94,6 +94,11 @@
     
     [self addpull2RefreshWithTableView:self.coustromTableView WithIsInset:NO];
     
+    WEAKSELF
+    [self.coustromTableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(weakSelf.view);
+        make.center.equalTo(weakSelf.view);
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

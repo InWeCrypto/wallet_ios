@@ -42,6 +42,14 @@
     
 //    [self.sureButton setTitle:NSLocalizedString(@"Determine", nil) forState:UIControlStateNormal];
     [self loadData];
+    
+    WEAKSELF
+    [self.sureButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view).offset(- AUTOSIZE(25));
+        make.height.offset(AUTOSIZE(44));
+        make.centerX.equalTo(weakSelf.view);
+        make.bottom.offset(- AUTOSIZE(47));
+    }];
 }
 
 - (void)sureButtonCilick
