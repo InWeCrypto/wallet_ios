@@ -8,18 +8,13 @@
 
 #import "WalletLeiftView.h"
 
-@implementation WalletLeiftView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+
+@implementation WalletLeiftView
 
 - (void)drawRect:(CGRect)rect
 {
+    self.addButtonTop.constant = [UIApplication sharedApplication].statusBarFrame.size.height;
 //    [self.addWalletButton setTitle:NSLocalizedString(@"Add Wallet", nil) forState:UIControlStateNormal];
 //    [self.scanButton setTitle:NSLocalizedString(@"     Scan     ", nil) forState:UIControlStateNormal];
 }

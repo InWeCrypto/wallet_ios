@@ -109,13 +109,13 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9z-Gb-Vg3">
                             <rect key="frame" x="77" y="11" width="34.5" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FWg-0N-Glz">
                             <rect key="frame" x="53.5" y="37" width="81" height="29"/>
                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                            <color key="textColor" red="0.90980392156862744" green="0.39215686274509803" blue="0.44705882352941173" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="≈ ¥ 0.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ce-qQ-Lh5">
@@ -127,10 +127,14 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vC3-KB-2o6">
                             <rect key="frame" x="0.0" y="0.0" width="187" height="100"/>
                         </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="extension" translatesAutoresizingMaskIntoConstraints="NO" id="wEu-At-WR7">
+                            <rect key="frame" x="160.5" y="43" width="7" height="14"/>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="vC3-KB-2o6" secondAttribute="trailing" id="27i-3n-BwK"/>
+                        <constraint firstAttribute="trailing" secondItem="wEu-At-WR7" secondAttribute="trailing" constant="20" id="I7f-ej-OdF"/>
                         <constraint firstItem="FWg-0N-Glz" firstAttribute="centerX" secondItem="L9z-Gb-Vg3" secondAttribute="centerX" id="Mnq-hm-RjR"/>
                         <constraint firstAttribute="height" constant="100" id="OP3-Hk-gYw"/>
                         <constraint firstItem="6Ce-qQ-Lh5" firstAttribute="centerX" secondItem="FWg-0N-Glz" secondAttribute="centerX" id="OeK-5K-1fC"/>
@@ -185,6 +189,7 @@
                 <constraint firstItem="tbi-ZJ-2g1" firstAttribute="centerY" secondItem="y83-4p-F7Q" secondAttribute="centerY" id="s5k-B6-e9P"/>
                 <constraint firstItem="GyK-Yq-jY5" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="tdz-hn-6XL"/>
                 <constraint firstAttribute="trailing" secondItem="a9c-0s-grf" secondAttribute="trailing" constant="20" id="ubE-X2-zzB"/>
+                <constraint firstItem="wEu-At-WR7" firstAttribute="centerY" secondItem="Oo1-Dw-IJG" secondAttribute="centerY" id="wdz-dc-FNB"/>
                 <constraint firstItem="DGg-qD-RMe" firstAttribute="leading" secondItem="Oo1-Dw-IJG" secondAttribute="trailing" id="xip-p9-yXq"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -204,6 +209,7 @@
         </view>
     </objects>
     <resources>
+        <image name="extension" width="7" height="14"/>
         <image name="默认头像" width="64" height="64"/>
     </resources>
 </document>

@@ -35,7 +35,7 @@
     self.view.backgroundColor = [UIColor backgroudColor];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
-    self.tableView.tableHeaderView = self.headerView;
+//    self.tableView.tableHeaderView = self.headerView;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -820,7 +820,7 @@
     }];
     //删除按钮颜色
     
-    deleteAction.backgroundColor = [UIColor colorWithHexString:@"fdd930"];
+    deleteAction.backgroundColor = [UIColor colorWithHexString:@"EA642F"];
     //添加一个置顶按钮
     UITableViewRowAction *topRowAction =[UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(@"Top", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
     {

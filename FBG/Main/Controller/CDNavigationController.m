@@ -8,7 +8,7 @@
 
 #import "CDNavigationController.h"
 
-@interface CDNavigationController ()<UINavigationControllerDelegate>
+@interface CDNavigationController ()<UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @end
 
@@ -24,6 +24,8 @@
     [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"333333"]}];
     [self.navigationBar setBackgroundImage:[self imageWithColor:[UIColor colorWithHexString:@"FFFFFF"]] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+    self.interactivePopGestureRecognizer.delegate = self;
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -53,9 +55,18 @@
         // 注意:一定要在按钮内容有尺寸的时候,设置才有效果
         backButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
         // 设置返回按钮
-        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        UIBarButtonItem *otherBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"   " style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+
+        viewController.navigationItem.leftBarButtonItems = @[backBarButtonItem, otherBarButtonItem];
     }
     return [super pushViewController:viewController animated:animated];
+}
+
+#pragma mark ------ UIGestureRecognizerDelegate ------
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    return YES;
 }
 
 - (UIImage *)imageWithColor:(UIColor *)color {

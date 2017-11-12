@@ -17,4 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIView *scanLineView;
 @property (weak, nonatomic) IBOutlet UIView *hotLineView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *addButtonTop;
+
 @end

@@ -49,6 +49,14 @@
     _type = 1;
     _lastType = 1;
     
+    WEAKSELF
+    [self.lineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view);
+        make.top.equalTo(weakSelf.segmentedControl.mas_bottom);
+        make.bottom.offset(- AUTOSIZE(20));
+        make.centerX.equalTo(weakSelf.view);
+    }];
+    
     self.nameLB.text = self.quotationModel.name;
     self.typeLB.text = self.quotationModel.source;
     self.usdPriceLB.text = [NSString stringWithFormat:@"$%.2f",[self.quotationModel.relationCap.price_usd floatValue]];
@@ -57,11 +65,11 @@
     if ([self.quotationModel.relationCap.percent_change_24h floatValue] < 0)
     {
         self.changeLB.text = [NSString stringWithFormat:@"%@%%",self.quotationModel.relationCap.percent_change_24h];
-        self.changeLB.backgroundColor = [UIColor colorWithHexString:@"FB5A67"];
+        self.changeLB.backgroundColor = [UIColor colorWithHexString:@"E86438"];
     }
     else
     {
-        self.changeLB.backgroundColor = [UIColor colorWithHexString:@"66B7FB"];
+        self.changeLB.backgroundColor = [UIColor colorWithHexString:@"008C55"];
         self.changeLB.text = [NSString stringWithFormat:@"+%@%%",self.quotationModel.relationCap.percent_change_24h];
     }
     
@@ -224,7 +232,7 @@
     
     set1.valueColors = @[[UIColor clearColor]];//折线拐点处显示数据的颜色
     
-    [set1 setColor:[UIColor colorWithHexString:@"fdd930"]];//折线颜色
+    [set1 setColor:[UIColor colorWithHexString:@"E86438"]];//折线颜色
     set1.highlightColor = [UIColor whiteColor];
     set1.drawSteppedEnabled = NO;//是否开启绘制阶梯样式的折线图
     //折线拐点样式
@@ -344,7 +352,7 @@
     if (!_lineView) {
         _lineView = [[LineChartView alloc] initWithFrame:CGRectMake(0, 265, SCREEN_WIDTH, SCREEN_HEIGHT - 270 - 64)];
         _lineView.delegate = self;//设置代理
-        _lineView.backgroundColor =  [UIColor colorWithHexString:@"2f2f2f"];
+        _lineView.backgroundColor =  [UIColor whiteColor];
         _lineView.noDataText = @"数据获取中";
         _lineView.chartDescription.enabled = YES;
         _lineView.scaleYEnabled = YES;//取消Y轴缩放
@@ -367,10 +375,10 @@
         // leftAxis.axisMinValue = 0;//设置Y轴的最小值
         //leftAxis.axisMaxValue = 105;//设置Y轴的最大值
         leftAxis.inverted = NO;//是否将Y轴进行上下翻转
-        leftAxis.axisLineColor = [UIColor whiteColor];//Y轴颜色
+        leftAxis.axisLineColor = [UIColor colorWithHexString:@"000000"];//Y轴颜色
         leftAxis.valueFormatter = [[SymbolsValueFormatter alloc]init];
         leftAxis.labelPosition = YAxisLabelPositionOutsideChart;//label位置
-        leftAxis.labelTextColor = [UIColor whiteColor];//文字颜色
+        leftAxis.labelTextColor = [UIColor colorWithHexString:@"333333"];//文字颜色
         leftAxis.labelFont = [UIFont systemFontOfSize:11.0f];//文字字体
         leftAxis.gridColor = [UIColor clearColor];//网格线颜色
         leftAxis.gridAntialiasEnabled = NO;//开启抗锯齿
@@ -379,9 +387,9 @@
         xAxis.granularityEnabled = YES;//设置重复的值不显示
         xAxis.labelPosition= XAxisLabelPositionBottom;//设置x轴数据在底部
         xAxis.gridColor = [UIColor clearColor];
-        xAxis.labelTextColor = [UIColor whiteColor];//文字颜色
+        xAxis.labelTextColor = [UIColor colorWithHexString:@"333333"];//文字颜色
         xAxis.labelFont = [UIFont systemFontOfSize:11];
-        xAxis.axisLineColor = [UIColor whiteColor];
+        xAxis.axisLineColor = [UIColor colorWithHexString:@"000000"];
         _lineView.maxVisibleCount = 999;//
         
         //描述及图例样式
@@ -400,8 +408,8 @@
         _segmentedControl = [[YUSegmentedControl alloc] initWithTitles:@[@"分", @"时", @"天", @"周"]];
         _segmentedControl.indicator.locate = YUSegmentedControlIndicatorLocateTop;
         _segmentedControl.frame = CGRectMake(20, 230, SCREEN_WIDTH - 40, 30);
-        _segmentedControl.backgroundColor = [UIColor colorWithHexString:@"2f2f2f"];
-        _segmentedControl.indicator.backgroundColor = [UIColor colorWithHexString:@"fdd930"];
+        _segmentedControl.backgroundColor = [UIColor whiteColor];
+        _segmentedControl.indicator.backgroundColor = [UIColor colorWithHexString:@"E86438"];
         [_segmentedControl addTarget:self action:@selector(segmentedControlTapped:) forControlEvents:UIControlEventValueChanged];
     }
     return _segmentedControl;

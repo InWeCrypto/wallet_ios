@@ -991,7 +991,7 @@
             _leiftView.scanView.hidden = YES;
             _leiftView.hotLineView.hidden = YES;
             _leiftView.scanLineView.hidden = NO;
-            [self.leftTableView setContentInset:UIEdgeInsetsMake(170, 0, 0, 0)];
+            [self.leftTableView setContentInset:UIEdgeInsetsMake(170 , 0, 0, 0)];
         }
         else
         {
@@ -999,7 +999,7 @@
             _leiftView.scanView.hidden = NO;
             _leiftView.hotLineView.hidden = NO;
             _leiftView.scanLineView.hidden = YES;
-            [self.leftTableView setContentInset:UIEdgeInsetsMake(250, 0, 0, 0)];
+            [self.leftTableView setContentInset:UIEdgeInsetsMake(250 , 0, 0, 0)];
         }
     }
     return _leiftView;

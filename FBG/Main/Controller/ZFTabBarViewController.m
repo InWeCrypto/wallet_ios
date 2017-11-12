@@ -12,8 +12,9 @@
 #import "DBHWebViewController.h"
 #import "CDNavigationController.h"
 #import "WalletHomeVC.h"
-#import "MyTVC.h"
+//#import "MyTVC.h"
 #import "QuotationVC.h"
+#import "DBHMyViewController.h"
 
 @interface ZFTabBarViewController () <ZFTabBarDelegate>
 /**
@@ -100,7 +101,7 @@
     [self setupChildViewController:home title:@"资产" imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
     
     // 4.定制
-    MyTVC * my = [[UIStoryboard storyboardWithName:@"MyTVC" bundle:nil] instantiateViewControllerWithIdentifier:@"MyTVC"];
+    DBHMyViewController * my = [[DBHMyViewController alloc] init];
     my.tabBarItem.badgeValue = @"";
     [self setupChildViewController:my title:NSLocalizedString(@"Custom", nil) imageName:@"tab_wode_nor" selectedImageName:@"tab_wode_pre"];
 }

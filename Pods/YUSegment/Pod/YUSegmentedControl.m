@@ -50,7 +50,7 @@ static const CGFloat        kIndicatorDefaultHeight = 2.0;
         _attributesNormal = @{NSFontAttributeName: [UIFont systemFontOfSize:14.0 weight:UIFontWeightLight],
                               NSForegroundColorAttributeName: [UIColor whiteColor]};
         _attributesSelected = @{NSFontAttributeName: [UIFont systemFontOfSize:14.0 weight:UIFontWeightLight],
-                                NSForegroundColorAttributeName: [self colorWithHexString:@"fdd930"]};
+                                NSForegroundColorAttributeName: [self colorWithHexString:@"E86438"]};
         
         [self commonInit];
     }

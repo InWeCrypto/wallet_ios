@@ -40,12 +40,8 @@
         make.size.equalTo(weakSelf.view);
         make.center.equalTo(weakSelf.view);
     }];
-}
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
-    [self.webView.scrollView.mj_header beginRefreshing];
 }
 
 #pragma mark ------ WKNavigationDelegate ------
