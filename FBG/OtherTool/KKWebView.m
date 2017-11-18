@@ -88,22 +88,28 @@
     [self.view addSubview:webView];
     _webView = webView;
     
-    //添加属性监听
-    [webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
-    [webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
-    //进度条
-    UIView *progress = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 3)];
-    progress.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:progress];
+    if (![_urlStr containsString:@"<"]) {
+        //添加属性监听
+        [webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
+        [webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
+        //进度条
+        UIView *progress = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 3)];
+        progress.backgroundColor = [UIColor clearColor];
+        [self.view addSubview:progress];
+        
+        CALayer *layer = [CALayer layer];
+        layer.frame = CGRectMake(0, 0, 0, 3);
+        layer.backgroundColor = [UIColor colorWithHexString:@"FDD930"].CGColor;
+        [progress.layer addSublayer:layer];
+        _progresslayer = layer;
+    }
     
-    CALayer *layer = [CALayer layer];
-    layer.frame = CGRectMake(0, 0, 0, 3);
-    layer.backgroundColor = [UIColor colorWithHexString:@"FDD930"].CGColor;
-    [progress.layer addSublayer:layer];
-    _progresslayer = layer;
-    
-    NSURL *url=[NSURL URLWithString:self.urlStr];
-    [webView loadRequest:[NSURLRequest requestWithURL:url]];
+    if ([_urlStr containsString:@"<"]) {
+        [webView loadHTMLString:_urlStr baseURL:nil];
+    } else {
+        NSURL *url=[NSURL URLWithString:self.urlStr];
+        [webView loadRequest:[NSURLRequest requestWithURL:url]];
+    }
     
     
     //模拟按钮
@@ -409,8 +415,10 @@
 
 - (void)dealloc{
     NSLog(@"%@", NSStringFromClass([self class]));
-    [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
-    [self.webView removeObserver:self forKeyPath:@"title"];
+    if (![_urlStr containsString:@"<"]) {
+        [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
+        [self.webView removeObserver:self forKeyPath:@"title"];
+    }
 }
 
 - (void)setIsHiddenRefresh:(BOOL)isHiddenRefresh {

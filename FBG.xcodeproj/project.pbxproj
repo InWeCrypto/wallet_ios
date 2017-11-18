@@ -255,7 +255,6 @@
 		A8B2AAB61F3CB3EC0047A626 /* EditRemindVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A8B2AAB41F3CB3EC0047A626 /* EditRemindVC.m */; };
 		A8B2AAB71F3CB3EC0047A626 /* EditRemindVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = A8B2AAB51F3CB3EC0047A626 /* EditRemindVC.xib */; };
 		A8B4DA751F61705D00FC8EC7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8B4DA731F61705D00FC8EC7 /* LaunchScreen.storyboard */; };
-		A8B4DA771F61709F00FC8EC7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8B4DA761F61709F00FC8EC7 /* Images.xcassets */; };
 		A8B804631F4D16F600633C34 /* ChoseNetView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8B804621F4D16F600633C34 /* ChoseNetView.m */; };
 		A8B804651F4D170400633C34 /* ChoseNetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A8B804641F4D170400633C34 /* ChoseNetView.xib */; };
 		A8CD77581F32449400005027 /* FindVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A8CD772F1F32449400005027 /* FindVC.m */; };
@@ -306,10 +305,77 @@
 		A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB11F56553000C2F9AF /* CloudPushSDK.framework */; };
 		A8FEACB51F56553100C2F9AF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB21F56553000C2F9AF /* UTDID.framework */; };
 		A8FEACB71F568DE500C2F9AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8FEACB61F568DE500C2F9AF /* Assets.xcassets */; };
+		D509B5261FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D509B5251FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m */; };
+		D509B52B1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = D509B5281FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m */; };
+		D509B52C1FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = D509B5291FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m */; };
+		D521D98A1FBA9093009566EA /* DBHInformationForRoastingChartCollectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9831FBA9092009566EA /* DBHInformationForRoastingChartCollectionData.m */; };
+		D521D98B1FBA9093009566EA /* DBHInformationForRoastingChartCollectionList.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9841FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.m */; };
+		D521D98C1FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9861FBA9092009566EA /* DBHInformationForRoastingChartCollectionDataBase.m */; };
+		D521D9CD1FBA9CDE009566EA /* DBHMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9CC1FBA9CDE009566EA /* DBHMenu.m */; };
+		D521D9D01FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9CF1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m */; };
+		D521D9D31FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9D21FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m */; };
+		D521D9D61FBACEE2009566EA /* NSString+Height.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9D51FBACEE2009566EA /* NSString+Height.m */; };
+		D521D9D91FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9D81FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.m */; };
+		D521D9DC1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9DB1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m */; };
+		D521D9DF1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9DE1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.m */; };
+		D521D9E21FBAF006009566EA /* DBHInformationDetailForDealInfomationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9E11FBAF006009566EA /* DBHInformationDetailForDealInfomationTableViewCell.m */; };
+		D521D9E51FBAF031009566EA /* DBHInformationDetailForDealInfomationChartTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9E41FBAF031009566EA /* DBHInformationDetailForDealInfomationChartTableViewCell.m */; };
+		D521D9E81FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9E71FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.m */; };
+		D521D9EB1FBAF084009566EA /* DBHInformationDetailForProjectBriefTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9EA1FBAF084009566EA /* DBHInformationDetailForProjectBriefTableViewCell.m */; };
+		D521D9EE1FBAF0C1009566EA /* DBHInformationDetailForInweReportTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9ED1FBAF0C1009566EA /* DBHInformationDetailForInweReportTableViewCell.m */; };
+		D521D9F11FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9F01FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.m */; };
+		D521D9F41FBAF0F5009566EA /* DBHInformationDetailForMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9F31FBAF0F5009566EA /* DBHInformationDetailForMoreTableViewCell.m */; };
+		D521D9F81FBB0878009566EA /* DBHInformationDetailForTradingMarketButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9F71FBB0878009566EA /* DBHInformationDetailForTradingMarketButton.m */; };
+		D521D9FB1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9FA1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m */; };
+		D521D9FE1FBB162A009566EA /* UIImage+ImageForColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9FD1FBB1629009566EA /* UIImage+ImageForColor.m */; };
+		D521DA011FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521DA001FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m */; };
 		D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */; };
 		D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */; };
+		D53D47061FBEBA8E00FDFB61 /* DBHAllInformationModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47021FBEBA8D00FDFB61 /* DBHAllInformationModelData.m */; };
+		D53D47071FBEBA8E00FDFB61 /* DBHAllInformationModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47031FBEBA8D00FDFB61 /* DBHAllInformationModelDataBase.m */; };
+		D53D47151FBED42C00FDFB61 /* DBHInformationDetailModelProjectMarkets.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D470A1FBED42A00FDFB61 /* DBHInformationDetailModelProjectMarkets.m */; };
+		D53D47161FBED42C00FDFB61 /* DBHInformationDetailModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D470B1FBED42A00FDFB61 /* DBHInformationDetailModelDataBase.m */; };
+		D53D47171FBED42C00FDFB61 /* DBHInformationDetailModelProjectMedias.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D470D1FBED42A00FDFB61 /* DBHInformationDetailModelProjectMedias.m */; };
+		D53D47181FBED42C00FDFB61 /* DBHInformationDetailModelProjectTimePrices.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D470E1FBED42B00FDFB61 /* DBHInformationDetailModelProjectTimePrices.m */; };
+		D53D47191FBED42C00FDFB61 /* DBHInformationDetailModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47101FBED42B00FDFB61 /* DBHInformationDetailModelData.m */; };
+		D53D471A1FBED42C00FDFB61 /* DBHInformationDetailModelProjectExplorers.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47111FBED42B00FDFB61 /* DBHInformationDetailModelProjectExplorers.m */; };
+		D53D472C1FBEE58100FDFB61 /* DBHSpinnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D472B1FBEE58100FDFB61 /* DBHSpinnerView.m */; };
+		D53D472F1FBEE67C00FDFB61 /* DBHSpinnerViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D472E1FBEE67C00FDFB61 /* DBHSpinnerViewTableViewCell.m */; };
+		D53D47351FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47301FBEF24800FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.m */; };
+		D53D47361FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47311FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.m */; };
+		D53D47401FBF065800FDFB61 /* DBHListView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D473F1FBF065800FDFB61 /* DBHListView.m */; };
+		D53D47431FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47421FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.m */; };
+		D53D474B1FBF0D7F00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47451FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.m */; };
+		D53D474C1FBF0D7F00FDFB61 /* DBHInformationDetailModelProjectDesc.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47491FBF0D7E00FDFB61 /* DBHInformationDetailModelProjectDesc.m */; };
+		D53D474D1FBF0D7F00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D474A1FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelDataBase.m */; };
+		D53D47551FBF125900FDFB61 /* DBHInformationDetailForInweModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47511FBF125800FDFB61 /* DBHInformationDetailForInweModelData.m */; };
+		D53D47561FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47541FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m */; };
+		D53D47591FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47571FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m */; };
+		D54F57EA1FBD325B00ED334E /* DBHEvaluatingIcoModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57E61FBD325A00ED334E /* DBHEvaluatingIcoModelData.m */; };
+		D54F57EB1FBD325B00ED334E /* DBHEvaluatingIcoModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57E71FBD325A00ED334E /* DBHEvaluatingIcoModelDataBase.m */; };
+		D54F57F41FBD826500ED334E /* DBHInformationForProjectCollectionModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57EF1FBD826400ED334E /* DBHInformationForProjectCollectionModelDataBase.m */; };
+		D54F57F51FBD826500ED334E /* DBHInformationForProjectCollectionModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57F21FBD826400ED334E /* DBHInformationForProjectCollectionModelData.m */; };
+		D54F57FF1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57FE1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m */; };
+		D54F58021FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F58011FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.m */; };
+		D54F58051FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F58041FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m */; };
+		D55CA9CB1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */; };
+		D55CA9CE1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */; };
+		D55CA9E21FBC1D16003C3DD1 /* DBHInformationForNewsCollectionDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9DE1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.m */; };
+		D55CA9E31FBC1D16003C3DD1 /* DBHInformationForNewsCollectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9DF1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionData.m */; };
+		D5B822011FC02131009A50E3 /* DBHInformationForMoneyConditionModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B821FE1FC02130009A50E3 /* DBHInformationForMoneyConditionModelData.m */; };
+		D5B822021FC02131009A50E3 /* DBHInformationForMoneyConditionModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B822001FC02131009A50E3 /* DBHInformationForMoneyConditionModelDataBase.m */; };
 		D5CF792F1FB1580F009CBCB2 /* DBHWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */; };
 		D5E2B0E81FB4771800A8FE59 /* DBHMyHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5E2B0E71FB4771700A8FE59 /* DBHMyHeaderView.m */; };
+		D5F679C91FB9452500EB773D /* DBHInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679C81FB9452500EB773D /* DBHInformationViewController.m */; };
+		D5F679CF1FB967D100EB773D /* DBHSearchBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679CE1FB967D100EB773D /* DBHSearchBarButton.m */; };
+		D5F679D21FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679D11FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.m */; };
+		D5F679D51FB96E7D00EB773D /* DBHInformationForNewsCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679D41FB96E7D00EB773D /* DBHInformationForNewsCollectionViewCell.m */; };
+		D5F679E11FB9711100EB773D /* DBHInformationForProjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E01FB9711100EB773D /* DBHInformationForProjectCollectionViewCell.m */; };
+		D5F679E41FB9952300EB773D /* DBHNewsShufflingFigureView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E31FB9952300EB773D /* DBHNewsShufflingFigureView.m */; };
+		D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */; };
+		D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E91FB9B4A900EB773D /* DBHNavigationController.m */; };
+		D5F679ED1FB9BE3B00EB773D /* DBHAllInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679EC1FB9BE3B00EB773D /* DBHAllInformationViewController.m */; };
+		D5F679F01FB9BE5100EB773D /* DBHEvaluatingIcoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679EF1FB9BE5100EB773D /* DBHEvaluatingIcoViewController.m */; };
 		D5FB401F1FB6901600070D03 /* DBHMyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5FB401E1FB6901600070D03 /* DBHMyViewController.m */; };
 		D5FB40221FB691FF00070D03 /* DBHMyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5FB40211FB691FF00070D03 /* DBHMyTableViewCell.m */; };
 /* End PBXBuildFile section */
@@ -761,7 +827,6 @@
 		A8B2AAB41F3CB3EC0047A626 /* EditRemindVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditRemindVC.m; sourceTree = "<group>"; };
 		A8B2AAB51F3CB3EC0047A626 /* EditRemindVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditRemindVC.xib; sourceTree = "<group>"; };
 		A8B4DA741F61705D00FC8EC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A8B4DA761F61709F00FC8EC7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A8B804611F4D16F600633C34 /* ChoseNetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoseNetView.h; sourceTree = "<group>"; };
 		A8B804621F4D16F600633C34 /* ChoseNetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoseNetView.m; sourceTree = "<group>"; };
 		A8B804641F4D170400633C34 /* ChoseNetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChoseNetView.xib; sourceTree = "<group>"; };
@@ -847,14 +912,159 @@
 		A8FEACB21F56553000C2F9AF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		A8FEACB61F568DE500C2F9AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4EF8E3460E908B2B9C8C464 /* Pods_FBG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FBG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D509B5241FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForMoreCollectionViewCell.h; sourceTree = "<group>"; };
+		D509B5251FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForMoreCollectionViewCell.m; sourceTree = "<group>"; };
+		D509B5271FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelIcoDetail.h; sourceTree = "<group>"; };
+		D509B5281FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectDetail.m; sourceTree = "<group>"; };
+		D509B5291FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelIcoDetail.m; sourceTree = "<group>"; };
+		D509B52A1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectDetail.h; sourceTree = "<group>"; };
+		D521D9831FBA9092009566EA /* DBHInformationForRoastingChartCollectionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionData.m; sourceTree = "<group>"; };
+		D521D9841FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionList.m; sourceTree = "<group>"; };
+		D521D9851FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionList.h; sourceTree = "<group>"; };
+		D521D9861FBA9092009566EA /* DBHInformationForRoastingChartCollectionDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionDataBase.m; sourceTree = "<group>"; };
+		D521D9871FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionDataModels.h; sourceTree = "<group>"; };
+		D521D9881FBA9093009566EA /* DBHInformationForRoastingChartCollectionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionData.h; sourceTree = "<group>"; };
+		D521D9891FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionDataBase.h; sourceTree = "<group>"; };
+		D521D9CB1FBA9CDE009566EA /* DBHMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMenu.h; sourceTree = "<group>"; };
+		D521D9CC1FBA9CDE009566EA /* DBHMenu.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMenu.m; sourceTree = "<group>"; };
+		D521D9CE1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationTypeOneTableViewCell.h; sourceTree = "<group>"; };
+		D521D9CF1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHAllInformationTypeOneTableViewCell.m; sourceTree = "<group>"; };
+		D521D9D11FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationTypeTwoTableViewCell.h; sourceTree = "<group>"; };
+		D521D9D21FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHAllInformationTypeTwoTableViewCell.m; sourceTree = "<group>"; };
+		D521D9D41FBACEE1009566EA /* NSString+Height.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Height.h"; sourceTree = "<group>"; };
+		D521D9D51FBACEE2009566EA /* NSString+Height.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Height.m"; sourceTree = "<group>"; };
+		D521D9D71FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHEvaluatingIcoTableViewCell.h; sourceTree = "<group>"; };
+		D521D9D81FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHEvaluatingIcoTableViewCell.m; sourceTree = "<group>"; };
+		D521D9DA1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForDealViewController.h; sourceTree = "<group>"; };
+		D521D9DB1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForDealViewController.m; sourceTree = "<group>"; };
+		D521D9DD1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForCrowdfundingViewController.h; sourceTree = "<group>"; };
+		D521D9DE1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForCrowdfundingViewController.m; sourceTree = "<group>"; };
+		D521D9E01FBAF006009566EA /* DBHInformationDetailForDealInfomationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForDealInfomationTableViewCell.h; sourceTree = "<group>"; };
+		D521D9E11FBAF006009566EA /* DBHInformationDetailForDealInfomationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForDealInfomationTableViewCell.m; sourceTree = "<group>"; };
+		D521D9E31FBAF031009566EA /* DBHInformationDetailForDealInfomationChartTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForDealInfomationChartTableViewCell.h; sourceTree = "<group>"; };
+		D521D9E41FBAF031009566EA /* DBHInformationDetailForDealInfomationChartTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForDealInfomationChartTableViewCell.m; sourceTree = "<group>"; };
+		D521D9E61FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForTradingMarketTableViewCell.h; sourceTree = "<group>"; };
+		D521D9E71FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForTradingMarketTableViewCell.m; sourceTree = "<group>"; };
+		D521D9E91FBAF084009566EA /* DBHInformationDetailForProjectBriefTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForProjectBriefTableViewCell.h; sourceTree = "<group>"; };
+		D521D9EA1FBAF084009566EA /* DBHInformationDetailForProjectBriefTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForProjectBriefTableViewCell.m; sourceTree = "<group>"; };
+		D521D9EC1FBAF0C1009566EA /* DBHInformationDetailForInweReportTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForInweReportTableViewCell.h; sourceTree = "<group>"; };
+		D521D9ED1FBAF0C1009566EA /* DBHInformationDetailForInweReportTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForInweReportTableViewCell.m; sourceTree = "<group>"; };
+		D521D9EF1FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForTwitterTableViewCell.h; sourceTree = "<group>"; };
+		D521D9F01FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForTwitterTableViewCell.m; sourceTree = "<group>"; };
+		D521D9F21FBAF0F5009566EA /* DBHInformationDetailForMoreTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForMoreTableViewCell.h; sourceTree = "<group>"; };
+		D521D9F31FBAF0F5009566EA /* DBHInformationDetailForMoreTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForMoreTableViewCell.m; sourceTree = "<group>"; };
+		D521D9F51FBAF7FE009566EA /* OtherHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherHeader.pch; sourceTree = "<group>"; };
+		D521D9F61FBB0878009566EA /* DBHInformationDetailForTradingMarketButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForTradingMarketButton.h; sourceTree = "<group>"; };
+		D521D9F71FBB0878009566EA /* DBHInformationDetailForTradingMarketButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForTradingMarketButton.m; sourceTree = "<group>"; };
+		D521D9F91FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForTradingMarketContentTableViewCell.h; sourceTree = "<group>"; };
+		D521D9FA1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForTradingMarketContentTableViewCell.m; sourceTree = "<group>"; };
+		D521D9FC1FBB1629009566EA /* UIImage+ImageForColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageForColor.h"; sourceTree = "<group>"; };
+		D521D9FD1FBB1629009566EA /* UIImage+ImageForColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageForColor.m"; sourceTree = "<group>"; };
+		D521D9FF1FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForInweReportContentTableViewCell.h; sourceTree = "<group>"; };
+		D521DA001FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForInweReportContentTableViewCell.m; sourceTree = "<group>"; };
 		D53812E91FB07DAF009D681E /* DBHBrowserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserViewController.h; sourceTree = "<group>"; };
 		D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserViewController.m; sourceTree = "<group>"; };
 		D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserTableViewCell.h; sourceTree = "<group>"; };
 		D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserTableViewCell.m; sourceTree = "<group>"; };
+		D53D47011FBEBA8C00FDFB61 /* DBHAllInformationModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationModelData.h; sourceTree = "<group>"; };
+		D53D47021FBEBA8D00FDFB61 /* DBHAllInformationModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAllInformationModelData.m; sourceTree = "<group>"; };
+		D53D47031FBEBA8D00FDFB61 /* DBHAllInformationModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAllInformationModelDataBase.m; sourceTree = "<group>"; };
+		D53D47041FBEBA8D00FDFB61 /* DBHAllInformationModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationModelDataBase.h; sourceTree = "<group>"; };
+		D53D47051FBEBA8E00FDFB61 /* DBHAllInformationDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationDataModels.h; sourceTree = "<group>"; };
+		D53D47081FBED42900FDFB61 /* DBHInformationDetailModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelData.h; sourceTree = "<group>"; };
+		D53D47091FBED42900FDFB61 /* DBHInformationDetailModelProjectMedias.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectMedias.h; sourceTree = "<group>"; };
+		D53D470A1FBED42A00FDFB61 /* DBHInformationDetailModelProjectMarkets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectMarkets.m; sourceTree = "<group>"; };
+		D53D470B1FBED42A00FDFB61 /* DBHInformationDetailModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelDataBase.m; sourceTree = "<group>"; };
+		D53D470C1FBED42A00FDFB61 /* DBHInformationDetailModelProjectExplorers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectExplorers.h; sourceTree = "<group>"; };
+		D53D470D1FBED42A00FDFB61 /* DBHInformationDetailModelProjectMedias.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectMedias.m; sourceTree = "<group>"; };
+		D53D470E1FBED42B00FDFB61 /* DBHInformationDetailModelProjectTimePrices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectTimePrices.m; sourceTree = "<group>"; };
+		D53D470F1FBED42B00FDFB61 /* DBHInformationDetailModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelDataBase.h; sourceTree = "<group>"; };
+		D53D47101FBED42B00FDFB61 /* DBHInformationDetailModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelData.m; sourceTree = "<group>"; };
+		D53D47111FBED42B00FDFB61 /* DBHInformationDetailModelProjectExplorers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectExplorers.m; sourceTree = "<group>"; };
+		D53D47121FBED42B00FDFB61 /* DBHInformationDetailModelProjectMarkets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectMarkets.h; sourceTree = "<group>"; };
+		D53D47131FBED42C00FDFB61 /* DBHInformationDetailModelProjectTimePrices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectTimePrices.h; sourceTree = "<group>"; };
+		D53D47141FBED42C00FDFB61 /* DBHInformationDetailDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailDataModels.h; sourceTree = "<group>"; };
+		D53D472A1FBEE58100FDFB61 /* DBHSpinnerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSpinnerView.h; sourceTree = "<group>"; };
+		D53D472B1FBEE58100FDFB61 /* DBHSpinnerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSpinnerView.m; sourceTree = "<group>"; };
+		D53D472D1FBEE67C00FDFB61 /* DBHSpinnerViewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSpinnerViewTableViewCell.h; sourceTree = "<group>"; };
+		D53D472E1FBEE67C00FDFB61 /* DBHSpinnerViewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSpinnerViewTableViewCell.m; sourceTree = "<group>"; };
+		D53D47301FBEF24800FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForTradingMarketContentModelDataBase.m; sourceTree = "<group>"; };
+		D53D47311FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForTradingMarketContentModelData.m; sourceTree = "<group>"; };
+		D53D47321FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForTradingMarketContentModelData.h; sourceTree = "<group>"; };
+		D53D47331FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForTradingMarketContentDataModels.h; sourceTree = "<group>"; };
+		D53D47341FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForTradingMarketContentModelDataBase.h; sourceTree = "<group>"; };
+		D53D473E1FBF065800FDFB61 /* DBHListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHListView.h; sourceTree = "<group>"; };
+		D53D473F1FBF065800FDFB61 /* DBHListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHListView.m; sourceTree = "<group>"; };
+		D53D47411FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHListViewCollectionViewCell.h; sourceTree = "<group>"; };
+		D53D47421FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHListViewCollectionViewCell.m; sourceTree = "<group>"; };
+		D53D47441FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForNewMoneyPriceDataModels.h; sourceTree = "<group>"; };
+		D53D47451FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForNewMoneyPriceModelData.m; sourceTree = "<group>"; };
+		D53D47461FBF0D7E00FDFB61 /* DBHInformationDetailModelProjectDesc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectDesc.h; sourceTree = "<group>"; };
+		D53D47471FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForNewMoneyPriceModelData.h; sourceTree = "<group>"; };
+		D53D47481FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForNewMoneyPriceModelDataBase.h; sourceTree = "<group>"; };
+		D53D47491FBF0D7E00FDFB61 /* DBHInformationDetailModelProjectDesc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectDesc.m; sourceTree = "<group>"; };
+		D53D474A1FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForNewMoneyPriceModelDataBase.m; sourceTree = "<group>"; };
+		D53D47501FBF125800FDFB61 /* DBHInformationDetailForInweModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForInweModelData.h; sourceTree = "<group>"; };
+		D53D47511FBF125800FDFB61 /* DBHInformationDetailForInweModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForInweModelData.m; sourceTree = "<group>"; };
+		D53D47521FBF125800FDFB61 /* DBHInformationDetailForInweDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForInweDataModels.h; sourceTree = "<group>"; };
+		D53D47531FBF125800FDFB61 /* DBHInformationDetailForInweModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForInweModelDataBase.h; sourceTree = "<group>"; };
+		D53D47541FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForInweModelDataBase.m; sourceTree = "<group>"; };
+		D53D47571FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectWallets.m; sourceTree = "<group>"; };
+		D53D47581FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectWallets.h; sourceTree = "<group>"; };
+		D54F57E51FBD325900ED334E /* DBHEvaluatingIcoModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHEvaluatingIcoModelData.h; sourceTree = "<group>"; };
+		D54F57E61FBD325A00ED334E /* DBHEvaluatingIcoModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHEvaluatingIcoModelData.m; sourceTree = "<group>"; };
+		D54F57E71FBD325A00ED334E /* DBHEvaluatingIcoModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHEvaluatingIcoModelDataBase.m; sourceTree = "<group>"; };
+		D54F57E81FBD325B00ED334E /* DBHEvaluatingIcoDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHEvaluatingIcoDataModels.h; sourceTree = "<group>"; };
+		D54F57E91FBD325B00ED334E /* DBHEvaluatingIcoModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHEvaluatingIcoModelDataBase.h; sourceTree = "<group>"; };
+		D54F57EF1FBD826400ED334E /* DBHInformationForProjectCollectionModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForProjectCollectionModelDataBase.m; sourceTree = "<group>"; };
+		D54F57F01FBD826400ED334E /* DBHInformationForProjectCollectionModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForProjectCollectionModelData.h; sourceTree = "<group>"; };
+		D54F57F11FBD826400ED334E /* DBHInformationForProjectCollectionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForProjectCollectionDataModels.h; sourceTree = "<group>"; };
+		D54F57F21FBD826400ED334E /* DBHInformationForProjectCollectionModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForProjectCollectionModelData.m; sourceTree = "<group>"; };
+		D54F57F31FBD826500ED334E /* DBHInformationForProjectCollectionModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForProjectCollectionModelDataBase.h; sourceTree = "<group>"; };
+		D54F57FD1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForExplorerAndWalletTableViewCell.h; sourceTree = "<group>"; };
+		D54F57FE1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForExplorerAndWalletTableViewCell.m; sourceTree = "<group>"; };
+		D54F58001FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForExplorerTableViewCell.h; sourceTree = "<group>"; };
+		D54F58011FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForExplorerTableViewCell.m; sourceTree = "<group>"; };
+		D54F58031FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForWalletCollectionViewCell.h; sourceTree = "<group>"; };
+		D54F58041FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForWalletCollectionViewCell.m; sourceTree = "<group>"; };
+		D55CA9C91FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForCrowdfundingContentTableViewCell.h; sourceTree = "<group>"; };
+		D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForCrowdfundingContentTableViewCell.m; sourceTree = "<group>"; };
+		D55CA9CC1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForIcoFinePrintTableViewCell.h; sourceTree = "<group>"; };
+		D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForIcoFinePrintTableViewCell.m; sourceTree = "<group>"; };
+		D55CA9DD1FBC1D14003C3DD1 /* DBHInformationForNewsCollectionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionData.h; sourceTree = "<group>"; };
+		D55CA9DE1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForNewsCollectionDataBase.m; sourceTree = "<group>"; };
+		D55CA9DF1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForNewsCollectionData.m; sourceTree = "<group>"; };
+		D55CA9E01FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionDataModels.h; sourceTree = "<group>"; };
+		D55CA9E11FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionDataBase.h; sourceTree = "<group>"; };
+		D5B821FC1FC0212F009A50E3 /* DBHInformationForMoneyConditionModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForMoneyConditionModelData.h; sourceTree = "<group>"; };
+		D5B821FD1FC02130009A50E3 /* DBHInformationForMoneyConditionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForMoneyConditionDataModels.h; sourceTree = "<group>"; };
+		D5B821FE1FC02130009A50E3 /* DBHInformationForMoneyConditionModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForMoneyConditionModelData.m; sourceTree = "<group>"; };
+		D5B821FF1FC02130009A50E3 /* DBHInformationForMoneyConditionModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForMoneyConditionModelDataBase.h; sourceTree = "<group>"; };
+		D5B822001FC02131009A50E3 /* DBHInformationForMoneyConditionModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForMoneyConditionModelDataBase.m; sourceTree = "<group>"; };
 		D5CF792D1FB1580F009CBCB2 /* DBHWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWebViewController.h; sourceTree = "<group>"; };
 		D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWebViewController.m; sourceTree = "<group>"; };
 		D5E2B0E61FB4771700A8FE59 /* DBHMyHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMyHeaderView.h; sourceTree = "<group>"; };
 		D5E2B0E71FB4771700A8FE59 /* DBHMyHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMyHeaderView.m; sourceTree = "<group>"; };
+		D5F679C71FB9452500EB773D /* DBHInformationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationViewController.h; sourceTree = "<group>"; };
+		D5F679C81FB9452500EB773D /* DBHInformationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationViewController.m; sourceTree = "<group>"; };
+		D5F679CD1FB967D100EB773D /* DBHSearchBarButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchBarButton.h; sourceTree = "<group>"; };
+		D5F679CE1FB967D100EB773D /* DBHSearchBarButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSearchBarButton.m; sourceTree = "<group>"; };
+		D5F679D01FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionViewCell.h; sourceTree = "<group>"; };
+		D5F679D11FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionViewCell.m; sourceTree = "<group>"; };
+		D5F679D31FB96E7D00EB773D /* DBHInformationForNewsCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionViewCell.h; sourceTree = "<group>"; };
+		D5F679D41FB96E7D00EB773D /* DBHInformationForNewsCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForNewsCollectionViewCell.m; sourceTree = "<group>"; };
+		D5F679DF1FB9711100EB773D /* DBHInformationForProjectCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationForProjectCollectionViewCell.h; sourceTree = "<group>"; };
+		D5F679E01FB9711100EB773D /* DBHInformationForProjectCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForProjectCollectionViewCell.m; sourceTree = "<group>"; };
+		D5F679E21FB9952300EB773D /* DBHNewsShufflingFigureView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHNewsShufflingFigureView.h; sourceTree = "<group>"; };
+		D5F679E31FB9952300EB773D /* DBHNewsShufflingFigureView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHNewsShufflingFigureView.m; sourceTree = "<group>"; };
+		D5F679E51FB9A30400EB773D /* NSTimer+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Extension.h"; sourceTree = "<group>"; };
+		D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Extension.m"; sourceTree = "<group>"; };
+		D5F679E81FB9B4A900EB773D /* DBHNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHNavigationController.h; sourceTree = "<group>"; };
+		D5F679E91FB9B4A900EB773D /* DBHNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHNavigationController.m; sourceTree = "<group>"; };
+		D5F679EB1FB9BE3B00EB773D /* DBHAllInformationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationViewController.h; sourceTree = "<group>"; };
+		D5F679EC1FB9BE3B00EB773D /* DBHAllInformationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHAllInformationViewController.m; sourceTree = "<group>"; };
+		D5F679EE1FB9BE5100EB773D /* DBHEvaluatingIcoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHEvaluatingIcoViewController.h; sourceTree = "<group>"; };
+		D5F679EF1FB9BE5100EB773D /* DBHEvaluatingIcoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHEvaluatingIcoViewController.m; sourceTree = "<group>"; };
 		D5FB401D1FB6901600070D03 /* DBHMyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMyViewController.h; sourceTree = "<group>"; };
 		D5FB401E1FB6901600070D03 /* DBHMyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMyViewController.m; sourceTree = "<group>"; };
 		D5FB40201FB691FF00070D03 /* DBHMyTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMyTableViewCell.h; sourceTree = "<group>"; };
@@ -940,11 +1150,11 @@
 				A8B4DA731F61705D00FC8EC7 /* LaunchScreen.storyboard */,
 				A8FEACB61F568DE500C2F9AF /* Assets.xcassets */,
 				0F0CFE1C1F15FA0C00476A86 /* FBG-PrefixHeader.pch */,
+				D521D9F51FBAF7FE009566EA /* OtherHeader.pch */,
 				0F0CFDEE1F15E54100476A86 /* Main.storyboard */,
 				0FF783101F2B1A1900F5B3D2 /* InfoPlist.strings */,
 				0FF7830A1F2B196900F5B3D2 /* Localizable.strings */,
 				0F0CFDF61F15E54100476A86 /* Info.plist */,
-				A8B4DA761F61709F00FC8EC7 /* Images.xcassets */,
 				0F0CFDE51F15E54100476A86 /* Supporting Files */,
 			);
 			path = FBG;
@@ -979,6 +1189,8 @@
 		0F0CFE181F15F92300476A86 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				D521D9FC1FBB1629009566EA /* UIImage+ImageForColor.h */,
+				D521D9FD1FBB1629009566EA /* UIImage+ImageForColor.m */,
 				A88A787C1F6954DF0058094C /* NSDecimalNumber+Addtion.h */,
 				A88A787D1F6954DF0058094C /* NSDecimalNumber+Addtion.m */,
 				0F0CFE1D1F15FB3F00476A86 /* NSArray+Tool.h */,
@@ -1009,6 +1221,10 @@
 				A83303741F346F24000C08B4 /* UIScrollView+EmptyDataSet.m */,
 				A8DB29011F405CBA007A8A24 /* SystemConvert.h */,
 				A8DB29021F405CBA007A8A24 /* SystemConvert.m */,
+				D5F679E51FB9A30400EB773D /* NSTimer+Extension.h */,
+				D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */,
+				D521D9D41FBACEE1009566EA /* NSString+Height.h */,
+				D521D9D51FBACEE2009566EA /* NSString+Height.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1121,6 +1337,8 @@
 			children = (
 				0FFEA9D11F170361009F6151 /* CDNavigationController.h */,
 				0FFEA9D21F170361009F6151 /* CDNavigationController.m */,
+				D5F679E81FB9B4A900EB773D /* DBHNavigationController.h */,
+				D5F679E91FB9B4A900EB773D /* DBHNavigationController.m */,
 				0F0CFE4F1F161F4C00476A86 /* ZFTabBarViewController.h */,
 				0F0CFE501F161F4C00476A86 /* ZFTabBarViewController.m */,
 			);
@@ -1562,6 +1780,74 @@
 		A85A01BC1F36B521002F0141 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D5B821FD1FC02130009A50E3 /* DBHInformationForMoneyConditionDataModels.h */,
+				D5B821FC1FC0212F009A50E3 /* DBHInformationForMoneyConditionModelData.h */,
+				D5B821FE1FC02130009A50E3 /* DBHInformationForMoneyConditionModelData.m */,
+				D5B821FF1FC02130009A50E3 /* DBHInformationForMoneyConditionModelDataBase.h */,
+				D5B822001FC02131009A50E3 /* DBHInformationForMoneyConditionModelDataBase.m */,
+				D509B5271FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.h */,
+				D509B5291FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m */,
+				D509B52A1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.h */,
+				D509B5281FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m */,
+				D53D47581FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.h */,
+				D53D47571FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m */,
+				D53D47521FBF125800FDFB61 /* DBHInformationDetailForInweDataModels.h */,
+				D53D47501FBF125800FDFB61 /* DBHInformationDetailForInweModelData.h */,
+				D53D47511FBF125800FDFB61 /* DBHInformationDetailForInweModelData.m */,
+				D53D47531FBF125800FDFB61 /* DBHInformationDetailForInweModelDataBase.h */,
+				D53D47541FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m */,
+				D53D47471FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.h */,
+				D53D47441FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceDataModels.h */,
+				D53D47451FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.m */,
+				D53D47481FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelDataBase.h */,
+				D53D474A1FBF0D7E00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelDataBase.m */,
+				D53D47461FBF0D7E00FDFB61 /* DBHInformationDetailModelProjectDesc.h */,
+				D53D47491FBF0D7E00FDFB61 /* DBHInformationDetailModelProjectDesc.m */,
+				D53D47331FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentDataModels.h */,
+				D53D47321FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.h */,
+				D53D47311FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.m */,
+				D53D47341FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.h */,
+				D53D47301FBEF24800FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.m */,
+				D53D47141FBED42C00FDFB61 /* DBHInformationDetailDataModels.h */,
+				D53D47081FBED42900FDFB61 /* DBHInformationDetailModelData.h */,
+				D53D47101FBED42B00FDFB61 /* DBHInformationDetailModelData.m */,
+				D53D470F1FBED42B00FDFB61 /* DBHInformationDetailModelDataBase.h */,
+				D53D470B1FBED42A00FDFB61 /* DBHInformationDetailModelDataBase.m */,
+				D53D470C1FBED42A00FDFB61 /* DBHInformationDetailModelProjectExplorers.h */,
+				D53D47111FBED42B00FDFB61 /* DBHInformationDetailModelProjectExplorers.m */,
+				D53D47121FBED42B00FDFB61 /* DBHInformationDetailModelProjectMarkets.h */,
+				D53D470A1FBED42A00FDFB61 /* DBHInformationDetailModelProjectMarkets.m */,
+				D53D47091FBED42900FDFB61 /* DBHInformationDetailModelProjectMedias.h */,
+				D53D470D1FBED42A00FDFB61 /* DBHInformationDetailModelProjectMedias.m */,
+				D53D47131FBED42C00FDFB61 /* DBHInformationDetailModelProjectTimePrices.h */,
+				D53D470E1FBED42B00FDFB61 /* DBHInformationDetailModelProjectTimePrices.m */,
+				D53D47051FBEBA8E00FDFB61 /* DBHAllInformationDataModels.h */,
+				D53D47011FBEBA8C00FDFB61 /* DBHAllInformationModelData.h */,
+				D53D47021FBEBA8D00FDFB61 /* DBHAllInformationModelData.m */,
+				D53D47041FBEBA8D00FDFB61 /* DBHAllInformationModelDataBase.h */,
+				D53D47031FBEBA8D00FDFB61 /* DBHAllInformationModelDataBase.m */,
+				D54F57F11FBD826400ED334E /* DBHInformationForProjectCollectionDataModels.h */,
+				D54F57F01FBD826400ED334E /* DBHInformationForProjectCollectionModelData.h */,
+				D54F57F21FBD826400ED334E /* DBHInformationForProjectCollectionModelData.m */,
+				D54F57F31FBD826500ED334E /* DBHInformationForProjectCollectionModelDataBase.h */,
+				D54F57EF1FBD826400ED334E /* DBHInformationForProjectCollectionModelDataBase.m */,
+				D54F57E81FBD325B00ED334E /* DBHEvaluatingIcoDataModels.h */,
+				D54F57E51FBD325900ED334E /* DBHEvaluatingIcoModelData.h */,
+				D54F57E61FBD325A00ED334E /* DBHEvaluatingIcoModelData.m */,
+				D54F57E91FBD325B00ED334E /* DBHEvaluatingIcoModelDataBase.h */,
+				D54F57E71FBD325A00ED334E /* DBHEvaluatingIcoModelDataBase.m */,
+				D55CA9DD1FBC1D14003C3DD1 /* DBHInformationForNewsCollectionData.h */,
+				D55CA9DF1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionData.m */,
+				D55CA9E11FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.h */,
+				D55CA9DE1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.m */,
+				D55CA9E01FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataModels.h */,
+				D521D9881FBA9093009566EA /* DBHInformationForRoastingChartCollectionData.h */,
+				D521D9831FBA9092009566EA /* DBHInformationForRoastingChartCollectionData.m */,
+				D521D9891FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataBase.h */,
+				D521D9861FBA9092009566EA /* DBHInformationForRoastingChartCollectionDataBase.m */,
+				D521D9871FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataModels.h */,
+				D521D9851FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.h */,
+				D521D9841FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.m */,
 				A85A01BD1F36B547002F0141 /* FindBannerModel.h */,
 				A85A01BE1F36B547002F0141 /* FindBannerModel.m */,
 				A85A01C01F36B554002F0141 /* FindIcoModel.h */,
@@ -1653,6 +1939,16 @@
 				A84475861F32BE0E003C7BDB /* ICOTranSuccesVC.xib */,
 				D5CF792D1FB1580F009CBCB2 /* DBHWebViewController.h */,
 				D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */,
+				D5F679C71FB9452500EB773D /* DBHInformationViewController.h */,
+				D5F679C81FB9452500EB773D /* DBHInformationViewController.m */,
+				D521D9DA1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.h */,
+				D521D9DB1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m */,
+				D521D9DD1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.h */,
+				D521D9DE1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.m */,
+				D5F679EB1FB9BE3B00EB773D /* DBHAllInformationViewController.h */,
+				D5F679EC1FB9BE3B00EB773D /* DBHAllInformationViewController.m */,
+				D5F679EE1FB9BE5100EB773D /* DBHEvaluatingIcoViewController.h */,
+				D5F679EF1FB9BE5100EB773D /* DBHEvaluatingIcoViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1669,6 +1965,64 @@
 				A8CD77391F32449400005027 /* ICOCell.h */,
 				A8CD773A1F32449400005027 /* ICOCell.m */,
 				A8CD773B1F32449400005027 /* ICOCell.xib */,
+				D5F679CD1FB967D100EB773D /* DBHSearchBarButton.h */,
+				D5F679CE1FB967D100EB773D /* DBHSearchBarButton.m */,
+				D5F679D01FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.h */,
+				D5F679D11FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.m */,
+				D5F679D31FB96E7D00EB773D /* DBHInformationForNewsCollectionViewCell.h */,
+				D5F679D41FB96E7D00EB773D /* DBHInformationForNewsCollectionViewCell.m */,
+				D5F679DF1FB9711100EB773D /* DBHInformationForProjectCollectionViewCell.h */,
+				D5F679E01FB9711100EB773D /* DBHInformationForProjectCollectionViewCell.m */,
+				D5F679E21FB9952300EB773D /* DBHNewsShufflingFigureView.h */,
+				D5F679E31FB9952300EB773D /* DBHNewsShufflingFigureView.m */,
+				D521D9CB1FBA9CDE009566EA /* DBHMenu.h */,
+				D521D9CC1FBA9CDE009566EA /* DBHMenu.m */,
+				D521D9CE1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.h */,
+				D521D9CF1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m */,
+				D521D9D11FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.h */,
+				D521D9D21FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m */,
+				D521D9D71FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.h */,
+				D521D9D81FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.m */,
+				D521D9E01FBAF006009566EA /* DBHInformationDetailForDealInfomationTableViewCell.h */,
+				D521D9E11FBAF006009566EA /* DBHInformationDetailForDealInfomationTableViewCell.m */,
+				D521D9E31FBAF031009566EA /* DBHInformationDetailForDealInfomationChartTableViewCell.h */,
+				D521D9E41FBAF031009566EA /* DBHInformationDetailForDealInfomationChartTableViewCell.m */,
+				D521D9E61FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.h */,
+				D521D9E71FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.m */,
+				D521D9E91FBAF084009566EA /* DBHInformationDetailForProjectBriefTableViewCell.h */,
+				D521D9EA1FBAF084009566EA /* DBHInformationDetailForProjectBriefTableViewCell.m */,
+				D521D9EC1FBAF0C1009566EA /* DBHInformationDetailForInweReportTableViewCell.h */,
+				D521D9ED1FBAF0C1009566EA /* DBHInformationDetailForInweReportTableViewCell.m */,
+				D54F57FD1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.h */,
+				D54F57FE1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m */,
+				D54F58001FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.h */,
+				D54F58011FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.m */,
+				D54F58031FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.h */,
+				D54F58041FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m */,
+				D521D9EF1FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.h */,
+				D521D9F01FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.m */,
+				D521D9F21FBAF0F5009566EA /* DBHInformationDetailForMoreTableViewCell.h */,
+				D521D9F31FBAF0F5009566EA /* DBHInformationDetailForMoreTableViewCell.m */,
+				D521D9F61FBB0878009566EA /* DBHInformationDetailForTradingMarketButton.h */,
+				D521D9F71FBB0878009566EA /* DBHInformationDetailForTradingMarketButton.m */,
+				D521D9F91FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.h */,
+				D521D9FA1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m */,
+				D521D9FF1FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.h */,
+				D521DA001FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m */,
+				D55CA9C91FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.h */,
+				D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */,
+				D55CA9CC1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.h */,
+				D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */,
+				D53D472A1FBEE58100FDFB61 /* DBHSpinnerView.h */,
+				D53D472B1FBEE58100FDFB61 /* DBHSpinnerView.m */,
+				D53D472D1FBEE67C00FDFB61 /* DBHSpinnerViewTableViewCell.h */,
+				D53D472E1FBEE67C00FDFB61 /* DBHSpinnerViewTableViewCell.m */,
+				D53D473E1FBF065800FDFB61 /* DBHListView.h */,
+				D53D473F1FBF065800FDFB61 /* DBHListView.m */,
+				D53D47411FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.h */,
+				D53D47421FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.m */,
+				D509B5241FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.h */,
+				D509B5251FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1952,7 +2306,6 @@
 				0FE474201F28E940009E1DF8 /* AddWalletInfoVC.xib in Resources */,
 				A8CD77641F32449400005027 /* QuotationInfoVC.xib in Resources */,
 				A8B804651F4D170400633C34 /* ChoseNetView.xib in Resources */,
-				A8B4DA771F61709F00FC8EC7 /* Images.xcassets in Resources */,
 				A8CD775D1F32449400005027 /* FindTaCell.xib in Resources */,
 				0FF7830E1F2B1A1900F5B3D2 /* InfoPlist.strings in Resources */,
 				A85A01B51F35D0CD002F0141 /* MonetaryUnitCell.xib in Resources */,
@@ -2080,6 +2433,7 @@
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
+				"${BUILT_PRODUCTS_DIR}/SDCycleScrollView/SDCycleScrollView.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/TTTAttributedLabel/TTTAttributedLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/YUSegment/YUSegment.framework",
@@ -2096,6 +2450,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCycleScrollView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTTAttributedLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YUSegment.framework",
@@ -2128,11 +2483,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D521D9FB1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m in Sources */,
 				0FAC291A1F2F7C4A009B3EC9 /* AAPlotOptions.m in Sources */,
 				A8F275411F429A910035B5B8 /* RelationCapMinModel.m in Sources */,
 				A85A01C51F36BB70002F0141 /* FindArticleModel.m in Sources */,
+				D53D47151FBED42C00FDFB61 /* DBHInformationDetailModelProjectMarkets.m in Sources */,
 				0F1AFCA41F1A556500BA81EF /* WalletHomeVC.m in Sources */,
+				D53D47361FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.m in Sources */,
+				D55CA9CE1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m in Sources */,
 				A81A5AF71F3AFD3C0015CC0D /* PDKeyChain.m in Sources */,
+				D521D98B1FBA9093009566EA /* DBHInformationForRoastingChartCollectionList.m in Sources */,
 				A80713561F5563CE00C5B862 /* MASViewAttribute.m in Sources */,
 				0FE4741A1F28E4DA009E1DF8 /* AddEthOrBtcVC.m in Sources */,
 				A807135A1F5563CE00C5B862 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
@@ -2140,8 +2500,11 @@
 				0FDCACB61F20FAEF0090D12A /* TransactionInfoVC.m in Sources */,
 				0F0CFE581F161F4C00476A86 /* ZFTabBarViewController.m in Sources */,
 				A8CD77781F32453300005027 /* SetValueFormatter.m in Sources */,
+				D509B52C1FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m in Sources */,
 				0FAC290D1F2F7C4A009B3EC9 /* AABar.m in Sources */,
+				D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */,
 				A84475B51F332317003C7BDB /* ModifyNicknameVC.m in Sources */,
+				D521D9F41FBAF0F5009566EA /* DBHInformationDetailForMoreTableViewCell.m in Sources */,
 				A8AAFBE21F3FFB0E00724FF6 /* WalletLeftListModel.m in Sources */,
 				A8016B4C1F4146B3003848CD /* TokenWalletInfoVC.m in Sources */,
 				0FAC291E1F2F7C4A009B3EC9 /* AAStyle.m in Sources */,
@@ -2151,49 +2514,70 @@
 				0FB9DD181F1F9517005CEA39 /* TransferVC.m in Sources */,
 				A84475871F32BE0E003C7BDB /* ICOTranSuccesVC.m in Sources */,
 				A80713191F55509800C5B862 /* PackupsWordsVC.m in Sources */,
+				D53D47071FBEBA8E00FDFB61 /* DBHAllInformationModelDataBase.m in Sources */,
+				D5F679E11FB9711100EB773D /* DBHInformationForProjectCollectionViewCell.m in Sources */,
 				A85A01C21F36B554002F0141 /* FindIcoModel.m in Sources */,
+				D5F679ED1FB9BE3B00EB773D /* DBHAllInformationViewController.m in Sources */,
 				0FBED41E1F19D7E6006C5CA8 /* LoginVC.m in Sources */,
 				A85F8A9C1F5950AA00340D49 /* CodeWalletCodeView.m in Sources */,
+				D54F58021FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.m in Sources */,
 				0F0CFE311F15FB3F00476A86 /* NSMutableString+Tool.m in Sources */,
 				A88A787E1F6954DF0058094C /* NSDecimalNumber+Addtion.m in Sources */,
 				A807132A1F5558B900C5B862 /* SectionModel.m in Sources */,
+				D5B822021FC02131009A50E3 /* DBHInformationForMoneyConditionModelDataBase.m in Sources */,
 				A80713591F5563CE00C5B862 /* NSDictionary+ValueNoNull.m in Sources */,
 				0FAC29171F2F7C4A009B3EC9 /* AAOptions3d.m in Sources */,
 				0FAC290A1F2F7C4A009B3EC9 /* AAAnimation.m in Sources */,
 				A88A78921F6992E90058094C /* SGQRCodeGenerateManager.m in Sources */,
+				D521D9F81FBB0878009566EA /* DBHInformationDetailForTradingMarketButton.m in Sources */,
 				A80713581F5563CE00C5B862 /* NSArray+MASAdditions.m in Sources */,
 				A8CD776C1F32449400005027 /* QuotationCell.m in Sources */,
+				D5F679F01FB9BE5100EB773D /* DBHEvaluatingIcoViewController.m in Sources */,
 				0FAC29131F2F7C4A009B3EC9 /* AALegend.m in Sources */,
+				D5B822011FC02131009A50E3 /* DBHInformationForMoneyConditionModelData.m in Sources */,
 				0FAC29221F2F7C4A009B3EC9 /* AAXAxis.m in Sources */,
+				D521D98A1FBA9093009566EA /* DBHInformationForRoastingChartCollectionData.m in Sources */,
 				0FB9DD221F1FA76E005CEA39 /* ReceivablesVC.m in Sources */,
 				D5FB40221FB691FF00070D03 /* DBHMyTableViewCell.m in Sources */,
+				D53D47561FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m in Sources */,
 				0FC281911F23891700A1E57B /* MyTVC.m in Sources */,
+				D521D98C1FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataBase.m in Sources */,
 				A8CD778B1F32457D00005027 /* TAAnimatedDotView.m in Sources */,
 				0FAC29001F2F7C4A009B3EC9 /* AAChartView.m in Sources */,
 				0FAC291C1F2F7C4A009B3EC9 /* AASeriesElement.m in Sources */,
+				D54F57F41FBD826500ED334E /* DBHInformationForProjectCollectionModelDataBase.m in Sources */,
 				A807135D1F5563CE00C5B862 /* View+MASAdditions.m in Sources */,
 				0F1AFCBA1F1A64B600BA81EF /* WalletLeiftView.m in Sources */,
 				A81A5ABB1F3951FD0015CC0D /* QuotationInfoModel.m in Sources */,
+				D521D9CD1FBA9CDE009566EA /* DBHMenu.m in Sources */,
 				0FDD5F3A1F2DD6E800228CE0 /* YCXMenuItem.m in Sources */,
+				D55CA9E31FBC1D16003C3DD1 /* DBHInformationForNewsCollectionData.m in Sources */,
 				0F0CFE3D1F15FC2A00476A86 /* UIButton+SDSetImage.m in Sources */,
+				D521D9D61FBACEE2009566EA /* NSString+Height.m in Sources */,
 				A8CD77611F32449400005027 /* EditQuotesVC.m in Sources */,
 				0FAC290F1F2F7C4A009B3EC9 /* AAColumn.m in Sources */,
+				D54F58051FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m in Sources */,
 				0FAC29011F2F7C4A009B3EC9 /* AAJsonConverter.m in Sources */,
 				0FD2A8621F2A38AF00C210D3 /* AddOtherWalletInfoVC.m in Sources */,
 				0FAC29111F2F7C4A009B3EC9 /* AAItemStyle.m in Sources */,
 				0F0CFDED1F15E54100476A86 /* ViewController.m in Sources */,
 				0FDCACA91F20ED780090D12A /* TransactionRecordVC.m in Sources */,
+				D521D9DC1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m in Sources */,
 				A8B2AAB11F3CB3B10047A626 /* AddRemindVC.m in Sources */,
 				0FAC29141F2F7C4A009B3EC9 /* AALine.m in Sources */,
 				A81A5AE61F3AD6E10015CC0D /* RemindModel.m in Sources */,
+				D521D9D01FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m in Sources */,
+				D521D9DF1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.m in Sources */,
 				A8CD778C1F32457D00005027 /* TADotView.m in Sources */,
 				0FB9DD1D1F1FA03F005CEA39 /* ConfirmationTransferVC.m in Sources */,
 				A8CD775E1F32449400005027 /* ICOCell.m in Sources */,
 				A8AAFBE71F3FFB2D00724FF6 /* MessageModel.m in Sources */,
+				D5F679C91FB9452500EB773D /* DBHInformationViewController.m in Sources */,
 				A8CD77661F32449400005027 /* RemindVC.m in Sources */,
 				A84475B11F331FA7003C7BDB /* LXFPhotoHelper.m in Sources */,
 				A84475911F32D5CC003C7BDB /* EditMailVC.m in Sources */,
 				A8D982C11F420ED70080DFF8 /* RelationCapModel.m in Sources */,
+				D53D472F1FBEE67C00FDFB61 /* DBHSpinnerViewTableViewCell.m in Sources */,
 				A88A78931F6992E90058094C /* SGQRCodeHelperTool.m in Sources */,
 				A85A01B81F35D4DB002F0141 /* MonetaryUnitModel.m in Sources */,
 				A88A78911F6992E90058094C /* SGQRCodeAlbumManager.m in Sources */,
@@ -2205,14 +2589,17 @@
 				A807135C1F5563CE00C5B862 /* UploadToken.m in Sources */,
 				0FAC291D1F2F7C4A009B3EC9 /* AASpline.m in Sources */,
 				0FAC29021F2F7C4A009B3EC9 /* AAOptionsConstructor.m in Sources */,
+				D521D9F11FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.m in Sources */,
 				A8DB29031F405CBA007A8A24 /* SystemConvert.m in Sources */,
 				0FDCAC9F1F20E7010090D12A /* AddTokenCell.m in Sources */,
 				A8CD77651F32449400005027 /* QuotationVC.m in Sources */,
 				0FAC29161F2F7C4A009B3EC9 /* AAOptions.m in Sources */,
 				A8CD776A1F32449400005027 /* EditQuotesCell.m in Sources */,
+				D509B52B1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m in Sources */,
 				A8CD778F1F32457D00005027 /* SDCycleScrollView.m in Sources */,
 				A81A5AE01F3A115B0015CC0D /* KKWebView.m in Sources */,
 				A85A01BB1F35D9FE002F0141 /* ICOOrderListModel.m in Sources */,
+				D55CA9E21FBC1D16003C3DD1 /* DBHInformationForNewsCollectionDataBase.m in Sources */,
 				A81A5AD41F3A05210015CC0D /* MessageVC.m in Sources */,
 				D5E2B0E81FB4771800A8FE59 /* DBHMyHeaderView.m in Sources */,
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
@@ -2222,12 +2609,16 @@
 				A8AAFBCC1F3EF6B000724FF6 /* PayPriceView.m in Sources */,
 				0F0CFE5A1F161F4C00476A86 /* ZFTabBar.m in Sources */,
 				A8CD77901F32457D00005027 /* UIView+SDExtension.m in Sources */,
+				D55CA9CB1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m in Sources */,
+				D53D47401FBF065800FDFB61 /* DBHListView.m in Sources */,
 				A81A5AE91F3AD79C0015CC0D /* RemindRelationNotificationModel.m in Sources */,
 				A8823D301F4FD6F80092DF0F /* TransactionListVC.m in Sources */,
 				A8D510E61F43F861001DD9EE /* WalletHomeModel.m in Sources */,
 				A81A5AD81F3A07890015CC0D /* TowButtonAlertView.m in Sources */,
 				A807135E1F5563CE00C5B862 /* ViewController+MASAdditions.m in Sources */,
+				D5F679E41FB9952300EB773D /* DBHNewsShufflingFigureView.m in Sources */,
 				0FAE3CD31F1CF88800BB343A /* WalletInfoHeaderView.m in Sources */,
+				D521DA011FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m in Sources */,
 				A80713571F5563CE00C5B862 /* MASViewConstraint.m in Sources */,
 				0FDD5F271F2D671600228CE0 /* PassWordView.m in Sources */,
 				D5CF792F1FB1580F009CBCB2 /* DBHWebViewController.m in Sources */,
@@ -2242,27 +2633,39 @@
 				0FFEA9D31F170361009F6151 /* CDNavigationController.m in Sources */,
 				0FB8DFF41F262B93003D1BF9 /* ICOListVC.m in Sources */,
 				0FAC291F1F2F7C4A009B3EC9 /* AASubtitle.m in Sources */,
+				D5F679D51FB96E7D00EB773D /* DBHInformationForNewsCollectionViewCell.m in Sources */,
+				D53D47181FBED42C00FDFB61 /* DBHInformationDetailModelProjectTimePrices.m in Sources */,
 				A8B2AAB61F3CB3EC0047A626 /* EditRemindVC.m in Sources */,
 				0F0CFE4A1F1602E000476A86 /* LCProgressHUD.m in Sources */,
 				A80713531F5563CE00C5B862 /* MASConstraint.m in Sources */,
 				A8CD77631F32449400005027 /* QuotationInfoVC.m in Sources */,
+				D521D9E81FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.m in Sources */,
 				A88A788F1F6992E90058094C /* UIImage+ImageSize.m in Sources */,
 				A8823D331F4FD7590092DF0F /* TransactionListHeaderView.m in Sources */,
 				0FAC290C1F2F7C4A009B3EC9 /* AAAreaspline.m in Sources */,
+				D521D9D91FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.m in Sources */,
+				D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */,
 				A84475BA1F332742003C7BDB /* GenderSettingVC.m in Sources */,
 				A85F8A991F59408800340D49 /* YsLabel.m in Sources */,
+				D521D9FE1FBB162A009566EA /* UIImage+ImageForColor.m in Sources */,
+				D54F57EB1FBD325B00ED334E /* DBHEvaluatingIcoModelDataBase.m in Sources */,
 				0FDCACAE1F20F7410090D12A /* TransactionCell.m in Sources */,
 				0FB8DFF81F262D28003D1BF9 /* ICOListCell.m in Sources */,
 				0FDCAC8F1F20CF280090D12A /* UIViewController+Tool.m in Sources */,
 				A807132E1F55595E00C5B862 /* SurePackupsWordVC.m in Sources */,
 				0FC281A11F239AC700A1E57B /* MailListCell.m in Sources */,
+				D53D471A1FBED42C00FDFB61 /* DBHInformationDetailModelProjectExplorers.m in Sources */,
+				D521D9EE1FBAF0C1009566EA /* DBHInformationDetailForInweReportTableViewCell.m in Sources */,
 				A8CD775C1F32449400005027 /* FindTaCell.m in Sources */,
 				0FAC290E1F2F7C4A009B3EC9 /* AAChart.m in Sources */,
 				0FAC29201F2F7C4A009B3EC9 /* AATitle.m in Sources */,
+				D521D9EB1FBAF084009566EA /* DBHInformationDetailForProjectBriefTableViewCell.m in Sources */,
 				A8D982BE1F4206BB0080DFF8 /* LookWalletCodeView.m in Sources */,
 				0FB9DD131F1F8D57005CEA39 /* CodeWalletInfoVC.m in Sources */,
+				D521D9E21FBAF006009566EA /* DBHInformationDetailForDealInfomationTableViewCell.m in Sources */,
 				A8AAFBE41F3FFB0E00724FF6 /* WalletTypeModel.m in Sources */,
 				0F0CFE431F15FD0800476A86 /* PPNetworkCache.m in Sources */,
+				D521D9E51FBAF031009566EA /* DBHInformationDetailForDealInfomationChartTableViewCell.m in Sources */,
 				A8CD778E1F32457D00005027 /* SDCollectionViewCell.m in Sources */,
 				A80713551F5563CE00C5B862 /* MASLayoutConstraint.m in Sources */,
 				0FC281961F238C0E00A1E57B /* MyHeaderView.m in Sources */,
@@ -2273,31 +2676,42 @@
 				0F0CFE441F15FD0800476A86 /* PPNetworkHelper.m in Sources */,
 				0FDCAC921F20CF460090D12A /* ObjcRuntime.m in Sources */,
 				0FB8E0011F263004003D1BF9 /* RateSettingTVC.m in Sources */,
+				D5F679D21FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.m in Sources */,
 				A8016B501F418D4E003848CD /* ChoseWalletView.m in Sources */,
 				A8CD778D1F32457D00005027 /* TAPageControl.m in Sources */,
+				D53D47191FBED42C00FDFB61 /* DBHInformationDetailModelData.m in Sources */,
 				0FD2A8671F2A3EAB00C210D3 /* ScanVC.m in Sources */,
+				D521D9D31FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m in Sources */,
 				A8CD77591F32449400005027 /* ICOTransactionVC.m in Sources */,
+				D5F679CF1FB967D100EB773D /* DBHSearchBarButton.m in Sources */,
 				A8D831AA1F38359900B735EC /* QuotationModel.m in Sources */,
 				A80713281F5558B900C5B862 /* CCTagModel.m in Sources */,
 				A85A01B41F35D0CD002F0141 /* MonetaryUnitCell.m in Sources */,
 				A8CD778A1F32457D00005027 /* TAAbstractDotView.m in Sources */,
+				D53D47591FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m in Sources */,
 				A8AAFBE11F3FFB0E00724FF6 /* WalletInfoGntModel.m in Sources */,
 				A8CD77601F32449400005027 /* AddQuotesVC.m in Sources */,
 				0FB9DD271F1FAB09005CEA39 /* ConfirmationReceivableVC.m in Sources */,
+				D54F57F51FBD826500ED334E /* DBHInformationForProjectCollectionModelData.m in Sources */,
 				A80713541F5563CE00C5B862 /* MASConstraintMaker.m in Sources */,
+				D509B5261FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m in Sources */,
 				0F0CFE4D1F1609E300476A86 /* CoustromViewController.m in Sources */,
 				0F0CFE331F15FB3F00476A86 /* NSString+Tool.m in Sources */,
 				0F0CFE301F15FB3F00476A86 /* NSDictionary+Tool.m in Sources */,
 				0F1AFCB01F1A566500BA81EF /* WalletHeaderView.m in Sources */,
 				A80713291F5558B900C5B862 /* CCTagSelectSectionHeaderView.m in Sources */,
+				D53D47061FBEBA8E00FDFB61 /* DBHAllInformationModelData.m in Sources */,
 				A85A01BF1F36B547002F0141 /* FindBannerModel.m in Sources */,
+				D53D472C1FBEE58100FDFB61 /* DBHSpinnerView.m in Sources */,
 				0F1AFCB61F1A605200BA81EF /* WalletHomeCell.m in Sources */,
 				0FDD5F3D1F2DE0C400228CE0 /* AlertView.m in Sources */,
 				0FAC29211F2F7C4A009B3EC9 /* AATooltip.m in Sources */,
+				D53D47171FBED42C00FDFB61 /* DBHInformationDetailModelProjectMedias.m in Sources */,
 				0FB8E0071F263792003D1BF9 /* MonetaryUnitVC.m in Sources */,
 				0FD2A85D1F2A343A00C210D3 /* AddOtherWalletVC.m in Sources */,
 				A8CD77771F32453300005027 /* DateValueFormatter.m in Sources */,
 				0F0CFE321F15FB3F00476A86 /* NSObject+Tool.m in Sources */,
+				D53D47551FBF125900FDFB61 /* DBHInformationDetailForInweModelData.m in Sources */,
 				0FE4741F1F28E940009E1DF8 /* AddWalletInfoVC.m in Sources */,
 				0FAC29101F2F7C4A009B3EC9 /* AADataLabels.m in Sources */,
 				0FAC28FF1F2F7C4A009B3EC9 /* AAChartModel.m in Sources */,
@@ -2305,6 +2719,7 @@
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,
 				0FAE3CCF1F1CF78600BB343A /* WalletInfoVC.m in Sources */,
 				A80713141F55371F00C5B862 /* AboutVC.m in Sources */,
+				D54F57EA1FBD325B00ED334E /* DBHEvaluatingIcoModelData.m in Sources */,
 				A8CD775A1F32449400005027 /* FindCoCell.m in Sources */,
 				0FAC291B1F2F7C4A009B3EC9 /* AASeries.m in Sources */,
 				A84475AB1F331B34003C7BDB /* PersonDetailTVC.m in Sources */,
@@ -2312,13 +2727,18 @@
 				0FFEA9D71F17382A009F6151 /* BaseModel.m in Sources */,
 				A8A8184F1F44849B00FFF088 /* ChoseCell.m in Sources */,
 				A844758C1F32CC7C003C7BDB /* AddMailVC.m in Sources */,
+				D53D474B1FBF0D7F00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.m in Sources */,
 				A81A5AF01F3AE6E70015CC0D /* AddWalletChoseTypeCell.m in Sources */,
 				A81A5AFB1F3B5A4C0015CC0D /* MessageCell.m in Sources */,
 				0FC3B0AF1F278D000030F9AC /* WalletLeiftCell.m in Sources */,
 				A8823D391F4FE17E0092DF0F /* TransactionListCell.m in Sources */,
 				A85A01CA1F36F024002F0141 /* ICOListModel.m in Sources */,
 				0F0CFE351F15FB3F00476A86 /* UIImage+Tool.m in Sources */,
+				D53D474D1FBF0D7F00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelDataBase.m in Sources */,
 				0F0CFE3E1F15FC2A00476A86 /* UIImageView+SDSetImage.m in Sources */,
+				D53D47161FBED42C00FDFB61 /* DBHInformationDetailModelDataBase.m in Sources */,
+				D54F57FF1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m in Sources */,
+				D53D47351FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.m in Sources */,
 				0FE474241F28EBF0009E1DF8 /* AddWalletSucessVC.m in Sources */,
 				0F0CFDE71F15E54100476A86 /* main.m in Sources */,
 				0FFEA9DD1F173929009F6151 /* UserSignData.m in Sources */,
@@ -2329,9 +2749,11 @@
 				A8CD77581F32449400005027 /* FindVC.m in Sources */,
 				A88A78951F6992E90058094C /* SGQRCodeScanningView.m in Sources */,
 				A8CD776E1F32449400005027 /* RemindCell.m in Sources */,
+				D53D47431FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.m in Sources */,
 				0FAC290B1F2F7C4A009B3EC9 /* AAArea.m in Sources */,
 				A88A78941F6992E90058094C /* SGQRCodeScanManager.m in Sources */,
 				0F0CFE361F15FB3F00476A86 /* UIView+Tool.m in Sources */,
+				D53D474C1FBF0D7F00FDFB61 /* DBHInformationDetailModelProjectDesc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2506,7 +2928,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Station and friends information technology co., LTD (A586DWSV4P)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = A586DWSV4P;
 				ENABLE_BITCODE = NO;
@@ -2550,8 +2972,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7453fb39-2b9d-4567-9ec5-8d78c6d124fa";
-				PROVISIONING_PROFILE_SPECIFIER = ios_distribution;
+				PROVISIONING_PROFILE = "dbcd962e-4aa2-44e1-a840-88535c52636c";
+				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 			};
 			name = Debug;
@@ -2564,7 +2986,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Station and friends information technology co., LTD (A586DWSV4P)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = A586DWSV4P;
 				ENABLE_BITCODE = NO;
@@ -2608,8 +3030,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a007aaed-ae7b-47bf-94d4-9e436c5822e1";
-				PROVISIONING_PROFILE_SPECIFIER = ios_distribution;
+				PROVISIONING_PROFILE = "dbcd962e-4aa2-44e1-a840-88535c52636c";
+				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 			};
 			name = Release;

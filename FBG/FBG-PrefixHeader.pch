@@ -20,8 +20,6 @@
 #define CurrentSystemVersion ([[UIDevice currentDevice] systemVersion])
 #define CurrentLanguage ([[NSLocale preferredLanguages] objectAtIndex:0])
 
-#define AUTOSIZE(size) 375.0 / SCREEN_WIDTH * size
-
 #ifdef DEBUG
 #define NSLog(FORMAT, ...) fprintf(__stderrp,"%s %s:%d\t%s\t%s\n",__TIME__,[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, __FUNCTION__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 #else
@@ -43,7 +41,6 @@
 
 /** 弱引用*/
 #define kWeakSelf(type)   __weak typeof(type) weak##type = type;
-#define WEAKSELF __weak typeof(self)weakSelf = self;
 /** 强引用*/
 #define kStrongSelf(type) __strong typeof(type) type = weak##type;
 
@@ -53,10 +50,10 @@
 
 //测试环境
 #define APIEHEAD @"https://app.inwecrypto.com/api/"  //网络请求头
-#define IMAGEHEAD @"https://ropsten.unichain.io/"  //图片头
+#define IMAGEHEAD @"https://dev.inwecrypto.com/"  //图片头
 //正式环境
 #define APIEHEAD1 @"https://app.inwecrypto.com/api/"  //网络请求头 mainnet.unichain.io
-#define IMAGEHEAD1 @"https://mainnet.unichain.io/"  //图片头
+#define IMAGEHEAD1 @"https://dev.inwecrypto.com/"  //图片头
 
 #define APP_APIEHEAD  [[NSUserDefaults standardUserDefaults]stringForKey:@"appNetWorkApi"]  //网络状态
 #define APP_WALLETSTATUS  [[NSUserDefaults standardUserDefaults]stringForKey:@"appWalletStatus"]   //钱包状态
@@ -90,6 +87,16 @@
 #import "JKBigDecimal.h"
 #import "Masonry.h"
 
+/**
+ *  根据传入的字符串计算出所占高度
+ */
+#import "NSString+Height.h"
+
+/**
+ *  根据颜色返回一张图片
+ */
+#import "UIImage+ImageForColor.h"
+
 //微信登录
 // access_token openid refresh_token unionid
 
@@ -107,5 +114,8 @@
 
 #import "LoginVC.h"
 #import "AppDelegate.h"
+
+#pragma mark - 其他
+#import "OtherHeader.pch"
 
 #endif /* FBG_PrefixHeader_pch */

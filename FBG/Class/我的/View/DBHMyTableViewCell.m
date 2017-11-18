@@ -37,12 +37,12 @@
     
     WEAKSELF
     [self.leftImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOSIZE(34));
-        make.left.offset(AUTOSIZE(34));
+        make.width.height.offset(AUTOLAYOUTSIZE(34));
+        make.left.offset(AUTOLAYOUTSIZE(34));
         make.centerY.equalTo(weakSelf.contentView);
     }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.leftImageView.mas_right).offset(AUTOSIZE(20));
+        make.left.equalTo(weakSelf.leftImageView.mas_right).offset(AUTOLAYOUTSIZE(20));
         make.centerY.equalTo(weakSelf.contentView);
     }];
 }
@@ -68,7 +68,7 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont systemFontOfSize:AUTOSIZE(12)];
+        _titleLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
         _titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
     }
     return _titleLabel;

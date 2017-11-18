@@ -207,7 +207,7 @@ static NSString * const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIde
         _tableView.tableHeaderView = self.headerView;
         
         _tableView.sectionFooterHeight = 0;
-        _tableView.rowHeight = AUTOSIZE(60);
+        _tableView.rowHeight = AUTOLAYOUTSIZE(60);
         
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -218,7 +218,7 @@ static NSString * const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIde
 }
 - (DBHMyHeaderView *)headerView {
     if (!_headerView) {
-        _headerView = [[DBHMyHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOSIZE(170))];
+        _headerView = [[DBHMyHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(170))];
         
         WEAKSELF
         [_headerView clickButtonBlock:^() {

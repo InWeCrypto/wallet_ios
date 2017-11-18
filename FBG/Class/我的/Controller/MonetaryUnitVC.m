@@ -64,10 +64,10 @@
     
     WEAKSELF
     [self.sureButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view).offset(- AUTOSIZE(25));
-        make.height.offset(AUTOSIZE(44));
+        make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(25));
+        make.height.offset(AUTOLAYOUTSIZE(44));
         make.centerX.equalTo(weakSelf.view);
-        make.bottom.offset(- AUTOSIZE(47));
+        make.bottom.offset(- AUTOLAYOUTSIZE(47));
     }];
     
     /*

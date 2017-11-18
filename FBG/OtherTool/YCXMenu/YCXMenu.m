@@ -48,6 +48,10 @@ static UIColor  *gSelectedColor;
 static UIColor  *gSeparatorColor;
 /// 菜单原始的垂直边距值
 static CGFloat  gMenuItemMarginY = kMenuItemMarginY;
+/// 选中图标背景色
+static UIColor  *gSelectedItemBackGroundColor;
+/// 选中item下标
+static NSInteger  gSelectedIndex;
 
 //@property (nonatomic) UIEdgeInsets separatorInset NS_AVAILABLE_IOS(7_0) UI_APPEARANCE_SELECTOR; // allows customization of the frame of cell separators
 
@@ -417,7 +421,7 @@ typedef enum {
 
         UIView *itemView = [[UIView alloc] initWithFrame:itemFrame];
         itemView.autoresizingMask = UIViewAutoresizingNone;
-        itemView.backgroundColor = [UIColor clearColor];
+        itemView.backgroundColor = gSelectedIndex == [_menuItems indexOfObject:menuItem] ? gSelectedItemBackGroundColor : [UIColor clearColor];
         itemView.opaque = NO;
 
         [contentView addSubview:itemView];
@@ -918,6 +922,19 @@ static YCXMenu                      *gMenu;
     gSeparatorColor = separatorColor;
 }
 
+/**
+ 选中图标背景色
+ */
++ (void)setselectedItemBackGroundColor:(UIColor*)selectedItemBackGroundColor {
+    gSelectedItemBackGroundColor = selectedItemBackGroundColor;
+}
+
+/**
+ 选中item下标
+ */
++ (void)setselectedIndex:(NSInteger)selectedIndex {
+    gSelectedIndex = selectedIndex;
+}
 
 /// 菜单元素垂直方向上的边距值
 + (CGFloat)menuItemMarginY {

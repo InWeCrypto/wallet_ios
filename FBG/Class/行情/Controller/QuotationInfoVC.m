@@ -53,7 +53,7 @@
     [self.lineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.segmentedControl.mas_bottom);
-        make.bottom.offset(- AUTOSIZE(20));
+        make.bottom.offset(- AUTOLAYOUTSIZE(20));
         make.centerX.equalTo(weakSelf.view);
     }];
     

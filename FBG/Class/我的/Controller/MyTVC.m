@@ -163,7 +163,7 @@
 #pragma mark -- get
 - (DBHMyHeaderView *)headerView {
     if (!_headerView) {
-        _headerView = [[DBHMyHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOSIZE(170))];
+        _headerView = [[DBHMyHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(170))];
         
         WEAKSELF
         [_headerView clickButtonBlock:^() {

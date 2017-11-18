@@ -10,15 +10,18 @@
 #import "ICOListModel.h"
 
 @interface KKWebView : UIViewController
+
 @property(nonatomic,copy)NSString *urlStr;
-- (instancetype)initWithUrl:(NSString *)url;
 
 @property (nonatomic, strong) ICOListModel * icoModel;
+
 @property (nonatomic, assign) BOOL isLogin; //登录页面协议
 
 /**
  是否隐藏刷新
  */
 @property (nonatomic, assign) BOOL isHiddenRefresh;
+
+- (instancetype)initWithUrl:(NSString *)url;
 
 @end

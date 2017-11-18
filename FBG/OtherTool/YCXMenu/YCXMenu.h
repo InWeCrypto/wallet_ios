@@ -70,4 +70,14 @@ typedef enum {
 + (CGFloat)menuItemMarginY;
 + (void)setMenuItemMarginY:(CGFloat)menuItemMarginY;
 
+/**
+ 选中图标背景色
+ */
++ (void)setselectedItemBackGroundColor:(UIColor*)selectedItemBackGroundColor;
+
+/**
+ 选中item下标
+ */
++ (void)setselectedIndex:(NSInteger)selectedIndex;
+
 @end

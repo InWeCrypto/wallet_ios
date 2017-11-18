@@ -41,25 +41,25 @@
     
     WEAKSELF
     [self.editButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOSIZE(38.5));
-        make.right.offset(- AUTOSIZE(13.75));
-        make.top.offset(AUTOSIZE(2.5));
+        make.width.height.offset(AUTOLAYOUTSIZE(38.5));
+        make.right.offset(- AUTOLAYOUTSIZE(13.75));
+        make.top.offset(AUTOLAYOUTSIZE(2.5));
     }];
     [self.headImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOSIZE(76));
+        make.width.height.offset(AUTOLAYOUTSIZE(76));
         make.centerX.equalTo(weakSelf);
-        make.bottom.equalTo(weakSelf.nameLabel.mas_top).offset(- AUTOSIZE(7.5));
+        make.bottom.equalTo(weakSelf.nameLabel.mas_top).offset(- AUTOLAYOUTSIZE(7.5));
     }];
     [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf).multipliedBy(0.5);
         make.centerX.equalTo(weakSelf);
-        make.bottom.equalTo(weakSelf.stateLabel.mas_top).offset(- AUTOSIZE(8));
+        make.bottom.equalTo(weakSelf.stateLabel.mas_top).offset(- AUTOLAYOUTSIZE(8));
     }];
     [self.stateLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOSIZE(36));
-        make.height.offset(AUTOSIZE(14));
+        make.width.offset(AUTOLAYOUTSIZE(36));
+        make.height.offset(AUTOLAYOUTSIZE(14));
         make.centerX.equalTo(weakSelf);
-        make.bottom.offset(- AUTOSIZE(15));
+        make.bottom.offset(- AUTOLAYOUTSIZE(15));
     }];
 }
 
@@ -96,7 +96,7 @@
         _headImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"默认头像"]];
         _headImageView.contentMode = UIViewContentModeScaleAspectFill;
         _headImageView.clipsToBounds = YES;
-        _headImageView.layer.cornerRadius = AUTOSIZE(38);
+        _headImageView.layer.cornerRadius = AUTOLAYOUTSIZE(38);
         _headImageView.backgroundColor = [UIColor greenColor];
         _headImageView.userInteractionEnabled = YES;
         
@@ -108,7 +108,7 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.font = [UIFont systemFontOfSize:AUTOSIZE(18)];
+        _nameLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(18)];
         _nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
         _nameLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -118,12 +118,12 @@
     if (!_stateLabel) {
         _stateLabel = [[UILabel alloc] init];
         _stateLabel.backgroundColor = [UIColor colorWithHexString:@"008C55"];
-        _stateLabel.font = [UIFont systemFontOfSize:AUTOSIZE(10)];
+        _stateLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(10)];
         _stateLabel.text = @"已登录";
         _stateLabel.textColor = [UIColor whiteColor];
         _stateLabel.textAlignment = NSTextAlignmentCenter;
         _stateLabel.clipsToBounds = YES;
-        _stateLabel.layer.cornerRadius = AUTOSIZE(7);
+        _stateLabel.layer.cornerRadius = AUTOLAYOUTSIZE(7);
     }
     return _stateLabel;
 }

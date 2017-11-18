@@ -15,5 +15,6 @@ pod 'UMengAnalytics-NO-IDFA'
 pod 'TTTAttributedLabel'
 pod 'JKBigInteger', '~> 0.0.1'
 pod 'Masonry', '~> 1.1.0'
+pod "SDCycleScrollView", "~> 1.65" #图片轮播
 
 end

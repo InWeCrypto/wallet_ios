@@ -9,12 +9,14 @@
 #import "ZFTabBarViewController.h"
 #import "ZFTabBar.h"
 //#import "FindVC.h"
-#import "DBHWebViewController.h"
+//#import "DBHWebViewController.h"
 #import "CDNavigationController.h"
+#import "DBHNavigationController.h"
 #import "WalletHomeVC.h"
 //#import "MyTVC.h"
 #import "QuotationVC.h"
 #import "DBHMyViewController.h"
+#import "DBHInformationViewController.h"
 
 @interface ZFTabBarViewController () <ZFTabBarDelegate>
 /**
@@ -91,7 +93,7 @@
     [self setupChildViewController:quotation title:NSLocalizedString(@"Market", nil) imageName:@"tab_hangqing_nor" selectedImageName:@"tab_hangqing_pre"];
     
     // 2.资讯
-    DBHWebViewController *home1 = [[DBHWebViewController alloc] initWithUrl:@"http://inwecrypto.com/"];
+    DBHInformationViewController *home1 = [[DBHInformationViewController alloc] init];
     home1.tabBarItem.badgeValue = @"";
     [self setupChildViewController:home1 title:NSLocalizedString(@"Information", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
     
@@ -129,8 +131,13 @@
     }
     
     // 2.包装一个导航控制器
-    CDNavigationController *nav = [[CDNavigationController alloc] initWithRootViewController:childVc];
-    [self addChildViewController:nav];
+    if ([title isEqualToString:NSLocalizedString(@"Information", nil)]) {
+        DBHNavigationController *nav = [[DBHNavigationController alloc] initWithRootViewController:childVc];
+        [self addChildViewController:nav];
+    } else {
+        CDNavigationController *nav = [[CDNavigationController alloc] initWithRootViewController:childVc];
+        [self addChildViewController:nav];
+    }
     
     // 3.添加tabbar内部的按钮
     [self.customTabBar addTabBarButtonWithItem:childVc.tabBarItem];
