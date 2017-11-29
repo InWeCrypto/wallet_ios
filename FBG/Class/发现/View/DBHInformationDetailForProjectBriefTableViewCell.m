@@ -69,18 +69,32 @@
     }
     
     self.listView.titleArray = [self.titleArray copy];
+    
+    if (!_projectIntroductionArray.count) {
+        return;
+    }
+
+    DBHInformationDetailModelProjectDesc *model = _projectIntroductionArray.firstObject;
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://dev.inwecrypto.com/article/%@", model.projectDescIdentifier]]]];
 }
 
 - (DBHListView *)listView {
     if (!_listView) {
         _listView = [[DBHListView alloc] init];
+        
+        WEAKSELF
+        [_listView selectedBlock:^(NSInteger selectedIndex) {
+            DBHInformationDetailModelProjectDesc *model = weakSelf.projectIntroductionArray[selectedIndex];
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://dev.inwecrypto.com/article/%@", model.projectDescIdentifier]]]];
+        }];
     }
     return _listView;
 }
 - (WKWebView *)webView {
     if (!_webView) {
         _webView = [[WKWebView alloc] init];
-        _webView.backgroundColor = COLORFROM10(0, 0, 0, 0.5);
+        _webView.scrollView.bounces = NO;
+        [_webView setOpaque:NO];
     }
     return _webView;
 }

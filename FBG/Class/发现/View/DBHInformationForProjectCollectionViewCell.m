@@ -202,7 +202,7 @@
         self.titleLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(_model.gridType == 4 ? 32 : 16)];
         
         [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(weakSelf.boxView.mas_height).multipliedBy(0.23);
+            make.width.height.equalTo(weakSelf.boxView.mas_height).multipliedBy(0.23 * 2);
             make.centerX.equalTo(weakSelf.boxView);
             make.centerY.equalTo(weakSelf.boxView).multipliedBy(0.5);
         }];
@@ -216,7 +216,7 @@
     }
     
     [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(weakSelf.boxView.mas_height).multipliedBy(0.41);
+        make.width.height.equalTo(weakSelf.boxView.mas_height).multipliedBy(0.41 * 2);
         make.centerX.equalTo(weakSelf.boxView);
         make.centerY.equalTo(weakSelf.boxView).multipliedBy(0.75);
     }];
@@ -248,15 +248,10 @@
 - (void)setMoneyModel:(DBHInformationForMoneyConditionModelData *)moneyModel {
     _moneyModel = moneyModel;
     
-    self.currentPriceLabel.hidden = YES;
-    self.maxPriceLabel.text = [NSString stringWithFormat:@"当前价格：%@USD", _moneyModel.priceUsd];
-    self.minPriceLabel.text = [NSString stringWithFormat:@"24H涨幅：%.2lf%%", _moneyModel.percentChange24h];
-    self.gainLabel.hidden = YES;
-    
-//    self.currentPriceLabel.text = @"当前价格：0.96USD";
-//    self.maxPriceLabel.text = @"24H最高价格：0.97USD";
-//    self.minPriceLabel.text = @"24H最低价格：0.96USD";
-//    self.gainLabel.text = @"24H涨幅：-0.02%";
+    self.currentPriceLabel.text = [NSString stringWithFormat:@"当前价格：$%@", _moneyModel.price];
+    self.maxPriceLabel.text = [NSString stringWithFormat:@"24H最高价格：$%@", _moneyModel.maxPrice24];
+    self.minPriceLabel.text = [NSString stringWithFormat:@"24H最低价格：$%@", _moneyModel.minPrice24];
+    self.gainLabel.text = [NSString stringWithFormat:@"24H涨幅：%@%%", _moneyModel.change24];
 }
 
 - (UIView *)boxView {
@@ -328,6 +323,7 @@
         _currentPriceLabel = [[UILabel alloc] init];
         _currentPriceLabel.hidden = YES;
         _currentPriceLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(8)];
+        _currentPriceLabel.text = @"当前价格：NAN";
         _currentPriceLabel.textColor = [UIColor whiteColor];
     }
     return _currentPriceLabel;
@@ -337,6 +333,7 @@
         _maxPriceLabel = [[UILabel alloc] init];
         _maxPriceLabel.hidden = YES;
         _maxPriceLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(8)];
+        _maxPriceLabel.text = @"24H最高价格：NAN";
         _maxPriceLabel.textColor = [UIColor whiteColor];
     }
     return _maxPriceLabel;
@@ -346,6 +343,7 @@
         _minPriceLabel = [[UILabel alloc] init];
         _minPriceLabel.hidden = YES;
         _minPriceLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(8)];
+        _minPriceLabel.text = @"24H最低价格：NAN";
         _minPriceLabel.textColor = [UIColor whiteColor];
     }
     return _minPriceLabel;
@@ -355,6 +353,7 @@
         _gainLabel = [[UILabel alloc] init];
         _gainLabel.hidden = YES;
         _gainLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(8)];
+        _gainLabel.text = @"24H涨幅：NAN";
         _gainLabel.textColor = [UIColor whiteColor];
     }
     return _gainLabel;

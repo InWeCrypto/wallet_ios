@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) WalletTypeModel * model;
 @property (nonatomic, strong) UnichainETHWallet * wallet;
+@property (nonatomic, strong) NeomobileWallet *neoWallet;
 @property (nonatomic, copy) NSString * address;
 
 @end

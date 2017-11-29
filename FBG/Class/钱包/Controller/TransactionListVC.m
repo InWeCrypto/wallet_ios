@@ -15,6 +15,7 @@
 #import "ConfirmationTransferVC.h"
 #import "WalletOrderModel.h"
 #import "TransactionInfoVC.h"
+#import "DBHNEOTransferVC.h"
 
 @interface TransactionListVC () <UITableViewDelegate, UITableViewDataSource, ScanVCDelegate>
 
@@ -54,10 +55,30 @@
     [self.view addSubview:self.transferButton];
     [self.view addSubview:self.receivablesButton];
     
+    WEAKSELF
+    [self.coustromTableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view);
+        make.centerX.equalTo(weakSelf.view);
+        make.top.equalTo(weakSelf.view);
+        make.bottom.equalTo(weakSelf.transferButton.mas_top);
+    }];
+    [self.transferButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view).multipliedBy(0.5);
+        make.height.offset(AUTOLAYOUTSIZE(55));
+        make.left.bottom.equalTo(weakSelf.view);
+    }];
+    [self.receivablesButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(weakSelf.transferButton);
+        make.right.bottom.equalTo(weakSelf.view);
+    }];
+    
     if (self.tokenModel)
     {
-        
-        [self.headerView.headImage sdsetImageWithURL:self.tokenModel.icon placeholderImage:Default_General_Image];
+        if ([self.tokenModel.flag isEqualToString:@"NEO"] || [self.tokenModel.flag isEqualToString:@"Gas"]) {
+            self.headerView.headImage.image = [UIImage imageNamed:self.tokenModel.icon];
+        } else {
+            [self.headerView.headImage sdsetImageWithURL:self.tokenModel.icon placeholderImage:Default_General_Image];
+        }
         [self loadBanlaceData];
     }
     else
@@ -109,7 +130,7 @@
 {
     //10s 请求一次接口
     [self loadMaxblockNumber];
-//    [self loadBanlaceData];
+    [self loadBanlaceData];
 }
 
 - (void)appHasGoneInForeground:(NSNotification *)notification
@@ -141,21 +162,42 @@
         if (self.tokenModel)
         {
             //代币
-            TransferVC * vc = [[TransferVC alloc] init];
-            vc.model = self.model;
-            vc.tokenModel = self.tokenModel;
-            vc.banlacePrice = _banlacePrice;
-            vc.walletBanlacePrice = self.WalletbanlacePrice;
-            vc.defaultGasNum = self.tokenModel.gas;
-            [self.navigationController pushViewController:vc animated:YES];
+            if (self.model.category_id == 2) {
+                // NEO钱包转账
+                DBHNEOTransferVC * vc = [[DBHNEOTransferVC alloc] init];
+                vc.model = self.model;
+                vc.tokenModel = self.tokenModel;
+                vc.banlacePrice = _banlacePrice;
+                vc.walletBanlacePrice = self.WalletbanlacePrice;
+                vc.defaultGasNum = self.tokenModel.gas;
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                // ETH钱包转账
+                TransferVC * vc = [[TransferVC alloc] init];
+                vc.model = self.model;
+                vc.tokenModel = self.tokenModel;
+                vc.banlacePrice = _banlacePrice;
+                vc.walletBanlacePrice = self.WalletbanlacePrice;
+                vc.defaultGasNum = self.tokenModel.gas;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
         }
         else
         {
-            //ETH
-            TransferVC * vc = [[TransferVC alloc] init];
-            vc.model = self.model;
-            vc.banlacePrice = self.banlacePrice;
-            [self.navigationController pushViewController:vc animated:YES];
+            //转账
+            if (self.model.category_id == 2) {
+                // NEO钱包转账
+                DBHNEOTransferVC * vc = [[DBHNEOTransferVC alloc] init];
+                vc.model = self.model;
+                vc.banlacePrice = self.banlacePrice;
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                // ETH钱包转账
+                TransferVC * vc = [[TransferVC alloc] init];
+                vc.model = self.model;
+                vc.banlacePrice = self.banlacePrice;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
         }
     }
     
@@ -202,30 +244,63 @@
 
 - (void)loadBanlaceData
 {
-    //代币余额
-    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-    [dic setObject:self.model.address forKey:@"address"];
-    [dic setObject:self.tokenModel.address forKey:@"contract"];
-    
-    [PPNetworkHelper POST:@"extend/balanceOf" parameters:dic hudString:@"加载中..." success:^(id responseObject)
-     {
-         NSString * price = [[responseObject objectForKey:@"value"] substringFromIndex:2];
-         self.banlacePrice = [NSString stringWithFormat:@"%.4f",[[NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:price] secend:@"1000000000000000000" value:4] floatValue]];
-         
-         self.headerView.priceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
-         if ([UserSignData share].user.walletUnitType == 1)
+    if ([self.tokenModel.flag isEqualToString:@"NEO"] || [self.tokenModel.flag isEqualToString:@"Gas"]) {
+        // NEO Gas
+        //代币余额
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"https://app.inwecrypto.com/api/conversion/%d", self.model.id] parameters:nil hudString:nil success:^(id responseObject)
          {
-             self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈￥%.2f",[[NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:self.tokenModel.price_cny value:2] floatValue]];
-         }
-         else
+             NSDictionary *record = responseObject[@"record"];
+             NSString *neoPriceForCny = record[@"cap"][@"price_cny"];
+             NSString *neoPriceForUsd = record[@"cap"][@"price_usd"];
+             NSArray *gny = record[@"gnt"];
+             NSDictionary *gas = gny.firstObject;
+             NSString *gasPriceForCny = gas[@"cap"][@"price_cny"];
+             NSString *gasPriceForUsd = gas[@"cap"][@"price_usd"];
+             NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
+             NSString *gasNumber = [NSString stringWithFormat:@"%@", gas[@"balance"]];
+             NSString *price = [self.tokenModel.flag isEqualToString:@"NEO"] ? neoNumber : gasNumber;
+             NSString *price_cny = [self.tokenModel.flag isEqualToString:@"NEO"] ? neoPriceForCny : gasPriceForCny;
+             NSString *price_usd = [self.tokenModel.flag isEqualToString:@"NEO"] ? neoPriceForUsd : gasPriceForUsd;
+             
+             self.headerView.priceLB.text = [NSString stringWithFormat:@"%.4f", [price floatValue]];
+             if ([UserSignData share].user.walletUnitType == 1)
+             {
+                 self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈￥%.2f",[[NSString DecimalFuncWithOperatorType:2 first:price secend:price_cny value:2] floatValue]];
+             }
+             else
+             {
+                 self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈$%.2f",[[NSString DecimalFuncWithOperatorType:2 first:price secend:price_usd value:2] floatValue]];
+             }
+         }failure:^(NSString *error)
          {
-             self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈$%.2f",[[NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:self.tokenModel.price_usd value:2] floatValue]];
-         }
-         
-     } failure:^(NSString *error)
-     {
-         [LCProgressHUD showFailure:error];
-     }];
+             [LCProgressHUD showFailure:error];
+         }];
+    } else {
+        //代币余额
+        NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+        [dic setObject:self.model.address forKey:@"address"];
+        [dic setObject:self.tokenModel.address forKey:@"contract"];
+        
+        [PPNetworkHelper POST:@"extend/balanceOf" parameters:dic hudString:@"加载中..." success:^(id responseObject)
+         {
+             NSString * price = [[responseObject objectForKey:@"value"] substringFromIndex:2];
+             self.banlacePrice = [NSString stringWithFormat:@"%.4f",[[NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:price] secend:@"1000000000000000000" value:4] floatValue]];
+             
+             self.headerView.priceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
+             if ([UserSignData share].user.walletUnitType == 1)
+             {
+                 self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈￥%.2f",[[NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:self.tokenModel.price_cny value:2] floatValue]];
+             }
+             else
+             {
+                 self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈$%.2f",[[NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:self.tokenModel.price_usd value:2] floatValue]];
+             }
+             
+         } failure:^(NSString *error)
+         {
+             [LCProgressHUD showFailure:error];
+         }];
+    }
     
 }
 
@@ -259,48 +334,101 @@
      {
          self.maxBlockNumber = [NSString stringWithFormat:@"%@",[NSString numberHexString:[[responseObject objectForKey:@"value"] substringFromIndex:2]]];
          
-         NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-         [parametersDic setObject:@(self.model.id) forKey:@"wallet_id"];
-         [parametersDic setObject:self.tokenModel ? self.tokenModel.name : self.model.category_name forKey:@"flag"];
-         
-         //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
-         [PPNetworkHelper GET:@"wallet-order" parameters:parametersDic hudString:nil success:^(id responseObject)
-          {
-              if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
-              {
-                  [self.dataSource removeAllObjects];
-                  for (NSDictionary * dic in [responseObject objectForKey:@"list"])
-                  {
-                      WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
-                      model.maxBlockNumber = self.maxBlockNumber;
-                      model.minBlockNumber = self.minBlockNumber;
-                      if ([model.pay_address isEqualToString:self.model.address])
-                      {
-                          //热钱包 eth
-                          //转账
-                          model.isReceivables = NO;
-                      }
-                      else
-                      {
-                          //收款
-                          model.isReceivables = YES;
-                      }
-                      [self.dataSource addObject:model];
-                  }
-                  [self.coustromTableView reloadData];
-              }
-              [self endRefreshing];
-          } failure:^(NSString *error)
-          {
-              [self endRefreshing];
-              [LCProgressHUD showFailure:error];
-          }];
+         if (self.model.category_id == 2) {
+             [self loadNeoData];
+         } else {
+             [self loadOtherData];
+         }
          
      } failure:^(NSString *error)
      {
      }];
 }
-
+- (void)loadOtherData {
+    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+    [parametersDic setObject:@(self.model.id) forKey:@"wallet_id"];
+    [parametersDic setObject:self.tokenModel ? self.tokenModel.name : self.model.category_name forKey:@"flag"];
+    
+    //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
+    [PPNetworkHelper GET:@"wallet-order" parameters:parametersDic hudString:nil success:^(id responseObject)
+     {
+         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
+         {
+             [self.dataSource removeAllObjects];
+             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+             {
+                 WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
+                 model.maxBlockNumber = self.maxBlockNumber;
+                 model.minBlockNumber = self.minBlockNumber;
+                 if ([model.pay_address isEqualToString:self.model.address])
+                 {
+                     //热钱包 eth
+                     //转账
+                     model.isReceivables = NO;
+                 }
+                 else
+                 {
+                     //收款
+                     model.isReceivables = YES;
+                 }
+                 [self.dataSource addObject:model];
+             }
+             [self.coustromTableView reloadData];
+         }
+         [self endRefreshing];
+     } failure:^(NSString *error)
+     {
+         [self endRefreshing];
+         [LCProgressHUD showFailure:error];
+     }];
+}
+- (void)loadNeoData {
+    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+    [parametersDic setObject:@(self.model.id) forKey:@"wallet_id"];
+    [parametersDic setObject:@"NEO" forKey:@"flag"];
+    [parametersDic setObject:[self.tokenModel.flag isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7" forKey:@"asset_id"];
+    
+    //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
+    [PPNetworkHelper GET:@"wallet-order" parameters:parametersDic hudString:nil success:^(id responseObject)
+     {
+         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
+         {
+             [self.dataSource removeAllObjects];
+             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+             {
+                 WalletOrderModel * model = [[WalletOrderModel alloc] init];
+                 model.trade_no = dic[@"tx"];
+                 model.created_at = dic[@"createTime"];
+                 model.fee = dic[@"value"];
+                 model.flag = @"NEO";
+                 model.maxBlockNumber = self.maxBlockNumber;
+                 model.minBlockNumber = self.minBlockNumber;
+                 model.pay_address = dic[@"from"];
+                 model.receive_address = dic[@"to"];
+                 model.finished_at = dic[@"confirmTime"];
+                 model.trade_no = dic[@"tx"];
+                 if ([dic[@"from"] isEqualToString:self.model.address])
+                 {
+                     //热钱包 eth
+                     //转账
+                     model.isReceivables = NO;
+                 }
+                 else
+                 {
+                     //收款
+                     model.isReceivables = YES;
+                 }
+                 [self.dataSource addObject:model];
+             }
+             [self.coustromTableView reloadData];
+         }
+         [self endRefreshing];
+     } failure:^(NSString *error)
+     {
+         [self endRefreshing];
+         [LCProgressHUD showFailure:error];
+     }];
+}
 
 #pragma mark - Deletate/DataSource (相关代理)
 
@@ -405,7 +533,7 @@
     if (!_headerView)
     {
         _headerView = [TransactionListHeaderView loadViewFromXIB];
-        _headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 230);
+        _headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(260));
     }
     return _headerView;
 }

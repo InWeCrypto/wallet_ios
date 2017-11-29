@@ -46,6 +46,8 @@
 
 + (BOOL)isAdress:(NSString *)adress;
 
++ (BOOL)isNEOAdress:(NSString *)adress;
+
 // 16进制 转10进制
 + (NSString *)numberHexString:(NSString *)aHexString;
 

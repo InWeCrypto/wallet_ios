@@ -10,11 +10,13 @@
 
 #import "SDCycleScrollView.h"
 
-#import "DBHInformationForRoastingChartCollectionList.h"
+#import "DBHInformationForRoastingChartCollectionModelList.h"
 
 @interface DBHInformationForRoastingChartCollectionViewCell ()<SDCycleScrollViewDelegate>
 
 @property (nonatomic, strong) SDCycleScrollView *cycleScrollView;
+
+@property (nonatomic, copy) ClickRoastingChartBlock clickRoastingChartBlock;
 
 @end
 
@@ -46,7 +48,12 @@
  点击图片回调
  */
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
-    
+    self.clickRoastingChartBlock(index);
+}
+
+#pragma mark ------ Public Methods ------
+- (void)clickRoastingChartBlock:(ClickRoastingChartBlock)clickRoastingChartBlock {
+    self.clickRoastingChartBlock = clickRoastingChartBlock;
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -54,8 +61,14 @@
     _dataSource = dataSource;
     
     NSMutableArray *imageUrlArray = [NSMutableArray array];
-    for (DBHInformationForRoastingChartCollectionList *model in _dataSource) {
-        [imageUrlArray addObject:[NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.img]];
+    for (DBHInformationForRoastingChartCollectionModelList *model in _dataSource) {
+        NSString *url;
+        if ([model.img containsString:@"http"]) {
+            url = model.img;
+        } else {
+            url = [NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.img];
+        }
+        [imageUrlArray addObject:url];
     }
     
     self.cycleScrollView.imageURLStringsGroup = imageUrlArray;

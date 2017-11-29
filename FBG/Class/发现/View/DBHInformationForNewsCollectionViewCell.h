@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^ClickMoreButtonBlock)();
+typedef void(^ClickNewsBlock)(NSString *url);
 
 @interface DBHInformationForNewsCollectionViewCell : UICollectionViewCell
 
@@ -21,5 +22,10 @@ typedef void(^ClickMoreButtonBlock)();
  点击更多回调
  */
 - (void)clickMoreButtonBlock:(ClickMoreButtonBlock)clickMoreButtonBlock;
+
+/**
+ 点击新闻回调
+ */
+- (void)clickNewsBlock:(ClickNewsBlock)clickNewsBlock;
 
 @end

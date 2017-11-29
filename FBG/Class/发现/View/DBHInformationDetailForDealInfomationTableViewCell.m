@@ -55,10 +55,10 @@
     [self.contentView addSubview:self.volumeValueLabel];
     [self.contentView addSubview:self.changeLabel];
     [self.contentView addSubview:self.changeValueLabel];
-//    [self.contentView addSubview:self.maxLabel];
-//    [self.contentView addSubview:self.maxValueLabel];
-//    [self.contentView addSubview:self.minLabel];
-//    [self.contentView addSubview:self.minValueLabel];
+    [self.contentView addSubview:self.maxLabel];
+    [self.contentView addSubview:self.maxValueLabel];
+    [self.contentView addSubview:self.minLabel];
+    [self.contentView addSubview:self.minValueLabel];
     
     WEAKSELF
     [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -92,32 +92,31 @@
     }];
     [self.changeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.currentPriceLabel);
-        make.bottom.offset(- AUTOLAYOUTSIZE(39));
-//        make.bottom.equalTo(weakSelf.maxLabel.mas_top).offset(- AUTOLAYOUTSIZE(18));
+        make.bottom.equalTo(weakSelf.maxLabel.mas_top).offset(- AUTOLAYOUTSIZE(18));
     }];
     [self.changeValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.currentPriceValueLabel);
         make.left.equalTo(weakSelf.currentPriceValueLabel);
         make.centerY.equalTo(weakSelf.changeLabel);
     }];
-//    [self.maxLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(weakSelf.currentPriceLabel);
-//        make.bottom.equalTo(weakSelf.minLabel.mas_top).offset(- AUTOLAYOUTSIZE(18));
-//    }];
-//    [self.maxValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-//        make.width.equalTo(weakSelf.currentPriceValueLabel);
-//        make.left.equalTo(weakSelf.currentPriceValueLabel);
-//        make.centerY.equalTo(weakSelf.maxLabel);
-//    }];
-//    [self.minLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(weakSelf.currentPriceLabel);
-//        make.bottom.offset(- AUTOLAYOUTSIZE(39));
-//    }];
-//    [self.minValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-//        make.width.equalTo(weakSelf.currentPriceValueLabel);
-//        make.left.equalTo(weakSelf.currentPriceValueLabel);
-//        make.centerY.equalTo(weakSelf.minLabel);
-//    }];
+    [self.maxLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.currentPriceLabel);
+        make.bottom.equalTo(weakSelf.minLabel.mas_top).offset(- AUTOLAYOUTSIZE(18));
+    }];
+    [self.maxValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.currentPriceValueLabel);
+        make.left.equalTo(weakSelf.currentPriceValueLabel);
+        make.centerY.equalTo(weakSelf.maxLabel);
+    }];
+    [self.minLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.currentPriceLabel);
+        make.bottom.offset(- AUTOLAYOUTSIZE(39));
+    }];
+    [self.minValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.currentPriceValueLabel);
+        make.left.equalTo(weakSelf.currentPriceValueLabel);
+        make.centerY.equalTo(weakSelf.minLabel);
+    }];
 }
 
 #pragma mark ------ Data ------
@@ -150,19 +149,19 @@
  */
 - (void)refreshData {
     if (self.moneyPriceModel) {
-        self.currentPriceValueLabel.text = [NSString stringWithFormat:@"$%@", self.moneyPriceModel.priceUsd];
-        self.volumeValueLabel.text = self.moneyPriceModel.volumeUsd;
-        self.changeValueLabel.text = [NSString stringWithFormat:@"%@%%", self.moneyPriceModel.percentChange24h];
-//        self.maxValueLabel.text = @"0.94818362";
-//        self.minValueLabel.text = @"0.94818362";
+        self.currentPriceValueLabel.text = [NSString stringWithFormat:@"$%@", self.moneyPriceModel.price];
+        self.volumeValueLabel.text = [NSString stringWithFormat:@"%.2lf", self.moneyPriceModel.volume];
+        self.changeValueLabel.text = [NSString stringWithFormat:@"%.2lf%%", self.moneyPriceModel.change24h];
+        self.maxValueLabel.text = self.moneyPriceModel.maxPrice24h;
+        self.minValueLabel.text = self.moneyPriceModel.minPrice24h;
         
-        self.changeValueLabel.textColor = self.moneyPriceModel.percentChange24h.floatValue >= 0 ? COLORFROM16(0xFF3232, 1) : COLORFROM16(0x22AC39, 1);
+        self.changeValueLabel.textColor = self.moneyPriceModel.change24h >= 0 ? COLORFROM16(0xFF3232, 1) : COLORFROM16(0x22AC39, 1);
     } else {
         self.currentPriceValueLabel.text = @"$0.00";
         self.volumeValueLabel.text = @"0.00";
         self.changeValueLabel.text = @"0.00%";
-//        self.maxValueLabel.text = @"0.00000000";
-//        self.minValueLabel.text = @"0.00000000";
+        self.maxValueLabel.text = @"0.00000000";
+        self.minValueLabel.text = @"0.00000000";
     }
 }
 

@@ -17,6 +17,8 @@ static NSString *const kDBHListViewCollectionViewCellIdentifier = @"kDBHListView
 @property (nonatomic, strong) UICollectionViewFlowLayout *layout;
 @property (nonatomic, strong) UICollectionView *collectionView;
 
+@property (nonatomic, copy) SelectedBlock selectedBlock;
+
 @end
 
 @implementation DBHListView
@@ -69,11 +71,21 @@ static NSString *const kDBHListViewCollectionViewCellIdentifier = @"kDBHListView
     currentSelectedCell.isSelected = YES;
     
     self.selectedIndex = indexPath.row;
+    
+    self.selectedBlock(self.selectedIndex);
 }
 
 #pragma mark ------ UICollectionViewDelegateFlowLayout ------
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake((SCREEN_WIDTH - AUTOLAYOUTSIZE(24.5)) / (self.titleArray.count < 3 ? self.titleArray.count : 3), AUTOLAYOUTSIZE(27));
+}
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(0, 0, 0, AUTOLAYOUTSIZE(0.5));
+    return UIEdgeInsetsMake(0, 0, 0, 0);
+}
+
+#pragma mark ------ Public Methods ------
+- (void)selectedBlock:(SelectedBlock)selectedBlock {
+    self.selectedBlock = selectedBlock;
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -88,12 +100,15 @@ static NSString *const kDBHListViewCollectionViewCellIdentifier = @"kDBHListView
         _layout = [[UICollectionViewFlowLayout alloc] init];
         _layout.itemSize = CGSizeMake(SCREEN_WIDTH - AUTOLAYOUTSIZE(24.5), AUTOLAYOUTSIZE(27));
         _layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        _layout.minimumInteritemSpacing = AUTOLAYOUTSIZE(0.5);
+        _layout.minimumLineSpacing = AUTOLAYOUTSIZE(0.5);
     }
     return _layout;
 }
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
+        _collectionView.showsHorizontalScrollIndicator = NO;
         
         _collectionView.dataSource = self;
         _collectionView.delegate = self;

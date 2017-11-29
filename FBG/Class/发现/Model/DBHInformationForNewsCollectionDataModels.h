@@ -1,8 +1,8 @@
 //
 //  DataModels.h
 //
-//  Created by   on 2017/11/15
+//  Created by   on 2017/11/22
 //  Copyright (c) 2017 __MyCompanyName__. All rights reserved.
 //
 
-#import "DBHInformationForNewsCollectionData.h"#import "DBHInformationForNewsCollectionDataBase.h"
+#import "DBHInformationForNewsCollectionModelData.h"#import "DBHInformationForNewsCollectionModelDataBase.h"

@@ -223,7 +223,13 @@ static NetworkStatus _status;
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    NSString * requestUrl= [[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"] stringByAppendingPathComponent:URL];
+    
+    NSString * requestUrl;
+    if ([URL containsString:@"http"]) {
+        requestUrl = URL;
+    } else {
+        requestUrl = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"] stringByAppendingPathComponent:URL];
+    }
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
     PPLog(@"❤️POST URL❤️ = %@",URL);
     PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
@@ -239,7 +245,11 @@ static NetworkStatus _status;
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
-        if ([[responseObject objectForKey:@"code"] intValue] == 4000)
+        if ([URL containsString:@"http"]) {
+            success([responseObject objectForKey:@"result"]);
+            return ;
+        }
+        if ([[responseObject objectForKey:@"code"] intValue] == 4000 || [URL containsString:@"http"])
         {
             success([responseObject objectForKey:@"data"]);
             PPLog(@"responseObject = %@",responseObject);
@@ -538,6 +548,8 @@ static NetworkStatus _status;
     if ([UserSignData share].user.token.length > 0)
     {
         [manager.requestSerializer setValue:[UserSignData share].user.token forHTTPHeaderField:@"ct"];
+        [manager.requestSerializer setValue:@"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" forHTTPHeaderField:@"neo-asset-id"];
+        [manager.requestSerializer setValue:@"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7" forHTTPHeaderField:@"neo-gas-asset-id"];
     }
     return manager;
 }

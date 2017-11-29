@@ -175,7 +175,6 @@
 		A807135C1F5563CE00C5B862 /* UploadToken.m in Sources */ = {isa = PBXBuildFile; fileRef = A807134B1F5563CE00C5B862 /* UploadToken.m */; };
 		A807135D1F5563CE00C5B862 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A807134D1F5563CE00C5B862 /* View+MASAdditions.m */; };
 		A807135E1F5563CE00C5B862 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A80713501F5563CE00C5B862 /* ViewController+MASAdditions.m */; };
-		A80F86001F67BDA400FDF4B1 /* Unichain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80F85FF1F67BDA400FDF4B1 /* Unichain.framework */; };
 		A81A5ABB1F3951FD0015CC0D /* QuotationInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A81A5ABA1F3951FD0015CC0D /* QuotationInfoModel.m */; };
 		A81A5AD41F3A05210015CC0D /* MessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A81A5AD21F3A05210015CC0D /* MessageVC.m */; };
 		A81A5AD51F3A05210015CC0D /* MessageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = A81A5AD31F3A05210015CC0D /* MessageVC.xib */; };
@@ -308,9 +307,15 @@
 		D509B5261FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D509B5251FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m */; };
 		D509B52B1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = D509B5281FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m */; };
 		D509B52C1FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = D509B5291FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m */; };
-		D521D98A1FBA9093009566EA /* DBHInformationForRoastingChartCollectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9831FBA9092009566EA /* DBHInformationForRoastingChartCollectionData.m */; };
-		D521D98B1FBA9093009566EA /* DBHInformationForRoastingChartCollectionList.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9841FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.m */; };
-		D521D98C1FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9861FBA9092009566EA /* DBHInformationForRoastingChartCollectionDataBase.m */; };
+		D50C300D1FC7ECDF005312C0 /* DBHMarketDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C300C1FC7ECDF005312C0 /* DBHMarketDetailViewController.swift */; };
+		D50C300F1FC7ED54005312C0 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = D50C300E1FC7ED53005312C0 /* data.json */; };
+		D50C30121FC80125005312C0 /* DBHMarketDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = D50C30111FC80125005312C0 /* DBHMarketDetailView.m */; };
+		D50DF7801FCBB66D00B74F6D /* DBHNEOTransferVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D50DF77E1FCBB66C00B74F6D /* DBHNEOTransferVC.xib */; };
+		D50DF7811FCBB66D00B74F6D /* DBHNEOTransferVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D50DF77F1FCBB66C00B74F6D /* DBHNEOTransferVC.m */; };
+		D51B7A031FC451E6001B363E /* DBHSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B7A021FC451E6001B363E /* DBHSearchView.m */; };
+		D51B7A061FC453D2001B363E /* DBHSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B7A051FC453D2001B363E /* DBHSearchTableViewCell.m */; };
+		D51B7A0C1FC45959001B363E /* DBHSearchModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B7A081FC45958001B363E /* DBHSearchModelDataBase.m */; };
+		D51B7A0D1FC45959001B363E /* DBHSearchModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B7A0A1FC45959001B363E /* DBHSearchModelData.m */; };
 		D521D9CD1FBA9CDE009566EA /* DBHMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9CC1FBA9CDE009566EA /* DBHMenu.m */; };
 		D521D9D01FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9CF1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m */; };
 		D521D9D31FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9D21FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m */; };
@@ -329,6 +334,10 @@
 		D521D9FB1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9FA1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m */; };
 		D521D9FE1FBB162A009566EA /* UIImage+ImageForColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9FD1FBB1629009566EA /* UIImage+ImageForColor.m */; };
 		D521DA011FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521DA001FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m */; };
+		D524EEB31FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEAC1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.m */; };
+		D524EEB41FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEAF1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m */; };
+		D524EEB51FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEB11FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m */; };
+		D524EEB81FC4359A00AC0DF9 /* DBHSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEB71FC4359A00AC0DF9 /* DBHSearchViewController.m */; };
 		D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */; };
 		D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */; };
 		D53D47061FBEBA8E00FDFB61 /* DBHAllInformationModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47021FBEBA8D00FDFB61 /* DBHAllInformationModelData.m */; };
@@ -351,6 +360,7 @@
 		D53D47551FBF125900FDFB61 /* DBHInformationDetailForInweModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47511FBF125800FDFB61 /* DBHInformationDetailForInweModelData.m */; };
 		D53D47561FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47541FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m */; };
 		D53D47591FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47571FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m */; };
+		D549CFAF1FC6A0D600D3ED82 /* DBHLookPrivateKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D549CFAE1FC6A0D600D3ED82 /* DBHLookPrivateKeyViewController.m */; };
 		D54F57EA1FBD325B00ED334E /* DBHEvaluatingIcoModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57E61FBD325A00ED334E /* DBHEvaluatingIcoModelData.m */; };
 		D54F57EB1FBD325B00ED334E /* DBHEvaluatingIcoModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57E71FBD325A00ED334E /* DBHEvaluatingIcoModelDataBase.m */; };
 		D54F57F41FBD826500ED334E /* DBHInformationForProjectCollectionModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57EF1FBD826400ED334E /* DBHInformationForProjectCollectionModelDataBase.m */; };
@@ -358,14 +368,28 @@
 		D54F57FF1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F57FE1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m */; };
 		D54F58021FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F58011FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.m */; };
 		D54F58051FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D54F58041FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m */; };
+		D55557D81FC9478400F0963B /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D55557D71FC9478300F0963B /* Neomobile.framework */; };
+		D55557DB1FC951F800F0963B /* DBHExtractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55557DA1FC951F800F0963B /* DBHExtractViewController.m */; };
+		D55557FF1FC975C100F0963B /* CHExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557F71FC975C100F0963B /* CHExtension.swift */; };
+		D55558001FC975C100F0963B /* CHAxisModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557F81FC975C100F0963B /* CHAxisModel.swift */; };
+		D55558011FC975C100F0963B /* CHSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557F91FC975C100F0963B /* CHSeries.swift */; };
+		D55558021FC975C100F0963B /* CHKLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FA1FC975C100F0963B /* CHKLineChart.swift */; };
+		D55558031FC975C100F0963B /* CHSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FB1FC975C100F0963B /* CHSection.swift */; };
+		D55558041FC975C100F0963B /* CHChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FC1FC975C100F0963B /* CHChartModel.swift */; };
+		D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FD1FC975C100F0963B /* CHKLineChartStyle.swift */; };
+		D55558061FC975C100F0963B /* CHChartAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */; };
 		D55CA9CB1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */; };
 		D55CA9CE1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */; };
-		D55CA9E21FBC1D16003C3DD1 /* DBHInformationForNewsCollectionDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9DE1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.m */; };
-		D55CA9E31FBC1D16003C3DD1 /* DBHInformationForNewsCollectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9DF1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionData.m */; };
+		D59BFC8C1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D59BFC891FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib */; };
+		D59BFC8D1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D59BFC8B1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m */; };
+		D59BFCA01FCD4D0C00C5C13B /* AddNeoWalletInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D59BFC9D1FCD4D0B00C5C13B /* AddNeoWalletInfoVC.xib */; };
+		D59BFCA11FCD4D0C00C5C13B /* AddNeoWalletInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D59BFC9E1FCD4D0C00C5C13B /* AddNeoWalletInfoVC.m */; };
 		D5B822011FC02131009A50E3 /* DBHInformationForMoneyConditionModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B821FE1FC02130009A50E3 /* DBHInformationForMoneyConditionModelData.m */; };
 		D5B822021FC02131009A50E3 /* DBHInformationForMoneyConditionModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B822001FC02131009A50E3 /* DBHInformationForMoneyConditionModelDataBase.m */; };
 		D5CF792F1FB1580F009CBCB2 /* DBHWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */; };
 		D5E2B0E81FB4771800A8FE59 /* DBHMyHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5E2B0E71FB4771700A8FE59 /* DBHMyHeaderView.m */; };
+		D5EBE0F71FC523A900CC66E1 /* DBHInformationForNewsCollectionModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D5EBE0F51FC523A900CC66E1 /* DBHInformationForNewsCollectionModelData.m */; };
+		D5EBE0F81FC523A900CC66E1 /* DBHInformationForNewsCollectionModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5EBE0F61FC523A900CC66E1 /* DBHInformationForNewsCollectionModelDataBase.m */; };
 		D5F679C91FB9452500EB773D /* DBHInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679C81FB9452500EB773D /* DBHInformationViewController.m */; };
 		D5F679CF1FB967D100EB773D /* DBHSearchBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679CE1FB967D100EB773D /* DBHSearchBarButton.m */; };
 		D5F679D21FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679D11FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.m */; };
@@ -698,7 +722,6 @@
 		A807134E1F5563CE00C5B862 /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
 		A807134F1F5563CE00C5B862 /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
 		A80713501F5563CE00C5B862 /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
-		A80F85FF1F67BDA400FDF4B1 /* Unichain.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Unichain.framework; sourceTree = "<group>"; };
 		A81A5AB91F3951FD0015CC0D /* QuotationInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuotationInfoModel.h; sourceTree = "<group>"; };
 		A81A5ABA1F3951FD0015CC0D /* QuotationInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuotationInfoModel.m; sourceTree = "<group>"; };
 		A81A5AD11F3A05210015CC0D /* MessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageVC.h; sourceTree = "<group>"; };
@@ -918,13 +941,23 @@
 		D509B5281FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectDetail.m; sourceTree = "<group>"; };
 		D509B5291FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelIcoDetail.m; sourceTree = "<group>"; };
 		D509B52A1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectDetail.h; sourceTree = "<group>"; };
-		D521D9831FBA9092009566EA /* DBHInformationForRoastingChartCollectionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionData.m; sourceTree = "<group>"; };
-		D521D9841FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionList.m; sourceTree = "<group>"; };
-		D521D9851FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionList.h; sourceTree = "<group>"; };
-		D521D9861FBA9092009566EA /* DBHInformationForRoastingChartCollectionDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionDataBase.m; sourceTree = "<group>"; };
-		D521D9871FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionDataModels.h; sourceTree = "<group>"; };
-		D521D9881FBA9093009566EA /* DBHInformationForRoastingChartCollectionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionData.h; sourceTree = "<group>"; };
-		D521D9891FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionDataBase.h; sourceTree = "<group>"; };
+		D50C300B1FC7ECDF005312C0 /* FBG-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBG-Bridging-Header.h"; sourceTree = "<group>"; };
+		D50C300C1FC7ECDF005312C0 /* DBHMarketDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHMarketDetailViewController.swift; sourceTree = "<group>"; };
+		D50C300E1FC7ED53005312C0 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
+		D50C30101FC80125005312C0 /* DBHMarketDetailView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailView.h; sourceTree = "<group>"; };
+		D50C30111FC80125005312C0 /* DBHMarketDetailView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailView.m; sourceTree = "<group>"; };
+		D50DF77D1FCBB66C00B74F6D /* DBHNEOTransferVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHNEOTransferVC.h; sourceTree = "<group>"; };
+		D50DF77E1FCBB66C00B74F6D /* DBHNEOTransferVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBHNEOTransferVC.xib; sourceTree = "<group>"; };
+		D50DF77F1FCBB66C00B74F6D /* DBHNEOTransferVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHNEOTransferVC.m; sourceTree = "<group>"; };
+		D51B7A011FC451E6001B363E /* DBHSearchView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchView.h; sourceTree = "<group>"; };
+		D51B7A021FC451E6001B363E /* DBHSearchView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSearchView.m; sourceTree = "<group>"; };
+		D51B7A041FC453D2001B363E /* DBHSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchTableViewCell.h; sourceTree = "<group>"; };
+		D51B7A051FC453D2001B363E /* DBHSearchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSearchTableViewCell.m; sourceTree = "<group>"; };
+		D51B7A071FC45958001B363E /* DBHSearchDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHSearchDataModels.h; sourceTree = "<group>"; };
+		D51B7A081FC45958001B363E /* DBHSearchModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHSearchModelDataBase.m; sourceTree = "<group>"; };
+		D51B7A091FC45959001B363E /* DBHSearchModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHSearchModelDataBase.h; sourceTree = "<group>"; };
+		D51B7A0A1FC45959001B363E /* DBHSearchModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHSearchModelData.m; sourceTree = "<group>"; };
+		D51B7A0B1FC45959001B363E /* DBHSearchModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHSearchModelData.h; sourceTree = "<group>"; };
 		D521D9CB1FBA9CDE009566EA /* DBHMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMenu.h; sourceTree = "<group>"; };
 		D521D9CC1FBA9CDE009566EA /* DBHMenu.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMenu.m; sourceTree = "<group>"; };
 		D521D9CE1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationTypeOneTableViewCell.h; sourceTree = "<group>"; };
@@ -962,6 +995,15 @@
 		D521D9FD1FBB1629009566EA /* UIImage+ImageForColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageForColor.m"; sourceTree = "<group>"; };
 		D521D9FF1FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForInweReportContentTableViewCell.h; sourceTree = "<group>"; };
 		D521DA001FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForInweReportContentTableViewCell.m; sourceTree = "<group>"; };
+		D524EEAC1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionModelData.m; sourceTree = "<group>"; };
+		D524EEAD1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionDataModels.h; sourceTree = "<group>"; };
+		D524EEAE1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionModelDataBase.h; sourceTree = "<group>"; };
+		D524EEAF1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionModelDataBase.m; sourceTree = "<group>"; };
+		D524EEB01FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionModelList.h; sourceTree = "<group>"; };
+		D524EEB11FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForRoastingChartCollectionModelList.m; sourceTree = "<group>"; };
+		D524EEB21FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionModelData.h; sourceTree = "<group>"; };
+		D524EEB61FC4359A00AC0DF9 /* DBHSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchViewController.h; sourceTree = "<group>"; };
+		D524EEB71FC4359A00AC0DF9 /* DBHSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSearchViewController.m; sourceTree = "<group>"; };
 		D53812E91FB07DAF009D681E /* DBHBrowserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserViewController.h; sourceTree = "<group>"; };
 		D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserViewController.m; sourceTree = "<group>"; };
 		D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserTableViewCell.h; sourceTree = "<group>"; };
@@ -1011,6 +1053,8 @@
 		D53D47541FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForInweModelDataBase.m; sourceTree = "<group>"; };
 		D53D47571FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailModelProjectWallets.m; sourceTree = "<group>"; };
 		D53D47581FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailModelProjectWallets.h; sourceTree = "<group>"; };
+		D549CFAD1FC6A0D600D3ED82 /* DBHLookPrivateKeyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHLookPrivateKeyViewController.h; sourceTree = "<group>"; };
+		D549CFAE1FC6A0D600D3ED82 /* DBHLookPrivateKeyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHLookPrivateKeyViewController.m; sourceTree = "<group>"; };
 		D54F57E51FBD325900ED334E /* DBHEvaluatingIcoModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHEvaluatingIcoModelData.h; sourceTree = "<group>"; };
 		D54F57E61FBD325A00ED334E /* DBHEvaluatingIcoModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHEvaluatingIcoModelData.m; sourceTree = "<group>"; };
 		D54F57E71FBD325A00ED334E /* DBHEvaluatingIcoModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHEvaluatingIcoModelDataBase.m; sourceTree = "<group>"; };
@@ -1027,15 +1071,27 @@
 		D54F58011FBDBC6600ED334E /* DBHInformationDetailForExplorerTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForExplorerTableViewCell.m; sourceTree = "<group>"; };
 		D54F58031FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForWalletCollectionViewCell.h; sourceTree = "<group>"; };
 		D54F58041FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForWalletCollectionViewCell.m; sourceTree = "<group>"; };
+		D55557D71FC9478300F0963B /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
+		D55557D91FC951F800F0963B /* DBHExtractViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHExtractViewController.h; sourceTree = "<group>"; };
+		D55557DA1FC951F800F0963B /* DBHExtractViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHExtractViewController.m; sourceTree = "<group>"; };
+		D55557F71FC975C100F0963B /* CHExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHExtension.swift; sourceTree = "<group>"; };
+		D55557F81FC975C100F0963B /* CHAxisModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHAxisModel.swift; sourceTree = "<group>"; };
+		D55557F91FC975C100F0963B /* CHSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHSeries.swift; sourceTree = "<group>"; };
+		D55557FA1FC975C100F0963B /* CHKLineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHKLineChart.swift; sourceTree = "<group>"; };
+		D55557FB1FC975C100F0963B /* CHSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHSection.swift; sourceTree = "<group>"; };
+		D55557FC1FC975C100F0963B /* CHChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHChartModel.swift; sourceTree = "<group>"; };
+		D55557FD1FC975C100F0963B /* CHKLineChartStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHKLineChartStyle.swift; sourceTree = "<group>"; };
+		D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHChartAlgorithm.swift; sourceTree = "<group>"; };
 		D55CA9C91FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForCrowdfundingContentTableViewCell.h; sourceTree = "<group>"; };
 		D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForCrowdfundingContentTableViewCell.m; sourceTree = "<group>"; };
 		D55CA9CC1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForIcoFinePrintTableViewCell.h; sourceTree = "<group>"; };
 		D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForIcoFinePrintTableViewCell.m; sourceTree = "<group>"; };
-		D55CA9DD1FBC1D14003C3DD1 /* DBHInformationForNewsCollectionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionData.h; sourceTree = "<group>"; };
-		D55CA9DE1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForNewsCollectionDataBase.m; sourceTree = "<group>"; };
-		D55CA9DF1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForNewsCollectionData.m; sourceTree = "<group>"; };
-		D55CA9E01FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionDataModels.h; sourceTree = "<group>"; };
-		D55CA9E11FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionDataBase.h; sourceTree = "<group>"; };
+		D59BFC891FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddNeoOtherWalletInfoVC.xib; sourceTree = "<group>"; };
+		D59BFC8A1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNeoOtherWalletInfoVC.h; sourceTree = "<group>"; };
+		D59BFC8B1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNeoOtherWalletInfoVC.m; sourceTree = "<group>"; };
+		D59BFC9D1FCD4D0B00C5C13B /* AddNeoWalletInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddNeoWalletInfoVC.xib; sourceTree = "<group>"; };
+		D59BFC9E1FCD4D0C00C5C13B /* AddNeoWalletInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNeoWalletInfoVC.m; sourceTree = "<group>"; };
+		D59BFC9F1FCD4D0C00C5C13B /* AddNeoWalletInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNeoWalletInfoVC.h; sourceTree = "<group>"; };
 		D5B821FC1FC0212F009A50E3 /* DBHInformationForMoneyConditionModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForMoneyConditionModelData.h; sourceTree = "<group>"; };
 		D5B821FD1FC02130009A50E3 /* DBHInformationForMoneyConditionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForMoneyConditionDataModels.h; sourceTree = "<group>"; };
 		D5B821FE1FC02130009A50E3 /* DBHInformationForMoneyConditionModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForMoneyConditionModelData.m; sourceTree = "<group>"; };
@@ -1045,6 +1101,11 @@
 		D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWebViewController.m; sourceTree = "<group>"; };
 		D5E2B0E61FB4771700A8FE59 /* DBHMyHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMyHeaderView.h; sourceTree = "<group>"; };
 		D5E2B0E71FB4771700A8FE59 /* DBHMyHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMyHeaderView.m; sourceTree = "<group>"; };
+		D5EBE0F21FC523A800CC66E1 /* DBHInformationForNewsCollectionModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionModelDataBase.h; sourceTree = "<group>"; };
+		D5EBE0F31FC523A800CC66E1 /* DBHInformationForNewsCollectionModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionModelData.h; sourceTree = "<group>"; };
+		D5EBE0F41FC523A800CC66E1 /* DBHInformationForNewsCollectionDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForNewsCollectionDataModels.h; sourceTree = "<group>"; };
+		D5EBE0F51FC523A900CC66E1 /* DBHInformationForNewsCollectionModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForNewsCollectionModelData.m; sourceTree = "<group>"; };
+		D5EBE0F61FC523A900CC66E1 /* DBHInformationForNewsCollectionModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationForNewsCollectionModelDataBase.m; sourceTree = "<group>"; };
 		D5F679C71FB9452500EB773D /* DBHInformationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationViewController.h; sourceTree = "<group>"; };
 		D5F679C81FB9452500EB773D /* DBHInformationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationViewController.m; sourceTree = "<group>"; };
 		D5F679CD1FB967D100EB773D /* DBHSearchBarButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchBarButton.h; sourceTree = "<group>"; };
@@ -1079,7 +1140,7 @@
 			files = (
 				A8016B561F4197B7003848CD /* libresolv.tbd in Frameworks */,
 				A85A01C71F36EE44002F0141 /* Security.framework in Frameworks */,
-				A80F86001F67BDA400FDF4B1 /* Unichain.framework in Frameworks */,
+				D55557D81FC9478400F0963B /* Neomobile.framework in Frameworks */,
 				A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */,
 				A84475A41F32E50A003C7BDB /* libc++.tbd in Frameworks */,
 				A84475A21F32E502003C7BDB /* libz.tbd in Frameworks */,
@@ -1252,10 +1313,11 @@
 		0F0CFE1B1F15F92300476A86 /* OtherTool */ = {
 			isa = PBXGroup;
 			children = (
+				D55557F61FC975C100F0963B /* CHKLineChart */,
+				D55557D71FC9478300F0963B /* Neomobile.framework */,
 				A88A787F1F6992E90058094C /* SGQRCode */,
 				A88A78791F694BB30058094C /* JKBigDecimal.h */,
 				A88A787A1F694BB30058094C /* JKBigDecimal.m */,
-				A80F85FF1F67BDA400FDF4B1 /* Unichain.framework */,
 				A85F8A961F59408800340D49 /* YsLabel */,
 				A8DC9B471F585F13006984D4 /* EBTAttributeLinkClickLabel */,
 				A8FEACAF1F56553000C2F9AF /* OneSDK */,
@@ -1361,6 +1423,15 @@
 		0F1AFC9F1F1A556500BA81EF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				D59BFC9F1FCD4D0C00C5C13B /* AddNeoWalletInfoVC.h */,
+				D59BFC9E1FCD4D0C00C5C13B /* AddNeoWalletInfoVC.m */,
+				D59BFC9D1FCD4D0B00C5C13B /* AddNeoWalletInfoVC.xib */,
+				D59BFC8A1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.h */,
+				D59BFC8B1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m */,
+				D59BFC891FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib */,
+				D50DF77D1FCBB66C00B74F6D /* DBHNEOTransferVC.h */,
+				D50DF77F1FCBB66C00B74F6D /* DBHNEOTransferVC.m */,
+				D50DF77E1FCBB66C00B74F6D /* DBHNEOTransferVC.xib */,
 				0F1AFCA01F1A556500BA81EF /* WalletHomeVC.h */,
 				0F1AFCA11F1A556500BA81EF /* WalletHomeVC.m */,
 				A81A5AD11F3A05210015CC0D /* MessageVC.h */,
@@ -1425,6 +1496,10 @@
 				0FB9DD101F1F8D57005CEA39 /* CodeWalletInfoVC.h */,
 				0FB9DD111F1F8D57005CEA39 /* CodeWalletInfoVC.m */,
 				0FB9DD121F1F8D57005CEA39 /* CodeWalletInfoVC.xib */,
+				D549CFAD1FC6A0D600D3ED82 /* DBHLookPrivateKeyViewController.h */,
+				D549CFAE1FC6A0D600D3ED82 /* DBHLookPrivateKeyViewController.m */,
+				D55557D91FC951F800F0963B /* DBHExtractViewController.h */,
+				D55557DA1FC951F800F0963B /* DBHExtractViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1780,6 +1855,23 @@
 		A85A01BC1F36B521002F0141 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D5EBE0F41FC523A800CC66E1 /* DBHInformationForNewsCollectionDataModels.h */,
+				D5EBE0F31FC523A800CC66E1 /* DBHInformationForNewsCollectionModelData.h */,
+				D5EBE0F51FC523A900CC66E1 /* DBHInformationForNewsCollectionModelData.m */,
+				D5EBE0F21FC523A800CC66E1 /* DBHInformationForNewsCollectionModelDataBase.h */,
+				D5EBE0F61FC523A900CC66E1 /* DBHInformationForNewsCollectionModelDataBase.m */,
+				D51B7A071FC45958001B363E /* DBHSearchDataModels.h */,
+				D51B7A0B1FC45959001B363E /* DBHSearchModelData.h */,
+				D51B7A0A1FC45959001B363E /* DBHSearchModelData.m */,
+				D51B7A091FC45959001B363E /* DBHSearchModelDataBase.h */,
+				D51B7A081FC45958001B363E /* DBHSearchModelDataBase.m */,
+				D524EEAD1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionDataModels.h */,
+				D524EEB21FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.h */,
+				D524EEAC1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.m */,
+				D524EEAE1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.h */,
+				D524EEAF1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m */,
+				D524EEB01FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.h */,
+				D524EEB11FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m */,
 				D5B821FD1FC02130009A50E3 /* DBHInformationForMoneyConditionDataModels.h */,
 				D5B821FC1FC0212F009A50E3 /* DBHInformationForMoneyConditionModelData.h */,
 				D5B821FE1FC02130009A50E3 /* DBHInformationForMoneyConditionModelData.m */,
@@ -1836,18 +1928,6 @@
 				D54F57E61FBD325A00ED334E /* DBHEvaluatingIcoModelData.m */,
 				D54F57E91FBD325B00ED334E /* DBHEvaluatingIcoModelDataBase.h */,
 				D54F57E71FBD325A00ED334E /* DBHEvaluatingIcoModelDataBase.m */,
-				D55CA9DD1FBC1D14003C3DD1 /* DBHInformationForNewsCollectionData.h */,
-				D55CA9DF1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionData.m */,
-				D55CA9E11FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.h */,
-				D55CA9DE1FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataBase.m */,
-				D55CA9E01FBC1D15003C3DD1 /* DBHInformationForNewsCollectionDataModels.h */,
-				D521D9881FBA9093009566EA /* DBHInformationForRoastingChartCollectionData.h */,
-				D521D9831FBA9092009566EA /* DBHInformationForRoastingChartCollectionData.m */,
-				D521D9891FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataBase.h */,
-				D521D9861FBA9092009566EA /* DBHInformationForRoastingChartCollectionDataBase.m */,
-				D521D9871FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataModels.h */,
-				D521D9851FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.h */,
-				D521D9841FBA9092009566EA /* DBHInformationForRoastingChartCollectionList.m */,
 				A85A01BD1F36B547002F0141 /* FindBannerModel.h */,
 				A85A01BE1F36B547002F0141 /* FindBannerModel.m */,
 				A85A01C01F36B554002F0141 /* FindIcoModel.h */,
@@ -1949,6 +2029,8 @@
 				D5F679EC1FB9BE3B00EB773D /* DBHAllInformationViewController.m */,
 				D5F679EE1FB9BE5100EB773D /* DBHEvaluatingIcoViewController.h */,
 				D5F679EF1FB9BE5100EB773D /* DBHEvaluatingIcoViewController.m */,
+				D524EEB61FC4359A00AC0DF9 /* DBHSearchViewController.h */,
+				D524EEB71FC4359A00AC0DF9 /* DBHSearchViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1967,6 +2049,8 @@
 				A8CD773B1F32449400005027 /* ICOCell.xib */,
 				D5F679CD1FB967D100EB773D /* DBHSearchBarButton.h */,
 				D5F679CE1FB967D100EB773D /* DBHSearchBarButton.m */,
+				D51B7A011FC451E6001B363E /* DBHSearchView.h */,
+				D51B7A021FC451E6001B363E /* DBHSearchView.m */,
 				D5F679D01FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.h */,
 				D5F679D11FB96E6200EB773D /* DBHInformationForRoastingChartCollectionViewCell.m */,
 				D5F679D31FB96E7D00EB773D /* DBHInformationForNewsCollectionViewCell.h */,
@@ -2023,6 +2107,8 @@
 				D53D47421FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.m */,
 				D509B5241FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.h */,
 				D509B5251FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m */,
+				D51B7A041FC453D2001B363E /* DBHSearchTableViewCell.h */,
+				D51B7A051FC453D2001B363E /* DBHSearchTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2059,6 +2145,9 @@
 				A8B2AAB31F3CB3EC0047A626 /* EditRemindVC.h */,
 				A8B2AAB41F3CB3EC0047A626 /* EditRemindVC.m */,
 				A8B2AAB51F3CB3EC0047A626 /* EditRemindVC.xib */,
+				D50C300C1FC7ECDF005312C0 /* DBHMarketDetailViewController.swift */,
+				D50C300E1FC7ED53005312C0 /* data.json */,
+				D50C300B1FC7ECDF005312C0 /* FBG-Bridging-Header.h */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2078,6 +2167,8 @@
 				A8CD77551F32449400005027 /* RemindCell.h */,
 				A8CD77561F32449400005027 /* RemindCell.m */,
 				A8CD77571F32449400005027 /* RemindCell.xib */,
+				D50C30101FC80125005312C0 /* DBHMarketDetailView.h */,
+				D50C30111FC80125005312C0 /* DBHMarketDetailView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2177,6 +2268,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D55557F61FC975C100F0963B /* CHKLineChart */ = {
+			isa = PBXGroup;
+			children = (
+				D55557F71FC975C100F0963B /* CHExtension.swift */,
+				D55557F81FC975C100F0963B /* CHAxisModel.swift */,
+				D55557F91FC975C100F0963B /* CHSeries.swift */,
+				D55557FA1FC975C100F0963B /* CHKLineChart.swift */,
+				D55557FB1FC975C100F0963B /* CHSection.swift */,
+				D55557FC1FC975C100F0963B /* CHChartModel.swift */,
+				D55557FD1FC975C100F0963B /* CHKLineChartStyle.swift */,
+				D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */,
+			);
+			path = CHKLineChart;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2249,6 +2355,7 @@
 					0F0CFDE11F15E54100476A86 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = A586DWSV4P;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -2311,6 +2418,7 @@
 				A85A01B51F35D0CD002F0141 /* MonetaryUnitCell.xib in Resources */,
 				0FAC29091F2F7C4A009B3EC9 /* AAJQueryLibrary.js in Resources */,
 				A855ADBD1F3C62EE00E10B03 /* C-_Users_U.gif in Resources */,
+				D59BFCA01FCD4D0C00C5C13B /* AddNeoWalletInfoVC.xib in Resources */,
 				A8B2AAB71F3CB3EC0047A626 /* EditRemindVC.xib in Resources */,
 				0FB9DD191F1F9517005CEA39 /* TransferVC.xib in Resources */,
 				A807131A1F55509800C5B862 /* PackupsWordsVC.xib in Resources */,
@@ -2336,6 +2444,7 @@
 				0FB9DD141F1F8D57005CEA39 /* CodeWalletInfoVC.xib in Resources */,
 				A81A5AF11F3AE6E70015CC0D /* AddWalletChoseTypeCell.xib in Resources */,
 				0FDD5F291F2D672300228CE0 /* PassWordView.xib in Resources */,
+				D50DF7801FCBB66D00B74F6D /* DBHNEOTransferVC.xib in Resources */,
 				0FDD5F3F1F2DE0D400228CE0 /* AlertView.xib in Resources */,
 				0F1AFCBC1F1A64BE00BA81EF /* WalletLeiftView.xib in Resources */,
 				0FD2A8631F2A38AF00C210D3 /* AddOtherWalletInfoVC.xib in Resources */,
@@ -2373,9 +2482,11 @@
 				A84475881F32BE0E003C7BDB /* ICOTranSuccesVC.xib in Resources */,
 				0FAC29081F2F7C4A009B3EC9 /* AAHighchartsMore.js in Resources */,
 				A8CD77671F32449400005027 /* RemindVC.xib in Resources */,
+				D50C300F1FC7ED54005312C0 /* data.json in Resources */,
 				A8B2AAB21F3CB3B10047A626 /* AddRemindVC.xib in Resources */,
 				A8A818501F44849B00FFF088 /* ChoseCell.xib in Resources */,
 				A8AAFBCE1F3EF6BD00724FF6 /* PayPriceView.xib in Resources */,
+				D59BFC8C1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib in Resources */,
 				A8B4DA751F61705D00FC8EC7 /* LaunchScreen.storyboard in Resources */,
 				0FC3B0B01F278D000030F9AC /* WalletLeiftCell.xib in Resources */,
 				0FB8DFF91F262D28003D1BF9 /* ICOListCell.xib in Resources */,
@@ -2435,6 +2546,7 @@
 				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/SDCycleScrollView/SDCycleScrollView.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TTTAttributedLabel/TTTAttributedLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/YUSegment/YUSegment.framework",
 				"${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework",
@@ -2452,6 +2564,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCycleScrollView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTTAttributedLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YUSegment.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCache.framework",
@@ -2486,16 +2599,17 @@
 				D521D9FB1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m in Sources */,
 				0FAC291A1F2F7C4A009B3EC9 /* AAPlotOptions.m in Sources */,
 				A8F275411F429A910035B5B8 /* RelationCapMinModel.m in Sources */,
+				D55558011FC975C100F0963B /* CHSeries.swift in Sources */,
 				A85A01C51F36BB70002F0141 /* FindArticleModel.m in Sources */,
 				D53D47151FBED42C00FDFB61 /* DBHInformationDetailModelProjectMarkets.m in Sources */,
 				0F1AFCA41F1A556500BA81EF /* WalletHomeVC.m in Sources */,
 				D53D47361FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.m in Sources */,
 				D55CA9CE1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m in Sources */,
 				A81A5AF71F3AFD3C0015CC0D /* PDKeyChain.m in Sources */,
-				D521D98B1FBA9093009566EA /* DBHInformationForRoastingChartCollectionList.m in Sources */,
 				A80713561F5563CE00C5B862 /* MASViewAttribute.m in Sources */,
 				0FE4741A1F28E4DA009E1DF8 /* AddEthOrBtcVC.m in Sources */,
 				A807135A1F5563CE00C5B862 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				D55558061FC975C100F0963B /* CHChartAlgorithm.swift in Sources */,
 				A8AAFBE31F3FFB0E00724FF6 /* WalletOrderModel.m in Sources */,
 				0FDCACB61F20FAEF0090D12A /* TransactionInfoVC.m in Sources */,
 				0F0CFE581F161F4C00476A86 /* ZFTabBarViewController.m in Sources */,
@@ -2505,6 +2619,7 @@
 				D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */,
 				A84475B51F332317003C7BDB /* ModifyNicknameVC.m in Sources */,
 				D521D9F41FBAF0F5009566EA /* DBHInformationDetailForMoreTableViewCell.m in Sources */,
+				D50C30121FC80125005312C0 /* DBHMarketDetailView.m in Sources */,
 				A8AAFBE21F3FFB0E00724FF6 /* WalletLeftListModel.m in Sources */,
 				A8016B4C1F4146B3003848CD /* TokenWalletInfoVC.m in Sources */,
 				0FAC291E1F2F7C4A009B3EC9 /* AAStyle.m in Sources */,
@@ -2536,22 +2651,20 @@
 				0FAC29131F2F7C4A009B3EC9 /* AALegend.m in Sources */,
 				D5B822011FC02131009A50E3 /* DBHInformationForMoneyConditionModelData.m in Sources */,
 				0FAC29221F2F7C4A009B3EC9 /* AAXAxis.m in Sources */,
-				D521D98A1FBA9093009566EA /* DBHInformationForRoastingChartCollectionData.m in Sources */,
 				0FB9DD221F1FA76E005CEA39 /* ReceivablesVC.m in Sources */,
 				D5FB40221FB691FF00070D03 /* DBHMyTableViewCell.m in Sources */,
 				D53D47561FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m in Sources */,
 				0FC281911F23891700A1E57B /* MyTVC.m in Sources */,
-				D521D98C1FBA9093009566EA /* DBHInformationForRoastingChartCollectionDataBase.m in Sources */,
 				A8CD778B1F32457D00005027 /* TAAnimatedDotView.m in Sources */,
 				0FAC29001F2F7C4A009B3EC9 /* AAChartView.m in Sources */,
 				0FAC291C1F2F7C4A009B3EC9 /* AASeriesElement.m in Sources */,
 				D54F57F41FBD826500ED334E /* DBHInformationForProjectCollectionModelDataBase.m in Sources */,
+				D59BFC8D1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m in Sources */,
 				A807135D1F5563CE00C5B862 /* View+MASAdditions.m in Sources */,
 				0F1AFCBA1F1A64B600BA81EF /* WalletLeiftView.m in Sources */,
 				A81A5ABB1F3951FD0015CC0D /* QuotationInfoModel.m in Sources */,
 				D521D9CD1FBA9CDE009566EA /* DBHMenu.m in Sources */,
 				0FDD5F3A1F2DD6E800228CE0 /* YCXMenuItem.m in Sources */,
-				D55CA9E31FBC1D16003C3DD1 /* DBHInformationForNewsCollectionData.m in Sources */,
 				0F0CFE3D1F15FC2A00476A86 /* UIButton+SDSetImage.m in Sources */,
 				D521D9D61FBACEE2009566EA /* NSString+Height.m in Sources */,
 				A8CD77611F32449400005027 /* EditQuotesVC.m in Sources */,
@@ -2568,6 +2681,7 @@
 				A81A5AE61F3AD6E10015CC0D /* RemindModel.m in Sources */,
 				D521D9D01FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m in Sources */,
 				D521D9DF1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.m in Sources */,
+				D51B7A0C1FC45959001B363E /* DBHSearchModelDataBase.m in Sources */,
 				A8CD778C1F32457D00005027 /* TADotView.m in Sources */,
 				0FB9DD1D1F1FA03F005CEA39 /* ConfirmationTransferVC.m in Sources */,
 				A8CD775E1F32449400005027 /* ICOCell.m in Sources */,
@@ -2584,24 +2698,29 @@
 				A833037B1F34782D000C08B4 /* MailMdel.m in Sources */,
 				D5FB401F1FB6901600070D03 /* DBHMyViewController.m in Sources */,
 				A855ADC11F3C859700E10B03 /* WalletNameVC.m in Sources */,
+				D524EEB41FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m in Sources */,
 				A80713521F5563CE00C5B862 /* MASCompositeConstraint.m in Sources */,
 				0FC2819C1F23991900A1E57B /* MailListVC.m in Sources */,
 				A807135C1F5563CE00C5B862 /* UploadToken.m in Sources */,
+				D55558001FC975C100F0963B /* CHAxisModel.swift in Sources */,
 				0FAC291D1F2F7C4A009B3EC9 /* AASpline.m in Sources */,
 				0FAC29021F2F7C4A009B3EC9 /* AAOptionsConstructor.m in Sources */,
 				D521D9F11FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.m in Sources */,
 				A8DB29031F405CBA007A8A24 /* SystemConvert.m in Sources */,
 				0FDCAC9F1F20E7010090D12A /* AddTokenCell.m in Sources */,
+				D5EBE0F81FC523A900CC66E1 /* DBHInformationForNewsCollectionModelDataBase.m in Sources */,
 				A8CD77651F32449400005027 /* QuotationVC.m in Sources */,
 				0FAC29161F2F7C4A009B3EC9 /* AAOptions.m in Sources */,
 				A8CD776A1F32449400005027 /* EditQuotesCell.m in Sources */,
 				D509B52B1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m in Sources */,
 				A8CD778F1F32457D00005027 /* SDCycleScrollView.m in Sources */,
+				D55558041FC975C100F0963B /* CHChartModel.swift in Sources */,
 				A81A5AE01F3A115B0015CC0D /* KKWebView.m in Sources */,
 				A85A01BB1F35D9FE002F0141 /* ICOOrderListModel.m in Sources */,
-				D55CA9E21FBC1D16003C3DD1 /* DBHInformationForNewsCollectionDataBase.m in Sources */,
 				A81A5AD41F3A05210015CC0D /* MessageVC.m in Sources */,
 				D5E2B0E81FB4771800A8FE59 /* DBHMyHeaderView.m in Sources */,
+				D55558031FC975C100F0963B /* CHSection.swift in Sources */,
+				D524EEB51FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m in Sources */,
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
 				A83303751F346F24000C08B4 /* UIScrollView+EmptyDataSet.m in Sources */,
 				A8CD77791F32453300005027 /* SymbolsValueFormatter.m in Sources */,
@@ -2613,6 +2732,7 @@
 				D53D47401FBF065800FDFB61 /* DBHListView.m in Sources */,
 				A81A5AE91F3AD79C0015CC0D /* RemindRelationNotificationModel.m in Sources */,
 				A8823D301F4FD6F80092DF0F /* TransactionListVC.m in Sources */,
+				D51B7A0D1FC45959001B363E /* DBHSearchModelData.m in Sources */,
 				A8D510E61F43F861001DD9EE /* WalletHomeModel.m in Sources */,
 				A81A5AD81F3A07890015CC0D /* TowButtonAlertView.m in Sources */,
 				A807135E1F5563CE00C5B862 /* ViewController+MASAdditions.m in Sources */,
@@ -2638,6 +2758,7 @@
 				A8B2AAB61F3CB3EC0047A626 /* EditRemindVC.m in Sources */,
 				0F0CFE4A1F1602E000476A86 /* LCProgressHUD.m in Sources */,
 				A80713531F5563CE00C5B862 /* MASConstraint.m in Sources */,
+				D524EEB31FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.m in Sources */,
 				A8CD77631F32449400005027 /* QuotationInfoVC.m in Sources */,
 				D521D9E81FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.m in Sources */,
 				A88A788F1F6992E90058094C /* UIImage+ImageSize.m in Sources */,
@@ -2645,9 +2766,11 @@
 				0FAC290C1F2F7C4A009B3EC9 /* AAAreaspline.m in Sources */,
 				D521D9D91FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.m in Sources */,
 				D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */,
+				D5EBE0F71FC523A900CC66E1 /* DBHInformationForNewsCollectionModelData.m in Sources */,
 				A84475BA1F332742003C7BDB /* GenderSettingVC.m in Sources */,
 				A85F8A991F59408800340D49 /* YsLabel.m in Sources */,
 				D521D9FE1FBB162A009566EA /* UIImage+ImageForColor.m in Sources */,
+				D55557DB1FC951F800F0963B /* DBHExtractViewController.m in Sources */,
 				D54F57EB1FBD325B00ED334E /* DBHEvaluatingIcoModelDataBase.m in Sources */,
 				0FDCACAE1F20F7410090D12A /* TransactionCell.m in Sources */,
 				0FB8DFF81F262D28003D1BF9 /* ICOListCell.m in Sources */,
@@ -2693,8 +2816,11 @@
 				A8CD77601F32449400005027 /* AddQuotesVC.m in Sources */,
 				0FB9DD271F1FAB09005CEA39 /* ConfirmationReceivableVC.m in Sources */,
 				D54F57F51FBD826500ED334E /* DBHInformationForProjectCollectionModelData.m in Sources */,
+				D59BFCA11FCD4D0C00C5C13B /* AddNeoWalletInfoVC.m in Sources */,
 				A80713541F5563CE00C5B862 /* MASConstraintMaker.m in Sources */,
 				D509B5261FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m in Sources */,
+				D55558021FC975C100F0963B /* CHKLineChart.swift in Sources */,
+				D51B7A061FC453D2001B363E /* DBHSearchTableViewCell.m in Sources */,
 				0F0CFE4D1F1609E300476A86 /* CoustromViewController.m in Sources */,
 				0F0CFE331F15FB3F00476A86 /* NSString+Tool.m in Sources */,
 				0F0CFE301F15FB3F00476A86 /* NSDictionary+Tool.m in Sources */,
@@ -2713,8 +2839,11 @@
 				0F0CFE321F15FB3F00476A86 /* NSObject+Tool.m in Sources */,
 				D53D47551FBF125900FDFB61 /* DBHInformationDetailForInweModelData.m in Sources */,
 				0FE4741F1F28E940009E1DF8 /* AddWalletInfoVC.m in Sources */,
+				D51B7A031FC451E6001B363E /* DBHSearchView.m in Sources */,
 				0FAC29101F2F7C4A009B3EC9 /* AADataLabels.m in Sources */,
+				D50DF7811FCBB66D00B74F6D /* DBHNEOTransferVC.m in Sources */,
 				0FAC28FF1F2F7C4A009B3EC9 /* AAChartModel.m in Sources */,
+				D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */,
 				D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */,
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,
 				0FAE3CCF1F1CF78600BB343A /* WalletInfoVC.m in Sources */,
@@ -2730,6 +2859,7 @@
 				D53D474B1FBF0D7F00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.m in Sources */,
 				A81A5AF01F3AE6E70015CC0D /* AddWalletChoseTypeCell.m in Sources */,
 				A81A5AFB1F3B5A4C0015CC0D /* MessageCell.m in Sources */,
+				D524EEB81FC4359A00AC0DF9 /* DBHSearchViewController.m in Sources */,
 				0FC3B0AF1F278D000030F9AC /* WalletLeiftCell.m in Sources */,
 				A8823D391F4FE17E0092DF0F /* TransactionListCell.m in Sources */,
 				A85A01CA1F36F024002F0141 /* ICOListModel.m in Sources */,
@@ -2738,6 +2868,7 @@
 				0F0CFE3E1F15FC2A00476A86 /* UIImageView+SDSetImage.m in Sources */,
 				D53D47161FBED42C00FDFB61 /* DBHInformationDetailModelDataBase.m in Sources */,
 				D54F57FF1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m in Sources */,
+				D549CFAF1FC6A0D600D3ED82 /* DBHLookPrivateKeyViewController.m in Sources */,
 				D53D47351FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.m in Sources */,
 				0FE474241F28EBF0009E1DF8 /* AddWalletSucessVC.m in Sources */,
 				0F0CFDE71F15E54100476A86 /* main.m in Sources */,
@@ -2748,7 +2879,9 @@
 				0FAC29181F2F7C4A009B3EC9 /* AAPie.m in Sources */,
 				A8CD77581F32449400005027 /* FindVC.m in Sources */,
 				A88A78951F6992E90058094C /* SGQRCodeScanningView.m in Sources */,
+				D55557FF1FC975C100F0963B /* CHExtension.swift in Sources */,
 				A8CD776E1F32449400005027 /* RemindCell.m in Sources */,
+				D50C300D1FC7ECDF005312C0 /* DBHMarketDetailViewController.swift in Sources */,
 				D53D47431FBF06CC00FDFB61 /* DBHListViewCollectionViewCell.m in Sources */,
 				0FAC290B1F2F7C4A009B3EC9 /* AAArea.m in Sources */,
 				A88A78941F6992E90058094C /* SGQRCodeScanManager.m in Sources */,
@@ -2926,10 +3059,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Station and friends information technology co., LTD (A586DWSV4P)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = A586DWSV4P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2972,8 +3107,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dbcd962e-4aa2-44e1-a840-88535c52636c";
+				PROVISIONING_PROFILE = "289b0dd3-c8c4-42ea-9017-4811259b86f9";
 				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
+				SWIFT_OBJC_BRIDGING_HEADER = "FBG/Class/行情/Controller/FBG-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 			};
 			name = Debug;
@@ -2984,10 +3122,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Station and friends information technology co., LTD (A586DWSV4P)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = A586DWSV4P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3030,8 +3170,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dbcd962e-4aa2-44e1-a840-88535c52636c";
+				PROVISIONING_PROFILE = "289b0dd3-c8c4-42ea-9017-4811259b86f9";
 				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
+				SWIFT_OBJC_BRIDGING_HEADER = "FBG/Class/行情/Controller/FBG-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 			};
 			name = Release;
@@ -3039,6 +3181,7 @@
 		0F0CFE131F15E54100476A86 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 2YDNS3RJ6S;
 				INFOPLIST_FILE = FBGTests/Info.plist;
@@ -3052,6 +3195,7 @@
 		0F0CFE141F15E54100476A86 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 2YDNS3RJ6S;
 				INFOPLIST_FILE = FBGTests/Info.plist;
@@ -3065,6 +3209,7 @@
 		0F0CFE161F15E54100476A86 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 2YDNS3RJ6S;
 				INFOPLIST_FILE = FBGUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3077,6 +3222,7 @@
 		0F0CFE171F15E54100476A86 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 2YDNS3RJ6S;
 				INFOPLIST_FILE = FBGUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

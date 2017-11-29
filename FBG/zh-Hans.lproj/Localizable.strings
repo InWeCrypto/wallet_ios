@@ -95,6 +95,8 @@
 "Please keep in mind the following account security code, which is the effective way to retrieve the wallet, the wallet is once forgot to be able to retrieve account failure, please remember the security code and copied down, no longer appear this operation is not reversible and backup" = "请牢记下面的账户助记词，这是找回钱包的有效方式，一旦忘记则钱包无法找回，账户失效 ，此助记词请记好并抄录下来，此操作不可逆且备份后不会再出现";
 "I remember" = "我记好了";
 "You can't retrieve your wallet after you delete it. Please be careful" = "删除后无法找回钱包，请慎重";
+"Look Private Key" = "查看私钥";
+"Extract" = "提取";
 
 "Transfer wallet address" = "转账钱包地址";
 "Please enter a transfer address" = "请输入转账地址";
@@ -135,7 +137,7 @@
 "Add" = "添加";
 "Remind" = "提醒";
 "Edit" = "编辑";
-
+"Market Detail" = "行情详情";
 
 /*
  发现

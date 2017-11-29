@@ -161,7 +161,17 @@ yy-MM-dd HH:mm:ss
     return isMatch;
 }
 
-
++ (BOOL)isNEOAdress:(NSString *)adress
+{
+    if ([NSString isNulllWithObject:adress])
+    {
+        return NO;
+    }
+    NSString *regex = @"^[a-zA-Z0-9]{34}+$";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    BOOL isMatch = [predicate evaluateWithObject:adress];
+    return isMatch;
+}
 
 //正则匹配用户昵称2-12位
 + (BOOL)isNickName:(NSString *)nickName

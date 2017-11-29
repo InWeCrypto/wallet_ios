@@ -30,7 +30,12 @@
         model.balance = @"0.0000";
     }
     
-    [self.headerImage sdsetImageWithURL:model.icon placeholderImage:Default_General_Image];
+    self.headerImage.contentMode = UIViewContentModeCenter;
+    if ([model.icon containsString:@"NEO_"]) {
+        self.headerImage.image = [UIImage imageNamed:model.icon];
+    } else {
+        [self.headerImage sdsetImageWithURL:model.icon placeholderImage:Default_General_Image];
+    }
     self.titleLB.text = model.name;
 //    NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[model.balance substringFromIndex:2]] secend:@"1000000000000000000"];
     self.priceLB.text = [NSString stringWithFormat:@"%.4f",[model.balance floatValue]];

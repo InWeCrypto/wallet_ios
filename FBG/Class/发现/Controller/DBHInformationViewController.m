@@ -10,10 +10,12 @@
 
 #import "YCXMenu.h"
 
+#import "KKWebView.h"
 #import "DBHInformationDetailForDealViewController.h"
 #import "DBHInformationDetailForCrowdfundingViewController.h"
 #import "DBHAllInformationViewController.h"
 #import "DBHEvaluatingIcoViewController.h"
+#import "DBHSearchViewController.h"
 
 #import "DBHSearchBarButton.h"
 #import "DBHInformationForRoastingChartCollectionViewCell.h"
@@ -25,6 +27,8 @@
 #import "DBHInformationForProjectCollectionDataModels.h"
 #import "DBHInformationForMoneyConditionDataModels.h"
 
+#import "MJRefresh.h"
+
 static NSString * const kDBHInformationForRoastingChartCollectionViewCellIdentifier = @"kDBHInformationForRoastingChartCollectionViewCellIdentifier";
 static NSString * const kDBHInformationForNewsCollectionViewCellIdentifier = @"kDBHInformationForNewsCollectionViewCellIdentifier";
 static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = @"kDBHInformationForProjectCollectionViewCellIdentifier";
@@ -35,6 +39,7 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
 @property (nonatomic, strong) UICollectionViewFlowLayout *layout;
 @property (nonatomic, strong) UICollectionView *collectionView;
 
+@property (nonatomic, assign) NSInteger requestCount; // 请求数量
 @property (nonatomic, assign) BOOL isHideSearchBar; // 是否隐藏搜索栏
 @property (nonatomic, strong) NSMutableArray * items;
 @property (nonatomic, strong) NSMutableArray *roastingChartCollectionArray; // 轮播图数据
@@ -54,6 +59,7 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
     self.view.backgroundColor = [UIColor colorWithHexString:@"171C27"];
     
     [self setUI];
+    [self addRefresh];
     
     [self getRoastingChartData];
     [self getNewsData];
@@ -97,6 +103,21 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
             DBHInformationForRoastingChartCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kDBHInformationForRoastingChartCollectionViewCellIdentifier forIndexPath:indexPath];
             cell.dataSource = [self.roastingChartCollectionArray copy];
             
+            [cell clickRoastingChartBlock:^(NSInteger clickRoastingChartBlockIndex) {
+                // 点击轮播图回调
+                DBHInformationForRoastingChartCollectionModelList *model = weakSelf.roastingChartCollectionArray[clickRoastingChartBlockIndex];
+                
+                NSString *url;
+                if ([model.url containsString:@"http"]) {
+                    url = model.url;
+                } else {
+                    url = [NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url];
+                }
+                
+                KKWebView * vc = [[KKWebView alloc] initWithUrl:url];
+                [weakSelf.navigationController pushViewController:vc animated:YES];
+            }];
+            
             return cell;
         } else {
             DBHInformationForNewsCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kDBHInformationForNewsCollectionViewCellIdentifier forIndexPath:indexPath];
@@ -106,6 +127,11 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
                 // 所有资讯
                 DBHAllInformationViewController *allInformationViewController = [[DBHAllInformationViewController alloc] init];
                 [weakSelf.navigationController pushViewController:allInformationViewController animated:YES];
+            }];
+            [cell clickNewsBlock:^(NSString *url) {
+                // 点击新闻回调
+                KKWebView * vc = [[KKWebView alloc] initWithUrl:url];
+                [weakSelf.navigationController pushViewController:vc animated:YES];
             }];
             
             return cell;
@@ -134,7 +160,7 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section) {
         DBHInformationForProjectCollectionModelData *model = self.projectArray[indexPath.row];
-        if (model.type == 5) {
+        if (model.type == 5 || model.type == 6) {
             DBHInformationDetailForDealViewController *informationDetailForDealViewController = [[DBHInformationDetailForDealViewController alloc] init];
             informationDetailForDealViewController.projectModel = model;
             [self.navigationController pushViewController:informationDetailForDealViewController animated:YES];
@@ -208,14 +234,18 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
 - (void)getRoastingChartData {
     WEAKSELF
     [PPNetworkHelper GET:@"https://dev.inwecrypto.com/home/ad" parameters:nil hudString:@"" success:^(id responseObject) {
+        [weakSelf.roastingChartCollectionArray removeAllObjects];
         for (NSDictionary *dic in responseObject[@"list"]) {
-            DBHInformationForRoastingChartCollectionList *model = [DBHInformationForRoastingChartCollectionList modelObjectWithDictionary:dic];
+            DBHInformationForRoastingChartCollectionModelList *model = [DBHInformationForRoastingChartCollectionModelList modelObjectWithDictionary:dic];
             
             [weakSelf.roastingChartCollectionArray addObject:model];
         }
         
+        [weakSelf endRefresh];
+        
         [weakSelf.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
     } failure:^(NSString *error) {
+        [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
     }];
 }
@@ -225,14 +255,18 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
 - (void)getNewsData {
     WEAKSELF
     [PPNetworkHelper GET:@"https://dev.inwecrypto.com/home/news" parameters:nil hudString:@"" success:^(id responseObject) {
+        [weakSelf.newsArray removeAllObjects];
         for (NSDictionary *dic in responseObject) {
-            DBHInformationForNewsCollectionData *model = [DBHInformationForNewsCollectionData modelObjectWithDictionary:dic];
+            DBHInformationForNewsCollectionModelData *model = [DBHInformationForNewsCollectionModelData modelObjectWithDictionary:dic];
             
             [weakSelf.newsArray addObject:model];
         }
         
+        [weakSelf endRefresh];
+        
         [weakSelf.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]]];
     } failure:^(NSString *error) {
+        [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
     }];
 }
@@ -253,7 +287,7 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
             DBHInformationForProjectCollectionModelData *model = [DBHInformationForProjectCollectionModelData modelObjectWithDictionary:dic];
             
             if (model.gridType == 1) {
-                if (!tag) {
+                if (tag) {
                     [weakSelf.projectArray insertObject:model atIndex:tag];
                     [weakSelf.isBackSideArray insertObject:@"0" atIndex:tag];
                     tag = 0;
@@ -269,8 +303,11 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
             [weakSelf.moneyConditionArray addObject:@"0"];
         }
         
+        [weakSelf endRefresh];
+        
         [weakSelf.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
     } failure:^(NSString *error) {
+        [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
     }];
 }
@@ -338,13 +375,43 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
  搜索
  */
 - (void)respondsToSearchBarButton {
+    DBHSearchViewController *searchViewController = [[DBHSearchViewController alloc] init];
+    searchViewController.title = @"搜索项目";
+    [self.navigationController pushViewController:searchViewController animated:YES];
+}
+
+#pragma mark ------ Private Methods ------
+/**
+ 添加刷新
+ */
+- (void)addRefresh {
+    WEAKSELF
+    self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        weakSelf.requestCount = 0;
+        [weakSelf getRoastingChartData];
+        [weakSelf getNewsData];
+        [weakSelf getProjectData];
+    }];
+}
+/**
+ 结束刷新
+ */
+- (void)endRefresh {
+    self.requestCount += 1;
+    if (self.requestCount < 3) {
+        return;
+    }
     
+    if (self.collectionView.mj_header.refreshing) {
+        [self.collectionView.mj_header endRefreshing];
+    }
 }
 
 #pragma mark ------ Getters And Setters ------
 - (DBHSearchBarButton *)searchBarButton {
     if (!_searchBarButton) {
         _searchBarButton = [DBHSearchBarButton buttonWithType:UIButtonTypeCustom];
+        _searchBarButton.title = @"搜索项目";
         [_searchBarButton addTarget:self action:@selector(respondsToSearchBarButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _searchBarButton;

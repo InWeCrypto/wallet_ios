@@ -39,6 +39,7 @@ static NSString *const kDBHAllInformationTypeTwoTableViewCellIdentifier = @"kDBH
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self setUI];
+        [self addRefresh];
     }
     return self;
 }
@@ -127,6 +128,21 @@ static NSString *const kDBHAllInformationTypeTwoTableViewCellIdentifier = @"kDBH
 #pragma mark ------ Public Methods ------
 - (void)selectInweTypeBlock:(SelectInweTypeBlock)selectInweTypeBlock {
     self.selectInweTypeBlock = selectInweTypeBlock;
+}
+
+#pragma mark ------ Private Methods ------
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf endRefresh];
+        });
+    }];
+}
+- (void)endRefresh {
+    if (self.tableView.mj_header.refreshing) {
+        [self.tableView.mj_header endRefreshing];
+    }
 }
 
 #pragma mark ------ Getters And Setters ------

@@ -23,6 +23,8 @@
 #import "TransactionListVC.h"
 #import "MJRefresh.h"
 #import "PackupsWordsVC.h"
+#import "DBHNEOTransferVC.h"
+#import "DBHExtractViewController.h"
 
 @interface WalletInfoVC () <UITableViewDelegate, UITableViewDataSource, PassWordViewDelegate, AlertViewDelegate, UIGestureRecognizerDelegate>
 {
@@ -80,16 +82,16 @@
     
     self.dataSource = [[NSMutableArray alloc] init];
     
-    // 获取系统自带滑动手势的target对象
-    id target = self.navigationController.interactivePopGestureRecognizer.delegate;
-    // 创建全屏滑动手势，调用系统自带滑动手势的target的action方法
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:target action:@selector(handleNavigationTransition:)];
-    // 设置手势代理，拦截手势触发
-    pan.delegate = self;
-    // 给导航控制器的view添加全屏滑动手势
-    [self.headerView addGestureRecognizer:pan];
-    // 禁止使用系统自带的滑动手势
-    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+//    // 获取系统自带滑动手势的target对象
+//    id target = self.navigationController.interactivePopGestureRecognizer.delegate;
+//    // 创建全屏滑动手势，调用系统自带滑动手势的target的action方法
+//    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:target action:@selector(handleNavigationTransition:)];
+//    // 设置手势代理，拦截手势触发
+//    pan.delegate = self;
+//    // 给导航控制器的view添加全屏滑动手势
+//    [self.headerView addGestureRecognizer:pan];
+//    // 禁止使用系统自带的滑动手势
+//    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     [self panduan:nil];
 }
@@ -354,53 +356,112 @@
 
 - (void)loadData
 {
-    self.headerView.priceLB.text = @"0.00";
-    //用户已添加代币类型列表
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%d",self.model.id] parameters:nil hudString:nil success:^(id responseObject)
-     {
-         if ([[responseObject objectForKey:@"list"] count] > 0)
+    if (self.model.category_id == 2) {
+        // NEO钱包代币
+        //用户已添加代币类型列表
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"https://app.inwecrypto.com/api/conversion/%d", self.model.id] parameters:nil hudString:nil success:^(id responseObject)
          {
              [self.dataSource removeAllObjects];
-             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
-             {
-                 WalletInfoGntModel * model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
-                 model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
-                 model.address = [[dic objectForKey:@"gnt_category"] objectForKey:@"address"];
-                 model.symbol = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"symbol"];
-                 model.price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
-                 model.price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
-                 model.flag = [dic objectForKey:@"name"];
-                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-                 {
-                     model.balance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
-                 }
-                 else
-                 {
-                     model.balance = @"0.0000";
-                 }
-                 model.gas = [[[dic objectForKey:@"gnt_category"] objectForKey:@"gas"] intValue];
-                 
-                 if ([UserSignData share].user.walletUnitType == 1)
-                 {
-                     NSString * price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.price_cny value:2];
-                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price value:2] floatValue]];
-                 }
-                 else
-                 {
-                     NSString * price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.price_usd value:2];
-                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price value:2] floatValue]];
-                 }
-                 
-                 [self.dataSource addObject:model];
-             }
+             
+             CGFloat sum = 0;
+             NSDictionary *record = responseObject[@"record"];
+             NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
+             NSString *neoPriceForCny = record[@"cap"][@"price_cny"];
+             NSString *neoPriceForUsd = record[@"cap"][@"price_usd"];
+             WalletInfoGntModel * neoModel = [[WalletInfoGntModel alloc] init];
+             neoModel.address = record[@"address"];
+             neoModel.name = @"NEO";
+             neoModel.icon = @"NEO_add";
+             neoModel.balance = neoNumber;
+             neoModel.price_cny = neoPriceForCny;
+             neoModel.price_usd = neoPriceForUsd;
+             neoModel.flag = @"NEO";
+             sum += neoModel.price_cny.floatValue * neoNumber.floatValue;
+             
+             NSArray *gny = record[@"gnt"];
+             NSDictionary *gas = gny.firstObject;
+             NSString *gasPriceForCny = gas[@"cap"][@"price_cny"];
+             NSString *gasPriceForUsd = gas[@"cap"][@"price_usd"];
+             NSString *gasNumber = [NSString stringWithFormat:@"%@", gas[@"balance"]];
+             WalletInfoGntModel * gasModel = [[WalletInfoGntModel alloc] init];
+             gasModel.address = record[@"address"];
+             gasModel.name = @"Gas";
+             gasModel.icon = @"NEO_project_icon_Gas";
+             gasModel.balance = gasNumber;
+             gasModel.price_cny = gasPriceForCny;
+             gasModel.price_usd = gasPriceForUsd;
+             gasModel.flag = @"Gas";
+             sum += gasModel.price_cny.floatValue * gasNumber.floatValue;
+             
+             WalletInfoGntModel * canGasModel = [[WalletInfoGntModel alloc] init];
+             canGasModel.name = @"可提现Gas";
+             canGasModel.icon = @"NEO_project_icon_Gas";
+             canGasModel.balance = gas[@"available"];
+             canGasModel.price_cny = gasPriceForCny;
+             canGasModel.price_usd = gasPriceForUsd;
+             
+             [self.dataSource addObject:neoModel];
+             [self.dataSource addObject:gasModel];
+             [self.dataSource addObject:canGasModel];
+             
+             self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2lf", sum];
              [self.coustromTableView reloadData];
-         }
-         [self endRefreshing];
-     }failure:^(NSString *error)
-     {
-         [self endRefreshing];
-         [LCProgressHUD showFailure:error];
-     }];
+             [self endRefreshing];
+         }failure:^(NSString *error)
+         {
+             [self endRefreshing];
+             [LCProgressHUD showFailure:error];
+         }];
+    } else {
+        // ETH钱包代币
+        self.headerView.priceLB.text = @"0.00";
+        //用户已添加代币类型列表
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%d",self.model.id] parameters:nil hudString:nil success:^(id responseObject)
+         {
+             if ([[responseObject objectForKey:@"list"] count] > 0)
+             {
+                 [self.dataSource removeAllObjects];
+                 for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+                 {
+                     WalletInfoGntModel * model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
+                     model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
+                     model.address = [[dic objectForKey:@"gnt_category"] objectForKey:@"address"];
+                     model.symbol = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"symbol"];
+                     model.price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
+                     model.price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
+                     model.flag = [dic objectForKey:@"name"];
+                     if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                     {
+                         model.balance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                     }
+                     else
+                     {
+                         model.balance = @"0.0000";
+                     }
+                     model.gas = [[[dic objectForKey:@"gnt_category"] objectForKey:@"gas"] intValue];
+                     
+                     if ([UserSignData share].user.walletUnitType == 1)
+                     {
+                         NSString * price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.price_cny value:2];
+                         self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price value:2] floatValue]];
+                     }
+                     else
+                     {
+                         NSString * price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.price_usd value:2];
+                         self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price value:2] floatValue]];
+                     }
+                     
+                     [self.dataSource addObject:model];
+                 }
+                 [self.coustromTableView reloadData];
+             }
+             [self endRefreshing];
+         }failure:^(NSString *error)
+         {
+             [self endRefreshing];
+             [LCProgressHUD showFailure:error];
+         }];
+    }
     
     //获取账户余额
 //    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
@@ -417,44 +478,44 @@
 //         [LCProgressHUD showFailure:error];
 //     }];
     
-    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-    [parametersDic setObject:[@[@(self.model.id)] toJSONStringForArray] forKey:@"wallet_ids"];
-    
-    [PPNetworkHelper GET:@"conversion" parameters:parametersDic hudString:nil success:^(id responseObject)
-     {
-         if ([[responseObject objectForKey:@"list"] count] > 0)
-         {
-             
-             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
-             {
-                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-                 {
-                     self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
-                 }
-                 else
-                 {
-                     self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
-                 }
-                 self.headerView.ETHpriceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
-                 
-                 if ([UserSignData share].user.walletUnitType == 1)
-                 {
-                     NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_cny"] value:4];
-                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price_cny value:2] floatValue]];
-                     self.headerView.ETHcnyLB.text = [NSString stringWithFormat:@"≈￥%.2f",[price_cny floatValue]];
-                 }
-                 else
-                 {
-                     NSString * price_usd = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_usd"] value:4];
-                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price_usd value:2] floatValue]];
-                     self.headerView.ETHcnyLB.text = [NSString stringWithFormat:@"≈$%.2f",[price_usd floatValue]];
-                 }
-             }
-         }
-     } failure:^(NSString *error)
-     {
-         [LCProgressHUD showFailure:error];
-     }];
+//    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+//    [parametersDic setObject:[@[@(self.model.id)] toJSONStringForArray] forKey:@"wallet_ids"];
+//
+//    [PPNetworkHelper GET:@"conversion" parameters:parametersDic hudString:nil success:^(id responseObject)
+//     {
+//         if ([[responseObject objectForKey:@"list"] count] > 0)
+//         {
+//
+//             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+//             {
+//                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+//                 {
+//                     self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+//                 }
+//                 else
+//                 {
+//                     self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
+//                 }
+//                 self.headerView.ETHpriceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
+//
+//                 if ([UserSignData share].user.walletUnitType == 1)
+//                 {
+//                     NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_cny"] value:4];
+//                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price_cny value:2] floatValue]];
+//                     self.headerView.ETHcnyLB.text = [NSString stringWithFormat:@"≈￥%.2f",[price_cny floatValue]];
+//                 }
+//                 else
+//                 {
+//                     NSString * price_usd = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_usd"] value:4];
+//                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price_usd value:2] floatValue]];
+//                     self.headerView.ETHcnyLB.text = [NSString stringWithFormat:@"≈$%.2f",[price_usd floatValue]];
+//                 }
+//             }
+//         }
+//     } failure:^(NSString *error)
+//     {
+//         [LCProgressHUD showFailure:error];
+//     }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
@@ -523,183 +584,378 @@
 
 - (void)sureWithPassWord:(NSString *)passWord
 {
-    //确认删除支付密码
-    switch (_isitemsType)
-    {
-        case 1:
-        {
-            //备份助记词
-            
-            NSData * data = [PDKeyChain load:self.model.address];
-            [LCProgressHUD showLoading:@"验证中..."];
-            dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_async(globalQueue, ^
-                           {
-                               //子线程异步执行下载任务，防止主线程卡顿
-                               NSError * error;
-                               UnichainETHWallet * Wallet = UnichainOpenETHWallet(data,passWord,&error);
-                               
-                               dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                               //异步返回主线程，根据获取的数据，更新UI
-                               dispatch_async(mainQueue, ^
-                              {
-                                  if (!error)
-                                  {
-                                      //子线程异步执行下载任务，防止主线程卡顿
-                                      NSError * error;
-                                      NSString * mnemonic = [Wallet mnemonic:&error];
-                                      
-                                      dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                                      //异步返回主线程，根据获取的数据，更新UI
-                                      dispatch_async(mainQueue, ^
-                                                     {
-                                                         if (!error)
-                                                         {
-                                                             [LCProgressHUD hide];
-                                                             [self caneButtonClicked];
-                                                             
-                                                             PackupsWordsVC * vc = [[PackupsWordsVC alloc] init];
-                                                             vc.mnemonic = mnemonic;
-                                                             vc.model = self.model;
-                                                             [self.navigationController pushViewController:vc animated:YES];
-                                                             //                                                                             _isMnemonic = YES;
-                                                             //                                                                             self.alertView.alertContInfoLB.text = NSLocalizedString(@"Please keep in mind the following account security code, which is the effective way to retrieve the wallet, the wallet is once forgot to be able to retrieve account failure, please remember the security code and copied down, no longer appear this operation is not reversible and backup", nil);
-                                                             //                                                                             [self.alertView.alertSureButton setTitle:NSLocalizedString(@"I remember", nil) forState:UIControlStateNormal];
-                                                             //                                                                             self.alertView.alertTextView.text = mnemonic;
-                                                             //                                                                             self.alertView.alertTextView.userInteractionEnabled = NO;
-                                                             //                                                                             [self.alertView showWithView:nil];
-                                                             
-                                                         }
-                                                         else
-                                                         {
-                                                             [LCProgressHUD hide];
-                                                             [self caneButtonClicked];
-                                                             [LCProgressHUD showMessage:@"获取助记词失败，请稍后重试"];
-                                                         }
-                                                     });
-                                      
-                                  }
-                                  else
-                                  {
-                                      [LCProgressHUD hide];
-                                      [self caneButtonClicked];
-                                      [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
-                                  }
-                              });
-                               
-                               
-                           });
-            break;
-        }
-        case 2:
-        {
-            //备份keyStore
-            NSData * data = [PDKeyChain load:self.model.address];
-            [LCProgressHUD showLoading:@"验证中..."];
-            dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_async(globalQueue, ^
-                           {
-                               //子线程异步执行下载任务，防止主线程卡顿
-                               NSError * error;
-                               UnichainOpenETHWallet(data,passWord,&error);
-                               
-                               dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                               //异步返回主线程，根据获取的数据，更新UI
-                               dispatch_async(mainQueue, ^
-                                              {
-                                                  if (!error)
-                                                  {
-                                                      //要分享内容
-                                                      [LCProgressHUD hide];
-                                                      [self caneButtonClicked];
-                                                      NSString *result =[[ NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                      NSArray* activityItems = [[NSArray alloc] initWithObjects:result,nil];
-                                                      
-                                                      UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-                                                      //applicationActivities可以指定分享的应用，不指定为系统默认支持的
-                                                      
-                                                      kWeakSelf(activityVC)
-                                                      activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError)
+    switch (self.model.category_id) {
+        case 1: {
+            // ETH
+            //确认删除支付密码
+            switch (_isitemsType)
+            {
+                case 1:
+                {
+                    //备份助记词
+                    
+                    NSData * data = [PDKeyChain load:self.model.address];
+                    [LCProgressHUD showLoading:@"验证中..."];
+                    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                    dispatch_async(globalQueue, ^
+                                   {
+                                       //子线程异步执行下载任务，防止主线程卡顿
+                                       NSError * error;
+                                       UnichainETHWallet * Wallet = UnichainOpenETHWallet(data,passWord,&error);
+                                       
+                                       dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                       //异步返回主线程，根据获取的数据，更新UI
+                                       dispatch_async(mainQueue, ^
                                                       {
-                                                          if(completed)
+                                                          if (!error)
                                                           {
-                                                              NSLog(@"Share success");
-                                                              //本地记录备份了
-                                                              if ([NSString isNulllWithObject:[UserSignData share].user.walletIdsArray])
-                                                              {
-                                                                  [UserSignData share].user.walletIdsArray = [[NSMutableArray alloc] init];
-                                                              }
-                                                              if (![[UserSignData share].user.walletIdsArray containsObject:@(self.model.id)])
-                                                              {
-                                                                  [[UserSignData share].user.walletIdsArray addObject:@(self.model.id)];
-                                                                  [[UserSignData share] storageData:[UserSignData share].user];
-                                                              }
-                                                              self.headerView.typeLB.hidden = YES;
+                                                              //子线程异步执行下载任务，防止主线程卡顿
+                                                              NSError * error;
+                                                              NSString * mnemonic = [Wallet mnemonic:&error];
+                                                              
+                                                              dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                                              //异步返回主线程，根据获取的数据，更新UI
+                                                              dispatch_async(mainQueue, ^
+                                                                             {
+                                                                                 if (!error)
+                                                                                 {
+                                                                                     [LCProgressHUD hide];
+                                                                                     [self caneButtonClicked];
+                                                                                     
+                                                                                     PackupsWordsVC * vc = [[PackupsWordsVC alloc] init];
+                                                                                     vc.mnemonic = mnemonic;
+                                                                                     vc.model = self.model;
+                                                                                     [self.navigationController pushViewController:vc animated:YES];
+                                                                                     //                                                                             _isMnemonic = YES;
+                                                                                     //                                                                             self.alertView.alertContInfoLB.text = NSLocalizedString(@"Please keep in mind the following account security code, which is the effective way to retrieve the wallet, the wallet is once forgot to be able to retrieve account failure, please remember the security code and copied down, no longer appear this operation is not reversible and backup", nil);
+                                                                                     //                                                                             [self.alertView.alertSureButton setTitle:NSLocalizedString(@"I remember", nil) forState:UIControlStateNormal];
+                                                                                     //                                                                             self.alertView.alertTextView.text = mnemonic;
+                                                                                     //                                                                             self.alertView.alertTextView.userInteractionEnabled = NO;
+                                                                                     //                                                                             [self.alertView showWithView:nil];
+                                                                                     
+                                                                                 }
+                                                                                 else
+                                                                                 {
+                                                                                     [LCProgressHUD hide];
+                                                                                     [self caneButtonClicked];
+                                                                                     [LCProgressHUD showMessage:@"获取助记词失败，请稍后重试"];
+                                                                                 }
+                                                                             });
+                                                              
                                                           }
                                                           else
                                                           {
-                                                              NSLog(@"Cancel the share");
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
                                                           }
-                                                          [weakactivityVC dismissViewControllerAnimated:YES completion:nil];
-                                                      };
-                                                      [self presentViewController:activityVC animated:YES completion:nil];
-                                                  }
-                                                  else
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      [self caneButtonClicked];
-                                                      [LCProgressHUD showMessage:@"密码错误，请重新输入"];
-                                                  }
-                                              });
-                               
-                           });
+                                                      });
+                                       
+                                       
+                                   });
+                    break;
+                }
+                case 2:
+                {
+                    //备份keyStore
+                    NSData * data = [PDKeyChain load:self.model.address];
+                    [LCProgressHUD showLoading:@"验证中..."];
+                    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                    dispatch_async(globalQueue, ^
+                                   {
+                                       //子线程异步执行下载任务，防止主线程卡顿
+                                       NSError * error;
+                                       UnichainOpenETHWallet(data,passWord,&error);
+                                       
+                                       dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                       //异步返回主线程，根据获取的数据，更新UI
+                                       dispatch_async(mainQueue, ^
+                                                      {
+                                                          if (!error)
+                                                          {
+                                                              //要分享内容
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              NSString *result =[[ NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                              NSArray* activityItems = [[NSArray alloc] initWithObjects:result,nil];
+                                                              
+                                                              UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                                                              //applicationActivities可以指定分享的应用，不指定为系统默认支持的
+                                                              
+                                                              kWeakSelf(activityVC)
+                                                              activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError)
+                                                              {
+                                                                  if(completed)
+                                                                  {
+                                                                      NSLog(@"Share success");
+                                                                      //本地记录备份了
+                                                                      if ([NSString isNulllWithObject:[UserSignData share].user.walletIdsArray])
+                                                                      {
+                                                                          [UserSignData share].user.walletIdsArray = [[NSMutableArray alloc] init];
+                                                                      }
+                                                                      if (![[UserSignData share].user.walletIdsArray containsObject:@(self.model.id)])
+                                                                      {
+                                                                          [[UserSignData share].user.walletIdsArray addObject:@(self.model.id)];
+                                                                          [[UserSignData share] storageData:[UserSignData share].user];
+                                                                      }
+                                                                      self.headerView.typeLB.hidden = YES;
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      NSLog(@"Cancel the share");
+                                                                  }
+                                                                  [weakactivityVC dismissViewControllerAnimated:YES completion:nil];
+                                                              };
+                                                              [self presentViewController:activityVC animated:YES completion:nil];
+                                                          }
+                                                          else
+                                                          {
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              [LCProgressHUD showMessage:@"密码错误，请重新输入"];
+                                                          }
+                                                      });
+                                       
+                                   });
+                    break;
+                }
+                case 3:
+                {
+                    //删除
+                    NSData * data = [PDKeyChain load:self.model.address];
+                    [LCProgressHUD showLoading:@"验证中..."];
+                    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                    dispatch_async(globalQueue, ^
+                                   {
+                                       //子线程异步执行下载任务，防止主线程卡顿
+                                       NSError * error;
+                                       UnichainOpenETHWallet(data,passWord,&error);
+                                       
+                                       dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                       //异步返回主线程，根据获取的数据，更新UI
+                                       dispatch_async(mainQueue, ^
+                                                      {
+                                                          if (!error)
+                                                          {
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              
+                                                              [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
+                                                               {
+                                                                   [LCProgressHUD showSuccess:@"删除成功"];
+                                                                   [PDKeyChain delete:self.model.address];
+                                                                   [self caneButtonClicked];
+                                                                   [self.navigationController popViewControllerAnimated:YES];
+                                                                   
+                                                               } failure:^(NSString *error)
+                                                               {
+                                                                   [LCProgressHUD showFailure:error];
+                                                               }];
+                                                              
+                                                          }
+                                                          else
+                                                          {
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
+                                                          }
+                                                      });
+                                       
+                                   });
+                    break;
+                }
+                default:
+                    break;
+            }
+
             break;
         }
-        case 3:
-        {
-            //删除
-            NSData * data = [PDKeyChain load:self.model.address];
-            [LCProgressHUD showLoading:@"验证中..."];
-            dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_async(globalQueue, ^
-                           {
-                               //子线程异步执行下载任务，防止主线程卡顿
-                               NSError * error;
-                               UnichainOpenETHWallet(data,passWord,&error);
-                               
-                               dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                               //异步返回主线程，根据获取的数据，更新UI
-                               dispatch_async(mainQueue, ^
-                                              {
-                                                  if (!error)
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      [self caneButtonClicked];
-                                                      
-                                                      [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
-                                                       {
-                                                           [LCProgressHUD showSuccess:@"删除成功"];
-                                                           [PDKeyChain delete:self.model.address];
-                                                           [self caneButtonClicked];
-                                                           [self.navigationController popViewControllerAnimated:YES];
-                                                           
-                                                       } failure:^(NSString *error)
-                                                       {
-                                                           [LCProgressHUD showFailure:error];
-                                                       }];
-                                                       
-                                                  }
-                                                  else
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      [self caneButtonClicked];
-                                                      [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
-                                                  }
-                                              });
-                               
-                           });
+        case 2: {
+            // NEO
+            //确认删除支付密码
+            switch (_isitemsType)
+            {
+                case 1:
+                {
+                    //备份助记词
+                    
+                    NSString *data = [PDKeyChain load:self.model.address];
+                    [LCProgressHUD showLoading:@"验证中..."];
+                    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                    dispatch_async(globalQueue, ^
+                                   {
+                                       //子线程异步执行下载任务，防止主线程卡顿
+                                       NSError * error;
+                                       NeomobileWallet *Wallet = NeomobileFromKeyStore(data,passWord,&error);
+                                       
+                                       dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                       //异步返回主线程，根据获取的数据，更新UI
+                                       dispatch_async(mainQueue, ^
+                                                      {
+                                                          if (!error)
+                                                          {
+                                                              //子线程异步执行下载任务，防止主线程卡顿
+                                                              NSError * error;
+                                                              NSString * mnemonic = [Wallet mnemonic:&error];
+                                                              
+                                                              dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                                              //异步返回主线程，根据获取的数据，更新UI
+                                                              dispatch_async(mainQueue, ^
+                                                                             {
+                                                                                 if (!error)
+                                                                                 {
+                                                                                     [LCProgressHUD hide];
+                                                                                     [self caneButtonClicked];
+                                                                                     
+                                                                                     PackupsWordsVC * vc = [[PackupsWordsVC alloc] init];
+                                                                                     vc.mnemonic = mnemonic;
+                                                                                     vc.model = self.model;
+                                                                                     [self.navigationController pushViewController:vc animated:YES];
+                                                                                     //                                                                             _isMnemonic = YES;
+                                                                                     //                                                                             self.alertView.alertContInfoLB.text = NSLocalizedString(@"Please keep in mind the following account security code, which is the effective way to retrieve the wallet, the wallet is once forgot to be able to retrieve account failure, please remember the security code and copied down, no longer appear this operation is not reversible and backup", nil);
+                                                                                     //                                                                             [self.alertView.alertSureButton setTitle:NSLocalizedString(@"I remember", nil) forState:UIControlStateNormal];
+                                                                                     //                                                                             self.alertView.alertTextView.text = mnemonic;
+                                                                                     //                                                                             self.alertView.alertTextView.userInteractionEnabled = NO;
+                                                                                     //                                                                             [self.alertView showWithView:nil];
+                                                                                     
+                                                                                 }
+                                                                                 else
+                                                                                 {
+                                                                                     [LCProgressHUD hide];
+                                                                                     [self caneButtonClicked];
+                                                                                     [LCProgressHUD showMessage:@"获取助记词失败，请稍后重试"];
+                                                                                 }
+                                                                             });
+                                                              
+                                                          }
+                                                          else
+                                                          {
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
+                                                          }
+                                                      });
+                                       
+                                       
+                                   });
+                    break;
+                }
+                case 2:
+                {
+                    //备份keyStore
+                    NSString *data = [PDKeyChain load:self.model.address];
+                    [LCProgressHUD showLoading:@"验证中..."];
+                    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                    dispatch_async(globalQueue, ^
+                                   {
+                                       //子线程异步执行下载任务，防止主线程卡顿
+                                       NSError * error;
+                                       NeomobileFromKeyStore(data,passWord,&error);
+                                       
+                                       dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                       //异步返回主线程，根据获取的数据，更新UI
+                                       dispatch_async(mainQueue, ^
+                                                      {
+                                                          if (!error)
+                                                          {
+                                                              //要分享内容
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              NSString *result = data;
+                                                              NSArray* activityItems = [[NSArray alloc] initWithObjects:result,nil];
+                                                              
+                                                              UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                                                              //applicationActivities可以指定分享的应用，不指定为系统默认支持的
+                                                              
+                                                              kWeakSelf(activityVC)
+                                                              activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError)
+                                                              {
+                                                                  if(completed)
+                                                                  {
+                                                                      NSLog(@"Share success");
+                                                                      //本地记录备份了
+                                                                      if ([NSString isNulllWithObject:[UserSignData share].user.walletIdsArray])
+                                                                      {
+                                                                          [UserSignData share].user.walletIdsArray = [[NSMutableArray alloc] init];
+                                                                      }
+                                                                      if (![[UserSignData share].user.walletIdsArray containsObject:@(self.model.id)])
+                                                                      {
+                                                                          [[UserSignData share].user.walletIdsArray addObject:@(self.model.id)];
+                                                                          [[UserSignData share] storageData:[UserSignData share].user];
+                                                                      }
+                                                                      self.headerView.typeLB.hidden = YES;
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      NSLog(@"Cancel the share");
+                                                                  }
+                                                                  [weakactivityVC dismissViewControllerAnimated:YES completion:nil];
+                                                              };
+                                                              [self presentViewController:activityVC animated:YES completion:nil];
+                                                          }
+                                                          else
+                                                          {
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              [LCProgressHUD showMessage:@"密码错误，请重新输入"];
+                                                          }
+                                                      });
+                                       
+                                   });
+                    break;
+                }
+                case 3:
+                {
+                    //删除
+                    NSString *data = [PDKeyChain load:self.model.address];
+                    [LCProgressHUD showLoading:@"验证中..."];
+                    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                    dispatch_async(globalQueue, ^
+                                   {
+                                       //子线程异步执行下载任务，防止主线程卡顿
+                                       NSError * error;
+                                       NeomobileFromKeyStore(data,passWord,&error);
+                                       
+                                       dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                       //异步返回主线程，根据获取的数据，更新UI
+                                       dispatch_async(mainQueue, ^
+                                                      {
+                                                          if (!error)
+                                                          {
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              
+                                                              [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
+                                                               {
+                                                                   [LCProgressHUD showSuccess:@"删除成功"];
+                                                                   [PDKeyChain delete:self.model.address];
+                                                                   [self caneButtonClicked];
+                                                                   [self.navigationController popViewControllerAnimated:YES];
+                                                                   
+                                                               } failure:^(NSString *error)
+                                                               {
+                                                                   [LCProgressHUD showFailure:error];
+                                                               }];
+                                                              
+                                                          }
+                                                          else
+                                                          {
+                                                              [LCProgressHUD hide];
+                                                              [self caneButtonClicked];
+                                                              [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
+                                                          }
+                                                      });
+                                       
+                                   });
+                    break;
+                }
+                default:
+                    break;
+            }
+
             break;
         }
+            
         default:
             break;
     }
@@ -710,10 +966,19 @@
 - (void)transferButtonCilick
 {
     //转账
-    TransferVC * vc = [[TransferVC alloc] init];
-    vc.model = self.model;
-    vc.banlacePrice = self.banlacePrice;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.model.category_id == 2) {
+        // NEO钱包转账
+        DBHNEOTransferVC * vc = [[DBHNEOTransferVC alloc] init];
+        vc.model = self.model;
+        vc.banlacePrice = self.banlacePrice;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        // ETH钱包转账
+        TransferVC * vc = [[TransferVC alloc] init];
+        vc.model = self.model;
+        vc.banlacePrice = self.banlacePrice;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
 }
 
@@ -764,6 +1029,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.model.category_id == 2 && indexPath.row == 2) {
+        // 提取Gas
+        DBHExtractViewController *extractViewController = [[DBHExtractViewController alloc] init];
+        [self.navigationController pushViewController:extractViewController animated:YES];
+        
+        return;
+    }
     //进入代币详情
     WalletInfoGntModel * model = self.dataSource[indexPath.row];
     TransactionListVC * vc = [[TransactionListVC alloc] init];
@@ -868,14 +1140,16 @@
     {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"WalletInfoHeaderView" owner:self options:nil];
         _headerView = [nib objectAtIndex:0];
-        _headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 330);
+        _headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 330 - (self.model.category_id == 2 ? 100 : 0));
         _headerView.addressLB.userInteractionEnabled = YES;
+        _headerView.clipsToBounds = YES;
         UITapGestureRecognizer * singleRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(receivablesButtonCilick)];
         singleRecognizer.numberOfTapsRequired = 1; // 单击
         [_headerView.addressLB addGestureRecognizer:singleRecognizer];
         
         [_headerView.codeButton addTarget:self action:@selector(receivablesButtonCilick) forControlEvents:UIControlEventTouchUpInside];
         [_headerView.ETHButton addTarget:self action:@selector(ETHButtonCilick) forControlEvents:UIControlEventTouchUpInside];
+        _headerView.addTokenButton.hidden = self.model.category_id == 2;
         [_headerView.addTokenButton addTarget:self action:@selector(editButtonCilick) forControlEvents:UIControlEventTouchUpInside];
         if ([self.model.name isEqualToString:@"ETH"])
         {

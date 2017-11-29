@@ -11,6 +11,8 @@
 #import "YCXMenu.h"
 
 #import "DBHAllInformationViewController.h"
+#import "DBHSearchViewController.h"
+#import "KKWebView.h"
 
 #import "DBHSearchBarButton.h"
 #import "DBHEvaluatingIcoTableViewCell.h"
@@ -79,7 +81,17 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    DBHEvaluatingIcoModelData *model = self.dataSource[indexPath.row];
     
+    NSString *url;
+    if ([model.url containsString:@"http"]) {
+        url = model.url;
+    } else {
+        url = [NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url];
+    }
+    
+    KKWebView * vc = [[KKWebView alloc] initWithUrl:url];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark ------ UIScrollViewDelegate ------
@@ -187,13 +199,16 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
  搜索
  */
 - (void)respondsToSearchBarButton {
-    
+    DBHSearchViewController *searchViewController = [[DBHSearchViewController alloc] init];
+    searchViewController.title = @"搜索Ico评测";
+    [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
 #pragma mark ------ Getters And Setters ------
 - (DBHSearchBarButton *)searchBarButton {
     if (!_searchBarButton) {
         _searchBarButton = [DBHSearchBarButton buttonWithType:UIButtonTypeCustom];
+        _searchBarButton.title = @"搜索Ico评测";
         [_searchBarButton addTarget:self action:@selector(respondsToSearchBarButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _searchBarButton;

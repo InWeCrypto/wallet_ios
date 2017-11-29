@@ -57,6 +57,271 @@
     self.statusLB.hidden = !self.isCodeWalletSucess;
 }
 
+#pragma mark ------ Data ------
+/**
+ ETH转账
+ */
+- (void)transferAccountsForETHWithPassword:(NSString *)password {
+    // ETH钱包转账
+    //子线程异步执行下载任务，防止主线程卡顿
+    NSError * error;
+    id data = [PDKeyChain load:self.model.address];
+    UnichainETHWallet * Wallet = UnichainOpenETHWallet(data,password,&error);
+    
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    //异步返回主线程，根据获取的数据，更新UI
+    dispatch_async(mainQueue, ^
+                   {
+                       if (!error)
+                       {
+                           if (self.tokenModel)
+                           {
+                               //代币钱包转账
+                               if (self.isCodeWallet)
+                               {
+                                   //冷钱包进入 转账后生成二维码转给观察钱包
+                                   //生成data
+                                   NSError * error;
+                                   
+                                   NSData * data = [Wallet transferToken:self.nonce
+                                                          gasPriceString:self.ox_gas
+                                                          gasLimitString:self.gas_limit
+                                                                contract:self.address
+                                                                    data:[self.ox_Price dataUsingEncoding:NSUTF8StringEncoding]
+                                                                   error:&error];
+                                   
+                                   dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                   //异步返回主线程，根据获取的数据，更新UI
+                                   dispatch_async(mainQueue, ^
+                                                  {
+                                                      if (!error)
+                                                      {
+                                                          [LCProgressHUD hide];
+                                                          [self caneButtonClicked];
+                                                          [LCProgressHUD showMessage:@"转账成功"];
+                                                          
+                                                          //冷钱包
+                                                          [self creatCIQRCodeImageWithString:[NSString stringWithFormat:@"0x%@",[NSString convertDataToHexStr:data]]];
+                                                          [self.codeWalletCodeView showWithView:nil];
+                                                      }
+                                                      else
+                                                      {
+                                                          [LCProgressHUD hide];
+                                                          [self caneButtonClicked];
+                                                          [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
+                                                      }
+                                                  });
+                                   
+                                   
+                               }
+                               else
+                               {
+                                   //热钱包代币转账
+                                   NSString * price = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]]];
+                                   NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+                                   [parametersDic setObject:self.tokenModel.address forKey:@"contract"];
+                                   [parametersDic setObject:self.address forKey:@"to"];
+                                   [parametersDic setObject:price forKey:@"value"];
+                                   
+                                   [PPNetworkHelper POST:@"extend/transferABI" parameters:parametersDic hudString:@"加载中..." success:^(id responseObject)
+                                    {
+                                        //生成data
+                                        NSError * error;
+                                        NSString * gas = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]];
+                                        
+                                        NSData * data = [Wallet transferToken:self.nonce
+                                                               gasPriceString:[NSString stringWithFormat:@"0x%@",gas]
+                                                               gasLimitString:[NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas]]
+                                                                     contract:self.tokenModel.address
+                                                                         data:[[responseObject objectForKey:@"data"] dataUsingEncoding:NSUTF8StringEncoding]
+                                                                        error:&error];
+                                        
+                                        dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                                        //异步返回主线程，根据获取的数据，更新UI
+                                        dispatch_async(mainQueue, ^
+                                                       {
+                                                           if (!error)
+                                                           {
+                                                               [LCProgressHUD hide];
+                                                               [self caneButtonClicked];
+                                                               [LCProgressHUD showMessage:@"转账成功"];
+                                                               
+                                                               //热钱包生成订单
+                                                               [self creatOrderWithData:[NSString stringWithFormat:@"0x%@",[NSString hexStringFromData:data]]];
+                                                           }
+                                                           else
+                                                           {
+                                                               [LCProgressHUD hide];
+                                                               [self caneButtonClicked];
+                                                               [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
+                                                           }
+                                                       });
+                                        
+                                    } failure:^(NSString *error)
+                                    {
+                                        [LCProgressHUD hide];
+                                        [self caneButtonClicked];
+                                        [LCProgressHUD showFailure:error];
+                                    }];
+                               }
+                           }
+                           else
+                           {
+                               //普通钱包转账
+                               //子线程异步执行下载任务，防止主线程卡顿
+                               NSError * error;
+                               NSString * price = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]];
+                               NSString * gas = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]];
+                               
+                               NSData * data = [Wallet transferCurrency:self.nonce
+                                                         gasPriceString:self.isCodeWallet ? self.ox_gas : [NSString stringWithFormat:@"0x%@",[gas lowercaseString]]
+                                                         gasLimitString:@"0x15f90"
+                                                                     to:self.address
+                                                           amountString:self.isCodeWallet ? self.ox_Price : [NSString stringWithFormat:@"0x%@",price]
+                                                                  error:&error];
+                               
+                               dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                               //异步返回主线程，根据获取的数据，更新UI
+                               dispatch_async(mainQueue, ^
+                                              {
+                                                  if (!error)
+                                                  {
+                                                      [LCProgressHUD hide];
+                                                      [self caneButtonClicked];
+                                                      [LCProgressHUD showMessage:@"转账成功"];
+                                                      
+                                                      if (self.isCodeWallet)
+                                                      {
+                                                          //冷钱包进入 转账后生成二维码转给观察钱包
+                                                          [self creatCIQRCodeImageWithString:[NSString stringWithFormat:@"0x%@",[NSString convertDataToHexStr:data]]];
+                                                          [self.codeWalletCodeView showWithView:nil];
+                                                      }
+                                                      else
+                                                      {
+                                                          //热钱包生成订单
+                                                          [self creatOrderWithData:[NSString stringWithFormat:@"0x%@",[NSString hexStringFromData:data]]];
+                                                      }
+                                                  }
+                                                  else
+                                                  {
+                                                      [LCProgressHUD hide];
+                                                      [self caneButtonClicked];
+                                                      [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
+                                                  }
+                                              });
+                           }
+                           
+                       }
+                       else
+                       {
+                           [LCProgressHUD hide];
+                           [self caneButtonClicked];
+                           [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
+                       }
+                   });
+}
+/**
+ NEO转账
+ */
+- (void)transferAccountsForNEOWithPassword:(NSString *)password unspent:(NSString *)unspent {
+    id data = [PDKeyChain load:self.model.address];
+    NSString *assert = [self.model.name isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
+    // NEO钱包转账
+    //子线程异步执行下载任务，防止主线程卡顿
+    NSError * error;
+    NeomobileWallet *Wallet = NeomobileFromKeyStore(data, password, &error);
+    
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    //异步返回主线程，根据获取的数据，更新UI
+    dispatch_async(mainQueue, ^
+                   {
+                       if (!error)
+                       {
+                           //代币钱包转账
+                           if (self.isCodeWallet)
+                           {
+                               //冷钱包进入 转账后生成二维码转给观察钱包
+                               //生成data
+                               NSError * error;
+                               
+                               [Wallet createAssertTx:assert from:Wallet.address to:self.address amount:self.price.doubleValue unspent:unspent error:&error];
+                               
+                               dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                               //异步返回主线程，根据获取的数据，更新UI
+                               dispatch_async(mainQueue, ^
+                                              {
+                                                  if (!error)
+                                                  {
+                                                      [LCProgressHUD hide];
+                                                      [self caneButtonClicked];
+                                                      [LCProgressHUD showMessage:@"转账成功"];
+                                                      
+                                                      //冷钱包
+                                                      [self creatCIQRCodeImageWithString:[NSString stringWithFormat:@"0x%@",[NSString convertDataToHexStr:data]]];
+                                                      [self.codeWalletCodeView showWithView:nil];
+                                                  }
+                                                  else
+                                                  {
+                                                      [LCProgressHUD hide];
+                                                      [self caneButtonClicked];
+                                                      [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
+                                                  }
+                                              });
+                               
+                               
+                           }
+                           else
+                           {
+                               //热钱包代币转账
+                               NSString * price = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]]];
+                               NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+                               [parametersDic setObject:self.tokenModel.address forKey:@"contract"];
+                               [parametersDic setObject:self.address forKey:@"to"];
+                               [parametersDic setObject:price forKey:@"value"];
+                               
+                               //生成data
+                               NSError * error;
+                               NeomobileTx *tx = [Wallet createAssertTx:assert from:Wallet.address to:self.address amount:self.price.doubleValue unspent:unspent error:&error];
+                               
+                               dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                               //异步返回主线程，根据获取的数据，更新UI
+                               dispatch_async(mainQueue, ^
+                                              {
+                                                  if (!error)
+                                                  {
+                                                      [LCProgressHUD hide];
+                                                      [self caneButtonClicked];
+                                                      [LCProgressHUD showMessage:@"转账成功"];
+                                                      
+                                                      //热钱包生成订单
+                                                      [self creatNeoOrderWithData:data trade_no:tx.id_];
+                                                  }
+                                                  else
+                                                  {
+                                                      [LCProgressHUD hide];
+                                                      [self caneButtonClicked];
+                                                      [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
+                                                  }
+                                              });
+                           }
+                       }
+                       else
+                       {
+                           [LCProgressHUD hide];
+                           [self caneButtonClicked];
+                           [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
+                       }
+                   });
+}
+- (void)getUnspentWithPassword:(NSString *)password {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://app.inwecrypto.com/api/extend/getNeoUtxo?address=%@&type=%@", self.model.address, @"neo-asset-id"] parameters:nil hudString:@"" success:^(id responseObject) {
+        NSArray *result = responseObject[@"result"];
+        [self transferAccountsForNEOWithPassword:password unspent:[result toJSONStringForArray]];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+
 - (void)caneButtonClicked
 {
     //取消支付
@@ -82,167 +347,15 @@
 - (void)sureWithPassWord:(NSString *)passWord
 {
     //确认支付
-    NSData * data = [PDKeyChain load:self.model.address];
     [LCProgressHUD showLoading:@"验证中..."];
     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(globalQueue, ^
                    {
-                       //子线程异步执行下载任务，防止主线程卡顿
-                       NSError * error;
-                       UnichainETHWallet * Wallet = UnichainOpenETHWallet(data,passWord,&error);
-                       
-                       dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                       //异步返回主线程，根据获取的数据，更新UI
-                       dispatch_async(mainQueue, ^
-                                      {
-                                          if (!error)
-                                          {
-                                              if (self.tokenModel)
-                                              {
-                                                  //代币钱包转账
-                                                  if (self.isCodeWallet)
-                                                  {
-                                                      //冷钱包进入 转账后生成二维码转给观察钱包
-                                                      //生成data
-                                                      NSError * error;
-                                                      
-                                                      NSData * data = [Wallet transferToken:self.nonce
-                                                                             gasPriceString:self.ox_gas
-                                                                             gasLimitString:self.gas_limit
-                                                                                   contract:self.address
-                                                                                       data:[self.ox_Price dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                      error:&error];
-                                                      
-                                                      dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                                                      //异步返回主线程，根据获取的数据，更新UI
-                                                      dispatch_async(mainQueue, ^
-                                                                     {
-                                                                         if (!error)
-                                                                         {
-                                                                             [LCProgressHUD hide];
-                                                                             [self caneButtonClicked];
-                                                                             [LCProgressHUD showMessage:@"转账成功"];
-                                                                             
-                                                                             //冷钱包
-                                                                             [self creatCIQRCodeImageWithString:[NSString stringWithFormat:@"0x%@",[NSString convertDataToHexStr:data]]];
-                                                                             [self.codeWalletCodeView showWithView:nil];
-                                                                         }
-                                                                         else
-                                                                         {
-                                                                             [LCProgressHUD hide];
-                                                                             [self caneButtonClicked];
-                                                                             [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
-                                                                         }
-                                                                     });
-                                                      
-                                                      
-                                                  }
-                                                  else
-                                                  {
-                                                      //热钱包代币转账
-                                                      NSString * price = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]]];
-                                                      NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-                                                      [parametersDic setObject:self.tokenModel.address forKey:@"contract"];
-                                                      [parametersDic setObject:self.address forKey:@"to"];
-                                                      [parametersDic setObject:price forKey:@"value"];
-                                                      
-                                                      [PPNetworkHelper POST:@"extend/transferABI" parameters:parametersDic hudString:@"加载中..." success:^(id responseObject)
-                                                       {
-                                                           //生成data
-                                                           NSError * error;
-                                                           NSString * gas = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]];
-                                                           
-                                                           NSData * data = [Wallet transferToken:self.nonce
-                                                                                  gasPriceString:[NSString stringWithFormat:@"0x%@",gas]
-                                                                                  gasLimitString:[NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas]]
-                                                                                        contract:self.tokenModel.address
-                                                                                            data:[[responseObject objectForKey:@"data"] dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                           error:&error];
-                                                           
-                                                           dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                                                           //异步返回主线程，根据获取的数据，更新UI
-                                                           dispatch_async(mainQueue, ^
-                                                                          {
-                                                                              if (!error)
-                                                                              {
-                                                                                  [LCProgressHUD hide];
-                                                                                  [self caneButtonClicked];
-                                                                                  [LCProgressHUD showMessage:@"转账成功"];
-                                                                                  
-                                                                                  //热钱包生成订单
-                                                                                  [self creatOrderWithData:[NSString stringWithFormat:@"0x%@",[NSString hexStringFromData:data]]];
-                                                                              }
-                                                                              else
-                                                                              {
-                                                                                  [LCProgressHUD hide];
-                                                                                  [self caneButtonClicked];
-                                                                                  [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
-                                                                              }
-                                                                          });
-                                                           
-                                                       } failure:^(NSString *error)
-                                                       {
-                                                           [LCProgressHUD hide];
-                                                           [self caneButtonClicked];
-                                                           [LCProgressHUD showFailure:error];
-                                                       }];
-                                                  }
-                                              }
-                                              else
-                                              {
-                                                  //普通钱包转账
-                                                  //子线程异步执行下载任务，防止主线程卡顿
-                                                  NSError * error;
-                                                  NSString * price = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]];
-                                                  NSString * gas = [SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]];
-                                                  
-                                                  NSData * data = [Wallet transferCurrency:self.nonce
-                                                                            gasPriceString:self.isCodeWallet ? self.ox_gas : [NSString stringWithFormat:@"0x%@",[gas lowercaseString]]
-                                                                            gasLimitString:@"0x15f90"
-                                                                                        to:self.address
-                                                                              amountString:self.isCodeWallet ? self.ox_Price : [NSString stringWithFormat:@"0x%@",price]
-                                                                                     error:&error];
-                                                  
-                                                  dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                                                  //异步返回主线程，根据获取的数据，更新UI
-                                                  dispatch_async(mainQueue, ^
-                                                                 {
-                                                                     if (!error)
-                                                                     {
-                                                                         [LCProgressHUD hide];
-                                                                         [self caneButtonClicked];
-                                                                         [LCProgressHUD showMessage:@"转账成功"];
-                                                                         
-                                                                         if (self.isCodeWallet)
-                                                                         {
-                                                                             //冷钱包进入 转账后生成二维码转给观察钱包
-                                                                             [self creatCIQRCodeImageWithString:[NSString stringWithFormat:@"0x%@",[NSString convertDataToHexStr:data]]];
-                                                                             [self.codeWalletCodeView showWithView:nil];
-                                                                         }
-                                                                         else
-                                                                         {
-                                                                             //热钱包生成订单
-                                                                             [self creatOrderWithData:[NSString stringWithFormat:@"0x%@",[NSString hexStringFromData:data]]];
-                                                                         }
-                                                                     }
-                                                                     else
-                                                                     {
-                                                                         [LCProgressHUD hide];
-                                                                         [self caneButtonClicked];
-                                                                         [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
-                                                                     }
-                                                                 });
-                                              }
-                                              
-                                          }
-                                          else
-                                          {
-                                              [LCProgressHUD hide];
-                                              [self caneButtonClicked];
-                                              [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
-                                          }
-                                      });
-                       
+//                       if ([self.model.name isEqualToString:@"NEO"]) {
+                           [self getUnspentWithPassword:passWord];
+//                       } else {
+//                           [self transferAccountsForETHWithPassword:passWord];
+//                       }
                    });
     
 }
@@ -297,6 +410,58 @@
      }];
      */
 }
+// 上传后台提交NEO订单
+- (void)creatNeoOrderWithData:(NSString *)data trade_no:(NSString *)trade_no
+{
+    //创建钱包订单
+    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+    [dic setObject:@(self.model.id) forKey:@"wallet_id"];
+    [dic setObject:data forKey:@"data"];
+    [dic setObject:self.model.address forKey:@"pay_address"];
+    [dic setObject:self.address forKey:@"receive_address"];
+    [dic setObject:self.remark forKey:@"remark"];
+    [dic setObject:[NSString DecimalFuncWithOperatorType:2 first:self.price secend:@"1000000000000000000" value:0] forKey:@"fee"];
+    [dic setObject:[NSString DecimalFuncWithOperatorType:2 first:self.totleGasPrice secend:@"1000000000000000000" value:0] forKey:@"handle_fee"];
+    [dic setObject:self.tokenModel ? self.tokenModel.flag : self.model.category_name forKey:@"flag"];
+    [dic setObject:[NSString stringWithFormat:@"0x%@", trade_no] forKey:@"trade_no"];
+    [dic setObject:@"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" forKey:@"asset_id"];
+    
+    [PPNetworkHelper POST:@"wallet-order" parameters:dic hudString:@"创建中..." success:^(id responseObject)
+     {
+         //进入订单详情
+         /*
+          WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
+          model.fee = self.price;
+          model.handle_fee = self.totleGasPrice;
+          model.created_at = [NSString nowDate];
+          TransactionInfoVC * vc = [[TransactionInfoVC alloc] init];
+          vc.isTransfer = YES;˜
+          vc.model = model;
+          vc.isNotPushWithList = YES;
+          [self.navigationController pushViewController:vc animated:YES];
+          */
+         //返回转账列表
+         [LCProgressHUD showMessage:@"订单创建成功"];
+         [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
+         
+     } failure:^(NSString *error)
+     {
+         [LCProgressHUD showFailure:@"服务器内部错误"];
+         [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
+     }];
+    /*
+     //发送签名后的交易[post] extend/sendRawTransaction
+     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+     [parametersDic setObject:data forKey:@"data"];
+     
+     [PPNetworkHelper POST:@"extend/sendRawTransaction" parameters:parametersDic hudString:@"转账中..." success:^(id responseObject)
+     {
+     } failure:^(NSString *error)
+     {
+     [LCProgressHUD showFailure:error];
+     }];
+     */
+}
 
 - (void)scanSucessWithObject:(id)object
 {
@@ -338,59 +503,73 @@
         return;
     }
 
-    if (self.model.isLookWallet)
+    if (false/*self.model.isLookWallet*/)
     {
-        //观察钱包转账
-        NSString * price = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]]];
-        NSString * gas = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]]];
-        if (self.tokenModel)
-        {
-            //钱包代币转账
-            NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-            [parametersDic setObject:self.tokenModel.address forKey:@"contract"];
-            [parametersDic setObject:self.address forKey:@"to"];
-            [parametersDic setObject:price forKey:@"value"];
-            
-            [PPNetworkHelper POST:@"extend/transferABI" parameters:parametersDic hudString:@"加载中..." success:^(id responseObject)
-            {
-                //观察钱包生成二维码   钱包地址，nonce,十六进制的GAS单价，收款地址，十六进制的转账金额 备注
-                NSDictionary * dic = @{
-                                       @"wallet_address":self.model.address,
-                                       @"nonce":self.nonce,
-                                       @"ox_gas":gas,
-                                       @"ox_price":[responseObject objectForKey:@"data"],
-                                       @"transfer_address":self.tokenModel.address,
-                                       @"show_price":self.price,
-                                       @"show_gas":self.totleGasPrice,
-                                       @"hit":self.remark,
-                                       @"type":@"2",
-                                       @"gas_limit":[NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas]]
-                                       };
-                [self creatCIQRCodeImageWithString:[dic toJSONStringForDictionary]];
-                [self.lookWalletCodeView showWithView:nil];
+        switch (self.model.category_id) {
+            case 1: {
+                // ETH
+                //观察钱包转账
+                NSString * price = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%.0f000000000000",[self.price floatValue] * 1000000] longLongValue]]];
+                NSString * gas = [NSString stringWithFormat:@"0x%@",[SystemConvert decimalToHex:[[NSString stringWithFormat:@"%@",[NSString DecimalFuncWithOperatorType:2 first:self.gasprice secend:@"1000000000000000000" value:10]] integerValue]]];
+                if (self.tokenModel)
+                {
+                    //钱包代币转账
+                    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+                    [parametersDic setObject:self.tokenModel.address forKey:@"contract"];
+                    [parametersDic setObject:self.address forKey:@"to"];
+                    [parametersDic setObject:price forKey:@"value"];
+                    
+                    [PPNetworkHelper POST:@"extend/transferABI" parameters:parametersDic hudString:@"加载中..." success:^(id responseObject)
+                     {
+                         //观察钱包生成二维码   钱包地址，nonce,十六进制的GAS单价，收款地址，十六进制的转账金额 备注
+                         NSDictionary * dic = @{
+                                                @"wallet_address":self.model.address,
+                                                @"nonce":self.nonce,
+                                                @"ox_gas":gas,
+                                                @"ox_price":[responseObject objectForKey:@"data"],
+                                                @"transfer_address":self.tokenModel.address,
+                                                @"show_price":self.price,
+                                                @"show_gas":self.totleGasPrice,
+                                                @"hit":self.remark,
+                                                @"type":@"2",
+                                                @"gas_limit":[NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas]]
+                                                };
+                         [self creatCIQRCodeImageWithString:[dic toJSONStringForDictionary]];
+                         [self.lookWalletCodeView showWithView:nil];
+                         
+                     } failure:^(NSString *error)
+                     {
+                         [LCProgressHUD showFailure:error];
+                     }];
+                }
+                else
+                {
+                    //观察钱包生成二维码   钱包地址，nonce,十六进制的GAS 单价，收款地址，十六进制的转账金额 备注
+                    NSDictionary * dic = @{
+                                           @"wallet_address":self.model.address,
+                                           @"nonce":self.nonce,
+                                           @"ox_gas":gas,
+                                           @"ox_price":price,
+                                           @"transfer_address":self.address,
+                                           @"show_price":self.price,
+                                           @"show_gas":self.totleGasPrice,
+                                           @"hit":self.remark,
+                                           @"type":@"1",
+                                           @"gas_limit":@""
+                                           };
+                    [self creatCIQRCodeImageWithString:[dic toJSONStringForDictionary]];
+                    [self.lookWalletCodeView showWithView:nil];
+                }
+                break;
+            }
+            case 2: {
+                // NEO
                 
-            } failure:^(NSString *error)
-            {
-                [LCProgressHUD showFailure:error];
-            }];
-        }
-        else
-        {
-            //观察钱包生成二维码   钱包地址，nonce,十六进制的GAS 单价，收款地址，十六进制的转账金额 备注
-            NSDictionary * dic = @{
-                                   @"wallet_address":self.model.address,
-                                   @"nonce":self.nonce,
-                                   @"ox_gas":gas,
-                                   @"ox_price":price,
-                                   @"transfer_address":self.address,
-                                   @"show_price":self.price,
-                                   @"show_gas":self.totleGasPrice,
-                                   @"hit":self.remark,
-                                   @"type":@"1",
-                                   @"gas_limit":@""
-                                   };
-            [self creatCIQRCodeImageWithString:[dic toJSONStringForDictionary]];
-            [self.lookWalletCodeView showWithView:nil];
+                break;
+            }
+                
+            default:
+                break;
         }
     }
     else

@@ -43,6 +43,7 @@ static NSString *const kDBHInformationDetailForTradingMarketContentTableViewCell
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self setUI];
+        [self addRefresh];
     }
     return self;
 }
@@ -109,6 +110,11 @@ static NSString *const kDBHInformationDetailForTradingMarketContentTableViewCell
  */
 - (void)getTradeInformationData {
     WEAKSELF
+    if (!self.currencyTypeArray.count) {
+        [self endRefresh];
+        return;
+    }
+    
     DBHInformationDetailModelProjectMarkets *model = self.currencyTypeArray[self.currentSelectedIndex];
     [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url] parameters:nil hudString:nil success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
@@ -118,8 +124,10 @@ static NSString *const kDBHInformationDetailForTradingMarketContentTableViewCell
             [weakSelf.dataSource addObject:model];
         }
         
+        [weakSelf endRefresh];
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
+        [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
     }];
 }
@@ -147,6 +155,19 @@ static NSString *const kDBHInformationDetailForTradingMarketContentTableViewCell
         [UIView animateWithDuration:0.25 animations:^{
             weakSelf.spinnerView.alpha = 1;
         }];
+    }
+}
+
+#pragma mark ------ Private Methods ------
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf getTradeInformationData];
+    }];
+}
+- (void)endRefresh {
+    if (self.tableView.mj_header.refreshing) {
+        [self.tableView.mj_header endRefreshing];
     }
 }
 
@@ -204,6 +225,9 @@ static NSString *const kDBHInformationDetailForTradingMarketContentTableViewCell
             
             if (weakSelf.currentSelectedIndex != selectedMoneyType) {
                 weakSelf.currentSelectedIndex = selectedMoneyType;
+                
+                DBHInformationDetailModelProjectMarkets *model = weakSelf.currencyTypeArray[selectedMoneyType];
+                weakSelf.selectButton.leftTitle = model.enName;
                 
                 [weakSelf getTradeInformationData];
             }

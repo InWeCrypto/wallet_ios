@@ -32,6 +32,7 @@
                             <segments>
                                 <segment title="ETH"/>
                                 <segment title="BTC"/>
+                                <segment title="NEO"/>
                             </segments>
                             <color key="tintColor" red="0.0" green="0.5490196078431373" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>

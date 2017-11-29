@@ -24,6 +24,8 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import "CommitOrderVC.h"
 
+#import "DBHLookPrivateKeyViewController.h"
+
 @interface WalletHomeVC () <UITableViewDelegate, UITableViewDataSource, ScanVCDelegate, ChoseWalletViewDelegate, CommitOrderVCDelegate>
 {
     CGFloat _LEFTWEIGHT;
@@ -395,7 +397,7 @@
                 NSString * price_ether;
                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
                 {
-                    price_ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                    price_ether = [NSString DecimalFuncWithOperatorType:3 first:[dic objectForKey:@"balance"]/*[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]]*/ secend:@"1000000000000000000" value:4];
                 }
                 else
                 {
@@ -436,7 +438,7 @@
                  NSString * price_ether;
                  if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
                  {
-                     price_ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                     price_ether = [NSString DecimalFuncWithOperatorType:3 first:[dic objectForKey:@"balance"]/*[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]]*/ secend:@"1000000000000000000" value:4];
                  }
                  else
                  {
@@ -902,7 +904,8 @@
 {
     if (tableView == self.coustromTableView)
     {
-        
+        DBHLookPrivateKeyViewController *lookPrivateKeyViewController = [[DBHLookPrivateKeyViewController alloc] init];
+        [self.navigationController pushViewController:lookPrivateKeyViewController animated:YES];
     }
     else
     {

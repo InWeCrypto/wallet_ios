@@ -12,6 +12,7 @@
 
 #import "DBHAllInformationViewController.h"
 #import "DBHEvaluatingIcoViewController.h"
+#import "DBHSearchViewController.h"
 #import "KKWebView.h"
 
 #import "DBHSearchBarButton.h"
@@ -367,7 +368,9 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
  搜索
  */
 - (void)respondsToSearchBarButton {
-    
+    DBHSearchViewController *searchViewController = [[DBHSearchViewController alloc] init];
+    searchViewController.title = @"搜索项目";
+    [self.navigationController pushViewController:searchViewController animated:YES];
 }
 /**
  评论

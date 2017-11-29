@@ -14,6 +14,8 @@
 #import "QuotationInfoVC.h"
 #import "QuotationModel.h"
 
+#import "FBG-Swift.h"
+
 @interface QuotationVC ()
 /** 数据源 */
 @property (nonatomic, strong) NSMutableArray * dataSource;
@@ -205,10 +207,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    QuotationModel * quotesModel = self.dataSource[indexPath.row];
-    QuotationInfoVC * vc = [[QuotationInfoVC alloc] init];
-    vc.quotationModel = quotesModel;
-    [self.navigationController pushViewController:vc animated:YES];
+    DBHMarketDetailViewController *marketDetailViewController = [[DBHMarketDetailViewController alloc] init];
+    [self.navigationController pushViewController:marketDetailViewController animated:YES];
+    
+//    QuotationModel * quotesModel = self.dataSource[indexPath.row];
+//    QuotationInfoVC * vc = [[QuotationInfoVC alloc] init];
+//    vc.quotationModel = quotesModel;
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

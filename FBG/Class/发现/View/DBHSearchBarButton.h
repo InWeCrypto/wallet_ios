@@ -10,4 +10,9 @@
 
 @interface DBHSearchBarButton : UIButton
 
+/**
+ 搜索标题
+ */
+@property (nonatomic, copy) NSString *title;
+
 @end

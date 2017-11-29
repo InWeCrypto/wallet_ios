@@ -12,6 +12,7 @@
 
 #import "DBHAllInformationViewController.h"
 #import "DBHEvaluatingIcoViewController.h"
+#import "DBHSearchViewController.h"
 #import "KKWebView.h"
 
 #import "DBHSearchBarButton.h"
@@ -101,7 +102,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
 
 #pragma mark ------ UITableViewDataSource ------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 8;
+    return 7;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     WEAKSELF
@@ -115,13 +116,13 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
             return cell;
             break;
         }
+//        case 1: {
+//            DBHInformationDetailForDealInfomationChartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationDetailForDealInfomationChartTableViewCellIdentifier forIndexPath:indexPath];
+//
+//            return cell;
+//            break;
+//        }
         case 1: {
-            DBHInformationDetailForDealInfomationChartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationDetailForDealInfomationChartTableViewCellIdentifier forIndexPath:indexPath];
-            
-            return cell;
-            break;
-        }
-        case 2: {
             DBHInformationDetailForTradingMarketTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationDetailForTradingMarketTableViewCellIdentifier forIndexPath:indexPath];
             if (self.model) {
                 cell.currencyTypeArray = [self.model.projectMarkets copy];
@@ -130,7 +131,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
             return cell;
             break;
         }
-        case 3: {
+        case 2: {
             DBHInformationDetailForProjectBriefTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationDetailForProjectBriefTableViewCellIdentifier forIndexPath:indexPath];
             if (self.model) {
                 cell.projectIntroductionArray = [self.model.projectDesc copy];
@@ -139,7 +140,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
             return cell;
             break;
         }
-        case 4: {
+        case 3: {
             DBHInformationDetailForInweReportTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationDetailForInweReportTableViewCellIdentifier forIndexPath:indexPath];
             cell.inweReportType = self.inweReportType;
             cell.dataSource = [self.inweReportArray copy];
@@ -153,7 +154,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
             return cell;
             break;
         }
-        case 5: {
+        case 4: {
             DBHInformationDetailForExplorerAndWalletTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationDetailForExplorerAndWalletTableViewCellIdentifier forIndexPath:indexPath];
             cell.leftDataSource = [self.model.projectExplorers copy];
             cell.rightDataSource = [self.model.projectWallets copy];
@@ -166,7 +167,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
             return cell;
             break;
         }
-        case 6: {
+        case 5: {
             DBHInformationDetailForTwitterTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationDetailForTwitterTableViewCellIdentifier forIndexPath:indexPath];
             if (self.model) {
                 cell.twitter = self.model.desc;
@@ -204,24 +205,24 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
         case 0:
-            return AUTOLAYOUTSIZE(184);//AUTOLAYOUTSIZE(255);
+            return AUTOLAYOUTSIZE(255);
             break;
+//        case 1:
+//            return AUTOLAYOUTSIZE(215);
+//            break;
         case 1:
-            return AUTOLAYOUTSIZE(215);
-            break;
-        case 2:
             return AUTOLAYOUTSIZE(183);
             break;
-        case 3:
+        case 2:
             return AUTOLAYOUTSIZE(184);
             break;
-        case 4:
+        case 3:
             return AUTOLAYOUTSIZE(437);
             break;
-        case 5:
+        case 4:
             return AUTOLAYOUTSIZE(147);
             break;
-        case 6:
+        case 5:
             return AUTOLAYOUTSIZE(203.5);
             break;
             
@@ -370,7 +371,9 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
  搜索
  */
 - (void)respondsToSearchBarButton {
-    
+    DBHSearchViewController *searchViewController = [[DBHSearchViewController alloc] init];
+    searchViewController.title = @"搜索项目";
+    [self.navigationController pushViewController:searchViewController animated:YES];
 }
 /**
  评论
@@ -420,6 +423,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
 - (DBHSearchBarButton *)searchBarButton {
     if (!_searchBarButton) {
         _searchBarButton = [DBHSearchBarButton buttonWithType:UIButtonTypeCustom];
+        _searchBarButton.title = @"搜索项目";
         [_searchBarButton addTarget:self action:@selector(respondsToSearchBarButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _searchBarButton;

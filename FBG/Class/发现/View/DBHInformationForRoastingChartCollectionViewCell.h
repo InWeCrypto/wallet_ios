@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ClickRoastingChartBlock)(NSInteger clickRoastingChartBlockIndex);
+
 @interface DBHInformationForRoastingChartCollectionViewCell : UICollectionViewCell
 
 /**
  轮播图数据
  */
 @property (nonatomic, copy) NSArray *dataSource;
+
+/**
+ 点击轮播图回调
+ */
+- (void)clickRoastingChartBlock:(ClickRoastingChartBlock)clickRoastingChartBlock;
 
 @end

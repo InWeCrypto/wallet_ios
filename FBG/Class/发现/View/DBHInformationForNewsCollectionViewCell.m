@@ -12,7 +12,7 @@
 
 #import "DBHNewsShufflingFigureView.h"
 
-#import "DBHInformationForNewsCollectionData.h"
+#import "DBHInformationForNewsCollectionModelData.h"
 
 #define SCROLLVIEWWIDTH AUTOLAYOUTSIZE(230)
 #define SCROLLVIEWHEIGHT AUTOLAYOUTSIZE(59)
@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSTimer *timer;
 
 @property (nonatomic, copy) ClickMoreButtonBlock clickMoreButtonBlock;
+@property (nonatomic, copy) ClickNewsBlock clickNewsBlock;
 @property (nonatomic, strong) NSMutableArray *newsShufflingFigureViewArray;
 
 @end
@@ -134,6 +135,9 @@
  上一条新闻
  */
 - (void)respondsToLeftButton {
+    if (_dataSource.count <= 1) {
+        return;
+    }
     NSInteger page = (NSInteger)(self.scrollView.contentOffset.x / SCROLLVIEWWIDTH);
     CGFloat x = page * SCROLLVIEWWIDTH - SCROLLVIEWWIDTH;
     [self.scrollView setContentOffset:CGPointMake(x, 0) animated:YES];
@@ -145,7 +149,9 @@
  下一条新闻
  */
 - (void)respondsToRightButton {
-    [self nextPage];
+    if (_dataSource.count > 1) {
+        [self nextPage];
+    }
 }
 /**
  更多
@@ -153,10 +159,26 @@
 - (void)respondsToMoreButton {
     self.clickMoreButtonBlock();
 }
+- (void)respondsToTapGR:(UITapGestureRecognizer *)tapGR {
+    NSInteger tag = tapGR.view.tag;
+    DBHInformationForNewsCollectionModelData *model = _dataSource[tag - 400];
+    
+    NSString *url;
+    if ([model.url containsString:@"http"]) {
+        url = model.url;
+    } else {
+        url = [NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url];
+    }
+    
+    self.clickNewsBlock(url);
+}
 
 #pragma mark ------ Public Methods ------
 - (void)clickMoreButtonBlock:(ClickMoreButtonBlock)clickMoreButtonBlock {
     self.clickMoreButtonBlock = clickMoreButtonBlock;
+}
+- (void)clickNewsBlock:(ClickNewsBlock)clickNewsBlock {
+    self.clickNewsBlock = clickNewsBlock;
 }
 
 #pragma mark ------ Private Methods ------
@@ -207,27 +229,43 @@
 - (void)setDataSource:(NSArray *)dataSource {
     _dataSource = dataSource;
     
-    self.scrollView.contentSize = CGSizeMake(SCROLLVIEWWIDTH * (_dataSource.count + 2), 0);
+    self.scrollView.contentSize = CGSizeMake(SCROLLVIEWWIDTH * (_dataSource.count + (_dataSource.count > 1 ? 2 : 0)), 0);
     
-    for (NSInteger i = 0; i < _dataSource.count; i++) {
-        DBHInformationForNewsCollectionData *model = _dataSource[i];
+    for (NSInteger i = 0; i < _dataSource.count + (_dataSource.count > 1 ? 2 : 0); i++) {
+        NSInteger index = 0;
+        if (_dataSource.count > 1) {
+            if (!i) {
+                index = _dataSource.count - 1;
+            } else if (i == _dataSource.count - 1) {
+                index = 0;
+            } else {
+                index = i - 1;
+            }
+        }
+        DBHInformationForNewsCollectionModelData *model = _dataSource[index];
         
         DBHNewsShufflingFigureView *newsShufflingFigureView;
         newsShufflingFigureView = [self.scrollView viewWithTag:400 + i];
         if (!newsShufflingFigureView) {
             newsShufflingFigureView = [[DBHNewsShufflingFigureView alloc] initWithFrame:CGRectMake(i * SCROLLVIEWWIDTH, 0, SCROLLVIEWWIDTH, SCROLLVIEWHEIGHT)];
             newsShufflingFigureView.tag = 400 + i;
+            newsShufflingFigureView.userInteractionEnabled = YES;
             newsShufflingFigureView.title = model.title;
-            newsShufflingFigureView.content = model.content;
+            newsShufflingFigureView.content = model.desc;
+            
+            UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToTapGR:)];
+            [newsShufflingFigureView addGestureRecognizer:tapGR];
             
             [self.scrollView addSubview:newsShufflingFigureView];
         } else {
             newsShufflingFigureView.title = model.title;
-            newsShufflingFigureView.content = model.content;
+            newsShufflingFigureView.content = model.desc;
         }
     }
     
-    [self startTimer];
+    if (_dataSource.count > 1) {
+        [self startTimer];
+    }
 }
 
 - (UIView *)boxView {

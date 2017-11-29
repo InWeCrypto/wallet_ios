@@ -8,6 +8,7 @@
 
 #import "AddEthOrBtcVC.h"
 #import "AddWalletInfoVC.h"
+#import "AddNeoWalletInfoVC.h"
 
 @interface AddEthOrBtcVC ()
 
@@ -39,9 +40,27 @@
 - (IBAction)addButtonCilick:(id)sender
 {
     //添加新钱包
-    AddWalletInfoVC * vc = [[AddWalletInfoVC alloc] init];
-    vc.model = self.model;
-    [self.navigationController pushViewController:vc animated:YES];
+    switch (self.model.id) {
+        case 1: {
+            // ETH
+            AddWalletInfoVC * vc = [[AddWalletInfoVC alloc] init];
+            vc.model = self.model;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+            break;
+        }
+        case 2: {
+            // NEO
+            AddNeoWalletInfoVC * vc = [[AddNeoWalletInfoVC alloc] init];
+            vc.model = self.model;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
 
 

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^SelectedBlock)(NSInteger selectedIndex);
+
 @interface DBHListView : UIView
 
 /**
@@ -19,5 +21,10 @@
  选中下标
  */
 @property (nonatomic, assign) NSInteger selectedIndex;
+
+/**
+ 选中回调
+ */
+- (void)selectedBlock:(SelectedBlock)selectedBlock;
 
 @end

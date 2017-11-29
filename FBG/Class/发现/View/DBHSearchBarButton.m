@@ -48,6 +48,12 @@
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    
+    self.searchLabel.text = _title;
+}
+
 - (UIImageView *)searchImageView {
     if (!_searchImageView) {
         _searchImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_market_search"]];
@@ -58,7 +64,6 @@
     if (!_searchLabel) {
         _searchLabel = [[UILabel alloc] init];
         _searchLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
-        _searchLabel.text = @"搜索项目";
         _searchLabel.textColor = [UIColor colorWithHexString:@"55637E "];
     }
     return _searchLabel;

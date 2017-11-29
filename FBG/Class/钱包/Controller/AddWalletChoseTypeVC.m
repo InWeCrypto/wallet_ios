@@ -59,9 +59,9 @@
         [LCProgressHUD showMessage:@"请选择相应的类型"];
         return;
     }
-    if (![_selmodel.name isEqualToString:@"ETH"])
+    if ([_selmodel.name isEqualToString:@"BTC"])
     {
-        [LCProgressHUD showMessage:@"当前只能创建ETH钱包"];
+        [LCProgressHUD showMessage:@"当前不能创建BTC钱包"];
         return;
     }
     if (self.isimport)
@@ -74,14 +74,14 @@
     else
     {
         //添加钱包
-        if ([_selmodel.name isEqualToString:@"ETH"])
+        if (_selmodel.id == 1)
         {
             //ETH
             AddEthOrBtcVC * vc = [[AddEthOrBtcVC alloc] init];
             vc.model = _selmodel;
             [self.navigationController pushViewController:vc animated:YES];
         }
-        else if ([_selmodel.name isEqualToString:@"BTC"])
+        else if (_selmodel.id == 3)
         {
             //BTC
             AddEthOrBtcVC * vc = [[AddEthOrBtcVC alloc] init];
@@ -90,8 +90,10 @@
         }
         else
         {
-            //其他
-            
+            //NEO
+            AddEthOrBtcVC * vc = [[AddEthOrBtcVC alloc] init];
+            vc.model = _selmodel;
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
     
@@ -112,6 +114,13 @@
     model1.gas = @"21000";
     model1.icon = @"BTC";
     [self.dataSource addObject:model1];
+    
+    WalletTypeModel * model2 = [[WalletTypeModel alloc] init];
+    model2.id = 2;
+    model2.name = @"NEO";
+    model2.gas = @"21000";
+    model2.icon = @"NEO";
+    [self.dataSource addObject:model2];
     
     [self.coustromTableView reloadData];
 

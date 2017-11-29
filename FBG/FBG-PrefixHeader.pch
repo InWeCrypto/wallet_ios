@@ -52,8 +52,8 @@
 #define APIEHEAD @"https://app.inwecrypto.com/api/"  //网络请求头
 #define IMAGEHEAD @"https://dev.inwecrypto.com/"  //图片头
 //正式环境
-#define APIEHEAD1 @"https://app.inwecrypto.com/api/"  //网络请求头 mainnet.unichain.io
-#define IMAGEHEAD1 @"https://dev.inwecrypto.com/"  //图片头
+#define APIEHEAD1 @"https://china.inwecrypto.com:4430/api/"  //网络请求头 mainnet.unichain.io https://china.inwecrypto.com:4430/api/
+#define IMAGEHEAD1 @"https://china.inwecrypto.com:4431/"  //图片头
 
 #define APP_APIEHEAD  [[NSUserDefaults standardUserDefaults]stringForKey:@"appNetWorkApi"]  //网络状态
 #define APP_WALLETSTATUS  [[NSUserDefaults standardUserDefaults]stringForKey:@"appWalletStatus"]   //钱包状态
@@ -81,11 +81,13 @@
 #import "AlertView.h"
 #import "AAGlobalMacro.h"
 #import "UIScrollView+EmptyDataSet.h"
-#include <Unichain/Unichain.h>
+//#include <Unichain/Unichain.h>
+#import <Neomobile/Neomobile.h>
 #import "PDKeyChain.h"
 #import "JKBigInteger.h"
 #import "JKBigDecimal.h"
 #import "Masonry.h"
+#import "MJRefresh.h"
 
 /**
  *  根据传入的字符串计算出所占高度

@@ -8,6 +8,7 @@
 
 #import "AddOtherWalletVC.h"
 #import "AddOtherWalletInfoVC.h"
+#import "AddNeoOtherWalletInfoVC.h"
 
 @interface AddOtherWalletVC ()
 
@@ -72,12 +73,21 @@
 
 - (void)pushVCwithType:(int)type
 {
-    AddOtherWalletInfoVC * vc = [[AddOtherWalletInfoVC alloc] init];
-    vc.type = type;
-    vc.model = self.model;
-    vc.walletModel = self.walletModel;
-    vc.islookWallet = self.islookWallet;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.model.id == 2) {
+        AddNeoOtherWalletInfoVC * vc = [[AddNeoOtherWalletInfoVC alloc] init];
+        vc.type = type;
+        vc.model = self.model;
+        vc.walletModel = self.walletModel;
+        vc.islookWallet = self.islookWallet;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        AddOtherWalletInfoVC * vc = [[AddOtherWalletInfoVC alloc] init];
+        vc.type = type;
+        vc.model = self.model;
+        vc.walletModel = self.walletModel;
+        vc.islookWallet = self.islookWallet;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 

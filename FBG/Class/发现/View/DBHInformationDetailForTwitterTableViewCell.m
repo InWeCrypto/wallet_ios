@@ -8,12 +8,15 @@
 
 #import "DBHInformationDetailForTwitterTableViewCell.h"
 
+#import <WebKit/WebKit.h>
+
 @interface DBHInformationDetailForTwitterTableViewCell ()
 
 @property (nonatomic, strong) UIView *boxView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *bottomLineView;
 @property (nonatomic, strong) UILabel *contentLabel;
+@property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) UIButton *loadMoreButton;
 
 @property (nonatomic, copy) ClickTwitterBlock clickTwitterBlock;
@@ -40,7 +43,8 @@
     [self.contentView addSubview:self.boxView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.bottomLineView];
-    [self.contentView addSubview:self.contentLabel];
+//    [self.contentView addSubview:self.contentLabel];
+    [self.contentView addSubview:self.webView];
     [self.contentView addSubview:self.loadMoreButton];
     
     WEAKSELF
@@ -59,10 +63,16 @@
         make.height.offset(AUTOLAYOUTSIZE(0.5));
         make.bottom.centerX.equalTo(weakSelf.titleLabel);
     }];
-    [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.boxView).offset(- AUTOLAYOUTSIZE(23));
+//    [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.boxView).offset(- AUTOLAYOUTSIZE(23));
+//        make.top.equalTo(weakSelf.bottomLineView.mas_bottom).offset(AUTOLAYOUTSIZE(9.5));
+//        make.centerX.equalTo(weakSelf.bottomLineView);
+//    }];
+    [self.webView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(23));
+        make.centerX.equalTo(weakSelf.contentView);
         make.top.equalTo(weakSelf.bottomLineView.mas_bottom).offset(AUTOLAYOUTSIZE(9.5));
-        make.centerX.equalTo(weakSelf.bottomLineView);
+        make.bottom.equalTo(weakSelf.loadMoreButton.mas_top).offset(- AUTOLAYOUTSIZE(10));
     }];
     [self.loadMoreButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(55));
@@ -77,14 +87,14 @@
  加载更多
  */
 - (void)respondsToLoadMoreButton {
-    
+    self.clickTwitterBlock();
 }
 
 /**
  点击twitter
  */
 - (void)respondsToContentLabel {
-    self.clickTwitterBlock();
+    
 }
 
 #pragma mark ------ Public Methods ------
@@ -96,8 +106,14 @@
 - (void)setTwitter:(NSString *)twitter {
     _twitter = twitter;
     
-    NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[_twitter dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-    self.contentLabel.attributedText = attrStr;
+    if ([_twitter containsString:@"<"]) {
+        [self.webView loadHTMLString:_twitter baseURL:nil];
+    } else {
+        NSURL *url = [NSURL URLWithString:_twitter];
+        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+    }
+//    NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[_twitter dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//    self.contentLabel.attributedText = attrStr;
 }
 
 - (UIView *)boxView {
@@ -133,6 +149,13 @@
         [_contentLabel addGestureRecognizer:tapGR];
     }
     return _contentLabel;
+}
+- (WKWebView *)webView {
+    if (!_webView) {
+        _webView = [[WKWebView alloc] init];
+        _webView.scrollView.bounces = NO;
+    }
+    return _webView;
 }
 - (UIButton *)loadMoreButton {
     if (!_loadMoreButton) {

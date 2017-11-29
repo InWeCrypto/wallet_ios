@@ -24,6 +24,7 @@
 - (void)setModel:(WalletTypeModel *)model
 {
     _model = model;
+    self.icoHeadeImage.contentMode = UIViewContentModeCenter;
     [self.icoHeadeImage sdsetImageWithURL:model.icon placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_add",model.name]]];
     self.titleLB.text = model.name;
 }

@@ -29,24 +29,46 @@
     self.timeLB.text = [model.created_at substringFromIndex:5];
     self.infoLB.text = @"正在打包（0/12）";
     self.slider.value =  0.5;
-    model.fee = [NSString stringWithFormat:@"%.4f",[[NSString DecimalFuncWithOperatorType:3 first:model.fee secend:@"1000000000000000000" value:4] floatValue]];
+    if (![model.flag isEqualToString:@"NEO"]) {
+        model.fee = [NSString stringWithFormat:@"%.4f",[[NSString DecimalFuncWithOperatorType:3 first:model.fee secend:@"1000000000000000000" value:4] floatValue]];
+    }
     model.handle_fee = [NSString stringWithFormat:@"%f",[[NSString DecimalFuncWithOperatorType:3 first:model.handle_fee secend:@"1000000000000000000" value:8] floatValue]];
-    if (model.isReceivables)
-    {
-        //收款
-        self.priceLB.text = [NSString stringWithFormat:@"+%.4f %@",[model.fee floatValue], [model.flag lowercaseString]];
-        self.priceLB.textColor = [UIColor colorWithHexString:@"232772"];
-        self.headImage.image = [UIImage imageNamed:@"转入"];
-    }
-    else
-    {
-        //转账
-        self.priceLB.text = [NSString stringWithFormat:@"-%.4f %@",[model.fee floatValue], [model.flag lowercaseString]];
-        self.priceLB.textColor = [UIColor redColor];
-        self.headImage.image = [UIImage imageNamed:@"转出"];
+    
+    if ([model.flag isEqualToString:@"NEO"]) {
+        if (model.isReceivables)
+        {
+            //收款
+            self.priceLB.text = [NSString stringWithFormat:@"+%.4f",[model.fee floatValue]];
+            self.priceLB.textColor = [UIColor colorWithHexString:@"232772"];
+            self.headImage.image = [UIImage imageNamed:@"转入"];
+        }
+        else
+        {
+            //转账
+            self.priceLB.text = [NSString stringWithFormat:@"-%.4f",[model.fee floatValue]];
+            self.priceLB.textColor = [UIColor redColor];
+            self.headImage.image = [UIImage imageNamed:@"转出"];
+        }
+    } else {
+        if (model.isReceivables)
+        {
+            //收款
+            self.priceLB.text = [NSString stringWithFormat:@"+%.4f %@",[model.fee floatValue], [model.flag lowercaseString]];
+            self.priceLB.textColor = [UIColor colorWithHexString:@"232772"];
+            self.headImage.image = [UIImage imageNamed:@"转入"];
+        }
+        else
+        {
+            //转账
+            self.priceLB.text = [NSString stringWithFormat:@"-%.4f %@",[model.fee floatValue], [model.flag lowercaseString]];
+            self.priceLB.textColor = [UIColor redColor];
+            self.headImage.image = [UIImage imageNamed:@"转出"];
+        }
     }
     
-    
+    if ([model.flag isEqualToString:@"NEO"]) {
+        model.status = 3;
+    }
     switch (model.status)
     {
             //0交易失败,1准备打包,2打包中,3交易成功

@@ -108,8 +108,8 @@
     [contentAttributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, _model.content.length)];
 
     self.contentLabel.attributedText = contentAttributedString;
-    self.infomationLabel.text = [NSString stringWithFormat:@"%@  |  阅读：%ld  |  回复：%ld |   %@", _model.updatedAt, (NSInteger)_model.clickRate, (NSInteger)_model.commentsCount, _model.saveUser == 1 ? @"已收藏" : @"收藏"];
-    self.collectImageView.image = [UIImage imageNamed:_model.saveUser == 1 ? @"icon_market_like" : @"icon_market_unlike"];
+    self.infomationLabel.text = [NSString stringWithFormat:@"%@  |  阅读：%ld  |  回复：%ld |   %@", _model.updatedAt, (NSInteger)_model.clickRate, (NSInteger)_model.commentsCount, /*_model.saveUser == */1 ? @"已收藏" : @"收藏"];
+    self.collectImageView.image = [UIImage imageNamed:/*_model.saveUser == */1 ? @"icon_market_like" : @"icon_market_unlike"];
 }
 
 - (UIView *)boxView {

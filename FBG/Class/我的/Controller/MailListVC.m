@@ -34,8 +34,8 @@
     self.coustromTableView.emptyDataSetSource = self;
     self.coustromTableView.emptyDataSetDelegate = self;
     
-    self.typeChangeSM.layer.borderWidth = 1;
-    self.typeChangeSM.layer.borderColor = [UIColor whiteColor].CGColor;
+//    self.typeChangeSM.layer.borderWidth = 1;
+//    self.typeChangeSM.layer.borderColor = [UIColor whiteColor].CGColor;
     
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_add-friends"] style:UIBarButtonItemStyleDone target:self action:@selector(rightButton)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
