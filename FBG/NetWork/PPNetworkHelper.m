@@ -102,7 +102,7 @@ static NetworkStatus _status;
 }
 
 #pragma mark - GET请求无缓存
-+ (PPURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (PPURLSessionTask *)GET:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
 {
     if (![NSString isNulllWithObject:hudString])
     {
@@ -113,7 +113,7 @@ static NetworkStatus _status;
     
     PPLog(@"❤️GET URL❤️ = %@",URL);
     PPLog(@"⚽️GET 数据⚽️ = %@",parameters);
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:isOtherBaseUrl];
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
@@ -154,7 +154,7 @@ static NetworkStatus _status;
 }
 
 #pragma mark - GET请求自动缓存
-+ (PPURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (PPURLSessionTask *)GET:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
 {
     if (![NSString isNulllWithObject:hudString])
     {
@@ -168,7 +168,7 @@ static NetworkStatus _status;
     //读取缓存
     responseCache([PPNetworkCache getResponseCacheForKey:URL]);
     
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:isOtherBaseUrl];
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
@@ -224,17 +224,17 @@ static NetworkStatus _status;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     
-    NSString * requestUrl;
-    if ([URL containsString:@"http"]) {
-        requestUrl = URL;
-    } else {
-        requestUrl = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"] stringByAppendingPathComponent:URL];
-    }
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
+//    NSString * requestUrl;
+//    if ([URL containsString:@"http"]) {
+//        requestUrl = URL;
+//    } else {
+//        requestUrl = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"] stringByAppendingPathComponent:URL];
+//    }
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:NO];
     PPLog(@"❤️POST URL❤️ = %@",URL);
     PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
     
-    return [manager POST:requestUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
     {
@@ -280,6 +280,72 @@ static NetworkStatus _status;
     }];
     
 }
++ (PPURLSessionTask *)POSTOtherURL:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
+{
+    if (![NSString isNulllWithObject:hudString])
+    {
+        [LCProgressHUD showLoading:hudString];
+    }
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    
+    //    NSString * requestUrl;
+    //    if ([URL containsString:@"http"]) {
+    //        requestUrl = URL;
+    //    } else {
+    //        requestUrl = [[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"] stringByAppendingPathComponent:URL];
+    //    }
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:YES];
+    PPLog(@"❤️POST URL❤️ = %@",URL);
+    PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
+    
+    return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
+            {
+                if (![NSString isNulllWithObject:hudString])
+                {
+                    [LCProgressHUD hide];
+                }
+                
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                
+                if ([URL containsString:@"http"]) {
+                    success([responseObject objectForKey:@"result"]);
+                    return ;
+                }
+                if ([[responseObject objectForKey:@"code"] intValue] == 4000 || [URL containsString:@"http"])
+                {
+                    success([responseObject objectForKey:@"data"]);
+                    PPLog(@"responseObject = %@",responseObject);
+                }
+                else if ([[responseObject objectForKey:@"code"] intValue] == 4007)
+                {
+                    success([responseObject objectForKey:@"url"]);
+                }
+                else
+                {
+                    if ([[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]] containsString:@"token无效"])
+                    {
+                        [[AppDelegate delegate] showLoginController];
+                    }
+                    failure([responseObject objectForKey:@"msg"]);
+                }
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
+            {
+                if (![NSString isNulllWithObject:hudString])
+                {
+                    [LCProgressHUD hide];
+                }
+                
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                
+                failure ? failure(error.localizedDescription) : nil;
+                PPLog(@"error = %@",error.localizedDescription);
+            }];
+    
+}
 
 #pragma mark - POST请求自动缓存
 + (PPURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
@@ -295,7 +361,7 @@ static NetworkStatus _status;
     PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
     //读取缓存
     responseCache([PPNetworkCache getResponseCacheForKey:URL]);
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:NO];
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
@@ -340,7 +406,7 @@ static NetworkStatus _status;
     
 }
 
-+ (PPURLSessionTask *)PUT:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (PPURLSessionTask *)PUT:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
 {
     if (![NSString isNulllWithObject:hudString])
     {
@@ -349,7 +415,7 @@ static NetworkStatus _status;
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:isOtherBaseUrl];
     PPLog(@"❤️PUT URL❤️ = %@",URL);
     PPLog(@"⚽️PUT 数据⚽️ = %@",parameters);
     
@@ -398,7 +464,7 @@ static NetworkStatus _status;
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:NO];
     PPLog(@"❤️DELETE URL❤️ = %@",URL);
     PPLog(@"⚽️DELETE 数据⚽️ = %@",parameters);
     
@@ -449,7 +515,7 @@ static NetworkStatus _status;
         [LCProgressHUD showLoading:@"上传中..."];
     }
     
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:NO];
     return [manager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         //压缩-添加-上传图片
         [images enumerateObjectsUsingBlock:^(UIImage * _Nonnull image, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -491,7 +557,7 @@ static NetworkStatus _status;
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:NO];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         //下载进度
@@ -533,10 +599,17 @@ static NetworkStatus _status;
 
 #pragma mark - 设置AFHTTPSessionManager相关属性
 
-+ (AFHTTPSessionManager *)createAFHTTPSessionManagerWithUrl:(NSString *)url
++ (AFHTTPSessionManager *)createAFHTTPSessionManagerWithUrl:(NSString *)url isOtherBaseUrl:(BOOL)isOtherBaseUrl
 {
 //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:APP_APIEHEAD]];
+    NSString *baseUrl;
+    NSLog(@"%@", APP_APIEHEAD);
+    if ([APP_APIEHEAD isEqualToString:APIEHEAD]) {
+        baseUrl = isOtherBaseUrl ? APIEHEADOTHER : APIEHEAD;
+    } else {
+        baseUrl = isOtherBaseUrl ? APIEHEAD1OTHER : APIEHEAD1;
+    }
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:baseUrl]];
     //设置请求参数的类型:HTTP (AFJSONRequestSerializer,AFHTTPRequestSerializer)
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     //设置请求的超时时间
@@ -548,6 +621,7 @@ static NetworkStatus _status;
     if ([UserSignData share].user.token.length > 0)
     {
         [manager.requestSerializer setValue:[UserSignData share].user.token forHTTPHeaderField:@"ct"];
+        [manager.requestSerializer setValue:[UserSignData share].user.open_id forHTTPHeaderField:@"open-id"];
         [manager.requestSerializer setValue:@"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" forHTTPHeaderField:@"neo-asset-id"];
         [manager.requestSerializer setValue:@"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7" forHTTPHeaderField:@"neo-gas-asset-id"];
     }

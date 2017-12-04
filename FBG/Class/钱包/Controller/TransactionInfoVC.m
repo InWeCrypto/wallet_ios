@@ -90,12 +90,12 @@
         if ([APP_APIEHEAD isEqualToString:@"https://ropsten.unichain.io/api/"])
         {
             //测试
-            url = @"https://ropsten.etherscan.io/tx/";
+            url = @"https://neo.io/tx/"; // https://ropsten.etherscan.io/tx/
         }
         else
         {
             //正式
-            url = @"https://etherscan.io/tx/";
+            url = @"https://neo.io/tx/";
         }
         KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url,strongSelf.model.trade_no]];
         vc.title = @"订单详情";

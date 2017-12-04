@@ -104,7 +104,7 @@
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
     [parametersDic setObject:@(_type) forKey:@"type"];
     
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"market-category/%d",self.quotationModel.id] parameters:parametersDic hudString:@"获取中..." responseCache:^(id responseCache)
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"market-category/%d",self.quotationModel.id] isOtherBaseUrl:NO parameters:parametersDic hudString:@"获取中..." responseCache:^(id responseCache)
      {
          if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]] && [[responseCache objectForKey:@"list"] count] > 0)
          {

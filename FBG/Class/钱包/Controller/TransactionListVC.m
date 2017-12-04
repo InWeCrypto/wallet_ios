@@ -95,7 +95,11 @@
     
     if (![UserSignData share].user.isCode)
     {
-        [self loadData];
+        if (self.model.category_id == 2) {
+            [self timerDown];
+        } else {
+            [self loadData];
+        }
     }
     
 }
@@ -129,7 +133,11 @@
 - (void)countDownTime
 {
     //10s 请求一次接口
-    [self loadMaxblockNumber];
+    if (self.model.category_id == 2) {
+        [self loadNeoData];
+    } else {
+        [self loadMaxblockNumber];
+    }
     [self loadBanlaceData];
 }
 
@@ -247,7 +255,7 @@
     if ([self.tokenModel.flag isEqualToString:@"NEO"] || [self.tokenModel.flag isEqualToString:@"Gas"]) {
         // NEO Gas
         //代币余额
-        [PPNetworkHelper GET:[NSString stringWithFormat:@"https://app.inwecrypto.com/api/conversion/%d", self.model.id] parameters:nil hudString:nil success:^(id responseObject)
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%d", self.model.id] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject)
          {
              NSDictionary *record = responseObject[@"record"];
              NSString *neoPriceForCny = record[@"cap"][@"price_cny"];
@@ -307,7 +315,7 @@
 - (void)loadData
 {
     //获取最小块高  默认12
-    [PPNetworkHelper GET:@"min-block" parameters:nil hudString:@"加载中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"min-block" isOtherBaseUrl:NO parameters:nil hudString:@"加载中..." success:^(id responseObject)
      {
          self.minBlockNumber = [responseObject objectForKey:@"min_block_num"];
          
@@ -350,7 +358,7 @@
     [parametersDic setObject:self.tokenModel ? self.tokenModel.name : self.model.category_name forKey:@"flag"];
     
     //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
-    [PPNetworkHelper GET:@"wallet-order" parameters:parametersDic hudString:nil success:^(id responseObject)
+    [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
      {
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
          {
@@ -389,7 +397,7 @@
     [parametersDic setObject:[self.tokenModel.flag isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7" forKey:@"asset_id"];
     
     //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
-    [PPNetworkHelper GET:@"wallet-order" parameters:parametersDic hudString:nil success:^(id responseObject)
+    [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
      {
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
          {

@@ -125,7 +125,7 @@
  */
 - (void)getNewMoneyPriceDataWithUrl:(NSString *)url {
     WEAKSELF
-    [PPNetworkHelper GET:url parameters:nil hudString:nil success:^(id responseObject) {
+    [PPNetworkHelper GET:url isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject) {
         weakSelf.moneyPriceModel = [DBHInformationDetailForNewMoneyPriceModelData modelObjectWithDictionary:responseObject];
         
         [weakSelf refreshData];

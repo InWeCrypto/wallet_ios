@@ -20,6 +20,11 @@
 #define  SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 
 /**
+ *  状态栏高度
+ */
+#define  STATUSBARHEIGHT [UIApplication sharedApplication].statusBarFrame.size.height
+
+/**
  *  自适应大小
  */
 #define AUTOLAYOUTSIZE(size) (375.0 / SCREEN_WIDTH * size)

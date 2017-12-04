@@ -126,7 +126,7 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
  */
 - (void)getIcoData {
     WEAKSELF
-    [PPNetworkHelper GET:@"https://dev.inwecrypto.com/article/ico" parameters:nil hudString:@"" success:^(id responseObject) {
+    [PPNetworkHelper GET:@"https://dev.inwecrypto.com/article/ico" isOtherBaseUrl:NO parameters:nil hudString:@"" success:^(id responseObject) {
         for (NSDictionary *dic in responseObject) {
             DBHEvaluatingIcoModelData *model = [DBHEvaluatingIcoModelData modelObjectWithDictionary:dic];
             

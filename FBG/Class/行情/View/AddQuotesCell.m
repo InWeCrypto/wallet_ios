@@ -8,6 +8,8 @@
 
 #import "AddQuotesCell.h"
 
+#import "AddQuotesVCDataModels.h"
+
 @implementation AddQuotesCell
 
 - (void)awakeFromNib {
@@ -21,12 +23,11 @@
     // Configure the view for the selected state
 }
 
-- (void)setModel:(QuotationModel *)model
+- (void)setModel:(AddQuotesVCModelData *)model
 {
     _model = model;
 //    [self.headImage sdsetImageWithURL:model.url placeholderImage:Default_General_Image];
-    self.titleLB.text = model.name;
-    self.statusImage.image = [UIImage imageNamed:model.relation_user_count == 1 ? @"list_btn_selected" : @"list_btn_default"];
+    self.titleLB.text = [model.enName uppercaseString];
 }
 
 @end

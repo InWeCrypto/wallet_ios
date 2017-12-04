@@ -62,7 +62,7 @@
     [parametersDic setObject:_isReceivables ? @(2) : @(1) forKey:@"type"];
     [parametersDic setObject:self.tokenModel ? self.tokenModel.name : self.model.category_name forKey:@"flag"];
     
-    [PPNetworkHelper GET:@"wallet-order" parameters:parametersDic hudString:@"加载中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:@"加载中..." success:^(id responseObject)
      {
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
          {

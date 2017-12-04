@@ -14,6 +14,8 @@
 #import "QuotationInfoVC.h"
 #import "QuotationModel.h"
 
+#import "DBHQuotationVCDataModels.h"
+
 #import "FBG-Swift.h"
 
 @interface QuotationVC ()
@@ -82,60 +84,42 @@
         [self.navigationController pushViewController:vc animated:YES];
     }];
     
-    UIAlertAction *remindAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Remind", nil) style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
-        //提醒
-        RemindVC * vc = [[RemindVC alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }];
+//    UIAlertAction *remindAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Remind", nil) style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+//        //提醒
+//        RemindVC * vc = [[RemindVC alloc] init];
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }];
     UIAlertAction *canelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:(UIAlertActionStyleCancel) handler:^(UIAlertAction * _Nonnull action) {
     }];
     
     [alertController addAction:addQuotesAction];
     [alertController addAction:editQuotesAction];
-    [alertController addAction:remindAction];
+//    [alertController addAction:remindAction];
     [alertController addAction:canelAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)loadData
 {
-    [PPNetworkHelper GET:@"market-category" parameters:nil hudString:nil responseCache:^(id responseCache)
+    [PPNetworkHelper GET:@"user/ticker" isOtherBaseUrl:YES parameters:nil hudString:nil responseCache:^(id responseCache)
     {
         //获取数据
-        if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]])
-        {
-            [self.dataSource removeAllObjects];
-            for (NSDictionary * quotesDic in [responseCache objectForKey:@"list"])
-            {
-                for (NSDictionary * dic in [quotesDic objectForKey:@"data"])
-                {
-                    QuotationModel * quotesModel = [[QuotationModel alloc] initWithDictionary:dic];
-                    quotesModel.relationCap = [[RelationCapModel alloc] initWithDictionary:[dic objectForKey:@"relationCap"]];
-                    quotesModel.relationCapMin = [[RelationCapMinModel alloc] initWithDictionary:[dic objectForKey:@"relationCapMin"]];
-                    [self.dataSource addObject:quotesModel];
-                }
-            }
-            [self.coustromTableView reloadData];
+        [self.dataSource removeAllObjects];
+        for (NSDictionary *dic in responseCache) {
+            DBHQuotationVCModelData *model = [DBHQuotationVCModelData modelObjectWithDictionary:dic];
+            [self.dataSource addObject:model];
         }
-
+        [self.coustromTableView reloadData];
     } success:^(id responseObject)
     {
         //获取数据
-        if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]] && self.dataSource.count == 0)
-        {
-            [self.dataSource removeAllObjects];
-            for (NSDictionary * quotesDic in [responseObject objectForKey:@"list"])
-            {
-                for (NSDictionary * dic in [quotesDic objectForKey:@"data"])
-                {
-                    QuotationModel * quotesModel = [[QuotationModel alloc] initWithDictionary:dic];
-                    quotesModel.relationCap = [[RelationCapModel alloc] initWithDictionary:[dic objectForKey:@"relationCap"]];
-                    quotesModel.relationCapMin = [[RelationCapMinModel alloc] initWithDictionary:[dic objectForKey:@"relationCapMin"]];
-                    [self.dataSource addObject:quotesModel];
-                }
-            }
-            [self.coustromTableView reloadData];
+        [self.dataSource removeAllObjects];
+        for (NSDictionary *dic in responseObject) {
+            DBHQuotationVCModelData *model = [DBHQuotationVCModelData modelObjectWithDictionary:dic];
+            [self.dataSource addObject:model];
         }
+        
+        [self.coustromTableView reloadData];
         [self endRefreshing];
     } failure:^(NSString *error)
     {

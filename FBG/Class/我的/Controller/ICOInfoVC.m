@@ -33,7 +33,7 @@
     
     self.title = @"ico订单详情";
     
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico-order/%@",self.id] parameters:nil hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico-order/%@",self.id] isOtherBaseUrl:NO parameters:nil hudString:@"获取中..." success:^(id responseObject)
     {
         ICOOrderListModel * model = [[ICOOrderListModel alloc] initWithDictionary:[responseObject objectForKey:@"record"]];
         model.title = [[[responseObject objectForKey:@"record"] objectForKey:@"ico"] objectForKey:@"title"];

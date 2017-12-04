@@ -133,7 +133,8 @@
              [UserSignData share].user.ETHAssets_cny = @"0.00";
              [UserSignData share].user.BTCAssets_ether = @"0.0000";
              [UserSignData share].user.BTCAssets_cny = @"0.00";
-             [UserSignData share].user.totalAssets = @"0.00";
+             [UserSignData share].user.totalAssets_cny = @"0.00";
+             [UserSignData share].user.totalAssets_usd = @"0.00";
          }
          [UserSignData share].user.token = [responseObject objectForKey:@"token"];
          [UserSignData share].user.open_id = [[responseObject objectForKey:@"user"] objectForKey:@"open_id"];
@@ -208,7 +209,8 @@
         [UserSignData share].user.ETHAssets_cny = @"0.00";
         [UserSignData share].user.BTCAssets_ether = @"0.0000";
         [UserSignData share].user.BTCAssets_cny = @"0.00";
-        [UserSignData share].user.totalAssets = @"0.00";
+        [UserSignData share].user.totalAssets_cny = @"0.00";
+        [UserSignData share].user.totalAssets_usd = @"0.00";
         [UserSignData share].user.walletUnitType = 1;
 
         [UserSignData share].user.isCode = YES;

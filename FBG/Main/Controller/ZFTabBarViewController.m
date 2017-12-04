@@ -119,7 +119,11 @@
 - (void)setupChildViewController:(UIViewController *)childVc title:(NSString *)title imageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName
 {
     // 1.设置控制器的属性
-    childVc.title = title;
+    if (![title isEqualToString:NSLocalizedString(@"Information", nil)]) {
+        childVc.title = title;
+    } else {
+        childVc.tabBarItem.title = NSLocalizedString(@"Information", nil);
+    }
     // 设置图标
     childVc.tabBarItem.image = [UIImage imageNamed:imageName];
     // 设置选中的图标
@@ -131,13 +135,9 @@
     }
     
     // 2.包装一个导航控制器
-    if ([title isEqualToString:NSLocalizedString(@"Information", nil)]) {
-        DBHNavigationController *nav = [[DBHNavigationController alloc] initWithRootViewController:childVc];
-        [self addChildViewController:nav];
-    } else {
-        CDNavigationController *nav = [[CDNavigationController alloc] initWithRootViewController:childVc];
-        [self addChildViewController:nav];
-    }
+    CDNavigationController *nav = [[CDNavigationController alloc] initWithRootViewController:childVc];
+    
+    [self addChildViewController:nav];
     
     // 3.添加tabbar内部的按钮
     [self.customTabBar addTabBarButtonWithItem:childVc.tabBarItem];

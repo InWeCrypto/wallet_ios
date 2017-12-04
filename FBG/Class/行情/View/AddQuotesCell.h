@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "QuotationModel.h"
+
+@class AddQuotesVCModelData;
 
 @interface AddQuotesCell : UITableViewCell
 
@@ -15,6 +16,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLB;
 @property (weak, nonatomic) IBOutlet UIImageView *statusImage;
 
-@property (nonatomic, strong) QuotationModel * model;
+@property (nonatomic, strong) AddQuotesVCModelData *model;
 
 @end

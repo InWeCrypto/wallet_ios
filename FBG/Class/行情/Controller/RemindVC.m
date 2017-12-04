@@ -50,7 +50,7 @@
 
 - (void)loadData
 {
-    [PPNetworkHelper GET:@"market-notification" parameters:nil hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"market-notification" isOtherBaseUrl:NO parameters:nil hudString:@"获取中..." success:^(id responseObject)
      {
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
          {

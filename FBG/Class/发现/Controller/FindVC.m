@@ -75,7 +75,7 @@
 - (void)loadHeaderData
 {
     //获取banner 分类
-    [PPNetworkHelper GET:@"find" parameters:nil hudString:nil responseCache:^(id responseCache)
+    [PPNetworkHelper GET:@"find" isOtherBaseUrl:NO parameters:nil hudString:nil responseCache:^(id responseCache)
     {
         if ([[responseCache objectForKey:@"banner"] count] > 0)
         {
@@ -164,7 +164,7 @@
     [parametersDic setObject:@(self.page) forKey:@"page"];
     [parametersDic setObject:@(5) forKey:@"per_page"];
     
-    [PPNetworkHelper GET:@"article" parameters:parametersDic hudString:nil success:^(id responseObject)
+    [PPNetworkHelper GET:@"article" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
     {
         if (self.page == 1)
         {

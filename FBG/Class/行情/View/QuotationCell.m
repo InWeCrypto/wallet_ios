@@ -8,6 +8,8 @@
 
 #import "QuotationCell.h"
 
+#import "DBHQuotationVCDataModels.h"
+
 @implementation QuotationCell
 
 - (void)awakeFromNib {
@@ -21,35 +23,35 @@
     // Configure the view for the selected state
 }
 
-- (void)setModel:(QuotationModel *)model
+- (void)setModel:(DBHQuotationVCModelData *)model
 {
     _model = model;
-    self.titleLB.text = model.name;
-    self.typeLB.text = model.source;
-    self.usdLB.text = [NSString stringWithFormat:@"$%.2f",[model.relationCap.price_usd floatValue]];
-    self.rmbLB.text = [NSString stringWithFormat:@"￥%.2f",[model.relationCap.price_cny floatValue]];
-    if ([model.relationCap.percent_change_24h floatValue] < 0)
+    self.titleLB.text = [model.enName uppercaseString];
+//    self.typeLB.text = model.source;
+    self.usdLB.text = [NSString stringWithFormat:@"$%.2f",[model.timeData.priceUsd floatValue]];
+    self.rmbLB.text = [NSString stringWithFormat:@"￥%.2f",[model.timeData.priceCny floatValue]];
+    if ([model.timeData.change24h floatValue] < 0)
     {
-        self.changeLB.text = [NSString stringWithFormat:@"%@%%",model.relationCap.percent_change_24h];
-        self.changeLB.backgroundColor = [UIColor colorWithHexString:@"FB5A67"];
+        self.changeLB.text = [NSString stringWithFormat:@"%@%%",model.timeData.change24h];
+        self.changeLB.backgroundColor = [UIColor redColor];
     }
     else
     {
-        self.changeLB.backgroundColor = [UIColor colorWithHexString:@"66B7FB"];
-        self.changeLB.text = [NSString stringWithFormat:@"+%@%%",model.relationCap.percent_change_24h];
+        self.changeLB.backgroundColor = [UIColor colorWithHexString:@"008C55"];
+        self.changeLB.text = [NSString stringWithFormat:@"+%@%%",model.timeData.change24h];
     }
     
     if ([UserSignData share].user.walletUnitType == 1)
     {
-        self.hightLB.text = [NSString stringWithFormat:@"￥%.2f",[model.relationCapMin.price_cny_high floatValue]];
-        self.lowLB.text = [NSString stringWithFormat:@"￥%.2f",[model.relationCapMin.price_cny_low floatValue]];
-        self.numberLB.text = [NSString getDealNumwithstring:model.relationCap.volume_cny_24h];
+        self.hightLB.text = [NSString stringWithFormat:@"￥%.2f",[model.timeData.maxPriceCny24h floatValue]];
+        self.lowLB.text = [NSString stringWithFormat:@"￥%.2f",[model.timeData.minPriceCny24h floatValue]];
+        self.numberLB.text = [NSString getDealNumwithstring:model.timeData.priceUsd];
     }
     else
     {
-        self.hightLB.text = [NSString stringWithFormat:@"$%.2f",[model.relationCapMin.price_usd_high floatValue]];
-        self.lowLB.text = [NSString stringWithFormat:@"$%.2f",[model.relationCapMin.price_usd_low floatValue]];
-        self.numberLB.text = [NSString getDealNumwithstring:model.relationCap.volume_usd_24h];
+        self.hightLB.text = [NSString stringWithFormat:@"$%.2f",[model.timeData.maxPriceUsd24h floatValue]];
+        self.lowLB.text = [NSString stringWithFormat:@"$%.2f",[model.timeData.minPriceUsd24h floatValue]];
+        self.numberLB.text = [NSString getDealNumwithstring:model.timeData.priceUsd];
     }
     
     

@@ -12,6 +12,8 @@
 #import "EditMailVC.h"
 #import "MailMdel.h"
 
+#import "YCXMenu.h"
+
 @interface MailListVC () <UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 {
     BOOL _isType; //默认 NO ==> ETH  YES ==> BTC
@@ -20,7 +22,10 @@
 @property (nonatomic, strong) UITableView * coustromTableView;
 @property (nonatomic, strong) NSMutableArray * ETHDataSource;
 @property (nonatomic, strong) NSMutableArray * BTCDataSource;
+@property (nonatomic, strong) NSMutableArray * NEODataSource;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *typeChangeSM;
+
+@property (nonatomic, strong) NSMutableArray * items;
 
 @end
 
@@ -43,28 +48,63 @@
     [self.view addSubview:self.coustromTableView];
     self.ETHDataSource = [[NSMutableArray alloc] init];
     self.BTCDataSource = [[NSMutableArray alloc] init];
+    self.NEODataSource = [[NSMutableArray alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self loadData];
+    switch (self.typeChangeSM.selectedSegmentIndex) {
+        case 0:
+            [self loadDataWithIcoId:@"6"];
+            break;
+        case 1:
+            
+            break;
+            
+        default:
+            [self loadDataWithIcoId:@"7"];
+            break;
+    }
 }
 
-- (void)loadData
+- (void)loadDataWithIcoId:(NSString *)icoId
 {
-    [PPNetworkHelper GET:@"contact" parameters:nil hudString:@"获取中..." responseCache:^(id responseCache)
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"user/contact?ico_id=%@", icoId] isOtherBaseUrl:YES parameters:nil hudString:@"获取中..." responseCache:^(id responseCache)
      {
-         [self.ETHDataSource removeAllObjects];
-         if ([[responseCache objectForKey:@"list"] count] > 0)
+         switch (self.typeChangeSM.selectedSegmentIndex) {
+             case 0:
+                 [self.ETHDataSource removeAllObjects];
+                 break;
+             case 1:
+                 [self.BTCDataSource removeAllObjects];
+                 break;
+                 
+             default:
+                 [self.NEODataSource removeAllObjects];
+                 break;
+         }
+         NSArray *dataArray = responseCache;
+         if ([dataArray count] > 0)
          {
              int i = 1;
-             for (NSDictionary * dic in [responseCache objectForKey:@"list"])
+             for (NSDictionary * dic in dataArray)
              {
                  MailMdel * model = [[MailMdel alloc] initWithDictionary:dic];
                  model.img = [NSString stringWithFormat:@"通讯录头像%d",i];
-                 [self.ETHDataSource addObject:model];
+                 switch (self.typeChangeSM.selectedSegmentIndex) {
+                     case 0:
+                         [self.ETHDataSource addObject:model];
+                         break;
+                     case 1:
+                         [self.BTCDataSource addObject:model];
+                         break;
+                         
+                     default:
+                         [self.NEODataSource addObject:model];
+                         break;
+                 }
                  
                  i ++;
                  if (i == 10)
@@ -78,15 +118,38 @@
          
      } success:^(id responseObject)
      {
-         [self.ETHDataSource removeAllObjects];
-         if ([[responseObject objectForKey:@"list"] count] > 0)
+         switch (self.typeChangeSM.selectedSegmentIndex) {
+             case 0:
+                 [self.ETHDataSource removeAllObjects];
+                 break;
+             case 1:
+                 [self.BTCDataSource removeAllObjects];
+                 break;
+                 
+             default:
+                 [self.NEODataSource removeAllObjects];
+                 break;
+         }
+         NSArray *dataArray = responseObject;
+         if ([dataArray count] > 0)
          {
              int i = 1;
-             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+             for (NSDictionary * dic in dataArray)
              {
                  MailMdel * model = [[MailMdel alloc] initWithDictionary:dic];
                  model.img = [NSString stringWithFormat:@"通讯录头像%d",i];
-                 [self.ETHDataSource addObject:model];
+                 switch (self.typeChangeSM.selectedSegmentIndex) {
+                     case 0:
+                         [self.ETHDataSource addObject:model];
+                         break;
+                     case 1:
+                         [self.BTCDataSource addObject:model];
+                         break;
+                         
+                     default:
+                         [self.NEODataSource addObject:model];
+                         break;
+                 }
                  
                  i ++;
                  if (i == 10)
@@ -106,15 +169,43 @@
 - (void)rightButton
 {
     //添加
-    AddMailVC * vc = [[AddMailVC alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    [YCXMenu setSeparatorColor:[UIColor colorWithHexString:@"DAD7D7"]];
+    [YCXMenu setTintColor:[UIColor whiteColor]];
+    [YCXMenu setTitleFont:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(14)]];
+    [YCXMenu setSelectedColor:[UIColor colorWithHexString:@"666666"]];
+    [YCXMenu setselectedIndex:-1];
+    if ([YCXMenu isShow])
+    {
+        [YCXMenu dismissMenu];
+    }
+    else
+    {
+        WEAKSELF
+        [YCXMenu showMenuInView:self.view fromRect:CGRectMake(SCREEN_WIDTH - 50, 0, 50, 0) menuItems:self.items selected:^(NSInteger index, YCXMenuItem *item)
+         {
+             if (index == 1) {
+                 [LCProgressHUD showMessage:@"敬请期待"];
+                 
+                 return ;
+             }
+             
+             AddMailVC * vc = [[AddMailVC alloc] init];
+             vc.icoId = !index ? @"6" : @"7";
+             [weakSelf.navigationController pushViewController:vc animated:YES];
+         }];
+    }
 }
 
 - (IBAction)TypeChange:(id)sender
 {
     //改变类型
-    [LCProgressHUD showMessage:@"敬请期待"];
-    [self.typeChangeSM setSelectedSegmentIndex:0];
+    if (self.typeChangeSM.selectedSegmentIndex == 1) {
+        [LCProgressHUD showMessage:@"敬请期待"];
+        return;
+    }
+    
+    // ETH:6 NEO:7
+    [self loadDataWithIcoId:!self.typeChangeSM.selectedSegmentIndex ? @"6" : @"7"];
 }
 
 #pragma mark - DZNEmptyDataSetSource Methods
@@ -154,7 +245,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _isType ? self.BTCDataSource.count : self.ETHDataSource.count;
+    switch (self.typeChangeSM.selectedSegmentIndex) {
+        case 0:
+            return self.ETHDataSource.count;
+            break;
+        case 1:
+            return self.BTCDataSource.count;
+            break;
+            
+        default:
+            return self.NEODataSource.count;
+            break;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -165,7 +267,21 @@
         cell = array[0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.model = _isType ? self.BTCDataSource[indexPath.row] : self.ETHDataSource[indexPath.row];
+    
+    MailMdel * model;
+    switch (self.typeChangeSM.selectedSegmentIndex) {
+        case 0:
+            model = self.ETHDataSource[indexPath.row];
+            break;
+        case 1:
+            model = self.BTCDataSource[indexPath.row];
+            break;
+            
+        default:
+            model = self.NEODataSource[indexPath.row];
+            break;
+    }
+    cell.model = model;
     return cell;
 }
 
@@ -173,7 +289,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MailMdel * model = _isType ? self.BTCDataSource[indexPath.row] : self.ETHDataSource[indexPath.row];
+    MailMdel * model;
+    switch (self.typeChangeSM.selectedSegmentIndex) {
+        case 0:
+            model = self.ETHDataSource[indexPath.row];
+            break;
+        case 1:
+            model = self.BTCDataSource[indexPath.row];
+            break;
+            
+        default:
+            model = self.NEODataSource[indexPath.row];
+            break;
+    }
     if (self.isChose)
     {
         //选择回调
@@ -207,6 +335,35 @@
         _coustromTableView.rowHeight = 100;
     }
     return _coustromTableView;
+}
+
+- (NSMutableArray *)items
+{
+    if (!_items)
+    {
+        _items = [NSMutableArray array];
+        
+        YCXMenuItem *firstMenuItem = [YCXMenuItem menuItem:@"ETH"
+                                                     image:nil
+                                                       tag:100
+                                                  userInfo:@{@"title":@"Menu"}];
+        YCXMenuItem *secondMenuItem = [YCXMenuItem menuItem:@"BTC"
+                                                      image:nil
+                                                        tag:101
+                                                   userInfo:@{@"title":@"Menu"}];
+        YCXMenuItem *thirdMenuItem = [YCXMenuItem menuItem:@"NEO"
+                                                      image:nil
+                                                        tag:102
+                                                   userInfo:@{@"title":@"Menu"}];
+        [firstMenuItem setForeColor:[UIColor colorWithHexString:@"333333"]];
+        [secondMenuItem setForeColor:[UIColor colorWithHexString:@"333333"]];
+        [thirdMenuItem setForeColor:[UIColor colorWithHexString:@"333333"]];
+        
+        [_items addObject:firstMenuItem];
+        [_items addObject:secondMenuItem];
+        [_items addObject:thirdMenuItem];
+    }
+    return _items;
 }
 
 @end

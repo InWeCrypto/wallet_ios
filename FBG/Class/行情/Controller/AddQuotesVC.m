@@ -9,6 +9,7 @@
 #import "AddQuotesVC.h"
 #import "AddQuotesCell.h"
 #import "QuotationModel.h"
+#import "AddQuotesVCDataModels.h"
 
 @interface AddQuotesVC () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 /** 数据源 */
@@ -52,56 +53,78 @@
 
 - (void)loadData
 {
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"market-category?is_all=1"] parameters:nil hudString:@"获取中..." responseCache:^(id responseCache)
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"user/ticker/options"] isOtherBaseUrl:YES parameters:nil hudString:@"获取中..." responseCache:^(id responseCache)
      {
          //获取数据
-         if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]])
+         NSArray *dataArray = responseCache;
+         if (dataArray.count)
          {
              [self.dataSource removeAllObjects];
-             [self.market_ids removeAllObjects];
              [self.keyArray removeAllObjects];
-             for (NSDictionary * quotesDic in [responseCache objectForKey:@"list"])
-             {
-                 [self.keyArray addObject:[quotesDic objectForKey:@"name"]];
-                 NSMutableArray * infoArray = [[NSMutableArray alloc] init];
-                 for (NSDictionary * dic in [quotesDic objectForKey:@"data"])
-                 {
-                     QuotationModel * quotesModel = [[QuotationModel alloc] initWithDictionary:dic];
-                     [infoArray addObject:quotesModel];
-                     if (quotesModel.relation_user_count == 1)
-                     {
-                         [self.market_ids addObject:@(quotesModel.id)];
-                     }
+             [self.market_ids removeAllObjects];
+             
+             for (NSDictionary *dic in dataArray) {
+                 AddQuotesVCModelData *quotesModel = [AddQuotesVCModelData modelObjectWithDictionary:dic];
+                 
+                 [self.dataSource addObject:quotesModel];
+                 
+                 if (![NSObject isNulllWithObject:quotesModel.userTicker.icoId]) {
+                     [self.market_ids addObject:quotesModel.userTicker];
                  }
-                 [self.dataSource addObject:infoArray];
              }
+//             for (NSDictionary * quotesDic in dataArray)
+//             {
+//                 [self.keyArray addObject:[quotesDic objectForKey:@"name"]];
+//                 NSMutableArray * infoArray = [[NSMutableArray alloc] init];
+//                 for (NSDictionary * dic in [quotesDic objectForKey:@"data"])
+//                 {
+//                     AddQuotesVCModelData * quotesModel = [AddQuotesVCModelData modelObjectWithDictionary:dic];
+//                     [infoArray addObject:quotesModel];
+//                     if (quotesModel.userTicker.integerValue == 1)
+//                     {
+//                         [self.market_ids addObject:@(quotesModel.userTicker.integerValue)];
+//                     }
+//                 }
+//                 [self.dataSource addObject:infoArray];
+//             }
              [self.coustromTableView reloadData];
              [self endRefreshing];
          }
          
      } success:^(id responseObject)
      {
+         NSArray *dataArray = responseObject;
          //获取数据
-         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
+         if (dataArray.count)
          {
              [self.dataSource removeAllObjects];
-             [self.market_ids removeAllObjects];
              [self.keyArray removeAllObjects];
-             for (NSDictionary * quotesDic in [responseObject objectForKey:@"list"])
-             {
-                 [self.keyArray addObject:[quotesDic objectForKey:@"name"]];
-                 NSMutableArray * infoArray = [[NSMutableArray alloc] init];
-                 for (NSDictionary * dic in [quotesDic objectForKey:@"data"])
-                 {
-                     QuotationModel * quotesModel = [[QuotationModel alloc] initWithDictionary:dic];
-                     [infoArray addObject:quotesModel];
-                     if (quotesModel.relation_user_count == 1)
-                     {
-                         [self.market_ids addObject:@(quotesModel.id)];
-                     }
+             [self.market_ids removeAllObjects];
+             
+             for (NSDictionary *dic in dataArray) {
+                 AddQuotesVCModelData *quotesModel = [AddQuotesVCModelData modelObjectWithDictionary:dic];
+                 
+                 [self.dataSource addObject:quotesModel];
+                 
+                 if (![NSObject isNulllWithObject:quotesModel.userTicker.icoId]) {
+                     [self.market_ids addObject:quotesModel.userTicker];
                  }
-                 [self.dataSource addObject:infoArray];
              }
+//             for (NSDictionary * quotesDic in dataArray)
+//             {
+////                 [self.keyArray addObject:[quotesDic objectForKey:@"name"]];
+//                 NSMutableArray * infoArray = [[NSMutableArray alloc] init];
+//                 for (NSDictionary * dic in [quotesDic objectForKey:@"data"])
+//                 {
+//                     AddQuotesVCModelData *quotesModel = [AddQuotesVCModelData modelObjectWithDictionary:dic];
+//                     [infoArray addObject:quotesModel];
+//                     if (quotesModel.userTicker.integerValue == 1)
+//                     {
+//                         [self.market_ids addObject:@(quotesModel.userTicker.integerValue)];
+//                     }
+//                 }
+//                 [self.dataSource addObject:infoArray];
+//             }
              [self.coustromTableView reloadData];
              [self endRefreshing];
          }
@@ -116,22 +139,16 @@
 - (void)postEdit
 {
     //添加接口
+    NSMutableArray *markArray = [NSMutableArray array];
+    for (AddQuotesVCModelUserTicker *ticker in self.market_ids) {
+        [markArray addObject:@{@"id":ticker.icoId, @"sort":ticker.sort}];
+    }
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-    [parametersDic setObject:[self.market_ids toJSONStringForArray] forKey:@"market_ids"];
+    [parametersDic setObject:[markArray toJSONStringForArray] forKey:@"market_ids"];
     
-    [PPNetworkHelper POST:@"market-category" parameters:parametersDic hudString:@"设置中..." success:^(id responseObject)
-    {
-        [PPNetworkHelper GET:@"market-category" parameters:nil hudString:nil responseCache:^(id responseCache)
-         {
-         } success:^(id responseObject)
-        {
-            [self.navigationController popViewControllerAnimated:YES];
-         } failure:^(NSString *error)
-         {
-         }];
-        
-    } failure:^(NSString *error)
-    {
+    [PPNetworkHelper PUT:@"user/ticker" isOtherBaseUrl:YES parameters:parametersDic hudString:@"设置中..." success:^(id responseObject) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
 }
@@ -148,14 +165,19 @@
     //搜索数据
     for (int i = 0; i < self.dataSource.count; i ++)
     {
-        for (int j = 0; j < [self.dataSource[i] count]; j ++)
+        AddQuotesVCModelData * quotesModel = self.dataSource[i];
+        if ([[quotesModel.enName uppercaseString] caseInsensitiveCompare:self.searchTF.text] == NSOrderedSame)
         {
-            QuotationModel * quotesModel = self.dataSource[i][j];
-            if ([quotesModel.name caseInsensitiveCompare:self.searchTF.text] == NSOrderedSame)
-            {
-                [self.coustromTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:j inSection:i] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-            }
+            [self.coustromTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }
+//        for (int j = 0; j < [self.dataSource[i] count]; j ++)
+//        {
+//            QuotationModel * quotesModel = self.dataSource[i][j];
+//            if ([quotesModel.name caseInsensitiveCompare:self.searchTF.text] == NSOrderedSame)
+//            {
+//                [self.coustromTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:j inSection:i] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+//            }
+//        }
     }
     
     [self.searchTF resignFirstResponder];
@@ -164,14 +186,14 @@
 
 #pragma mark UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return self.keyArray.count;
-}
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    return self.keyArray.count;
+//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.dataSource[section] count];
+    return self.dataSource.count;//[self.dataSource[section] count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -180,10 +202,10 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return self.keyArray[section];
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    return self.keyArray[section];
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -193,7 +215,10 @@
         cell = array[0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.model = self.dataSource[indexPath.section][indexPath.row];
+    
+    AddQuotesVCModelData * quotesModel = self.dataSource[indexPath.row];
+    cell.model = quotesModel;//self.dataSource[indexPath.section][indexPath.row];
+    cell.statusImage.image = [UIImage imageNamed: [self.market_ids containsObject:quotesModel.userTicker] ?  @"list_btn_selected" : @"list_btn_default"];
     return cell;
 }
 
@@ -201,19 +226,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    QuotationModel * quotesModel = self.dataSource[indexPath.section][indexPath.row];
+    AddQuotesVCModelData * quotesModel = self.dataSource[indexPath.row];//self.dataSource[indexPath.section][indexPath.row];
     AddQuotesCell * cell = [self.coustromTableView cellForRowAtIndexPath:indexPath];
-    if (quotesModel.relation_user_count == 1)
-    {
+    if ([self.market_ids containsObject:quotesModel.userTicker]) {
+        [self.market_ids removeObject:quotesModel.userTicker];
         cell.statusImage.image = [UIImage imageNamed:@"list_btn_default"];
-        quotesModel.relation_user_count = 0;
-        [self.market_ids removeObject:@(quotesModel.id)];
-    }
-    else
-    {
+    } else {
+        AddQuotesVCModelUserTicker *mark = quotesModel.userTicker;
+        if ([NSObject isNulllWithObject:mark.icoId]) {
+            mark.icoId = [NSString stringWithFormat:@"%ld", (NSInteger)quotesModel.dataIdentifier];
+            mark.sort = [NSString stringWithFormat:@"%ld", (NSInteger)quotesModel.sort];
+        }
+        [self.market_ids addObject:mark];
         cell.statusImage.image = [UIImage imageNamed:@"list_btn_selected"];
-        quotesModel.relation_user_count = 1;
-        [self.market_ids addObject:@(quotesModel.id)];
     }
 }
 

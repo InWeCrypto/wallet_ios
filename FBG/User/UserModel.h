@@ -27,11 +27,17 @@
 
 #pragma mark -- 用户余额信息
 @property (nonatomic, assign) BOOL isRefeshAssets; //需不需要刷新价格
-@property (nonatomic, copy) NSString * totalAssets;   //总资产
-@property (nonatomic, copy) NSString * ETHAssets_ether;   //ETH资产
-@property (nonatomic, copy) NSString * ETHAssets_cny;   //ETH资产
-@property (nonatomic, copy) NSString * BTCAssets_ether;   //BTC资产
-@property (nonatomic, copy) NSString * BTCAssets_cny;   //BTC资产
+@property (nonatomic, copy) NSString * totalAssets_cny;   //人民币总资产
+@property (nonatomic, copy) NSString * totalAssets_usd;   //美元总资产
+@property (nonatomic, copy) NSString * ETHAssets_ether;   //ETH资产数量
+@property (nonatomic, copy) NSString * ETHAssets_cny;   //ETH资产人民币价值
+@property (nonatomic, copy) NSString * ETHAssets_usd;   //ETH资产美元价值
+@property (nonatomic, copy) NSString * NEOAssets_ether;   //NEO资产数量
+@property (nonatomic, copy) NSString * NEOAssets_cny;   //NEO资产人民币价值
+@property (nonatomic, copy) NSString * NEOAssets_usd;   //NEO资产美元价值
+@property (nonatomic, copy) NSString * BTCAssets_ether;   //BTC资产数量
+@property (nonatomic, copy) NSString * BTCAssets_cny;   //BTC资产人民币价值
+@property (nonatomic, copy) NSString * BTCAssets_usd;   //BTC资产美元价值
 
 #pragma mark -- 用户钱包信息
 @property (nonatomic, strong) NSMutableArray * walletIdsArray;// 备份钱包ids

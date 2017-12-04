@@ -116,7 +116,7 @@ static NSString *const kDBHInformationDetailForTradingMarketContentTableViewCell
     }
     
     DBHInformationDetailModelProjectMarkets *model = self.currencyTypeArray[self.currentSelectedIndex];
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url] parameters:nil hudString:nil success:^(id responseObject) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
         for (NSDictionary *dic in responseObject) {
             DBHInformationDetailForTradingMarketContentModelData *model = [DBHInformationDetailForTradingMarketContentModelData modelObjectWithDictionary:dic];

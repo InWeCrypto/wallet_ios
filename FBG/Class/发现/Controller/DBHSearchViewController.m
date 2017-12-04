@@ -135,7 +135,7 @@ static NSString *const kDBHSearchTableViewCellIdentifier = @"kDBHSearchTableView
     if ([self.title isEqualToString:@"搜索Ico评测"]) {
         searchType = @"ico_assess";
     }
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/search/%@/?k=%@", searchType, keyword] parameters:nil hudString:@"" success:^(id responseObject) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/search/%@/?k=%@", searchType, keyword] isOtherBaseUrl:NO parameters:nil hudString:@"" success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
         for (NSDictionary *dic in responseObject) {
             DBHSearchModelData *model = [DBHSearchModelData modelObjectWithDictionary:dic];

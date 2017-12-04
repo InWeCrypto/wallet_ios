@@ -264,7 +264,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
  */
 - (void)getProjectData {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/project/%ld", (NSInteger)self.projectModel.dataIdentifier] parameters:nil hudString:nil success:^(id responseObject) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/project/%ld", (NSInteger)self.projectModel.dataIdentifier] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject) {
         weakSelf.model = [DBHInformationDetailModelData modelObjectWithDictionary:responseObject];
         
         [weakSelf.tableView reloadData];
@@ -277,7 +277,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
  */
 - (void)getInweReportData {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/category/%ld/articles/%@", (NSInteger)self.projectModel.dataIdentifier, self.inweReportType ? @"img-txt" : @"video"] parameters:nil hudString:nil success:^(id responseObject) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/category/%ld/articles/%@", (NSInteger)self.projectModel.dataIdentifier, self.inweReportType ? @"img-txt" : @"video"] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject) {
         [weakSelf.inweReportArray removeAllObjects];
         
         for (NSDictionary *dic in responseObject) {

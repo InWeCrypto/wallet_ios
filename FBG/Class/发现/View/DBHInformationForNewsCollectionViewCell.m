@@ -10,28 +10,28 @@
 
 #import "NSTimer+Extension.h"
 
-#import "DBHNewsShufflingFigureView.h"
+#import "DBHInformationForNewsCollectionViewTableViewCell.h"
 
 #import "DBHInformationForNewsCollectionModelData.h"
+
+static NSString *const kDBHInformationForNewsCollectionViewTableViewCellIdentifier = @"kDBHInformationForNewsCollectionViewTableViewCellIdentifier";
 
 #define SCROLLVIEWWIDTH AUTOLAYOUTSIZE(230)
 #define SCROLLVIEWHEIGHT AUTOLAYOUTSIZE(59)
 
-@interface DBHInformationForNewsCollectionViewCell ()<UIScrollViewDelegate>
+@interface DBHInformationForNewsCollectionViewCell ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UIView *boxView;
 @property (nonatomic, strong) UIView *orangeView;
 @property (nonatomic, strong) UILabel *newsLabel;
-@property (nonatomic, strong) UIButton *leftButton;
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIButton *rightButton;
-@property (nonatomic, strong) UIButton *moreButton;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIView *grayView;
 @property (nonatomic, strong) UIView *lineView;
 @property (nonatomic, strong) UILabel *projectLabel;
 
+@property (nonatomic, assign) NSInteger currentRow;
 @property (nonatomic, strong) NSTimer *timer;
 
-@property (nonatomic, copy) ClickMoreButtonBlock clickMoreButtonBlock;
 @property (nonatomic, copy) ClickNewsBlock clickNewsBlock;
 @property (nonatomic, strong) NSMutableArray *newsShufflingFigureViewArray;
 
@@ -44,6 +44,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = [UIColor whiteColor];
+        
         [self setUI];
     }
     return self;
@@ -54,62 +56,78 @@
     [self.contentView addSubview:self.boxView];
     [self.contentView addSubview:self.orangeView];
     [self.contentView addSubview:self.newsLabel];
-    [self.contentView addSubview:self.leftButton];
-    [self.contentView addSubview:self.scrollView];
-    [self.contentView addSubview:self.rightButton];
-    [self.contentView addSubview:self.moreButton];
+    [self.contentView addSubview:self.tableView];
+    [self.contentView addSubview:self.grayView];
     [self.contentView addSubview:self.lineView];
     [self.contentView addSubview:self.projectLabel];
     
     WEAKSELF
     [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.contentView);
-        make.height.offset(AUTOLAYOUTSIZE(59));
-        make.top.offset(AUTOLAYOUTSIZE(9.5));
-        make.centerX.equalTo(weakSelf.contentView);
+        make.height.offset(AUTOLAYOUTSIZE(42));
+        make.top.centerX.equalTo(weakSelf.contentView);
     }];
     [self.orangeView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(5));
+        make.width.offset(AUTOLAYOUTSIZE(3));
         make.height.equalTo(weakSelf.boxView);
         make.left.centerY.equalTo(weakSelf.boxView);
     }];
     [self.newsLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset([NSString getWidthtWithString:@"NEWS" fontSize:AUTOLAYOUTSIZE(11)]);
-        make.left.equalTo(weakSelf.orangeView.mas_right).offset(AUTOLAYOUTSIZE(7));
+        make.left.equalTo(weakSelf.orangeView.mas_right).offset(AUTOLAYOUTSIZE(8.5));
         make.centerY.equalTo(weakSelf.boxView);
     }];
-    [self.leftButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(26));
-        make.height.equalTo(weakSelf.boxView);
-        make.centerY.equalTo(weakSelf.boxView);
+    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.newsLabel.mas_right);
-    }];
-    [self.scrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.leftButton.mas_right);
-        make.width.offset(AUTOLAYOUTSIZE(230));
+        make.right.equalTo(weakSelf.contentView);
         make.height.equalTo(weakSelf.boxView);
         make.centerY.equalTo(weakSelf.boxView);
     }];
-    [self.rightButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(weakSelf.leftButton);
-        make.right.equalTo(weakSelf.moreButton.mas_left).offset(- AUTOLAYOUTSIZE(6.5));
-        make.centerY.equalTo(weakSelf.boxView);
-    }];
-    [self.moreButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(38.5));
-        make.height.equalTo(weakSelf.boxView);
-        make.right.centerY.equalTo(weakSelf.boxView);
+    [self.grayView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.contentView);
+        make.top.equalTo(weakSelf.tableView.mas_bottom);
+        make.bottom.equalTo(weakSelf.projectLabel.mas_top);
+        make.centerX.equalTo(weakSelf.contentView);
     }];
     [self.lineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(108));
         make.height.offset(AUTOLAYOUTSIZE(0.5));
         make.centerX.equalTo(weakSelf.contentView);
-        make.bottom.offset(- AUTOLAYOUTSIZE(15));
+        make.centerY.equalTo(weakSelf.projectLabel);
     }];
     [self.projectLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset([self getWidthWithString:@"NEWS" font:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(11)] maxSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)] + AUTOLAYOUTSIZE(6));
-        make.center.equalTo(weakSelf.lineView);
+        make.height.offset(AUTOLAYOUTSIZE(29));
+        make.centerX.equalTo(weakSelf.lineView);
+        make.bottom.equalTo(weakSelf.contentView);
     }];
+}
+
+#pragma mark ------ UITableViewDataSource ------
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.dataSource.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    DBHInformationForNewsCollectionViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationForNewsCollectionViewTableViewCellIdentifier forIndexPath:indexPath];
+    
+    DBHInformationForNewsCollectionModelData *model = self.dataSource[indexPath.row];
+    cell.title = model.title;
+    
+    return cell;
+}
+
+#pragma mark ------ UITableViewDelegate ------
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    DBHInformationForNewsCollectionModelData *model = _dataSource[indexPath.row];
+    
+    NSString *url;
+    if ([model.url containsString:@"http"]) {
+        url = model.url;
+    } else {
+        url = [NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url];
+    }
+    
+    self.clickNewsBlock(url);
 }
 
 #pragma mark ------ UIScrollViewDelegate ------
@@ -130,53 +148,7 @@
     [self startTimer];
 }
 
-#pragma mark ------ Event Responds ------
-/**
- 上一条新闻
- */
-- (void)respondsToLeftButton {
-    if (_dataSource.count <= 1) {
-        return;
-    }
-    NSInteger page = (NSInteger)(self.scrollView.contentOffset.x / SCROLLVIEWWIDTH);
-    CGFloat x = page * SCROLLVIEWWIDTH - SCROLLVIEWWIDTH;
-    [self.scrollView setContentOffset:CGPointMake(x, 0) animated:YES];
-    if (!x) {
-        [self.scrollView setContentOffset:CGPointMake((self.dataSource.count - 1) * SCROLLVIEWWIDTH, 0)];
-    }
-}
-/**
- 下一条新闻
- */
-- (void)respondsToRightButton {
-    if (_dataSource.count > 1) {
-        [self nextPage];
-    }
-}
-/**
- 更多
- */
-- (void)respondsToMoreButton {
-    self.clickMoreButtonBlock();
-}
-- (void)respondsToTapGR:(UITapGestureRecognizer *)tapGR {
-    NSInteger tag = tapGR.view.tag;
-    DBHInformationForNewsCollectionModelData *model = _dataSource[tag - 400];
-    
-    NSString *url;
-    if ([model.url containsString:@"http"]) {
-        url = model.url;
-    } else {
-        url = [NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url];
-    }
-    
-    self.clickNewsBlock(url);
-}
-
 #pragma mark ------ Public Methods ------
-- (void)clickMoreButtonBlock:(ClickMoreButtonBlock)clickMoreButtonBlock {
-    self.clickMoreButtonBlock = clickMoreButtonBlock;
-}
 - (void)clickNewsBlock:(ClickNewsBlock)clickNewsBlock {
     self.clickNewsBlock = clickNewsBlock;
 }
@@ -217,11 +189,12 @@
  下一页
  */
 - (void)nextPage {
-    NSInteger page = (NSInteger)(self.scrollView.contentOffset.x / SCROLLVIEWWIDTH);
-    CGFloat x = page * SCROLLVIEWWIDTH + SCROLLVIEWWIDTH;
-    [self.scrollView setContentOffset:CGPointMake(x, 0) animated:YES];
-    if (x == (self.dataSource.count) * SCROLLVIEWWIDTH) {
-        [self.scrollView setContentOffset:CGPointMake(SCROLLVIEWWIDTH, 0)];
+    self.currentRow += 1;
+    [self.tableView setContentOffset:CGPointMake(0, (AUTOLAYOUTSIZE(21) * (float)self.currentRow)) animated:NO];
+    
+    if (self.currentRow >= self.dataSource.count) {
+        
+        self.currentRow = 0;
     }
 }
 
@@ -229,49 +202,21 @@
 - (void)setDataSource:(NSArray *)dataSource {
     _dataSource = dataSource;
     
-    self.scrollView.contentSize = CGSizeMake(SCROLLVIEWWIDTH * (_dataSource.count + (_dataSource.count > 1 ? 2 : 0)), 0);
-    
-    for (NSInteger i = 0; i < _dataSource.count + (_dataSource.count > 1 ? 2 : 0); i++) {
-        NSInteger index = 0;
-        if (_dataSource.count > 1) {
-            if (!i) {
-                index = _dataSource.count - 1;
-            } else if (i == _dataSource.count - 1) {
-                index = 0;
-            } else {
-                index = i - 1;
-            }
-        }
-        DBHInformationForNewsCollectionModelData *model = _dataSource[index];
-        
-        DBHNewsShufflingFigureView *newsShufflingFigureView;
-        newsShufflingFigureView = [self.scrollView viewWithTag:400 + i];
-        if (!newsShufflingFigureView) {
-            newsShufflingFigureView = [[DBHNewsShufflingFigureView alloc] initWithFrame:CGRectMake(i * SCROLLVIEWWIDTH, 0, SCROLLVIEWWIDTH, SCROLLVIEWHEIGHT)];
-            newsShufflingFigureView.tag = 400 + i;
-            newsShufflingFigureView.userInteractionEnabled = YES;
-            newsShufflingFigureView.title = model.title;
-            newsShufflingFigureView.content = model.desc;
-            
-            UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToTapGR:)];
-            [newsShufflingFigureView addGestureRecognizer:tapGR];
-            
-            [self.scrollView addSubview:newsShufflingFigureView];
-        } else {
-            newsShufflingFigureView.title = model.title;
-            newsShufflingFigureView.content = model.desc;
-        }
-    }
-    
+    self.currentRow = 0;
+    self.tableView.rowHeight = _dataSource.count > 1 ? AUTOLAYOUTSIZE(21) : AUTOLAYOUTSIZE(42);
+    [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+
     if (_dataSource.count > 1) {
         [self startTimer];
+    } else {
+        [self stopTimer];
     }
 }
 
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor colorWithHexString:@"161F26"];
+        _boxView.backgroundColor = [UIColor whiteColor];
     }
     return _boxView;
 }
@@ -287,60 +232,51 @@
         _newsLabel = [[UILabel alloc] init];
         _newsLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(11)];
         _newsLabel.text = @"NEWS";
-        _newsLabel.textColor = [UIColor colorWithHexString:@"97BDDB"];
+        _newsLabel.textColor = [UIColor colorWithHexString:@"010101"];
     }
     return _newsLabel;
 }
-- (UIButton *)leftButton {
-    if (!_leftButton) {
-        _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_leftButton setImage:[UIImage imageNamed:@"ARROWleft"] forState:UIControlStateNormal];
-        [_leftButton addTarget:self action:@selector(respondsToLeftButton) forControlEvents:UIControlEventTouchUpInside];
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.showsVerticalScrollIndicator = NO;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.scrollEnabled = NO;
+        
+        _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.001)];
+        
+        _tableView.sectionFooterHeight = 0;
+        _tableView.rowHeight = AUTOLAYOUTSIZE(42);
+        
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        
+        [_tableView registerClass:[DBHInformationForNewsCollectionViewTableViewCell class] forCellReuseIdentifier:kDBHInformationForNewsCollectionViewTableViewCellIdentifier];
     }
-    return _leftButton;
+    return _tableView;
 }
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] init];
-        _scrollView.pagingEnabled = YES;
-        _scrollView.bounces = NO;
-        _scrollView.showsVerticalScrollIndicator = NO;
-        _scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView.delegate = self;
+- (UIView *)grayView {
+    if (!_grayView) {
+        _grayView = [[UIView alloc] init];
+        _grayView.backgroundColor = [UIColor colorWithHexString:@"EEEEEE"];
     }
-    return _scrollView;
-}
-- (UIButton *)rightButton {
-    if (!_rightButton) {
-        _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_rightButton setImage:[UIImage imageNamed:@"ARROWRIGHT"] forState:UIControlStateNormal];
-        [_rightButton addTarget:self action:@selector(respondsToRightButton) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _rightButton;
-}
-- (UIButton *)moreButton {
-    if (!_moreButton) {
-        _moreButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _moreButton.backgroundColor = [UIColor colorWithHexString:@"DA521C"];
-        [_moreButton setImage:[UIImage imageNamed:@"ARROWmore"] forState:UIControlStateNormal];
-        [_moreButton addTarget:self action:@selector(respondsToMoreButton) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _moreButton;
+    return _grayView;
 }
 - (UIView *)lineView {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
-        _lineView.backgroundColor = [UIColor colorWithHexString:@"506987"];
+        _lineView.backgroundColor = [UIColor colorWithHexString:@"333333"];
     }
     return _lineView;
 }
 - (UILabel *)projectLabel {
     if (!_projectLabel) {
         _projectLabel = [[UILabel alloc] init];
-        _projectLabel.backgroundColor = [UIColor colorWithHexString:@"171C27"];
+        _projectLabel.backgroundColor = [UIColor whiteColor];
         _projectLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
         _projectLabel.text = @"项目";
-        _projectLabel.textColor = [UIColor colorWithHexString:@"97BDDB"];
+        _projectLabel.textColor = [UIColor colorWithHexString:@"333333"];
         _projectLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _projectLabel;

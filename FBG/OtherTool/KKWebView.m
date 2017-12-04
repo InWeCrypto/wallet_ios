@@ -175,7 +175,7 @@
          [parametersDic setObject:@(self.walletModel.category_id) forKey:@"category_id"];
          [parametersDic setObject:@"1" forKey:@"type"];
          
-         [PPNetworkHelper GET:@"gas" parameters:parametersDic hudString:nil success:^(id responseObject)
+         [PPNetworkHelper GET:@"gas" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
           {
               //获取单价
               NSString * per = @"0";

@@ -359,7 +359,7 @@
     if (self.model.category_id == 2) {
         // NEO钱包代币
         //用户已添加代币类型列表
-        [PPNetworkHelper GET:[NSString stringWithFormat:@"https://app.inwecrypto.com/api/conversion/%d", self.model.id] parameters:nil hudString:nil success:^(id responseObject)
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%d", self.model.id] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject)
          {
              [self.dataSource removeAllObjects];
              
@@ -416,7 +416,7 @@
         // ETH钱包代币
         self.headerView.priceLB.text = @"0.00";
         //用户已添加代币类型列表
-        [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%d",self.model.id] parameters:nil hudString:nil success:^(id responseObject)
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%d",self.model.id] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject)
          {
              if ([[responseObject objectForKey:@"list"] count] > 0)
              {
@@ -1096,7 +1096,7 @@
     //添加一个置顶按钮
     UITableViewRowAction *topRowAction =[UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(@"Top", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
     {
-        [PPNetworkHelper PUT:[NSString stringWithFormat:@"user-gnt/%d",model.id] parameters:nil hudString:@"置顶中..." success:^(id responseObject)
+        [PPNetworkHelper PUT:[NSString stringWithFormat:@"user-gnt/%d",model.id] isOtherBaseUrl:NO parameters:nil hudString:@"置顶中..." success:^(id responseObject)
         {
             //1.更新数据
             [self.dataSource exchangeObjectAtIndex:indexPath.row withObjectAtIndex:0];

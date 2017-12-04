@@ -39,7 +39,7 @@
     
     if (self.id)
     {        
-        [PPNetworkHelper GET:[NSString stringWithFormat:@"contact/%@",self.id] parameters:nil hudString:@"获取中..." success:^(id responseObject)
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"contact/%@",self.id] isOtherBaseUrl:NO parameters:nil hudString:@"获取中..." success:^(id responseObject)
          {
              NSDictionary * dic = [responseObject objectForKey:@"record"];
              self.nameTF.text = [dic objectForKey:@"name"];
@@ -78,17 +78,28 @@
         [LCProgressHUD showMessage:@"请输入钱包名"];
         return;
     }
-    if (![NSString isAdress:[self.addressTF.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
-    {
-        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
-        return;
+    
+    if ([self.icoId isEqualToString:@"6"]) {
+        // ETH
+        if (![NSString isAdress:[self.addressTF.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+        {
+            [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+            return;
+        }
+    } else {
+        // NEO
+        if (![NSString isNEOAdress:[self.addressTF.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+        {
+            [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+            return;
+        }
     }
     
     if (self.id)
     {
         //编辑
         NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-        [parametersDic setObject:@"1" forKey:@"category_id"];
+        [parametersDic setObject:self.icoId forKey:@"ico_id"];
         [parametersDic setObject:self.nameTF.text forKey:@"name"];
         [parametersDic setObject:[self.addressTF.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] forKey:@"address"];
         if (![NSString isNulllWithObject:self.remarkTF.text])
@@ -96,7 +107,7 @@
             [parametersDic setObject:self.remarkTF.text forKey:@"remark"];
         }
         
-        [PPNetworkHelper PUT:[NSString stringWithFormat:@"contact/%@",self.id] parameters:parametersDic hudString:@"修改中..." success:^(id responseObject)
+        [PPNetworkHelper PUT:[NSString stringWithFormat:@"contact/%@",self.id] isOtherBaseUrl:NO parameters:parametersDic hudString:@"修改中..." success:^(id responseObject)
          {
              [LCProgressHUD showSuccess:@"修改成功"];
              [self.navigationController popViewControllerAnimated:YES];
@@ -109,7 +120,7 @@
     else
     {
         NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-        [parametersDic setObject:@"1" forKey:@"category_id"];
+        [parametersDic setObject:self.icoId forKey:@"ico_id"];
         [parametersDic setObject:self.nameTF.text forKey:@"name"];
         [parametersDic setObject:self.addressTF.text forKey:@"address"];
         if (![NSString isNulllWithObject:self.remarkTF.text])
@@ -117,13 +128,14 @@
             [parametersDic setObject:self.remarkTF.text forKey:@"remark"];
         }
         
-        [PPNetworkHelper POST:@"contact" parameters:parametersDic hudString:@"保存中..." success:^(id responseObject)
+        [PPNetworkHelper POSTOtherURL:@"user/contact" parameters:parametersDic hudString:@"保存中..." success:^(id responseObject)
          {
              [LCProgressHUD showSuccess:@"保存成功"];
              [self.navigationController popViewControllerAnimated:YES];
              
          } failure:^(NSString *error)
          {
+
              [LCProgressHUD showFailure:error];
          }];
     }

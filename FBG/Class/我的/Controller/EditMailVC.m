@@ -36,7 +36,7 @@
 {
     [super viewWillAppear:animated];
     
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"contact/%@",self.id] parameters:nil hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"contact/%@",self.id] isOtherBaseUrl:NO parameters:nil hudString:@"获取中..." success:^(id responseObject)
     {
         NSDictionary * dic = [responseObject objectForKey:@"record"];
         self.nameTF.text = [dic objectForKey:@"name"];

@@ -66,7 +66,7 @@
     [parametersDic setObject:@(self.page) forKey:@"page"];
     [parametersDic setObject:@(10) forKey:@"per_page"];
     
-    [PPNetworkHelper GET:@"message" parameters:parametersDic hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"message" isOtherBaseUrl:NO parameters:parametersDic hudString:@"获取中..." success:^(id responseObject)
     {
         if (self.page == 1)
         {
@@ -150,7 +150,7 @@
     
     if (!_isRead)
     {        
-        [PPNetworkHelper PUT:[NSString stringWithFormat:@"message/%d",model.id] parameters:nil hudString:@"标记已读..." success:^(id responseObject)
+        [PPNetworkHelper PUT:[NSString stringWithFormat:@"message/%d",model.id] isOtherBaseUrl:NO parameters:nil hudString:@"标记已读..." success:^(id responseObject)
          {
              [LCProgressHUD showInfoMsg:@"消息已读"];
              //1.更新数据

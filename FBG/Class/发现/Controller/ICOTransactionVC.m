@@ -51,7 +51,7 @@
     [parametersDic setObject:@(self.page) forKey:@"page"];
     [parametersDic setObject:@(10) forKey:@"per_page"];
     
-    [PPNetworkHelper GET:@"ico" parameters:parametersDic hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"ico" isOtherBaseUrl:NO parameters:parametersDic hudString:@"获取中..." success:^(id responseObject)
      {
          if (self.page == 1)
          {

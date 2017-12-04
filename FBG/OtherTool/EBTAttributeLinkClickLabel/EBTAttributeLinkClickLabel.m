@@ -52,7 +52,7 @@
     
     self.linkAttributes = attributeDictionary ? attributeDictionary : @{
                                         NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),
-                                        NSForegroundColorAttributeName:[UIColor whiteColor]
+                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"333333"]
                                         };
     
     

@@ -66,7 +66,7 @@
     [parametersDic setObject:@(self.walletModel.category_id) forKey:@"wallet_category_id"];
     [parametersDic setObject:@(self.walletModel.id) forKey:@"wallet_id"];
     
-    [PPNetworkHelper GET:@"gnt-category" parameters:parametersDic hudString:@"加载中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"gnt-category" isOtherBaseUrl:NO parameters:parametersDic hudString:@"加载中..." success:^(id responseObject)
     {
         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
         {

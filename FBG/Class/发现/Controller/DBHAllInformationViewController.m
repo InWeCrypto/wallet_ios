@@ -140,7 +140,7 @@ static NSString *const kDBHAllInformationTypeTwoTableViewCellIdentifier = @"kDBH
  */
 - (void)getInformationData {
     WEAKSELF
-    [PPNetworkHelper GET:@"https://dev.inwecrypto.com/article/all" parameters:nil hudString:@"" success:^(id responseObject) {
+    [PPNetworkHelper GET:@"https://dev.inwecrypto.com/article/all" isOtherBaseUrl:NO parameters:nil hudString:@"" success:^(id responseObject) {
         for (NSDictionary *dic in responseObject) {
             DBHAllInformationModelData *model = [DBHAllInformationModelData modelObjectWithDictionary:dic];
             

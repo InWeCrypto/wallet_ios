@@ -54,7 +54,7 @@
     
     [PPNetworkHelper POST:@"market-category" parameters:parametersDic hudString:@"设置中..." success:^(id responseObject)
      {
-         [PPNetworkHelper GET:@"market-category" parameters:nil hudString:nil responseCache:^(id responseCache)
+         [PPNetworkHelper GET:@"market-category" isOtherBaseUrl:NO parameters:nil hudString:nil responseCache:^(id responseCache)
           {
           } success:^(id responseObject)
           {
@@ -70,7 +70,7 @@
 
 - (void)loadData
 {
-    [PPNetworkHelper GET:@"market-category" parameters:nil hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"market-category" isOtherBaseUrl:NO parameters:nil hudString:@"获取中..." success:^(id responseObject)
      {
          //获取数据
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])

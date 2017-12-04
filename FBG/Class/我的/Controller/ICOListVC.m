@@ -49,7 +49,7 @@
     [parametersDic setObject:@(self.page) forKey:@"page"];
     [parametersDic setObject:@(10) forKey:@"per_page"];
     
-    [PPNetworkHelper GET:@"ico-order" parameters:parametersDic hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"ico-order" isOtherBaseUrl:NO parameters:parametersDic hudString:@"获取中..." success:^(id responseObject)
     {
         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
         {

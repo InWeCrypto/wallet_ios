@@ -225,7 +225,7 @@
  */
 - (void)transferAccountsForNEOWithPassword:(NSString *)password unspent:(NSString *)unspent {
     id data = [PDKeyChain load:self.model.address];
-    NSString *assert = [self.model.name isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
+    NSString *assert = [self.tokenModel.name isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
     // NEO钱包转账
     //子线程异步执行下载任务，防止主线程卡顿
     NSError * error;
@@ -294,7 +294,7 @@
                                                       [LCProgressHUD showMessage:@"转账成功"];
                                                       
                                                       //热钱包生成订单
-                                                      [self creatNeoOrderWithData:data trade_no:tx.id_];
+                                                      [self creatNeoOrderWithData:tx.data trade_no:tx.id_];
                                                   }
                                                   else
                                                   {
@@ -314,12 +314,21 @@
                    });
 }
 - (void)getUnspentWithPassword:(NSString *)password {
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://app.inwecrypto.com/api/extend/getNeoUtxo?address=%@&type=%@", self.model.address, @"neo-asset-id"] parameters:nil hudString:@"" success:^(id responseObject) {
-        NSArray *result = responseObject[@"result"];
-        [self transferAccountsForNEOWithPassword:password unspent:[result toJSONStringForArray]];
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
+    if ([self.tokenModel.name isEqualToString:@"Gas"]) {
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"extend/getNeoUtxo?address=%@&type=%@", self.model.address, @"neo-gas-asset-id"] isOtherBaseUrl:NO parameters:nil hudString:@"" success:^(id responseObject) {
+            NSArray *result = responseObject[@"result"];
+            [self transferAccountsForNEOWithPassword:password unspent:[result toJSONStringForArray]];
+        } failure:^(NSString *error) {
+            [LCProgressHUD showFailure:error];
+        }];
+    } else {
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"extend/getNeoUtxo?address=%@&type=%@", self.model.address, @"neo-asset-id"] isOtherBaseUrl:NO parameters:nil hudString:@"" success:^(id responseObject) {
+            NSArray *result = responseObject[@"result"];
+            [self transferAccountsForNEOWithPassword:password unspent:[result toJSONStringForArray]];
+        } failure:^(NSString *error) {
+            [LCProgressHUD showFailure:error];
+        }];
+    }
 }
 
 - (void)caneButtonClicked
@@ -394,8 +403,8 @@
          
      } failure:^(NSString *error)
      {
-         [LCProgressHUD showFailure:@"服务器内部错误"];
-         [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
+         [LCProgressHUD showFailure:@"转账失败"];
+//         [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
      }];
     /*
     //发送签名后的交易[post] extend/sendRawTransaction
@@ -420,8 +429,8 @@
     [dic setObject:self.model.address forKey:@"pay_address"];
     [dic setObject:self.address forKey:@"receive_address"];
     [dic setObject:self.remark forKey:@"remark"];
-    [dic setObject:[NSString DecimalFuncWithOperatorType:2 first:self.price secend:@"1000000000000000000" value:0] forKey:@"fee"];
-    [dic setObject:[NSString DecimalFuncWithOperatorType:2 first:self.totleGasPrice secend:@"1000000000000000000" value:0] forKey:@"handle_fee"];
+    [dic setObject:self.price forKey:@"fee"];
+    [dic setObject:@"0" forKey:@"handle_fee"];
     [dic setObject:self.tokenModel ? self.tokenModel.flag : self.model.category_name forKey:@"flag"];
     [dic setObject:[NSString stringWithFormat:@"0x%@", trade_no] forKey:@"trade_no"];
     [dic setObject:@"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" forKey:@"asset_id"];
@@ -446,8 +455,8 @@
          
      } failure:^(NSString *error)
      {
-         [LCProgressHUD showFailure:@"服务器内部错误"];
-         [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
+         [LCProgressHUD showFailure:@"转账失败"];
+//         [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
      }];
     /*
      //发送签名后的交易[post] extend/sendRawTransaction

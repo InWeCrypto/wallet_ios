@@ -36,7 +36,7 @@
 
 - (void)showWithView:(UIView *)view
 {
-    if ([APP_APIEHEAD isEqualToString:@"https://ropsten.unichain.io/api/"])
+    if ([APP_APIEHEAD isEqualToString:APIEHEAD])
     {
         //测试
         self.testImage.image = [UIImage imageNamed:@"list_btn_selected"];

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "QuotationModel.h"
 
+@class DBHQuotationVCModelData;
+
 @interface QuotationCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLB;
@@ -20,5 +22,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *lowLB;
 @property (weak, nonatomic) IBOutlet UILabel *numberLB;
 
-@property (nonatomic, strong) QuotationModel * model;
+@property (nonatomic, strong) DBHQuotationVCModelData *model;
 @end

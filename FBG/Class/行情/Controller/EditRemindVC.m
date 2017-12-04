@@ -60,7 +60,7 @@
     [parametersDic setObject:self.model.relation_notification.upper_limit forKey:@"upper_limit"];
     [parametersDic setObject:self.model.relation_notification.lower_limit forKey:@"lower_limit"];
     
-    [PPNetworkHelper PUT:[NSString stringWithFormat:@"market-notification/%d",self.model.relation_notification.id] parameters:parametersDic hudString:@"修改中..." success:^(id responseObject)
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"market-notification/%d",self.model.relation_notification.id] isOtherBaseUrl:NO parameters:parametersDic hudString:@"修改中..." success:^(id responseObject)
      {
          [self.navigationController popViewControllerAnimated:YES];
          
