@@ -134,14 +134,17 @@ NSString *const AC_UICollectionElementKindSectionFooter = @"AC_FootView";
                 y = self.startY + self.cellDistance;
                 
                 startX += self.cellDistance + itemWidth;
-                if (startX == SCREENWIDTH - self.cellDistance) {
-                    self.startY += self.cellDistance + height;
-                }
                 
                 if (number == 2) {
                     startX -= (itemWidth + self.cellDistance) * 2;
-                } else {
-                    startX = 0;
+                    self.startY += self.cellDistance + height;
+                } else if (number == 4) {
+                    if (startX == SCREENWIDTH - self.cellDistance) {
+                        startX = 0;
+                        self.startY += self.cellDistance + height;
+                    } else {
+                        self.startY -= self.cellDistance + height;
+                    }
                 }
             }
             

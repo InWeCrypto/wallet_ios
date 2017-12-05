@@ -191,7 +191,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    DBHQuotationVCModelData *model = self.dataSource[indexPath.row];
     DBHMarketDetailViewController *marketDetailViewController = [[DBHMarketDetailViewController alloc] init];
+    marketDetailViewController.title = model.unit;
     [self.navigationController pushViewController:marketDetailViewController animated:YES];
     
 //    QuotationModel * quotesModel = self.dataSource[indexPath.row];

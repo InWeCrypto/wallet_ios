@@ -76,16 +76,6 @@
         make.size.equalTo(weakSelf.contentView);
         make.center.equalTo(weakSelf.contentView);
     }];
-    [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(weakSelf.boxView.mas_height).multipliedBy(0.26);
-        make.centerX.equalTo(weakSelf.boxView);
-        make.bottom.equalTo(weakSelf.titleLabel.mas_top).offset(- AUTOLAYOUTSIZE(5.5));
-    }];
-    [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.boxView).multipliedBy(0.8);
-        make.centerX.equalTo(weakSelf.boxView);
-        make.centerY.equalTo(weakSelf.boxView).multipliedBy(1.5);
-    }];
 //    [self.frontVersionLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
 //        make.centerX.equalTo(weakSelf.contentView);
 //        make.centerY.equalTo(weakSelf.contentView).multipliedBy(0.92);
@@ -177,6 +167,18 @@
 #pragma mark ------ Getters And Setters ------
 - (void)setModel:(DBHInformationForProjectCollectionModelData *)model {
     _model = model;
+    
+    WEAKSELF
+    [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(_model.gridType == 4 ? AUTOLAYOUTSIZE(46) : AUTOLAYOUTSIZE(25));
+        make.centerX.equalTo(weakSelf.boxView);
+        make.bottom.equalTo(weakSelf.titleLabel.mas_top).offset(- AUTOLAYOUTSIZE(5.5));
+    }];
+    [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.boxView).multipliedBy(0.8);
+        make.centerX.equalTo(weakSelf.boxView);
+        make.bottom.offset(_model.gridType == 4 ? - AUTOLAYOUTSIZE(60) : - AUTOLAYOUTSIZE(22));
+    }];
     
     [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@""]];
 //    self.frontVersionLabel.text = _model.score;
@@ -273,7 +275,7 @@
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
         _iconImageView = [[UIImageView alloc] init];
-        _iconImageView.contentMode = UIViewContentModeScaleToFill;
+        _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _iconImageView;
 }

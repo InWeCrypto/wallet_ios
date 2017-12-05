@@ -314,6 +314,13 @@
 		D50C30121FC80125005312C0 /* DBHMarketDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = D50C30111FC80125005312C0 /* DBHMarketDetailView.m */; };
 		D50DF7801FCBB66D00B74F6D /* DBHNEOTransferVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D50DF77E1FCBB66C00B74F6D /* DBHNEOTransferVC.xib */; };
 		D50DF7811FCBB66D00B74F6D /* DBHNEOTransferVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D50DF77F1FCBB66C00B74F6D /* DBHNEOTransferVC.m */; };
+		D50F10CF1FD63C23004E14C3 /* DBHTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10CE1FD63C23004E14C3 /* DBHTimeSelectView.m */; };
+		D50F10D61FD65F67004E14C3 /* DBHMarketDetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10D51FD65F67004E14C3 /* DBHMarketDetailViewModel.m */; };
+		D50F10DC1FD676FB004E14C3 /* DBHMarketDetailKLineViewModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10D81FD676F9004E14C3 /* DBHMarketDetailKLineViewModelData.m */; };
+		D50F10DD1FD676FB004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10D91FD676FA004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m */; };
+		D50F10DF1FD682A2004E14C3 /* DBHTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F10DE1FD682A2004E14C3 /* DBHTestViewController.swift */; };
+		D50F10E51FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10E01FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m */; };
+		D50F10E61FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10E31FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m */; };
 		D51B7A031FC451E6001B363E /* DBHSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B7A021FC451E6001B363E /* DBHSearchView.m */; };
 		D51B7A061FC453D2001B363E /* DBHSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B7A051FC453D2001B363E /* DBHSearchTableViewCell.m */; };
 		D51B7A0C1FC45959001B363E /* DBHSearchModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B7A081FC45958001B363E /* DBHSearchModelDataBase.m */; };
@@ -961,6 +968,21 @@
 		D50DF77D1FCBB66C00B74F6D /* DBHNEOTransferVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHNEOTransferVC.h; sourceTree = "<group>"; };
 		D50DF77E1FCBB66C00B74F6D /* DBHNEOTransferVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBHNEOTransferVC.xib; sourceTree = "<group>"; };
 		D50DF77F1FCBB66C00B74F6D /* DBHNEOTransferVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHNEOTransferVC.m; sourceTree = "<group>"; };
+		D50F10CD1FD63C23004E14C3 /* DBHTimeSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTimeSelectView.h; sourceTree = "<group>"; };
+		D50F10CE1FD63C23004E14C3 /* DBHTimeSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTimeSelectView.m; sourceTree = "<group>"; };
+		D50F10D41FD65F67004E14C3 /* DBHMarketDetailViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailViewModel.h; sourceTree = "<group>"; };
+		D50F10D51FD65F67004E14C3 /* DBHMarketDetailViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailViewModel.m; sourceTree = "<group>"; };
+		D50F10D71FD676F9004E14C3 /* DBHMarketDetailKLineViewModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailKLineViewModelDataBase.h; sourceTree = "<group>"; };
+		D50F10D81FD676F9004E14C3 /* DBHMarketDetailKLineViewModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailKLineViewModelData.m; sourceTree = "<group>"; };
+		D50F10D91FD676FA004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailKLineViewModelDataBase.m; sourceTree = "<group>"; };
+		D50F10DA1FD676FA004E14C3 /* DBHMarketDetailKLineViewDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailKLineViewDataModels.h; sourceTree = "<group>"; };
+		D50F10DB1FD676FA004E14C3 /* DBHMarketDetailKLineViewModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailKLineViewModelData.h; sourceTree = "<group>"; };
+		D50F10DE1FD682A2004E14C3 /* DBHTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHTestViewController.swift; sourceTree = "<group>"; };
+		D50F10E01FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailMoneyRealTimePriceModelData.m; sourceTree = "<group>"; };
+		D50F10E11FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailMoneyRealTimePriceDataModels.h; sourceTree = "<group>"; };
+		D50F10E21FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailMoneyRealTimePriceModelDataBase.h; sourceTree = "<group>"; };
+		D50F10E31FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailMoneyRealTimePriceModelDataBase.m; sourceTree = "<group>"; };
+		D50F10E41FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailMoneyRealTimePriceModelData.h; sourceTree = "<group>"; };
 		D51B7A011FC451E6001B363E /* DBHSearchView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchView.h; sourceTree = "<group>"; };
 		D51B7A021FC451E6001B363E /* DBHSearchView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSearchView.m; sourceTree = "<group>"; };
 		D51B7A041FC453D2001B363E /* DBHSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchTableViewCell.h; sourceTree = "<group>"; };
@@ -2180,6 +2202,7 @@
 				A8B2AAB41F3CB3EC0047A626 /* EditRemindVC.m */,
 				A8B2AAB51F3CB3EC0047A626 /* EditRemindVC.xib */,
 				D50C300C1FC7ECDF005312C0 /* DBHMarketDetailViewController.swift */,
+				D50F10DE1FD682A2004E14C3 /* DBHTestViewController.swift */,
 				D50C300E1FC7ED53005312C0 /* data.json */,
 				D50C300B1FC7ECDF005312C0 /* FBG-Bridging-Header.h */,
 			);
@@ -2203,6 +2226,8 @@
 				A8CD77571F32449400005027 /* RemindCell.xib */,
 				D50C30101FC80125005312C0 /* DBHMarketDetailView.h */,
 				D50C30111FC80125005312C0 /* DBHMarketDetailView.m */,
+				D50F10CD1FD63C23004E14C3 /* DBHTimeSelectView.h */,
+				D50F10CE1FD63C23004E14C3 /* DBHTimeSelectView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2252,6 +2277,16 @@
 		A8D831A71F38358200B735EC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D50F10E11FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceDataModels.h */,
+				D50F10E41FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.h */,
+				D50F10E01FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m */,
+				D50F10E21FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.h */,
+				D50F10E31FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m */,
+				D50F10DA1FD676FA004E14C3 /* DBHMarketDetailKLineViewDataModels.h */,
+				D50F10DB1FD676FA004E14C3 /* DBHMarketDetailKLineViewModelData.h */,
+				D50F10D81FD676F9004E14C3 /* DBHMarketDetailKLineViewModelData.m */,
+				D50F10D71FD676F9004E14C3 /* DBHMarketDetailKLineViewModelDataBase.h */,
+				D50F10D91FD676FA004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m */,
 				D53F8F381FD2941900E85DE0 /* DBHQuotationVCDataModels.h */,
 				D53F8F371FD2941900E85DE0 /* DBHQuotationVCModelData.h */,
 				D53F8F3A1FD2941900E85DE0 /* DBHQuotationVCModelData.m */,
@@ -2278,6 +2313,8 @@
 				A81A5AE51F3AD6E10015CC0D /* RemindModel.m */,
 				A81A5AE71F3AD79C0015CC0D /* RemindRelationNotificationModel.h */,
 				A81A5AE81F3AD79C0015CC0D /* RemindRelationNotificationModel.m */,
+				D50F10D41FD65F67004E14C3 /* DBHMarketDetailViewModel.h */,
+				D50F10D51FD65F67004E14C3 /* DBHMarketDetailViewModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2685,6 +2722,7 @@
 				A8DC9B4A1F585F13006984D4 /* EBTAttributeLinkClickLabel.m in Sources */,
 				0FDCAC9B1F20D01C0090D12A /* AddTokenVC.m in Sources */,
 				0FFEA9DA1F173905009F6151 /* UserModel.m in Sources */,
+				D50F10E61FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m in Sources */,
 				0FB9DD181F1F9517005CEA39 /* TransferVC.m in Sources */,
 				A84475871F32BE0E003C7BDB /* ICOTranSuccesVC.m in Sources */,
 				A80713191F55509800C5B862 /* PackupsWordsVC.m in Sources */,
@@ -2714,6 +2752,7 @@
 				D5B822011FC02131009A50E3 /* DBHInformationForMoneyConditionModelData.m in Sources */,
 				0FAC29221F2F7C4A009B3EC9 /* AAXAxis.m in Sources */,
 				0FB9DD221F1FA76E005CEA39 /* ReceivablesVC.m in Sources */,
+				D50F10E51FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m in Sources */,
 				D5FB40221FB691FF00070D03 /* DBHMyTableViewCell.m in Sources */,
 				D53D47561FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m in Sources */,
 				0FC281911F23891700A1E57B /* MyTVC.m in Sources */,
@@ -2732,10 +2771,12 @@
 				A8CD77611F32449400005027 /* EditQuotesVC.m in Sources */,
 				0FAC290F1F2F7C4A009B3EC9 /* AAColumn.m in Sources */,
 				D54F58051FBDC12000ED334E /* DBHInformationDetailForWalletCollectionViewCell.m in Sources */,
+				D50F10DC1FD676FB004E14C3 /* DBHMarketDetailKLineViewModelData.m in Sources */,
 				0FAC29011F2F7C4A009B3EC9 /* AAJsonConverter.m in Sources */,
 				0FD2A8621F2A38AF00C210D3 /* AddOtherWalletInfoVC.m in Sources */,
 				0FAC29111F2F7C4A009B3EC9 /* AAItemStyle.m in Sources */,
 				0F0CFDED1F15E54100476A86 /* ViewController.m in Sources */,
+				D50F10CF1FD63C23004E14C3 /* DBHTimeSelectView.m in Sources */,
 				0FDCACA91F20ED780090D12A /* TransactionRecordVC.m in Sources */,
 				D521D9DC1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m in Sources */,
 				A8B2AAB11F3CB3B10047A626 /* AddRemindVC.m in Sources */,
@@ -2775,6 +2816,7 @@
 				A8CD77651F32449400005027 /* QuotationVC.m in Sources */,
 				0FAC29161F2F7C4A009B3EC9 /* AAOptions.m in Sources */,
 				A8CD776A1F32449400005027 /* EditQuotesCell.m in Sources */,
+				D50F10DF1FD682A2004E14C3 /* DBHTestViewController.swift in Sources */,
 				D509B52B1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m in Sources */,
 				A8CD778F1F32457D00005027 /* SDCycleScrollView.m in Sources */,
 				D55558041FC975C100F0963B /* CHChartModel.swift in Sources */,
@@ -2902,6 +2944,7 @@
 				0F0CFE321F15FB3F00476A86 /* NSObject+Tool.m in Sources */,
 				D53D47551FBF125900FDFB61 /* DBHInformationDetailForInweModelData.m in Sources */,
 				0FE4741F1F28E940009E1DF8 /* AddWalletInfoVC.m in Sources */,
+				D50F10DD1FD676FB004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m in Sources */,
 				D51B7A031FC451E6001B363E /* DBHSearchView.m in Sources */,
 				0FAC29101F2F7C4A009B3EC9 /* AADataLabels.m in Sources */,
 				D50DF7811FCBB66D00B74F6D /* DBHNEOTransferVC.m in Sources */,
@@ -2914,6 +2957,7 @@
 				D54F57EA1FBD325B00ED334E /* DBHEvaluatingIcoModelData.m in Sources */,
 				A8CD775A1F32449400005027 /* FindCoCell.m in Sources */,
 				0FAC291B1F2F7C4A009B3EC9 /* AASeries.m in Sources */,
+				D50F10D61FD65F67004E14C3 /* DBHMarketDetailViewModel.m in Sources */,
 				A84475AB1F331B34003C7BDB /* PersonDetailTVC.m in Sources */,
 				0F0CFE2F1F15FB3F00476A86 /* NSArray+Tool.m in Sources */,
 				0FFEA9D71F17382A009F6151 /* BaseModel.m in Sources */,

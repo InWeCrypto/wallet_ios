@@ -91,11 +91,11 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
 - (void)initBarManager {
     [MXNavigationBarManager managerWithController:self];
     [MXNavigationBarManager setBarColor:[UIColor whiteColor]];
-    [MXNavigationBarManager setTintColor:[UIColor colorWithRed:0.15 green:0.15 blue:0.15 alpha:1]];
+//    [MXNavigationBarManager setTintColor:[UIColor colorWithRed:0.15 green:0.15 blue:0.15 alpha:1]];
     [MXNavigationBarManager setStatusBarStyle:UIStatusBarStyleDefault];
     [MXNavigationBarManager setZeroAlphaOffset:-20 - STATUS_HEIGHT];
     [MXNavigationBarManager setFullAlphaOffset:AUTOLAYOUTSIZE(100)];
-    [MXNavigationBarManager setFullAlphaTintColor:[UIColor whiteColor]];
+//    [MXNavigationBarManager setFullAlphaTintColor:[UIColor whiteColor]];
     [MXNavigationBarManager setFullAlphaBarStyle:UIStatusBarStyleLightContent];
 }
 
@@ -283,7 +283,7 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
  */
 - (void)getProjectData {
     WEAKSELF
-    [PPNetworkHelper GET:@"home/project" isOtherBaseUrl:YES parameters:nil hudString:@"" success:^(id responseObject) {
+    [PPNetworkHelper GET:@"home/project/is_mobile" isOtherBaseUrl:YES parameters:nil hudString:@"" success:^(id responseObject) {
         [weakSelf.projectArray removeAllObjects];
         [weakSelf.moneyConditionArray removeAllObjects];
 //        [weakSelf.isBackSideArray removeAllObjects];

@@ -16,19 +16,28 @@ class DBHMarketDetailViewController: UIViewController {
         let marketDetailView = DBHMarketDetailView()
         return marketDetailView
     }()
+    lazy var timeSelectView: DBHTimeSelectView = {
+        let timeSelectView = DBHTimeSelectView()
+        
+        timeSelectView.clickTime({ (time) in
+            self.marketDetailViewModel.getKLineData(withIco_type: self.title, interval: time)
+        })
+        
+        return timeSelectView
+    }()
     lazy var style: CHKLineChartStyle = {
         let style: CHKLineChartStyle = .base
         // 文字颜色
-        style.textColor = UIColor(white: 0.5, alpha: 1)
+        style.textColor = UIColor(white: 0.8, alpha: 1)
         
         // 背景颜色
-        style.backgroundColor = UIColor.white
+        style.backgroundColor = UIColor.ch_hex(0x1D1C1C)
         
         // 边线颜色
-        style.lineColor = UIColor(white: 0.8, alpha: 1)
+        style.lineColor = UIColor(white: 0.2, alpha: 1)
         
         // 虚线颜色
-        style.dashColor = UIColor(white: 0.8, alpha: 1)
+        style.dashColor = UIColor(white: 0.2, alpha: 1)
         
         // 选中点的显示的文字颜色
         style.selectedTextColor = UIColor(white: 0.8, alpha: 1)
@@ -69,17 +78,29 @@ class DBHMarketDetailViewController: UIViewController {
         
         return chartView
     }()
+    lazy var marketDetailViewModel: DBHMarketDetailViewModel = {
+        let marketDetailViewModel = DBHMarketDetailViewModel()
+        
+        marketDetailViewModel.requestMoneyRealTimePriceBlock { (moneyRealTimePriceModel) in
+            self.marketDetailView.model = moneyRealTimePriceModel
+        }
+        marketDetailViewModel.request({ (kLineDataArray) in
+            self.klineDatas = kLineDataArray! as [AnyObject]
+            self.chartView.reloadData()
+        })
+        
+        return marketDetailViewModel
+    }()
     var klineDatas = [AnyObject]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.title = NSLocalizedString("Market Detail", comment: "")
-        self.view.backgroundColor = UIColor.white;
         
-        self.getDataByFile()
+        self.view.backgroundColor = UIColor.white;
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "刷新", style: .plain, target: self, action:#selector(refreshKLineViewData))
         
         self.view.addSubview(self.marketDetailView)
+        self.view.addSubview(self.timeSelectView)
         self.view.addSubview(self.chartView)
         
         self.marketDetailView.snp_remakeConstraints { (make) in
@@ -87,25 +108,30 @@ class DBHMarketDetailViewController: UIViewController {
             make.height.equalTo(self.autolayousize(size: 110))
             make.top.centerX.equalToSuperview()
         }
+        self.timeSelectView.snp_remakeConstraints { (make) in
+            make.width.equalToSuperview()
+            make.height.equalTo(self.autolayousize(size: 40))
+            make.top.equalTo(self.marketDetailView.snp_bottom)
+            make.centerX.equalToSuperview()
+        }
         self.chartView.snp_remakeConstraints { (make) in
             make.width.equalToSuperview()
-            make.top.equalTo(self.marketDetailView.snp_bottom)
+            make.top.equalTo(self.timeSelectView.snp_bottom)
             make.bottom.centerX.equalToSuperview()
         }
-    }
     
-    /// 获取本地数据
-    func getDataByFile() {
-        let data = try? Data(contentsOf: URL(fileURLWithPath: Bundle.main.path(forResource: "data", ofType: "json")!))
-        let dict = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableLeaves) as! [String: AnyObject]
-        
-        let isSuc = dict["isSuc"] as? Bool ?? false
-        if isSuc {
-            let datas = dict["datas"] as! [AnyObject]
-            NSLog("chart.datas = \(datas.count)")
-            self.klineDatas = datas
-            self.chartView.reloadData()
-        }
+        self.marketDetailViewModel.getMoneyRealTimePrice(withIco_type: self.title)
+        self.marketDetailViewModel.getKLineData(withIco_type: self.title, interval: "15m")
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.barTintColor = UIColor.ch_hex(0x1D1C1C)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.barTintColor = UIColor.white
+    }
+
+    func refreshKLineViewData() {
+        self.marketDetailViewModel.getKLineData(withIco_type: self.title, interval: String(describing: self.timeSelectView.timeValueArray[self.timeSelectView.currentSelectedIndex]))
     }
     
     func autolayousize(size: CGFloat) -> CGFloat {
@@ -121,14 +147,14 @@ extension DBHMarketDetailViewController: CHKLineChartDelegate {
     }
     
     func kLineChart(chart: CHKLineChartView, valueForPointAtIndex index: Int) -> CHChartItem {
-        let data = self.klineDatas[index] as! [Double]
+        let data : DBHMarketDetailKLineViewModelData = self.klineDatas[index] as! DBHMarketDetailKLineViewModelData
         let item = CHChartItem()
-        item.time = Int(data[0] / 1000)
-        item.openPrice = CGFloat(data[1])
-        item.highPrice = CGFloat(data[2])
-        item.lowPrice = CGFloat(data[3])
-        item.closePrice = CGFloat(data[4])
-        item.vol = CGFloat(data[5])
+        item.time = Int(Float(data.time) / 1000.0)
+        item.openPrice = CGFloat(Float(data.openedPrice)!)
+        item.highPrice = CGFloat(Float(data.maxPrice)!)
+        item.lowPrice = CGFloat(Float(data.minPrice)!)
+        item.closePrice = CGFloat(Float(data.closedPrice)!)
+        item.vol = CGFloat(Float(data.volume)!)
         return item
     }
     
@@ -143,8 +169,8 @@ extension DBHMarketDetailViewController: CHKLineChartDelegate {
     }
     
     func kLineChart(chart: CHKLineChartView, labelOnXAxisForIndex index: Int) -> String {
-        let data = self.klineDatas[index] as! [Double]
-        let timestamp = Int(data[0])
+        let data : DBHMarketDetailKLineViewModelData = self.klineDatas[index] as! DBHMarketDetailKLineViewModelData
+        let timestamp = Int(data.time)
         return Date.ch_getTimeByStamp(timestamp, format: "HH:mm")
     }
     
@@ -173,9 +199,15 @@ extension DBHMarketDetailViewController: CHKLineChartDelegate {
         let longGR : UILongPressGestureRecognizer = chart.gestureRecognizers![1] as! UILongPressGestureRecognizer;
         
         if longGR.state ==  .cancelled || longGR.state == .ended  {
-            print(11111);
+            self.timeSelectView.isShowData = false
+        } else if longGR.state ==  .began {
+            self.timeSelectView.isShowData = true
+            
+            let data : DBHMarketDetailKLineViewModelData = self.klineDatas[index] as! DBHMarketDetailKLineViewModelData
+            self.timeSelectView.model = data
         } else {
-            print(2222);
+            let data : DBHMarketDetailKLineViewModelData = self.klineDatas[index] as! DBHMarketDetailKLineViewModelData
+            self.timeSelectView.model = data
         }
     }
 }

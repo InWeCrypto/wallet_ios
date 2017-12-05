@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class DBHMarketDetailMoneyRealTimePriceModelData;
+
 @interface DBHMarketDetailView : UIView
+
+@property (nonatomic, strong) DBHMarketDetailMoneyRealTimePriceModelData *model;
 
 @end
