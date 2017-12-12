@@ -11,8 +11,8 @@
 @interface DBHInformationDetailForTradingMarketTableViewCell : UITableViewCell
 
 /**
- 货币类型
+ 交易市场数据
  */
-@property (nonatomic, copy) NSArray *currencyTypeArray;
+@property (nonatomic, copy) NSArray *dataSource;
 
 @end

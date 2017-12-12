@@ -124,10 +124,18 @@ class DBHMarketDetailViewController: UIViewController {
         self.marketDetailViewModel.getKLineData(withIco_type: self.title, interval: "15m")
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.barTintColor = UIColor.ch_hex(0x1D1C1C)
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.navigationBar.tintColor = UIColor.ch_hex(0xffffff)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.ch_hex(0xffffff)]
+        self.navigationController?.navigationBar .setBackgroundImage(UIImage.getFrom(UIColor.ch_hex(0x000000), rect: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 64)), for: .default)
     }
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.navigationBar.tintColor = UIColor.ch_hex(0x333333)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.ch_hex(0x333333)]
+        self.navigationController?.navigationBar .setBackgroundImage(UIImage.getFrom(UIColor.ch_hex(0xFFFFFF), rect: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 64)), for: .default)
     }
 
     func refreshKLineViewData() {

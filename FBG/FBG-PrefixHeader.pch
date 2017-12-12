@@ -90,6 +90,7 @@
 #import "JKBigDecimal.h"
 #import "Masonry.h"
 #import "MJRefresh.h"
+#import "NSString+Null.h"
 
 /**
  *  根据传入的字符串计算出所占高度

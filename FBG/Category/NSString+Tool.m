@@ -350,7 +350,8 @@ yy-MM-dd HH:mm:ss
 //转换显示单位
 + (NSString *)getDealNumwithstring:(NSString *)string
 {
-    NSDecimalNumber *numberA = [NSDecimalNumber decimalNumberWithString:string];
+    NSString *numberString = [NSString stringWithFormat:@"%@", string];
+    NSDecimalNumber *numberA = [NSDecimalNumber decimalNumberWithString:numberString];
     NSDecimalNumber *numberB ;
     if ([string intValue] < 10000)
     {

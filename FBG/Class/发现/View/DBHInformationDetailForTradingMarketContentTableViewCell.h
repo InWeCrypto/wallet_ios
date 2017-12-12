@@ -13,11 +13,6 @@
 @interface DBHInformationDetailForTradingMarketContentTableViewCell : UITableViewCell
 
 /**
- 是否为数据
- */
-@property (nonatomic, assign) BOOL isData;
-
-/**
  交易情况
  */
 @property (nonatomic, strong) DBHInformationDetailForTradingMarketContentModelData *model;

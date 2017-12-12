@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class WalletInfoGntModel;
+
 @interface DBHExtractViewController : UIViewController
+
+@property (nonatomic, strong) WalletInfoGntModel *neoModel;
+
+@property (nonatomic, strong) WalletInfoGntModel *model;
 
 @end

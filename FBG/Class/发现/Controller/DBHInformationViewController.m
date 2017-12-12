@@ -13,6 +13,7 @@
 #import "MXNavigationBarManager.h"
 
 #import "KKWebView.h"
+#import "DBHInformationDetailForOnLineAfterViewController.h"
 #import "DBHInformationDetailForDealViewController.h"
 #import "DBHInformationDetailForCrowdfundingViewController.h"
 #import "DBHAllInformationViewController.h"
@@ -66,17 +67,26 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
     
     [self setUI];
     [self addRefresh];
-    [self initBarManager];
     
     [self getRoastingChartData];
     [self getNewsData];
     [self getProjectData];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self initBarManager];
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [MXNavigationBarManager changeAlphaWithCurrentOffset:AUTOLAYOUTSIZE(100)];
+}
 
 #pragma mark ------ UI ------
 - (void)setUI {
     UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_market_search"] style:UIBarButtonItemStylePlain target:self action:@selector(repondsToSearchBarButtonItem)];
-    UIBarButtonItem *moreBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_menu"] style:UIBarButtonItemStylePlain target:self action:@selector(repondsToRightBarButtonItem)];
+    UIBarButtonItem *moreBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_market_menu"] style:UIBarButtonItemStylePlain target:self action:@selector(repondsToRightBarButtonItem)];
     self.navigationItem.rightBarButtonItems = @[moreBarButtonItem, searchBarButtonItem];
 
     [self.view addSubview:self.collectionView];
@@ -163,17 +173,15 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
 
 #pragma mark ------ UICollectionViewDelegate ------
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section) {
-        DBHInformationForProjectCollectionModelData *model = self.projectArray[indexPath.row];
-        if (model.type == 5 || model.type == 6) {
-            DBHInformationDetailForDealViewController *informationDetailForDealViewController = [[DBHInformationDetailForDealViewController alloc] init];
-            informationDetailForDealViewController.projectModel = model;
-            [self.navigationController pushViewController:informationDetailForDealViewController animated:YES];
-        } else {
-            DBHInformationDetailForCrowdfundingViewController *informationDetailForCrowdfundingViewController = [[DBHInformationDetailForCrowdfundingViewController alloc] init];
-            informationDetailForCrowdfundingViewController.projectModel = model;
-            [self.navigationController pushViewController:informationDetailForCrowdfundingViewController animated:YES];
-        }
+    DBHInformationForProjectCollectionModelData *model = self.projectArray[indexPath.row];
+    if (!indexPath.row/*model.type == 5 || model.type == 6*/) {
+        DBHInformationDetailForOnLineAfterViewController *informationDetailForOnLineAfterViewController = [[DBHInformationDetailForOnLineAfterViewController alloc] init];
+        informationDetailForOnLineAfterViewController.projectModel = model;
+        [self.navigationController pushViewController:informationDetailForOnLineAfterViewController animated:YES];
+    } else {
+        DBHInformationDetailForCrowdfundingViewController *informationDetailForCrowdfundingViewController = [[DBHInformationDetailForCrowdfundingViewController alloc] init];
+        informationDetailForCrowdfundingViewController.projectModel = model;
+        [self.navigationController pushViewController:informationDetailForCrowdfundingViewController animated:YES];
     }
 }
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -347,10 +355,10 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
  更多选项
  */
 - (void)repondsToRightBarButtonItem {
-    [YCXMenu setSeparatorColor:[UIColor colorWithHexString:@"161F26"]];
-    [YCXMenu setTintColor:[UIColor colorWithHexString:@"161F26"]];
-    [YCXMenu setTitleFont:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)]];
-    [YCXMenu setSelectedColor:[UIColor colorWithHexString:@"161F26"]];
+    [YCXMenu setSeparatorColor:[UIColor colorWithHexString:@"D2D2D2"]];
+    [YCXMenu setTintColor:[UIColor colorWithHexString:@"FFFFFF"]];
+    [YCXMenu setTitleFont:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)]];
+    [YCXMenu setSelectedColor:[UIColor colorWithHexString:@"FFFFFF"]];
     [YCXMenu setselectedIndex:-1];
     if ([YCXMenu isShow])
     {
@@ -359,26 +367,33 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
     else
     {
         WEAKSELF
-        [YCXMenu showMenuInView:self.view fromRect:CGRectMake(SCREEN_WIDTH - 50, 0, 50, 0) menuItems:self.items selected:^(NSInteger index, YCXMenuItem *item)
+        [YCXMenu showMenuInView:self.view fromRect:CGRectMake(SCREEN_WIDTH - 50, STATUSBARHEIGHT + 44, 50, 0) menuItems:self.items selected:^(NSInteger index, YCXMenuItem *item)
          {
              
              switch (index)
              {
                  case 0:
                  {
-                     // 所有资讯
-                     DBHAllInformationViewController *allInformationViewController = [[DBHAllInformationViewController alloc] init];
-                     [weakSelf.navigationController pushViewController:allInformationViewController animated:YES];
+                     // 项目精品
+                     DBHEvaluatingIcoViewController *evaluatingIcoViewController = [[DBHEvaluatingIcoViewController alloc] init];
+                     [weakSelf.navigationController pushViewController:evaluatingIcoViewController animated:YES];
+                     
                      break;
                  }
                  case 1:
                  {
-                     // Ico评测
-                     DBHEvaluatingIcoViewController *evaluatingIcoViewController = [[DBHEvaluatingIcoViewController alloc] init];
-                     [weakSelf.navigationController pushViewController:evaluatingIcoViewController animated:YES];
-                 }
-                 default:
+                     // 所有资讯
+                     DBHAllInformationViewController *allInformationViewController = [[DBHAllInformationViewController alloc] init];
+                     [weakSelf.navigationController pushViewController:allInformationViewController animated:YES];
+                     
                      break;
+                 }
+                     
+                 default: {
+                    // 糖果盒
+                     
+                     break;
+                 }
              }
          }];
     }
@@ -487,19 +502,25 @@ static NSString * const kDBHInformationForProjectCollectionViewCellIdentifier = 
     {
         _items = [NSMutableArray array];
         
-        YCXMenuItem *firstMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"All the information", nil)
+        YCXMenuItem *firstMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"Business Project", nil)
                                           image:nil
                                             tag:100
                                        userInfo:@{@"title":@"Menu"}];
-        YCXMenuItem *secondMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"Evaluating the Ico", nil)
+        YCXMenuItem *secondMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"All the information", nil)
                                                       image:nil
                                                         tag:101
                                                    userInfo:@{@"title":@"Menu"}];
-        [firstMenuItem setForeColor:[UIColor colorWithHexString:@"97BDDB"]];
-        [secondMenuItem setForeColor:[UIColor colorWithHexString:@"97BDDB"]];
+//        YCXMenuItem *thirdMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"Bonbonniere", nil)
+//                                                      image:nil
+//                                                        tag:102
+//                                                   userInfo:@{@"title":@"Menu"}];
+        [firstMenuItem setForeColor:[UIColor colorWithHexString:@"3F3F3F"]];
+        [secondMenuItem setForeColor:[UIColor colorWithHexString:@"3F3F3F"]];
+//        [thirdMenuItem setForeColor:[UIColor colorWithHexString:@"3F3F3F"]];
         
         [_items addObject:firstMenuItem];
         [_items addObject:secondMenuItem];
+//        [_items addObject:thirdMenuItem];
     }
     return _items;
 }

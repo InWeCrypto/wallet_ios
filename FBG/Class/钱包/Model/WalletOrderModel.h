@@ -43,6 +43,7 @@
 @property (nonatomic, copy) NSString * minBlockNumber;  //最小块号 确认 12
 @property (nonatomic, copy) NSString * flag;
 
+@property (nonatomic, assign) BOOL isMySelf; // 是否自己转给自己
 @property (nonatomic, assign) BOOL isReceivables; //是否是收款 NO 转账  YES 收款
 
 @end

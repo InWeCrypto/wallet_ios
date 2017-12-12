@@ -17,6 +17,7 @@
 #import "QuotationVC.h"
 #import "DBHMyViewController.h"
 #import "DBHInformationViewController.h"
+#import "DBHInformationWebViewController.h"
 
 @interface ZFTabBarViewController () <ZFTabBarDelegate>
 /**
@@ -93,9 +94,12 @@
     [self setupChildViewController:quotation title:NSLocalizedString(@"Market", nil) imageName:@"tab_hangqing_nor" selectedImageName:@"tab_hangqing_pre"];
     
     // 2.资讯
-    DBHInformationViewController *home1 = [[DBHInformationViewController alloc] init];
+    DBHInformationWebViewController *home1 = [[DBHInformationWebViewController alloc] init];
     home1.tabBarItem.badgeValue = @"";
     [self setupChildViewController:home1 title:NSLocalizedString(@"Information", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
+//    DBHInformationViewController *home1 = [[DBHInformationViewController alloc] init];
+//    home1.tabBarItem.badgeValue = @"";
+//    [self setupChildViewController:home1 title:NSLocalizedString(@"Information", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
     
     // 3.资产
     WalletHomeVC *home = [[WalletHomeVC alloc] init];

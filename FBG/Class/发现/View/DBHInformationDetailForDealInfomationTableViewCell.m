@@ -13,20 +13,20 @@
 
 @interface DBHInformationDetailForDealInfomationTableViewCell ()
 
-@property (nonatomic, strong) UIView *boxView;
-@property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UILabel *currentPriceLabel;
-@property (nonatomic, strong) UILabel *currentPriceValueLabel;
+@property (nonatomic, strong) UIButton *explorerButton;
+@property (nonatomic, strong) UIButton *supportWalletButton;
+@property (nonatomic, strong) UILabel *changeLabel;
 @property (nonatomic, strong) UILabel *volumeLabel;
 @property (nonatomic, strong) UILabel *volumeValueLabel;
-@property (nonatomic, strong) UILabel *changeLabel;
-@property (nonatomic, strong) UILabel *changeValueLabel;
 @property (nonatomic, strong) UILabel *maxLabel;
 @property (nonatomic, strong) UILabel *maxValueLabel;
 @property (nonatomic, strong) UILabel *minLabel;
 @property (nonatomic, strong) UILabel *minValueLabel;
+@property (nonatomic, strong) UIButton *lookKLineButton;
 
-@property (nonatomic, strong) DBHInformationDetailForNewMoneyPriceModelData *moneyPriceModel; // 最新货币价格
+@property (nonatomic, strong) DBHInformationDetailForNewMoneyPriceModelData *usdmoneyPriceModel; // 美元最新货币价格
+@property (nonatomic, strong) DBHInformationDetailForNewMoneyPriceModelData *btcmoneyPriceModel; // BTC最新货币价格
 
 @end
 
@@ -37,7 +37,6 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self setUI];
@@ -47,75 +46,71 @@
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    [self.contentView addSubview:self.boxView];
-    [self.contentView addSubview:self.segmentedControl];
     [self.contentView addSubview:self.currentPriceLabel];
-    [self.contentView addSubview:self.currentPriceValueLabel];
+    [self.contentView addSubview:self.explorerButton];
+    [self.contentView addSubview:self.supportWalletButton];
+    [self.contentView addSubview:self.changeLabel];
     [self.contentView addSubview:self.volumeLabel];
     [self.contentView addSubview:self.volumeValueLabel];
-    [self.contentView addSubview:self.changeLabel];
-    [self.contentView addSubview:self.changeValueLabel];
     [self.contentView addSubview:self.maxLabel];
     [self.contentView addSubview:self.maxValueLabel];
     [self.contentView addSubview:self.minLabel];
     [self.contentView addSubview:self.minValueLabel];
+    [self.contentView addSubview:self.lookKLineButton];
     
     WEAKSELF
-    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(23));
-        make.height.equalTo(weakSelf.contentView);
-        make.center.equalTo(weakSelf.contentView);
-    }];
-    [self.segmentedControl mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(210));
-        make.height.offset(AUTOLAYOUTSIZE(27));
-        make.centerX.equalTo(weakSelf.contentView);
-        make.top.offset(AUTOLAYOUTSIZE(14));
-    }];
     [self.currentPriceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(72));
-        make.bottom.equalTo(weakSelf.volumeLabel.mas_top).offset(- AUTOLAYOUTSIZE(18));
+        make.left.offset(AUTOLAYOUTSIZE(12));
+        make.right.equalTo(weakSelf.explorerButton.mas_left).offset(- AUTOLAYOUTSIZE(5));
+        make.top.offset(AUTOLAYOUTSIZE(8.5));
     }];
-    [self.currentPriceValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.segmentedControl.mas_centerX).offset(AUTOLAYOUTSIZE(70));
-        make.right.equalTo(weakSelf.boxView);
-        make.centerY.equalTo(weakSelf.currentPriceLabel);
+    [self.explorerButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(AUTOLAYOUTSIZE(54));
+        make.height.offset(AUTOLAYOUTSIZE(22));
+        make.right.equalTo(weakSelf.supportWalletButton.mas_left).offset(- AUTOLAYOUTSIZE(8));
+        make.centerY.equalTo(weakSelf.supportWalletButton);
     }];
-    [self.volumeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.currentPriceLabel);
-        make.bottom.equalTo(weakSelf.changeLabel.mas_top).offset(- AUTOLAYOUTSIZE(18));
-    }];
-    [self.volumeValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.currentPriceValueLabel);
-        make.left.equalTo(weakSelf.currentPriceValueLabel);
-        make.centerY.equalTo(weakSelf.volumeLabel);
+    [self.supportWalletButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(AUTOLAYOUTSIZE(66));
+        make.height.offset(AUTOLAYOUTSIZE(22));
+        make.right.offset(- AUTOLAYOUTSIZE(12));
+        make.top.offset(AUTOLAYOUTSIZE(10));
     }];
     [self.changeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.currentPriceLabel);
-        make.bottom.equalTo(weakSelf.maxLabel.mas_top).offset(- AUTOLAYOUTSIZE(18));
+        make.top.equalTo(weakSelf.currentPriceLabel.mas_bottom).offset(AUTOLAYOUTSIZE(10));
     }];
-    [self.changeValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.currentPriceValueLabel);
-        make.left.equalTo(weakSelf.currentPriceValueLabel);
-        make.centerY.equalTo(weakSelf.changeLabel);
+    [self.volumeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.currentPriceLabel);
+        make.top.equalTo(weakSelf.changeLabel.mas_bottom).offset(AUTOLAYOUTSIZE(10));
+    }];
+    [self.volumeValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(AUTOLAYOUTSIZE(152));
+        make.right.offset(- AUTOLAYOUTSIZE(10));
+        make.centerY.equalTo(weakSelf.volumeLabel);
     }];
     [self.maxLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.currentPriceLabel);
-        make.bottom.equalTo(weakSelf.minLabel.mas_top).offset(- AUTOLAYOUTSIZE(18));
+        make.top.equalTo(weakSelf.volumeLabel.mas_bottom).offset(AUTOLAYOUTSIZE(10));
     }];
     [self.maxValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.currentPriceValueLabel);
-        make.left.equalTo(weakSelf.currentPriceValueLabel);
+        make.size.equalTo(weakSelf.volumeValueLabel);
+        make.left.equalTo(weakSelf.volumeValueLabel);
         make.centerY.equalTo(weakSelf.maxLabel);
     }];
     [self.minLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.currentPriceLabel);
-        make.bottom.offset(- AUTOLAYOUTSIZE(39));
+        make.top.equalTo(weakSelf.maxLabel.mas_bottom).offset(AUTOLAYOUTSIZE(10));
     }];
     [self.minValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.currentPriceValueLabel);
-        make.left.equalTo(weakSelf.currentPriceValueLabel);
+        make.size.equalTo(weakSelf.volumeValueLabel);
+        make.left.equalTo(weakSelf.volumeValueLabel);
         make.centerY.equalTo(weakSelf.minLabel);
+    }];
+    [self.lookKLineButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(AUTOLAYOUTSIZE(70.5));
+        make.height.offset(AUTOLAYOUTSIZE(37.5));
+        make.right.bottom.equalTo(weakSelf.contentView);
     }];
 }
 
@@ -123,10 +118,16 @@
 /**
  获取项目详细数据
  */
-- (void)getNewMoneyPriceDataWithUrl:(NSString *)url {
+- (void)getNewMoneyPriceDataWithModel:(DBHInformationDetailModelProjectTimePrices *)model {
     WEAKSELF
-    [PPNetworkHelper GET:url isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject) {
-        weakSelf.moneyPriceModel = [DBHInformationDetailForNewMoneyPriceModelData modelObjectWithDictionary:responseObject];
+    [PPNetworkHelper GET:model.currentUrl isOtherBaseUrl:YES parameters:nil hudString:nil success:^(id responseObject) {
+        if ([model.name isEqualToString:@"美元"]) {
+            // 美元
+            weakSelf.usdmoneyPriceModel = [DBHInformationDetailForNewMoneyPriceModelData modelObjectWithDictionary:responseObject];
+        } else {
+            // 比特币
+            weakSelf.btcmoneyPriceModel = [DBHInformationDetailForNewMoneyPriceModelData modelObjectWithDictionary:responseObject];
+        }
         
         [weakSelf refreshData];
     } failure:^(NSString *error) {
@@ -134,104 +135,101 @@
     }];
 }
 
-#pragma mark ------ Event Responds ------
-/**
- 分段控件点击
- */
-- (void)respondsToSegmentedControl {
-    DBHInformationDetailModelProjectTimePrices *model = self.dataSource[self.segmentedControl.selectedSegmentIndex];
-    [self getNewMoneyPriceDataWithUrl:[NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.currentUrl]];
-}
-
 #pragma mark ------ Private Methods ------
 /**
  刷新货币价格
  */
 - (void)refreshData {
-    if (self.moneyPriceModel) {
-        self.currentPriceValueLabel.text = [NSString stringWithFormat:@"$%@", self.moneyPriceModel.price];
-        self.volumeValueLabel.text = [NSString stringWithFormat:@"%.2lf", self.moneyPriceModel.volume];
-        self.changeValueLabel.text = [NSString stringWithFormat:@"%.2lf%%", self.moneyPriceModel.change24h];
-        self.maxValueLabel.text = self.moneyPriceModel.maxPrice24h;
-        self.minValueLabel.text = self.moneyPriceModel.minPrice24h;
-        
-        self.changeValueLabel.textColor = self.moneyPriceModel.change24h >= 0 ? COLORFROM16(0xFF3232, 1) : COLORFROM16(0x22AC39, 1);
-    } else {
-        self.currentPriceValueLabel.text = @"$0.00";
-        self.volumeValueLabel.text = @"0.00";
-        self.changeValueLabel.text = @"0.00%";
-        self.maxValueLabel.text = @"0.00000000";
-        self.minValueLabel.text = @"0.00000000";
+    if (self.btcmoneyPriceModel && self.usdmoneyPriceModel) {
+        self.currentPriceLabel.text = [NSString stringWithFormat:@"$%@ /%@ BTC", [NSString getValueWithString:self.usdmoneyPriceModel.price], [NSString getValueWithString:self.btcmoneyPriceModel.price]];
+        self.changeLabel.text = [NSString stringWithFormat:@"(%.2lf)", self.btcmoneyPriceModel.change24h];
+        self.volumeValueLabel.text = [NSString stringWithFormat:@"$%.0lf/%.2lf BTC", self.usdmoneyPriceModel.volume, self.btcmoneyPriceModel.volume];
+        self.maxValueLabel.text = [NSString stringWithFormat:@"$%@/%@ BTC", [NSString getValueWithString:self.usdmoneyPriceModel.maxPrice24h], [NSString getValueWithString:self.btcmoneyPriceModel.maxPrice24h]];
+        self.minValueLabel.text = [NSString stringWithFormat:@"$%@/%@ BTC", [NSString getValueWithString:self.usdmoneyPriceModel.minPrice24h], [NSString getValueWithString:self.btcmoneyPriceModel.minPrice24h]];
+        self.changeLabel.textColor = self.usdmoneyPriceModel.change24h >= 0 ? COLORFROM16(0xFF3232, 1) : COLORFROM16(0x22AC39, 1);
     }
+}
+
+#pragma mark ------ Event Responds ------
+/**
+ 浏览器
+ */
+- (void)respondsToExplorerButton {
+    
+}
+/**
+ 支持钱包
+ */
+- (void)respondsToSupportWalletButton {
+    
+}
+/**
+ 查看K线
+ */
+- (void)respondsToLookKLineButton {
+    
 }
 
 #pragma mark ------ Getters And Setters ------
 - (void)setDataSource:(NSArray *)dataSource {
     _dataSource = dataSource;
     
-    WEAKSELF
-    [self.segmentedControl mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(70) * _dataSource.count);
-        make.height.offset(AUTOLAYOUTSIZE(27));
-        make.centerX.equalTo(weakSelf.contentView);
-        make.top.offset(AUTOLAYOUTSIZE(14));
-    }];
-    
-    [self.segmentedControl removeAllSegments];
-    
     for (DBHInformationDetailModelProjectTimePrices *model in _dataSource) {
-        if ([model isEqual:_dataSource.firstObject]) {
-            [self getNewMoneyPriceDataWithUrl:[NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.currentUrl]];
+        if ([model.name isEqualToString:@"美元"] || [model.name isEqualToString:@"比特币"]) {
+            [self getNewMoneyPriceDataWithModel:model];
         }
-        
-        [self.segmentedControl insertSegmentWithTitle:model.name atIndex:self.segmentedControl.numberOfSegments animated:YES];
     }
-    
-    self.segmentedControl.selectedSegmentIndex = 0;
 }
 
-- (UIView *)boxView {
-    if (!_boxView) {
-        _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = COLORFROM10(0, 0, 0, 0.5);
-    }
-    return _boxView;
-}
-- (UISegmentedControl *)segmentedControl {
-    if (!_segmentedControl) {
-        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@""]];
-        _segmentedControl.backgroundColor = [UIColor clearColor];
-        _segmentedControl.tintColor = COLORFROM16(0xFF7043, 1);
-        
-        [_segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)]} forState:UIControlStateNormal];
-        [_segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)]} forState:UIControlStateSelected];
-        [_segmentedControl addTarget:self action:@selector(respondsToSegmentedControl) forControlEvents:UIControlEventValueChanged];
-    }
-    return _segmentedControl;
-}
 - (UILabel *)currentPriceLabel {
     if (!_currentPriceLabel) {
         _currentPriceLabel = [[UILabel alloc] init];
         _currentPriceLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
         _currentPriceLabel.text = @"当前价格";
-        _currentPriceLabel.textColor = [UIColor whiteColor];
+        _currentPriceLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _currentPriceLabel;
 }
-- (UILabel *)currentPriceValueLabel {
-    if (!_currentPriceValueLabel) {
-        _currentPriceValueLabel = [[UILabel alloc] init];
-        _currentPriceValueLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
-        _currentPriceValueLabel.textColor = [UIColor whiteColor];
+- (UIButton *)explorerButton {
+    if (!_explorerButton) {
+        _explorerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _explorerButton.layer.cornerRadius = AUTOLAYOUTSIZE(1.5);
+        _explorerButton.layer.borderWidth = AUTOLAYOUTSIZE(0.5);
+        _explorerButton.layer.borderColor = COLORFROM16(0x333333, 1).CGColor;
+        _explorerButton.titleLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
+        [_explorerButton setTitle:@"浏览器>" forState:UIControlStateNormal];
+        [_explorerButton setTitleColor:COLORFROM16(0x333333, 1) forState:UIControlStateNormal];
+        [_explorerButton addTarget:self action:@selector(respondsToExplorerButton) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _currentPriceValueLabel;
+    return _explorerButton;
+}
+- (UIButton *)supportWalletButton {
+    if (!_supportWalletButton) {
+        _supportWalletButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _supportWalletButton.layer.cornerRadius = AUTOLAYOUTSIZE(1.5);
+        _supportWalletButton.layer.borderWidth = AUTOLAYOUTSIZE(0.5);
+        _supportWalletButton.layer.borderColor = COLORFROM16(0x333333, 1).CGColor;
+        _supportWalletButton.titleLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
+        [_supportWalletButton setTitle:@"支持钱包>" forState:UIControlStateNormal];
+        [_supportWalletButton setTitleColor:COLORFROM16(0x333333, 1) forState:UIControlStateNormal];
+        [_supportWalletButton addTarget:self action:@selector(respondsToSupportWalletButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _supportWalletButton;
+}
+- (UILabel *)changeLabel {
+    if (!_changeLabel) {
+        _changeLabel = [[UILabel alloc] init];
+        _changeLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
+        _changeLabel.textColor = COLORFROM16(0x22AC39, 1);
+    }
+    return _changeLabel;
 }
 - (UILabel *)volumeLabel {
     if (!_volumeLabel) {
         _volumeLabel = [[UILabel alloc] init];
         _volumeLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
         _volumeLabel.text = @"Volume";
-        _volumeLabel.textColor = [UIColor whiteColor];
+        _volumeLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _volumeLabel;
 }
@@ -239,33 +237,16 @@
     if (!_volumeValueLabel) {
         _volumeValueLabel = [[UILabel alloc] init];
         _volumeValueLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
-        _volumeValueLabel.textColor = [UIColor whiteColor];
+        _volumeValueLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _volumeValueLabel;
-}
-- (UILabel *)changeLabel {
-    if (!_changeLabel) {
-        _changeLabel = [[UILabel alloc] init];
-        _changeLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
-        _changeLabel.text = @"24H-Change";
-        _changeLabel.textColor = [UIColor whiteColor];
-    }
-    return _changeLabel;
-}
-- (UILabel *)changeValueLabel {
-    if (!_changeValueLabel) {
-        _changeValueLabel = [[UILabel alloc] init];
-        _changeValueLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
-        _changeValueLabel.textColor = COLORFROM16(0xFF3232, 1);
-    }
-    return _changeValueLabel;
 }
 - (UILabel *)maxLabel {
     if (!_maxLabel) {
         _maxLabel = [[UILabel alloc] init];
         _maxLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
         _maxLabel.text = @"24H最高值";
-        _maxLabel.textColor = [UIColor whiteColor];
+        _maxLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _maxLabel;
 }
@@ -273,7 +254,7 @@
     if (!_maxValueLabel) {
         _maxValueLabel = [[UILabel alloc] init];
         _maxValueLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
-        _maxValueLabel.textColor = COLORFROM16(0xFF3232, 1);
+        _maxValueLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _maxValueLabel;
 }
@@ -282,7 +263,7 @@
         _minLabel = [[UILabel alloc] init];
         _minLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
         _minLabel.text = @"24H最低值";
-        _minLabel.textColor = [UIColor whiteColor];
+        _minLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _minLabel;
 }
@@ -290,9 +271,24 @@
     if (!_minValueLabel) {
         _minValueLabel = [[UILabel alloc] init];
         _minValueLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)];
-        _minValueLabel.textColor = COLORFROM16(0x22AC39, 1);
+        _minValueLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _minValueLabel;
+}
+- (UIButton *)lookKLineButton {
+    if (!_lookKLineButton) {
+        _lookKLineButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _lookKLineButton.titleLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
+        
+        NSString *lookKLine = @"查看K线";
+        NSMutableAttributedString *lookKLineAttributedString = [[NSMutableAttributedString alloc] initWithString:lookKLine];
+        [lookKLineAttributedString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, lookKLine.length)];
+        [_lookKLineButton setAttributedTitle:lookKLineAttributedString forState:UIControlStateNormal];
+        
+        [_lookKLineButton setTitleColor:COLORFROM16(0x333333, 1) forState:UIControlStateNormal];
+        [_lookKLineButton addTarget:self action:@selector(respondsToLookKLineButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _lookKLineButton;
 }
 
 @end

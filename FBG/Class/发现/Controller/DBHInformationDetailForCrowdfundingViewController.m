@@ -133,9 +133,9 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
         }
         case 2: {
             DBHInformationDetailForProjectBriefTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationDetailForProjectBriefTableViewCellIdentifier forIndexPath:indexPath];
-            if (self.model) {
-                cell.projectIntroductionArray = [self.model.projectDesc copy];
-            }
+//            if (self.model) {
+//                cell.projectIntroductionArray = [self.model.projectDesc copy];
+//            }
             
             return cell;
             break;
@@ -261,7 +261,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
  */
 - (void)getProjectData {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/project/%ld", (NSInteger)self.projectModel.dataIdentifier] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"project/%ld", (NSInteger)self.projectModel.dataIdentifier] isOtherBaseUrl:YES parameters:nil hudString:nil success:^(id responseObject) {
         weakSelf.model = [DBHInformationDetailModelData modelObjectWithDictionary:responseObject];
         
         [weakSelf.tableView reloadData];
@@ -274,7 +274,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
  */
 - (void)getInweReportData {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"https://dev.inwecrypto.com/category/%ld/articles/%@", (NSInteger)self.projectModel.dataIdentifier, self.inweReportType ? @"img-txt" : @"video"] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"category/%ld/articles/%@", (NSInteger)self.projectModel.dataIdentifier, self.inweReportType ? @"img-txt" : @"video"] isOtherBaseUrl:YES parameters:nil hudString:nil success:^(id responseObject) {
         [weakSelf.inweReportArray removeAllObjects];
         
         for (NSDictionary *dic in responseObject) {
@@ -489,7 +489,7 @@ static NSString *const kDBHInformationDetailForMoreTableViewCellIdentifier = @"k
                                                       image:nil
                                                         tag:100
                                                    userInfo:@{@"title":@"Menu"}];
-        YCXMenuItem *thirdMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"Evaluating the Ico", nil)
+        YCXMenuItem *thirdMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"Business Project", nil)
                                                      image:nil
                                                        tag:101
                                                   userInfo:@{@"title":@"Menu"}];

@@ -423,6 +423,8 @@
 - (void)creatNeoOrderWithData:(NSString *)data trade_no:(NSString *)trade_no
 {
     //创建钱包订单
+    NSString *assert = [self.tokenModel.name isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
+    
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     [dic setObject:@(self.model.id) forKey:@"wallet_id"];
     [dic setObject:data forKey:@"data"];
@@ -431,9 +433,9 @@
     [dic setObject:self.remark forKey:@"remark"];
     [dic setObject:self.price forKey:@"fee"];
     [dic setObject:@"0" forKey:@"handle_fee"];
-    [dic setObject:self.tokenModel ? self.tokenModel.flag : self.model.category_name forKey:@"flag"];
+    [dic setObject:@"NEO" forKey:@"flag"];
     [dic setObject:[NSString stringWithFormat:@"0x%@", trade_no] forKey:@"trade_no"];
-    [dic setObject:@"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" forKey:@"asset_id"];
+    [dic setObject:assert forKey:@"asset_id"];
     
     [PPNetworkHelper POST:@"wallet-order" parameters:dic hudString:@"创建中..." success:^(id responseObject)
      {

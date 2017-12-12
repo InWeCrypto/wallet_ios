@@ -25,6 +25,7 @@
 @property (nonatomic, strong) UIButton * transferButton;    //转账
 @property (nonatomic, strong) UIButton * receivablesButton;    //收款
 
+@property (nonatomic, assign) BOOL isCanTransferAccounts; // 是否可以转账
 @property (nonatomic, assign) NSString * maxBlockNumber;  //最大块号 当前
 @property (nonatomic, copy) NSString * blockPerSecond;  //发生时间  5
 @property (nonatomic, copy) NSString * minBlockNumber;  //最小块号 确认 12
@@ -47,7 +48,6 @@
     //    [self addPush2LoadMoreWithTableView:self.coustromTableView WithIsInset:NO];
     self.coustromTableView.tableHeaderView = self.headerView;
     
-    self.dataSource = [[NSMutableArray alloc] init];
     self.blockPerSecond = @"10";
     self.minBlockNumber = @"12";
     
@@ -171,6 +171,17 @@
         {
             //代币
             if (self.model.category_id == 2) {
+                if ([NSObject isNulllWithObject:_dataSource]) {
+                    [LCProgressHUD showFailure:@"订单列表尚未加载完成"];
+                    
+                    return;
+                }
+                if (!self.isCanTransferAccounts) {
+                    [LCProgressHUD showFailure:@"您还有未完成的订单!请稍后重试!"];
+                    
+                    return;
+                }
+                
                 // NEO钱包转账
                 DBHNEOTransferVC * vc = [[DBHNEOTransferVC alloc] init];
                 vc.model = self.model;
@@ -270,7 +281,8 @@
              NSString *price_cny = [self.tokenModel.flag isEqualToString:@"NEO"] ? neoPriceForCny : gasPriceForCny;
              NSString *price_usd = [self.tokenModel.flag isEqualToString:@"NEO"] ? neoPriceForUsd : gasPriceForUsd;
              
-             self.headerView.priceLB.text = [NSString stringWithFormat:@"%.4f", [price floatValue]];
+             self.banlacePrice = [NSString stringWithFormat:@"%.4f", [price floatValue]];
+             self.headerView.priceLB.text = self.banlacePrice;
              if ([UserSignData share].user.walletUnitType == 1)
              {
                  self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈￥%.2f",[[NSString DecimalFuncWithOperatorType:2 first:price secend:price_cny value:2] floatValue]];
@@ -402,6 +414,7 @@
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
          {
              [self.dataSource removeAllObjects];
+             BOOL isHaveNoFinishOrder = NO;
              for (NSDictionary * dic in [responseObject objectForKey:@"list"])
              {
                  WalletOrderModel * model = [[WalletOrderModel alloc] init];
@@ -414,20 +427,29 @@
                  model.pay_address = dic[@"from"];
                  model.receive_address = dic[@"to"];
                  model.finished_at = dic[@"confirmTime"];
-                 model.trade_no = dic[@"tx"];
-                 if ([dic[@"from"] isEqualToString:self.model.address])
-                 {
-                     //热钱包 eth
-                     //转账
-                     model.isReceivables = NO;
+                 if ([NSObject isNulllWithObject:model.finished_at]) {
+                     isHaveNoFinishOrder = YES;
                  }
-                 else
-                 {
-                     //收款
-                     model.isReceivables = YES;
+                 if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
+                     model.isMySelf = YES;
+                 } else {
+                     model.isMySelf = NO;
+                     
+                     if ([dic[@"from"] isEqualToString:self.model.address])
+                     {
+                         //热钱包 eth
+                         //转账
+                         model.isReceivables = NO;
+                     }
+                     else
+                     {
+                         //收款
+                         model.isReceivables = YES;
+                     }
                  }
                  [self.dataSource addObject:model];
              }
+             self.isCanTransferAccounts = !isHaveNoFinishOrder;
              [self.coustromTableView reloadData];
          }
          [self endRefreshing];
@@ -505,7 +527,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -517,7 +539,7 @@
         cell = array[0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.model = self.dataSource[indexPath.row];
+    cell.model = _dataSource[indexPath.row];
     return cell;
 }
 
@@ -578,6 +600,13 @@
         [_receivablesButton addTarget:self action:@selector(receivablesButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     return _receivablesButton;
+}
+
+- (NSMutableArray *)dataSource {
+    if (!_dataSource) {
+        _dataSource = [NSMutableArray array];
+    }
+    return _dataSource;
 }
 
 @end

@@ -103,7 +103,7 @@ typedef enum {
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = COLORFROM16(0x000000, 0.3);
         self.opaque = NO;
 
         UITapGestureRecognizer *gestureRecognizer;

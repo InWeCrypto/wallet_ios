@@ -67,7 +67,11 @@
         [parametersDic setObject:@(self.model.id) forKey:@"category_id"];
         [parametersDic setObject:self.nameTF.text forKey:@"name"];
         [parametersDic setObject:self.model.name forKey:@"category_name"];
-        [parametersDic setObject:self.address ? self.address : [[self.wallet address] lowercaseString] forKey:@"address"];
+        if ([self.model.name isEqualToString:@"NEO"]) {
+            [parametersDic setObject:self.address ? self.address : [self.neoWallet address] forKey:@"address"];
+        } else {
+            [parametersDic setObject:self.address ? self.address : [[self.wallet address] lowercaseString] forKey:@"address"];
+        }
         
         [PPNetworkHelper POST:@"wallet" parameters:parametersDic hudString:@"创建中..." success:^(id responseObject)
          {

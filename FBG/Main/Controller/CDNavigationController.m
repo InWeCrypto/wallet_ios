@@ -8,6 +8,8 @@
 
 #import "CDNavigationController.h"
 
+#import "FBG-Swift.h"
+
 @interface CDNavigationController ()<UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @end
@@ -49,7 +51,7 @@
         // 非根控制器才需要设置返回按钮
         // 设置返回按钮
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [backButton setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
+        [backButton setImage:[UIImage imageNamed:[viewController isKindOfClass:[DBHMarketDetailViewController class]] ? @"white_nav_back" : @"nav_back"] forState:UIControlStateNormal];
         [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         [backButton sizeToFit];
         // 注意:一定要在按钮内容有尺寸的时候,设置才有效果

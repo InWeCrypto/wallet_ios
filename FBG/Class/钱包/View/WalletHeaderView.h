@@ -22,5 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *ETH_cnyLB;
 @property (weak, nonatomic) IBOutlet UILabel *BTC_etherLB;
 @property (weak, nonatomic) IBOutlet UILabel *BTC_cnyLB;
+@property (weak, nonatomic) IBOutlet UILabel *ethNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *neoNameLabel;
 
 @end

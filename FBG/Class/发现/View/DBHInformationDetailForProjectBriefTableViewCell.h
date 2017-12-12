@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class DBHInformationDetailModelProjectDesc;
+
 @interface DBHInformationDetailForProjectBriefTableViewCell : UITableViewCell
 
-/**
- 项目介绍
- */
-@property (nonatomic, copy) NSArray *projectIntroductionArray;
+@property (nonatomic, strong) DBHInformationDetailModelProjectDesc *model;
 
 @end

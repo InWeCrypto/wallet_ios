@@ -218,6 +218,7 @@ static NSString *const kDBHInformationForNewsCollectionViewTableViewCellIdentifi
     self.cycleScrollView.imageURLStringsGroup = imageUrlArray;
 }
 - (void)setNewsDataSource:(NSArray *)newsDataSource {
+    [self stopTimer];
     if (newsDataSource.count >= 2) {
         NSMutableArray *centerArray = [NSMutableArray arrayWithArray:newsDataSource];
         [centerArray addObject:newsDataSource.firstObject];

@@ -14,7 +14,6 @@
 #import "DBHSearchViewController.h"
 #import "KKWebView.h"
 
-#import "DBHSearchBarButton.h"
 #import "DBHEvaluatingIcoTableViewCell.h"
 
 #import "DBHEvaluatingIcoDataModels.h"
@@ -23,8 +22,6 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
 
 @interface DBHEvaluatingIcoViewController ()<UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) DBHSearchBarButton *searchBarButton;
-@property (nonatomic, strong) UIImageView *backImageView;
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray * items;
@@ -38,32 +35,28 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Evaluating the ICO", nil);
-    self.view.backgroundColor = [UIColor colorWithHexString:@"171C27"];
+    self.title = NSLocalizedString(@"Business Project", nil);
+    self.view.backgroundColor = [UIColor colorWithHexString:@"FFFFFF"];
     
     [self setUI];
+    [self addRefresh];
+    
     [self getIcoData];
 }
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_market_menu"] style:UIBarButtonItemStylePlain target:self action:@selector(repondsToRightBarButtonItem)];
-    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_market_search"] style:UIBarButtonItemStylePlain target:self action:@selector(repondsToSearchBarButtonItem)];
+    UIBarButtonItem *moreBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_market_menu"] style:UIBarButtonItemStylePlain target:self action:@selector(repondsToRightBarButtonItem)];
+    self.navigationItem.rightBarButtonItems = @[moreBarButtonItem, searchBarButtonItem];
     
-    [self.view addSubview:self.searchBarButton];
     [self.view addSubview:self.tableView];
     
     WEAKSELF
-    [self.searchBarButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(24));
-        make.height.offset(AUTOLAYOUTSIZE(32.5));
-        make.centerX.equalTo(weakSelf.view);
-        make.top.offset(AUTOLAYOUTSIZE(5));
-    }];
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
         make.centerX.equalTo(weakSelf.view);
-        make.top.equalTo(weakSelf.searchBarButton.mas_bottom).offset(AUTOLAYOUTSIZE(22));
+        make.top.equalTo(weakSelf.view);
         make.bottom.equalTo(weakSelf.view);
     }];
 }
@@ -87,37 +80,11 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
     if ([model.url containsString:@"http"]) {
         url = model.url;
     } else {
-        url = [NSString stringWithFormat:@"https://dev.inwecrypto.com/%@", model.url];
+        url = [NSString stringWithFormat:@"%@/%@", [APP_APIEHEAD isEqualToString:APIEHEAD] ? APIEHEADOTHER : APIEHEAD1OTHER, model.url];
     }
     
     KKWebView * vc = [[KKWebView alloc] initWithUrl:url];
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-#pragma mark ------ UIScrollViewDelegate ------
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    UIPanGestureRecognizer *panGR = scrollView.panGestureRecognizer;
-    CGFloat velocity = [panGR velocityInView:scrollView].y;
-    
-    if (velocity >= -15 && velocity <= 15) {
-        return;
-    }
-    
-    WEAKSELF
-    [self.searchBarButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(24));
-        make.height.offset(AUTOLAYOUTSIZE(32.5));
-        make.centerX.equalTo(weakSelf.view);
-        if (velocity < - 15) {
-            make.top.offset(- AUTOLAYOUTSIZE(59.5));
-        } else if (velocity > 15) {
-            make.top.offset(AUTOLAYOUTSIZE(5));
-        }
-    }];
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        [weakSelf.view layoutIfNeeded];
-    }];
 }
 
 #pragma mark ------ Data ------
@@ -126,15 +93,19 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
  */
 - (void)getIcoData {
     WEAKSELF
-    [PPNetworkHelper GET:@"https://dev.inwecrypto.com/article/ico" isOtherBaseUrl:NO parameters:nil hudString:@"" success:^(id responseObject) {
+    [PPNetworkHelper GET:@"article/ico" isOtherBaseUrl:YES parameters:nil hudString:@"" success:^(id responseObject) {
+        [weakSelf.dataSource removeAllObjects];
+        
         for (NSDictionary *dic in responseObject) {
             DBHEvaluatingIcoModelData *model = [DBHEvaluatingIcoModelData modelObjectWithDictionary:dic];
             
             [weakSelf.dataSource addObject:model];
         }
         
+        [weakSelf endRefresh];
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
+        [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
     }];
 }
@@ -144,12 +115,12 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
  右上角按钮
  */
 - (void)repondsToRightBarButtonItem {
-    [YCXMenu setSeparatorColor:[UIColor colorWithHexString:@"161F26"]];
-    [YCXMenu setTintColor:[UIColor colorWithHexString:@"161F26"]];
-    [YCXMenu setTitleFont:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(13)]];
-    [YCXMenu setSelectedColor:[UIColor colorWithHexString:@"161F26"]];
+    [YCXMenu setSeparatorColor:[UIColor colorWithHexString:@"D2D2D2"]];
+    [YCXMenu setTintColor:[UIColor colorWithHexString:@"FFFFFF"]];
+    [YCXMenu setTitleFont:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)]];
+    [YCXMenu setSelectedColor:[UIColor colorWithHexString:@"FFFFFF"]];
     [YCXMenu setselectedIndex:2];
-    [YCXMenu setselectedItemBackGroundColor:[UIColor colorWithHexString:@"FF7043"]];
+    [YCXMenu setselectedItemBackGroundColor:[UIColor colorWithHexString:@"DCDCDC"]];
     if ([YCXMenu isShow])
     {
         [YCXMenu dismissMenu];
@@ -157,7 +128,7 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
     else
     {
         WEAKSELF
-        [YCXMenu showMenuInView:self.view fromRect:CGRectMake(SCREEN_WIDTH - 50, 0, 50, 0) menuItems:self.items selected:^(NSInteger index, YCXMenuItem *item)
+        [YCXMenu showMenuInView:self.view fromRect:CGRectMake(SCREEN_WIDTH - 50, STATUSBARHEIGHT + 44, 50, 0) menuItems:self.items selected:^(NSInteger index, YCXMenuItem *item)
          {
              
              switch (index)
@@ -198,36 +169,41 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
 /**
  搜索
  */
-- (void)respondsToSearchBarButton {
+- (void)repondsToSearchBarButtonItem {
     DBHSearchViewController *searchViewController = [[DBHSearchViewController alloc] init];
     searchViewController.title = @"搜索Ico评测";
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
+#pragma mark ------ Private Methods ------
+/**
+ 添加刷新
+ */
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf getIcoData];
+    }];
+}
+/**
+ 结束刷新
+ */
+- (void)endRefresh {
+    if (self.tableView.mj_header.refreshing) {
+        [self.tableView.mj_header endRefreshing];
+    }
+}
+
 #pragma mark ------ Getters And Setters ------
-- (DBHSearchBarButton *)searchBarButton {
-    if (!_searchBarButton) {
-        _searchBarButton = [DBHSearchBarButton buttonWithType:UIButtonTypeCustom];
-        _searchBarButton.title = @"搜索Ico评测";
-        [_searchBarButton addTarget:self action:@selector(respondsToSearchBarButton) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _searchBarButton;
-}
-- (UIImageView *)backImageView {
-    if (!_backImageView) {
-        _backImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BG"]];
-    }
-    return _backImageView;
-}
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-        _tableView.backgroundView = self.backImageView;
+        _tableView.backgroundColor = COLORFROM16(0xFFFFFF, 1);
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.001)];
-        _tableView.rowHeight = AUTOLAYOUTSIZE(115.5);
+        _tableView.rowHeight = AUTOLAYOUTSIZE(290.5);
         
         _tableView.sectionFooterHeight = 0;
         
@@ -253,13 +229,13 @@ static NSString *const kDBHEvaluatingIcoTableViewCellIdentifier = @"kDBHEvaluati
                                                       image:nil
                                                         tag:100
                                                    userInfo:@{@"title":@"Menu"}];
-        YCXMenuItem *thirdMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"Evaluating the Ico", nil)
+        YCXMenuItem *thirdMenuItem = [YCXMenuItem menuItem:NSLocalizedString(@"Business Project", nil)
                                                      image:nil
                                                        tag:101
                                                   userInfo:@{@"title":@"Menu"}];
-        [firstMenuItem setForeColor:[UIColor colorWithHexString:@"97BDDB"]];
-        [secondMenuItem setForeColor:[UIColor colorWithHexString:@"97BDDB"]];
-        [thirdMenuItem setForeColor:[UIColor whiteColor]];
+        [firstMenuItem setForeColor:[UIColor colorWithHexString:@"3F3F3F"]];
+        [secondMenuItem setForeColor:[UIColor colorWithHexString:@"3F3F3F"]];
+        [thirdMenuItem setForeColor:[UIColor colorWithHexString:@"3F3F3F"]];
         
         [_items addObject:firstMenuItem];
         [_items addObject:secondMenuItem];

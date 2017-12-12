@@ -603,7 +603,6 @@ static NetworkStatus _status;
 {
 //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSString *baseUrl;
-    NSLog(@"%@", APP_APIEHEAD);
     if ([APP_APIEHEAD isEqualToString:APIEHEAD]) {
         baseUrl = isOtherBaseUrl ? APIEHEADOTHER : APIEHEAD;
     } else {

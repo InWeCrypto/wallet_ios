@@ -304,7 +304,6 @@
 		A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB11F56553000C2F9AF /* CloudPushSDK.framework */; };
 		A8FEACB51F56553100C2F9AF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB21F56553000C2F9AF /* UTDID.framework */; };
 		A8FEACB71F568DE500C2F9AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8FEACB61F568DE500C2F9AF /* Assets.xcassets */; };
-		D5099F5D1FD4EA920065F0AA /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5099F5C1FD4EA920065F0AA /* Neomobile.framework */; };
 		D5099F631FD4F3880065F0AA /* MXNavigationBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D5099F621FD4F3880065F0AA /* MXNavigationBarManager.m */; };
 		D509B5261FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D509B5251FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m */; };
 		D509B52B1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = D509B5281FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m */; };
@@ -318,7 +317,6 @@
 		D50F10D61FD65F67004E14C3 /* DBHMarketDetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10D51FD65F67004E14C3 /* DBHMarketDetailViewModel.m */; };
 		D50F10DC1FD676FB004E14C3 /* DBHMarketDetailKLineViewModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10D81FD676F9004E14C3 /* DBHMarketDetailKLineViewModelData.m */; };
 		D50F10DD1FD676FB004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10D91FD676FA004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m */; };
-		D50F10DF1FD682A2004E14C3 /* DBHTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F10DE1FD682A2004E14C3 /* DBHTestViewController.swift */; };
 		D50F10E51FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10E01FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m */; };
 		D50F10E61FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D50F10E31FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m */; };
 		D51B7A031FC451E6001B363E /* DBHSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B7A021FC451E6001B363E /* DBHSearchView.m */; };
@@ -328,6 +326,10 @@
 		D51B9CDF1FCFFFB000B29028 /* DBHInformationForNewsCollectionViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B9CDE1FCFFFB000B29028 /* DBHInformationForNewsCollectionViewTableViewCell.m */; };
 		D51B9CE51FD02C5A00B29028 /* AC_WaterCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B9CE41FD02C5A00B29028 /* AC_WaterCollectionViewLayout.m */; };
 		D51B9CE81FD0319700B29028 /* DBHInformationHeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B9CE71FD0319700B29028 /* DBHInformationHeaderCollectionReusableView.m */; };
+		D5215D981FD7C54C00536248 /* DBHInformationDetailForOnLineBeforeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5215D971FD7C54C00536248 /* DBHInformationDetailForOnLineBeforeViewController.m */; };
+		D5215D9B1FD7C55A00536248 /* DBHInformationDetailForOnLineAfterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5215D9A1FD7C55A00536248 /* DBHInformationDetailForOnLineAfterViewController.m */; };
+		D5215D9E1FD7D51F00536248 /* DBHInformationDetailForProjectFlashTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5215D9D1FD7D51F00536248 /* DBHInformationDetailForProjectFlashTableViewCell.m */; };
+		D5215DA41FD7E83500536248 /* NSString+Null.m in Sources */ = {isa = PBXBuildFile; fileRef = D5215DA31FD7E83500536248 /* NSString+Null.m */; };
 		D521D9CD1FBA9CDE009566EA /* DBHMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9CC1FBA9CDE009566EA /* DBHMenu.m */; };
 		D521D9D01FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9CF1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m */; };
 		D521D9D31FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D521D9D21FBACCFE009566EA /* DBHAllInformationTypeTwoTableViewCell.m */; };
@@ -352,6 +354,9 @@
 		D524EEB81FC4359A00AC0DF9 /* DBHSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEB71FC4359A00AC0DF9 /* DBHSearchViewController.m */; };
 		D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */; };
 		D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */; };
+		D53C638A1FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53C63891FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m */; };
+		D53C63931FD8E6310002CFDB /* DBHInformationDetailHeaderButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D53C63921FD8E6310002CFDB /* DBHInformationDetailHeaderButton.m */; };
+		D53C63961FD91E450002CFDB /* DBHInformationWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53C63951FD91E450002CFDB /* DBHInformationWebViewController.m */; };
 		D53D47061FBEBA8E00FDFB61 /* DBHAllInformationModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47021FBEBA8D00FDFB61 /* DBHAllInformationModelData.m */; };
 		D53D47071FBEBA8E00FDFB61 /* DBHAllInformationModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D47031FBEBA8D00FDFB61 /* DBHAllInformationModelDataBase.m */; };
 		D53D47151FBED42C00FDFB61 /* DBHInformationDetailModelProjectMarkets.m in Sources */ = {isa = PBXBuildFile; fileRef = D53D470A1FBED42A00FDFB61 /* DBHInformationDetailModelProjectMarkets.m */; };
@@ -397,6 +402,7 @@
 		D55558061FC975C100F0963B /* CHChartAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */; };
 		D55CA9CB1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */; };
 		D55CA9CE1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */; };
+		D57A66A51FDA9E21007B65CD /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D57A66A41FDA9E21007B65CD /* Neomobile.framework */; };
 		D59BFC8C1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D59BFC891FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib */; };
 		D59BFC8D1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D59BFC8B1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m */; };
 		D59BFCA01FCD4D0C00C5C13B /* AddNeoWalletInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D59BFC9D1FCD4D0B00C5C13B /* AddNeoWalletInfoVC.xib */; };
@@ -951,7 +957,6 @@
 		A8FEACB21F56553000C2F9AF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		A8FEACB61F568DE500C2F9AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4EF8E3460E908B2B9C8C464 /* Pods_FBG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FBG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5099F5C1FD4EA920065F0AA /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
 		D5099F611FD4F3880065F0AA /* MXNavigationBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXNavigationBarManager.h; sourceTree = "<group>"; };
 		D5099F621FD4F3880065F0AA /* MXNavigationBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXNavigationBarManager.m; sourceTree = "<group>"; };
 		D509B5241FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForMoreCollectionViewCell.h; sourceTree = "<group>"; };
@@ -977,7 +982,6 @@
 		D50F10D91FD676FA004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailKLineViewModelDataBase.m; sourceTree = "<group>"; };
 		D50F10DA1FD676FA004E14C3 /* DBHMarketDetailKLineViewDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailKLineViewDataModels.h; sourceTree = "<group>"; };
 		D50F10DB1FD676FA004E14C3 /* DBHMarketDetailKLineViewModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailKLineViewModelData.h; sourceTree = "<group>"; };
-		D50F10DE1FD682A2004E14C3 /* DBHTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHTestViewController.swift; sourceTree = "<group>"; };
 		D50F10E01FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailMoneyRealTimePriceModelData.m; sourceTree = "<group>"; };
 		D50F10E11FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailMoneyRealTimePriceDataModels.h; sourceTree = "<group>"; };
 		D50F10E21FD6986D004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailMoneyRealTimePriceModelDataBase.h; sourceTree = "<group>"; };
@@ -998,6 +1002,14 @@
 		D51B9CE41FD02C5A00B29028 /* AC_WaterCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_WaterCollectionViewLayout.m; sourceTree = "<group>"; };
 		D51B9CE61FD0319700B29028 /* DBHInformationHeaderCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationHeaderCollectionReusableView.h; sourceTree = "<group>"; };
 		D51B9CE71FD0319700B29028 /* DBHInformationHeaderCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationHeaderCollectionReusableView.m; sourceTree = "<group>"; };
+		D5215D961FD7C54C00536248 /* DBHInformationDetailForOnLineBeforeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForOnLineBeforeViewController.h; sourceTree = "<group>"; };
+		D5215D971FD7C54C00536248 /* DBHInformationDetailForOnLineBeforeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForOnLineBeforeViewController.m; sourceTree = "<group>"; };
+		D5215D991FD7C55A00536248 /* DBHInformationDetailForOnLineAfterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForOnLineAfterViewController.h; sourceTree = "<group>"; };
+		D5215D9A1FD7C55A00536248 /* DBHInformationDetailForOnLineAfterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForOnLineAfterViewController.m; sourceTree = "<group>"; };
+		D5215D9C1FD7D51F00536248 /* DBHInformationDetailForProjectFlashTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForProjectFlashTableViewCell.h; sourceTree = "<group>"; };
+		D5215D9D1FD7D51F00536248 /* DBHInformationDetailForProjectFlashTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForProjectFlashTableViewCell.m; sourceTree = "<group>"; };
+		D5215DA21FD7E83500536248 /* NSString+Null.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Null.h"; sourceTree = "<group>"; };
+		D5215DA31FD7E83500536248 /* NSString+Null.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Null.m"; sourceTree = "<group>"; };
 		D521D9CB1FBA9CDE009566EA /* DBHMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMenu.h; sourceTree = "<group>"; };
 		D521D9CC1FBA9CDE009566EA /* DBHMenu.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMenu.m; sourceTree = "<group>"; };
 		D521D9CE1FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationTypeOneTableViewCell.h; sourceTree = "<group>"; };
@@ -1048,6 +1060,12 @@
 		D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserViewController.m; sourceTree = "<group>"; };
 		D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserTableViewCell.h; sourceTree = "<group>"; };
 		D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserTableViewCell.m; sourceTree = "<group>"; };
+		D53C63881FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForInweReportSelectedView.h; sourceTree = "<group>"; };
+		D53C63891FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForInweReportSelectedView.m; sourceTree = "<group>"; };
+		D53C63911FD8E6310002CFDB /* DBHInformationDetailHeaderButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailHeaderButton.h; sourceTree = "<group>"; };
+		D53C63921FD8E6310002CFDB /* DBHInformationDetailHeaderButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailHeaderButton.m; sourceTree = "<group>"; };
+		D53C63941FD91E450002CFDB /* DBHInformationWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationWebViewController.h; sourceTree = "<group>"; };
+		D53C63951FD91E450002CFDB /* DBHInformationWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationWebViewController.m; sourceTree = "<group>"; };
 		D53D47011FBEBA8C00FDFB61 /* DBHAllInformationModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAllInformationModelData.h; sourceTree = "<group>"; };
 		D53D47021FBEBA8D00FDFB61 /* DBHAllInformationModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAllInformationModelData.m; sourceTree = "<group>"; };
 		D53D47031FBEBA8D00FDFB61 /* DBHAllInformationModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAllInformationModelDataBase.m; sourceTree = "<group>"; };
@@ -1139,6 +1157,7 @@
 		D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForCrowdfundingContentTableViewCell.m; sourceTree = "<group>"; };
 		D55CA9CC1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForIcoFinePrintTableViewCell.h; sourceTree = "<group>"; };
 		D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForIcoFinePrintTableViewCell.m; sourceTree = "<group>"; };
+		D57A66A41FDA9E21007B65CD /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
 		D59BFC891FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddNeoOtherWalletInfoVC.xib; sourceTree = "<group>"; };
 		D59BFC8A1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNeoOtherWalletInfoVC.h; sourceTree = "<group>"; };
 		D59BFC8B1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNeoOtherWalletInfoVC.m; sourceTree = "<group>"; };
@@ -1191,7 +1210,7 @@
 			files = (
 				A8016B561F4197B7003848CD /* libresolv.tbd in Frameworks */,
 				A85A01C71F36EE44002F0141 /* Security.framework in Frameworks */,
-				D5099F5D1FD4EA920065F0AA /* Neomobile.framework in Frameworks */,
+				D57A66A51FDA9E21007B65CD /* Neomobile.framework in Frameworks */,
 				A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */,
 				A84475A41F32E50A003C7BDB /* libc++.tbd in Frameworks */,
 				A84475A21F32E502003C7BDB /* libz.tbd in Frameworks */,
@@ -1337,6 +1356,8 @@
 				D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */,
 				D521D9D41FBACEE1009566EA /* NSString+Height.h */,
 				D521D9D51FBACEE2009566EA /* NSString+Height.m */,
+				D5215DA21FD7E83500536248 /* NSString+Null.h */,
+				D5215DA31FD7E83500536248 /* NSString+Null.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1364,8 +1385,8 @@
 		0F0CFE1B1F15F92300476A86 /* OtherTool */ = {
 			isa = PBXGroup;
 			children = (
+				D57A66A41FDA9E21007B65CD /* Neomobile.framework */,
 				D5099F601FD4F3880065F0AA /* MXNavigationBarManager */,
-				D5099F5C1FD4EA920065F0AA /* Neomobile.framework */,
 				D55557F61FC975C100F0963B /* CHKLineChart */,
 				A88A787F1F6992E90058094C /* SGQRCode */,
 				A88A78791F694BB30058094C /* JKBigDecimal.h */,
@@ -2071,12 +2092,18 @@
 				A84475861F32BE0E003C7BDB /* ICOTranSuccesVC.xib */,
 				D5CF792D1FB1580F009CBCB2 /* DBHWebViewController.h */,
 				D5CF792E1FB1580F009CBCB2 /* DBHWebViewController.m */,
+				D53C63941FD91E450002CFDB /* DBHInformationWebViewController.h */,
+				D53C63951FD91E450002CFDB /* DBHInformationWebViewController.m */,
 				D5F679C71FB9452500EB773D /* DBHInformationViewController.h */,
 				D5F679C81FB9452500EB773D /* DBHInformationViewController.m */,
-				D521D9DA1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.h */,
-				D521D9DB1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m */,
+				D5215D961FD7C54C00536248 /* DBHInformationDetailForOnLineBeforeViewController.h */,
+				D5215D971FD7C54C00536248 /* DBHInformationDetailForOnLineBeforeViewController.m */,
+				D5215D991FD7C55A00536248 /* DBHInformationDetailForOnLineAfterViewController.h */,
+				D5215D9A1FD7C55A00536248 /* DBHInformationDetailForOnLineAfterViewController.m */,
 				D521D9DD1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.h */,
 				D521D9DE1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.m */,
+				D521D9DA1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.h */,
+				D521D9DB1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m */,
 				D5F679EB1FB9BE3B00EB773D /* DBHAllInformationViewController.h */,
 				D5F679EC1FB9BE3B00EB773D /* DBHAllInformationViewController.m */,
 				D5F679EE1FB9BE5100EB773D /* DBHEvaluatingIcoViewController.h */,
@@ -2165,6 +2192,12 @@
 				D51B9CDE1FCFFFB000B29028 /* DBHInformationForNewsCollectionViewTableViewCell.m */,
 				D51B9CE61FD0319700B29028 /* DBHInformationHeaderCollectionReusableView.h */,
 				D51B9CE71FD0319700B29028 /* DBHInformationHeaderCollectionReusableView.m */,
+				D5215D9C1FD7D51F00536248 /* DBHInformationDetailForProjectFlashTableViewCell.h */,
+				D5215D9D1FD7D51F00536248 /* DBHInformationDetailForProjectFlashTableViewCell.m */,
+				D53C63881FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.h */,
+				D53C63891FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m */,
+				D53C63911FD8E6310002CFDB /* DBHInformationDetailHeaderButton.h */,
+				D53C63921FD8E6310002CFDB /* DBHInformationDetailHeaderButton.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2202,7 +2235,6 @@
 				A8B2AAB41F3CB3EC0047A626 /* EditRemindVC.m */,
 				A8B2AAB51F3CB3EC0047A626 /* EditRemindVC.xib */,
 				D50C300C1FC7ECDF005312C0 /* DBHMarketDetailViewController.swift */,
-				D50F10DE1FD682A2004E14C3 /* DBHTestViewController.swift */,
 				D50C300E1FC7ED53005312C0 /* data.json */,
 				D50C300B1FC7ECDF005312C0 /* FBG-Bridging-Header.h */,
 			);
@@ -2725,6 +2757,7 @@
 				D50F10E61FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m in Sources */,
 				0FB9DD181F1F9517005CEA39 /* TransferVC.m in Sources */,
 				A84475871F32BE0E003C7BDB /* ICOTranSuccesVC.m in Sources */,
+				D5215D981FD7C54C00536248 /* DBHInformationDetailForOnLineBeforeViewController.m in Sources */,
 				A80713191F55509800C5B862 /* PackupsWordsVC.m in Sources */,
 				D53D47071FBEBA8E00FDFB61 /* DBHAllInformationModelDataBase.m in Sources */,
 				D5F679E11FB9711100EB773D /* DBHInformationForProjectCollectionViewCell.m in Sources */,
@@ -2788,6 +2821,7 @@
 				A8CD778C1F32457D00005027 /* TADotView.m in Sources */,
 				0FB9DD1D1F1FA03F005CEA39 /* ConfirmationTransferVC.m in Sources */,
 				A8CD775E1F32449400005027 /* ICOCell.m in Sources */,
+				D53C638A1FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m in Sources */,
 				A8AAFBE71F3FFB2D00724FF6 /* MessageModel.m in Sources */,
 				D5F679C91FB9452500EB773D /* DBHInformationViewController.m in Sources */,
 				A8CD77661F32449400005027 /* RemindVC.m in Sources */,
@@ -2816,9 +2850,9 @@
 				A8CD77651F32449400005027 /* QuotationVC.m in Sources */,
 				0FAC29161F2F7C4A009B3EC9 /* AAOptions.m in Sources */,
 				A8CD776A1F32449400005027 /* EditQuotesCell.m in Sources */,
-				D50F10DF1FD682A2004E14C3 /* DBHTestViewController.swift in Sources */,
 				D509B52B1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m in Sources */,
 				A8CD778F1F32457D00005027 /* SDCycleScrollView.m in Sources */,
+				D5215D9B1FD7C55A00536248 /* DBHInformationDetailForOnLineAfterViewController.m in Sources */,
 				D55558041FC975C100F0963B /* CHChartModel.swift in Sources */,
 				A81A5AE01F3A115B0015CC0D /* KKWebView.m in Sources */,
 				A85A01BB1F35D9FE002F0141 /* ICOOrderListModel.m in Sources */,
@@ -2867,6 +2901,7 @@
 				D521D9E81FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.m in Sources */,
 				A88A788F1F6992E90058094C /* UIImage+ImageSize.m in Sources */,
 				A8823D331F4FD7590092DF0F /* TransactionListHeaderView.m in Sources */,
+				D5215DA41FD7E83500536248 /* NSString+Null.m in Sources */,
 				0FAC290C1F2F7C4A009B3EC9 /* AAAreaspline.m in Sources */,
 				D521D9D91FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.m in Sources */,
 				D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */,
@@ -2900,6 +2935,7 @@
 				0FE474151F28E378009E1DF8 /* AddWalletChoseTypeVC.m in Sources */,
 				0F0CFE5B1F161F4C00476A86 /* ZFTabBarButton.m in Sources */,
 				D5099F631FD4F3880065F0AA /* MXNavigationBarManager.m in Sources */,
+				D53C63961FD91E450002CFDB /* DBHInformationWebViewController.m in Sources */,
 				D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */,
 				0F0CFE441F15FD0800476A86 /* PPNetworkHelper.m in Sources */,
 				0FDCAC921F20CF460090D12A /* ObjcRuntime.m in Sources */,
@@ -2924,6 +2960,7 @@
 				D59BFCA11FCD4D0C00C5C13B /* AddNeoWalletInfoVC.m in Sources */,
 				A80713541F5563CE00C5B862 /* MASConstraintMaker.m in Sources */,
 				D509B5261FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m in Sources */,
+				D53C63931FD8E6310002CFDB /* DBHInformationDetailHeaderButton.m in Sources */,
 				D55558021FC975C100F0963B /* CHKLineChart.swift in Sources */,
 				D51B7A061FC453D2001B363E /* DBHSearchTableViewCell.m in Sources */,
 				0F0CFE4D1F1609E300476A86 /* CoustromViewController.m in Sources */,
@@ -2963,6 +3000,7 @@
 				0FFEA9D71F17382A009F6151 /* BaseModel.m in Sources */,
 				A8A8184F1F44849B00FFF088 /* ChoseCell.m in Sources */,
 				A844758C1F32CC7C003C7BDB /* AddMailVC.m in Sources */,
+				D5215D9E1FD7D51F00536248 /* DBHInformationDetailForProjectFlashTableViewCell.m in Sources */,
 				D53D474B1FBF0D7F00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.m in Sources */,
 				A81A5AF01F3AE6E70015CC0D /* AddWalletChoseTypeCell.m in Sources */,
 				A81A5AFB1F3B5A4C0015CC0D /* MessageCell.m in Sources */,

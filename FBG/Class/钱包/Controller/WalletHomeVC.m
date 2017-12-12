@@ -34,7 +34,8 @@
 @property (nonatomic, strong) UITableView * coustromTableView;
 @property (nonatomic, strong) NSMutableArray * localDataSource;
 @property (nonatomic, strong) NSMutableArray * lineDataSource;
-@property (nonatomic, strong) NSMutableArray * dataSource;
+@property (nonatomic, strong) NSMutableArray * ethDataSource;
+@property (nonatomic, strong) NSMutableArray * neoDataSource;
 @property (nonatomic, strong) WalletHeaderView * headerView;
 @property (nonatomic, strong) WalletLeiftView * leiftView;
 @property (nonatomic, strong) UIView * maskView;
@@ -89,7 +90,8 @@
     [center addObserver:self selector:@selector(AddWalletSucessPushWalletInfoNotification:) name:@"AddWalletSucessPushWalletInfoNotification" object:nil];
     [center addObserver:self selector:@selector(choseInterNet) name:@"netNotification" object:nil];
     
-    self.dataSource = [[NSMutableArray alloc] init];
+    self.ethDataSource = [[NSMutableArray alloc] init];
+    self.neoDataSource = [[NSMutableArray alloc] init];
     self.localDataSource = [[NSMutableArray alloc] init];
     self.lineDataSource = [[NSMutableArray alloc] init];
     self.defaultGasNum = 90000;
@@ -225,18 +227,18 @@
     if ([UserSignData share].user.walletUnitType == 1)
     {
         self.headerView.priceLB.text = [NSString stringWithFormat:@"￥%@",[UserSignData share].user.totalAssets_cny];
-        self.headerView.ETH_etherLB.text = [UserSignData share].user.ETHAssets_ether;
-        self.headerView.ETH_cnyLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.ETHAssets_cny];
-        self.headerView.BTC_etherLB.text = [UserSignData share].user.BTCAssets_ether;
-        self.headerView.BTC_cnyLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.BTCAssets_cny];
+        self.headerView.ETH_etherLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.ETHAssets_cny];
+//        self.headerView.ETH_cnyLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.ETHAssets_cny];
+        self.headerView.BTC_etherLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.NEOAssets_cny];
+//        self.headerView.BTC_cnyLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.NEOAssets_cny];
     }
     else
     {
         self.headerView.priceLB.text = [NSString stringWithFormat:@"$%@",[UserSignData share].user.totalAssets_usd];
-        self.headerView.ETH_etherLB.text = [UserSignData share].user.ETHAssets_ether;
-        self.headerView.ETH_cnyLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.ETHAssets_usd];
-        self.headerView.BTC_etherLB.text = [UserSignData share].user.BTCAssets_ether;
-        self.headerView.BTC_cnyLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.BTCAssets_usd];
+        self.headerView.ETH_etherLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.ETHAssets_usd];
+//        self.headerView.ETH_cnyLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.ETHAssets_usd];
+        self.headerView.BTC_etherLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.NEOAssets_usd];
+//        self.headerView.BTC_cnyLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.NEOAssets_usd];
     }
 }
 
@@ -244,7 +246,7 @@
  数据统计
  */
 - (void)dataStatisticsWithWallets:(NSArray *)wallets {
-    if (!self.dataSource.count) {
+    if (self.headerView.leftButton.isSelected ? !self.ethDataSource.count : !self.neoDataSource) {
         // 没有数据时获取本地缓存
         for (id wallet_id in wallets)
         {
@@ -266,7 +268,11 @@
                         model.balance = @"0";
                     }
                     
-                    [self.dataSource addObject:model];
+                    if (model.gnt_category_id == 2) {
+                        [self.neoDataSource addObject:model];
+                    } else {
+                        [self.ethDataSource addObject:model];
+                    }
                 }
             }
         }
@@ -277,7 +283,7 @@
     CGFloat neoPriceCny = 0;
     CGFloat neoPriceUsd = 0;
     
-    for (WalletInfoGntModel *model in self.dataSource) {
+    for (WalletInfoGntModel *model in self.neoDataSource) {
         if (model.gnt_category_id == 2) {
             // NEO
             neoNumber += model.balance.floatValue;
@@ -798,9 +804,7 @@
                                  model.balance = @"0";
                              }
                              
-                             if (model.balance.floatValue > 0) {
-                                 [lineDataArray addObject:model];
-                             }
+                             [lineDataArray addObject:model];
                          }
                      }
                  }
@@ -819,11 +823,12 @@
 //        NSMutableArray * totleLineArray = [[NSMutableArray alloc] init];
 //        NSMutableDictionary * typeLinedic = [[NSMutableDictionary alloc]initWithCapacity:0];
         if (neoModel) {
-            [lineDataArray insertObject:neoModel atIndex:0];
-            [lineDataArray insertObject:gasModel atIndex:1];
+            [self.neoDataSource removeAllObjects];
+            [self.neoDataSource addObject:neoModel];
+            [self.neoDataSource addObject:gasModel];
         }
-        [self.dataSource removeAllObjects];
-        [self.dataSource addObjectsFromArray:[lineDataArray copy]];
+        [self.ethDataSource removeAllObjects];
+        [self.ethDataSource addObjectsFromArray:[lineDataArray copy]];
         [self dataStatisticsWithWallets:wallets];
         [self.coustromTableView reloadData];
 //        for(WalletInfoGntModel * model in self.lineDataSource)
@@ -896,11 +901,25 @@
 - (void)leftButtonCilick
 {
     //ETH (首页)
+    if (self.headerView.leftButton.isSelected) {
+        return;
+    }
+    
+    self.headerView.leftButton.selected = YES;
+    self.headerView.rightButton.selected = NO;
+    [self.coustromTableView reloadData];
 }
 
 - (void)rightButtonCilick
 {
-    //BTC (首页)
+    //NEO (首页)
+    if (self.headerView.rightButton.isSelected) {
+        return;
+    }
+    
+    self.headerView.leftButton.selected = NO;
+    self.headerView.rightButton.selected = YES;
+    [self.coustromTableView reloadData];
 }
 
 - (void)addWalletButtonCilick
@@ -1094,7 +1113,7 @@
 {
     if (tableView == self.coustromTableView)
     {
-        return self.dataSource.count;
+        return self.headerView.leftButton.isSelected ? self.ethDataSource.count : self.neoDataSource.count;
     }
     else
     {
@@ -1112,8 +1131,8 @@
             cell = array[0];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        if (self.dataSource.count) {
-            cell.model = self.dataSource[indexPath.row];
+        if (self.headerView.leftButton.isSelected ? self.ethDataSource.count : self.neoDataSource.count) {
+            cell.model = self.headerView.leftButton.isSelected ? self.ethDataSource[indexPath.row] : self.neoDataSource[indexPath.row];
         }
         return cell;
     }

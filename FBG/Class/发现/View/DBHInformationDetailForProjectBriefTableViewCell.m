@@ -10,17 +10,11 @@
 
 #import <WebKit/WebKit.h>
 
-#import "DBHListView.h"
-
 #import "DBHInformationDetailModelProjectDesc.h"
 
 @interface DBHInformationDetailForProjectBriefTableViewCell ()
 
-@property (nonatomic, strong) DBHListView *listView;
 @property (nonatomic, strong) WKWebView *webView;
-
-@property (nonatomic, assign) NSInteger selectedIndex; // 选中下标
-@property (nonatomic, strong) NSMutableArray *titleArray;
 
 @end
 
@@ -31,7 +25,6 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self setUI];
@@ -41,69 +34,29 @@
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    [self.contentView addSubview:self.listView];
     [self.contentView addSubview:self.webView];
     
     WEAKSELF
-    [self.listView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(23));
-        make.height.offset(AUTOLAYOUTSIZE(27));
-        make.top.offset(AUTOLAYOUTSIZE(10));
-        make.centerX.equalTo(weakSelf.contentView);
-    }];
     [self.webView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(23));
-        make.centerX.equalTo(weakSelf.contentView);
-        make.top.equalTo(weakSelf.listView.mas_bottom);
-        make.bottom.equalTo(weakSelf.contentView);
+        make.size.equalTo(weakSelf.contentView);
+        make.center.equalTo(weakSelf.contentView);
     }];
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setProjectIntroductionArray:(NSArray *)projectIntroductionArray {
-    _projectIntroductionArray = projectIntroductionArray;
+- (void)setModel:(DBHInformationDetailModelProjectDesc *)model {
+    _model = model;
     
-    [self.titleArray removeAllObjects];
-    for (DBHInformationDetailModelProjectDesc *model in _projectIntroductionArray) {
-        [self.titleArray addObject:model.title];
-    }
-    
-    self.listView.titleArray = [self.titleArray copy];
-    
-    if (!_projectIntroductionArray.count) {
-        return;
-    }
-
-    DBHInformationDetailModelProjectDesc *model = _projectIntroductionArray.firstObject;
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://dev.inwecrypto.com/article/%@", model.projectDescIdentifier]]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@article/%@", [APP_APIEHEAD isEqualToString:APIEHEAD] ? APIEHEADOTHER : APIEHEAD1OTHER, _model.projectDescIdentifier]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
 }
 
-- (DBHListView *)listView {
-    if (!_listView) {
-        _listView = [[DBHListView alloc] init];
-        
-        WEAKSELF
-        [_listView selectedBlock:^(NSInteger selectedIndex) {
-            DBHInformationDetailModelProjectDesc *model = weakSelf.projectIntroductionArray[selectedIndex];
-            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://dev.inwecrypto.com/article/%@", model.projectDescIdentifier]]]];
-        }];
-    }
-    return _listView;
-}
 - (WKWebView *)webView {
     if (!_webView) {
         _webView = [[WKWebView alloc] init];
         _webView.scrollView.bounces = NO;
-        [_webView setOpaque:NO];
     }
     return _webView;
-}
-
-- (NSMutableArray *)titleArray {
-    if (!_titleArray) {
-        _titleArray = [NSMutableArray array];
-    }
-    return _titleArray;
 }
 
 @end

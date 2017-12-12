@@ -70,6 +70,7 @@
 @property (nonatomic, assign) int gnt_category_id;
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * balance;
+@property (nonatomic, copy) NSString * noExtractbalance; // 不可提取
 @property (nonatomic, copy) NSString * icon;
 @property (nonatomic, copy) NSString * price_cny;
 @property (nonatomic, copy) NSString * price_usd;

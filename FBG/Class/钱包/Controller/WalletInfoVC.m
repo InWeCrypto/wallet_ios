@@ -397,8 +397,10 @@
              canGasModel.name = @"可提现Gas";
              canGasModel.icon = @"NEO_project_icon_Gas";
              canGasModel.balance = gas[@"available"];
+             canGasModel.noExtractbalance = gas[@"unavailable"];
              canGasModel.price_cny = gasPriceForCny;
              canGasModel.price_usd = gasPriceForUsd;
+             canGasModel.address = self.model.address;
              
              [self.dataSource addObject:neoModel];
              [self.dataSource addObject:gasModel];
@@ -1032,6 +1034,8 @@
     if (self.model.category_id == 2 && indexPath.row == 2) {
         // 提取Gas
         DBHExtractViewController *extractViewController = [[DBHExtractViewController alloc] init];
+        extractViewController.neoModel = self.dataSource.firstObject;
+        extractViewController.model = self.dataSource[2];
         [self.navigationController pushViewController:extractViewController animated:YES];
         
         return;

@@ -12,7 +12,6 @@
 
 @interface DBHEvaluatingIcoTableViewCell ()
 
-@property (nonatomic, strong) UIView *boxView;
 @property (nonatomic, strong) UIImageView *coverImageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *stateLabel;
@@ -29,7 +28,6 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self setUI];
@@ -39,7 +37,6 @@
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    [self.contentView addSubview:self.boxView];
     [self.contentView addSubview:self.coverImageView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.stateLabel];
@@ -48,39 +45,32 @@
     [self.contentView addSubview:self.bottomLineView];
     
     WEAKSELF
-    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(23));
-        make.height.equalTo(weakSelf.contentView);
-        make.center.equalTo(weakSelf.contentView);
-    }];
     [self.coverImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(117.5));
-        make.height.offset(AUTOLAYOUTSIZE(77));
-        make.left.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(18.5));
-        make.top.offset(AUTOLAYOUTSIZE(17.5));
+        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(30));
+        make.height.offset(AUTOLAYOUTSIZE(203));
+        make.top.offset(AUTOLAYOUTSIZE(11));
+        make.centerX.top.equalTo(weakSelf.contentView);
     }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.coverImageView.mas_right).offset(AUTOLAYOUTSIZE(8.5));
-        make.right.equalTo(weakSelf.bottomLineView);
-        make.top.equalTo(weakSelf.coverImageView);
+        make.width.equalTo(weakSelf.contentView).multipliedBy(0.5);
+        make.left.equalTo(weakSelf.coverImageView);
+        make.top.equalTo(weakSelf.coverImageView.mas_bottom).offset(AUTOLAYOUTSIZE(10));
     }];
     [self.stateLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.titleLabel);
-        make.centerX.equalTo(weakSelf.titleLabel);
-        make.bottom.equalTo(weakSelf.officialWebsiteLabel.mas_top).offset(- AUTOLAYOUTSIZE(10));
+        make.right.equalTo(weakSelf.coverImageView);
+        make.centerY.equalTo(weakSelf.titleLabel);
     }];
     [self.officialWebsiteLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.titleLabel);
-        make.centerX.equalTo(weakSelf.titleLabel);
-        make.bottom.equalTo(weakSelf.timeLabel.mas_top).offset(- AUTOLAYOUTSIZE(10));
+        make.left.equalTo(weakSelf.coverImageView);
+        make.right.equalTo(weakSelf.coverImageView);
+        make.top.equalTo(weakSelf.titleLabel.mas_bottom).offset(AUTOLAYOUTSIZE(8));
     }];
     [self.timeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.titleLabel);
-        make.centerX.equalTo(weakSelf.titleLabel);
-        make.bottom.equalTo(weakSelf.coverImageView);
+        make.left.equalTo(weakSelf.coverImageView);
+        make.top.equalTo(weakSelf.officialWebsiteLabel.mas_bottom).offset(AUTOLAYOUTSIZE(8));
     }];
     [self.bottomLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.boxView).offset(- AUTOLAYOUTSIZE(20));
+        make.width.equalTo(weakSelf.coverImageView);
         make.height.offset(AUTOLAYOUTSIZE(0.5));
         make.centerX.bottom.equalTo(weakSelf.contentView);
     }];
@@ -91,22 +81,13 @@
     _model = model;
     
     [self.coverImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@""]];
-    NSMutableAttributedString *titleAttributedString = [[NSMutableAttributedString alloc] initWithString:_model.title];
-    [titleAttributedString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, _model.title.length)];
-    self.titleLabel.attributedText = titleAttributedString;
     
+    self.titleLabel.text = _model.title;
     self.stateLabel.text = [NSString stringWithFormat:@"目前状态：%@", _model.assessStatus];
     self.officialWebsiteLabel.text = [NSString stringWithFormat:@"官网：%@", _model.website];
     self.timeLabel.text = _model.updatedAt;
 }
 
-- (UIView *)boxView {
-    if (!_boxView) {
-        _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor colorWithHexString:@"2EAFEA"];
-    }
-    return _boxView;
-}
 - (UIImageView *)coverImageView {
     if (!_coverImageView) {
         _coverImageView = [[UIImageView alloc] init];
@@ -117,8 +98,8 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont boldSystemFontOfSize:AUTOLAYOUTSIZE(13)];
-        _titleLabel.textColor = [UIColor whiteColor];
+        _titleLabel.font = [UIFont boldSystemFontOfSize:AUTOLAYOUTSIZE(14)];
+        _titleLabel.textColor = COLORFROM16(0x404040, 1);
     }
     return _titleLabel;
 }
@@ -126,7 +107,7 @@
     if (!_stateLabel) {
         _stateLabel = [[UILabel alloc] init];
         _stateLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(9)];
-        _stateLabel.textColor = [UIColor whiteColor];
+        _stateLabel.textColor = COLORFROM16(0xB0B0B0, 1);
     }
     return _stateLabel;
 }
@@ -134,7 +115,7 @@
     if (!_officialWebsiteLabel) {
         _officialWebsiteLabel = [[UILabel alloc] init];
         _officialWebsiteLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(9)];
-        _officialWebsiteLabel.textColor = [UIColor whiteColor];
+        _officialWebsiteLabel.textColor = COLORFROM16(0x545252, 1);
     }
     return _officialWebsiteLabel;
 }
@@ -142,14 +123,14 @@
     if (!_timeLabel) {
         _timeLabel = [[UILabel alloc] init];
         _timeLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(9)];
-        _timeLabel.textColor = [UIColor whiteColor];
+        _timeLabel.textColor = COLORFROM16(0xB0B0B0, 1);
     }
     return _timeLabel;
 }
 - (UIView *)bottomLineView {
     if (!_bottomLineView) {
         _bottomLineView = [[UIView alloc] init];
-        _bottomLineView.backgroundColor = [UIColor whiteColor];
+        _bottomLineView.backgroundColor = COLORFROM16(0xD4D4D4, 1);
     }
     return _bottomLineView;
 }

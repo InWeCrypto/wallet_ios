@@ -4,6 +4,7 @@
 
 #import "DBHMarketDetailView.h"
 #import "DBHTimeSelectView.h"
+#import "UIImage+ImageForColor.h"
 #import "DBHMarketDetailViewModel.h"
 #import "DBHMarketDetailKLineViewDataModels.h"
 #import "DBHMarketDetailMoneyRealTimePriceDataModels.h"

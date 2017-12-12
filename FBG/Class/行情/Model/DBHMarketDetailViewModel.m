@@ -46,7 +46,7 @@
         
         self.requestMoneyRealTimePriceBlock(model);
     } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
+//        [LCProgressHUD showFailure:error];
     }];
 }
 

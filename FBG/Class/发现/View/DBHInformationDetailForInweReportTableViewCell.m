@@ -8,6 +8,7 @@
 
 #import "DBHInformationDetailForInweReportTableViewCell.h"
 
+#import "DBHInformationDetailForInweReportSelectedView.h"
 #import "DBHInformationDetailForInweReportContentTableViewCell.h"
 #import "DBHAllInformationTypeTwoTableViewCell.h"
 
@@ -18,11 +19,11 @@ static NSString *const kDBHAllInformationTypeTwoTableViewCellIdentifier = @"kDBH
 
 @interface DBHInformationDetailForInweReportTableViewCell ()<UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) UIView *boxView;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIView *bottomLineView;
-@property (nonatomic, strong) UISegmentedControl *segmentedControl;
+@property (nonatomic, strong) DBHInformationDetailForInweReportSelectedView *informationDetailForInweReportSelectedView;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UILabel *noDataLabel;
+@property (nonatomic, strong) UIButton *moreButton;
 
 @property (nonatomic, copy) SelectInweTypeBlock selectInweTypeBlock;
 
@@ -35,50 +36,46 @@ static NSString *const kDBHAllInformationTypeTwoTableViewCellIdentifier = @"kDBH
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [self setUI];
-        [self addRefresh];
     }
     return self;
 }
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    [self.contentView addSubview:self.boxView];
     [self.contentView addSubview:self.titleLabel];
-    [self.contentView addSubview:self.bottomLineView];
-    [self.contentView addSubview:self.segmentedControl];
+    [self.contentView addSubview:self.informationDetailForInweReportSelectedView];
     [self.contentView addSubview:self.tableView];
+    [self.contentView addSubview:self.noDataLabel];
+    [self.contentView addSubview:self.moreButton];
     
     WEAKSELF
-    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(23));
-        make.height.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(10));
-        make.centerX.bottom.equalTo(weakSelf.contentView);
-    }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(AUTOLAYOUTSIZE(27));
-        make.top.equalTo(weakSelf.boxView);
-        make.centerX.equalTo(weakSelf.boxView);
+        make.left.offset(AUTOLAYOUTSIZE(12));
+        make.height.offset(AUTOLAYOUTSIZE(39));
+        make.top.equalTo(weakSelf.contentView);
     }];
-    [self.bottomLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.boxView);
-        make.height.offset(AUTOLAYOUTSIZE(0.5));
-        make.bottom.centerX.equalTo(weakSelf.titleLabel);
-    }];
-    [self.segmentedControl mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(210));
-        make.height.offset(AUTOLAYOUTSIZE(27));
+    [self.informationDetailForInweReportSelectedView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.contentView);
+        make.height.offset(AUTOLAYOUTSIZE(27.5));
+        make.top.equalTo(weakSelf.titleLabel.mas_bottom);
         make.centerX.equalTo(weakSelf.contentView);
-        make.top.equalTo(weakSelf.bottomLineView.mas_bottom).offset(AUTOLAYOUTSIZE(10));
     }];
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.boxView);
-        make.top.equalTo(weakSelf.segmentedControl.mas_bottom).offset(AUTOLAYOUTSIZE(10));
-        make.bottom.equalTo(weakSelf.contentView);
+        make.width.equalTo(weakSelf.contentView);
         make.centerX.equalTo(weakSelf.contentView);
+        make.top.equalTo(weakSelf.informationDetailForInweReportSelectedView.mas_bottom).offset(AUTOLAYOUTSIZE(4));
+        make.bottom.equalTo(weakSelf.moreButton.mas_top);
+    }];
+    [self.noDataLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(weakSelf.tableView);
+    }];
+    [self.moreButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(AUTOLAYOUTSIZE(100));
+        make.height.offset(AUTOLAYOUTSIZE(20));
+        make.centerX.bottom.equalTo(weakSelf.contentView);
     }];
 }
 
@@ -115,14 +112,10 @@ static NSString *const kDBHAllInformationTypeTwoTableViewCellIdentifier = @"kDBH
 
 #pragma mark ------ Event Responds ------
 /**
- 分段控件点击
+ 更多
  */
-- (void)respondsToSegmentedControl {
-    if (self.inweReportType == self.segmentedControl.selectedSegmentIndex) {
-        return;
-    }
+- (void)respondsToMoreButton {
     
-    self.selectInweTypeBlock(self.segmentedControl.selectedSegmentIndex);
 }
 
 #pragma mark ------ Public Methods ------
@@ -146,56 +139,45 @@ static NSString *const kDBHAllInformationTypeTwoTableViewCellIdentifier = @"kDBH
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setInweReportType:(NSInteger)inweReportType {
-    _inweReportType = inweReportType;
+- (void)setDataSource:(NSArray *)dataSource {
+    _dataSource = dataSource;
     
-    self.segmentedControl.selectedSegmentIndex = _inweReportType;
+    self.noDataLabel.hidden = _dataSource.count;
+    
+    [self.tableView reloadData];
 }
 
-- (UIView *)boxView {
-    if (!_boxView) {
-        _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
-    }
-    return _boxView;
-}
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
+        _titleLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(16)];
         _titleLabel.text = @"INWE报道";
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _titleLabel;
 }
-- (UIView *)bottomLineView {
-    if (!_bottomLineView) {
-        _bottomLineView = [[UIView alloc] init];
-        _bottomLineView.backgroundColor = COLORFROM16(0xE6E6E6, 1);
-    }
-    return _bottomLineView;
-}
-- (UISegmentedControl *)segmentedControl {
-    if (!_segmentedControl) {
-        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"视频", @"图文"]];
-        _segmentedControl.backgroundColor = [UIColor whiteColor];
-        _segmentedControl.tintColor = COLORFROM16(0xFF7043, 1);
+- (DBHInformationDetailForInweReportSelectedView *)informationDetailForInweReportSelectedView {
+    if (!_informationDetailForInweReportSelectedView) {
+        _informationDetailForInweReportSelectedView = [[DBHInformationDetailForInweReportSelectedView alloc] init];
+        _informationDetailForInweReportSelectedView.currentSelectedIndex = self.inweReportType;
         
-        [_segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:COLORFROM16(0xFF7043, 1), NSFontAttributeName:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)]} forState:UIControlStateNormal];
-        [_segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)]} forState:UIControlStateSelected];
-        [_segmentedControl addTarget:self action:@selector(respondsToSegmentedControl) forControlEvents:UIControlEventValueChanged];
+        WEAKSELF
+        [_informationDetailForInweReportSelectedView selectedButtonBlock:^(NSInteger currentSelectedIndex) {
+            weakSelf.selectInweTypeBlock(currentSelectedIndex);
+        }];
     }
-    return _segmentedControl;
+    return _informationDetailForInweReportSelectedView;
 }
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.scrollEnabled = NO;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.001)];
-        _tableView.rowHeight = AUTOLAYOUTSIZE(124);
+        _tableView.rowHeight = AUTOLAYOUTSIZE(94);
         
         _tableView.sectionFooterHeight = 0;
         
@@ -205,6 +187,24 @@ static NSString *const kDBHAllInformationTypeTwoTableViewCellIdentifier = @"kDBH
         [_tableView registerClass:[DBHInformationDetailForInweReportContentTableViewCell class] forCellReuseIdentifier:kDBHInformationDetailForInweReportContentTableViewCellIdentifier];
     }
     return _tableView;
+}
+- (UILabel *)noDataLabel {
+    if (!_noDataLabel) {
+        _noDataLabel = [[UILabel alloc] init];
+        _noDataLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(15)];
+        _noDataLabel.text = @"暂无数据";
+        _noDataLabel.textColor = COLORFROM16(0x333333, 1);
+        _noDataLabel.hidden = YES;
+    }
+    return _noDataLabel;
+}
+- (UIButton *)moreButton {
+    if (!_moreButton) {
+        _moreButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_moreButton setImage:[UIImage imageNamed:@"moreCircle"] forState:UIControlStateNormal];
+        [_moreButton addTarget:self action:@selector(respondsToMoreButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _moreButton;
 }
 
 @end

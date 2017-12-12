@@ -65,22 +65,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/AddNeoOtherWalletInfoVC.m"
-            timestampString = "533571556.840396"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "-sureWithPassWord:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/AddNeoWalletInfoVC.m"
             timestampString = "533823101.131317"
             startingColumnNumber = "9223372036854775807"
