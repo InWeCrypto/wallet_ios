@@ -132,7 +132,7 @@
                            // 解冻
                            [PPNetworkHelper GET:[NSString stringWithFormat:@"extend/getNeoUtxo?address=%@&type=%@", self.model.address, @"neo-asset-id"] isOtherBaseUrl:NO parameters:nil hudString:@"" success:^(id responseObject) {
                                NSArray *result = responseObject[@"result"];
-                               [self  :passWord unspent:[result toJSONStringForArray]];
+                               [self transferAccountsForNEOWithPassword:passWord unspent:[result toJSONStringForArray]];
                            } failure:^(NSString *error) {
                                [LCProgressHUD showFailure:error];
                            }];

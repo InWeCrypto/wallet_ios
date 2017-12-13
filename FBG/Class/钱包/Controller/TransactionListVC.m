@@ -25,6 +25,7 @@
 @property (nonatomic, strong) UIButton * transferButton;    //转账
 @property (nonatomic, strong) UIButton * receivablesButton;    //收款
 
+@property (nonatomic, assign) NSInteger page; // 分页
 @property (nonatomic, assign) BOOL isCanTransferAccounts; // 是否可以转账
 @property (nonatomic, assign) NSString * maxBlockNumber;  //最大块号 当前
 @property (nonatomic, copy) NSString * blockPerSecond;  //发生时间  5
@@ -134,7 +135,7 @@
 {
     //10s 请求一次接口
     if (self.model.category_id == 2) {
-        [self loadNeoData];
+        [self loadNeoDataIsLoadMore:NO];
     } else {
         [self loadMaxblockNumber];
     }
@@ -260,7 +261,6 @@
 
 
 #pragma mark - Private (.m 私有方法)
-
 - (void)loadBanlaceData
 {
     if ([self.tokenModel.flag isEqualToString:@"NEO"] || [self.tokenModel.flag isEqualToString:@"Gas"]) {
@@ -355,26 +355,43 @@
          self.maxBlockNumber = [NSString stringWithFormat:@"%@",[NSString numberHexString:[[responseObject objectForKey:@"value"] substringFromIndex:2]]];
          
          if (self.model.category_id == 2) {
-             [self loadNeoData];
+             [self loadNeoDataIsLoadMore:NO];
          } else {
-             [self loadOtherData];
+             [self loadOtherDataIsLoadMore:NO];
          }
          
      } failure:^(NSString *error)
      {
      }];
 }
-- (void)loadOtherData {
+- (void)loadOtherDataIsLoadMore:(BOOL)isLoadMore {
+    if (isLoadMore) {
+        self.page += 1;
+    } else {
+        self.page = 0;
+    }
+    WEAKSELF
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
     [parametersDic setObject:@(self.model.id) forKey:@"wallet_id"];
+    [parametersDic setObject:@(self.page) forKey:@"page"];
     [parametersDic setObject:self.tokenModel ? self.tokenModel.name : self.model.category_name forKey:@"flag"];
+    [parametersDic setObject:[self.model.name isEqualToString:@"ETH"] ? @"0x0000000000000000000000000000000000000000" : [self.model.address lowercaseString] forKey:@"asset_id"];
     
     //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
     [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
      {
+         [weakSelf endRefresh];
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
          {
-             [self.dataSource removeAllObjects];
+             if (!isLoadMore) {
+                 [self.dataSource removeAllObjects];
+             }
+             
+             NSArray *data = responseObject;
+             if (data.count < 10) {
+                 [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
+             }
+             
              for (NSDictionary * dic in [responseObject objectForKey:@"list"])
              {
                  WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
@@ -394,26 +411,43 @@
                  [self.dataSource addObject:model];
              }
              [self.coustromTableView reloadData];
+         } else {
+             [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
          }
-         [self endRefreshing];
      } failure:^(NSString *error)
      {
-         [self endRefreshing];
+         [weakSelf endRefresh];
          [LCProgressHUD showFailure:error];
      }];
 }
-- (void)loadNeoData {
+- (void)loadNeoDataIsLoadMore:(BOOL)isLoadMore {
+    if (isLoadMore) {
+        self.page += 1;
+    } else {
+        self.page = 0;
+    }
+    WEAKSELF
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
     [parametersDic setObject:@(self.model.id) forKey:@"wallet_id"];
     [parametersDic setObject:@"NEO" forKey:@"flag"];
+    [parametersDic setObject:@(self.page) forKey:@"page"];
     [parametersDic setObject:[self.tokenModel.flag isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7" forKey:@"asset_id"];
     
     //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
     [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
      {
+         [weakSelf endRefresh];
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
          {
-             [self.dataSource removeAllObjects];
+             if (!isLoadMore) {
+                 [self.dataSource removeAllObjects];
+             }
+             
+             NSArray *data = responseObject;
+             if (data.count < 10) {
+                 [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
+             }
+             
              BOOL isHaveNoFinishOrder = NO;
              for (NSDictionary * dic in [responseObject objectForKey:@"list"])
              {
@@ -451,13 +485,39 @@
              }
              self.isCanTransferAccounts = !isHaveNoFinishOrder;
              [self.coustromTableView reloadData];
+         } else {
+             [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
          }
-         [self endRefreshing];
      } failure:^(NSString *error)
      {
-         [self endRefreshing];
+         [weakSelf endRefresh];
          [LCProgressHUD showFailure:error];
      }];
+}
+- (void)addRefresh {
+    WEAKSELF
+    self.coustromTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (weakSelf.model.category_id == 2) {
+            [weakSelf loadNeoDataIsLoadMore:NO];
+        } else {
+            [weakSelf loadOtherDataIsLoadMore:NO];
+        }
+    }];
+    self.coustromTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        if (weakSelf.model.category_id == 2) {
+            [weakSelf loadNeoDataIsLoadMore:YES];
+        } else {
+            [weakSelf loadOtherDataIsLoadMore:YES];
+        }
+    }];
+}
+- (void)endRefresh {
+    if (self.coustromTableView.mj_header.refreshing) {
+        [self.coustromTableView.mj_header endRefreshing];
+    }
+    if (self.coustromTableView.mj_footer.refreshing) {
+        [self.coustromTableView.mj_footer endRefreshing];
+    }
 }
 
 #pragma mark - Deletate/DataSource (相关代理)

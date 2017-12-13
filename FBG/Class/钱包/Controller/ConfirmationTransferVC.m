@@ -147,7 +147,7 @@
                                                                [LCProgressHUD showMessage:@"转账成功"];
                                                                
                                                                //热钱包生成订单
-                                                               [self creatOrderWithData:[NSString stringWithFormat:@"0x%@",[NSString hexStringFromData:data]]];
+                                                               [self creatOrderWithData:[NSString stringWithFormat:@"0x%@",[NSString hexStringFromData:data]] asset_id:[self.tokenModel.address lowercaseString]];
                                                            }
                                                            else
                                                            {
@@ -199,7 +199,7 @@
                                                       else
                                                       {
                                                           //热钱包生成订单
-                                                          [self creatOrderWithData:[NSString stringWithFormat:@"0x%@",[NSString hexStringFromData:data]]];
+                                                          [self creatOrderWithData:[NSString stringWithFormat:@"0x%@",[NSString hexStringFromData:data]] asset_id:@"0x0000000000000000000000000000000000000000"];
                                                       }
                                                   }
                                                   else
@@ -370,7 +370,7 @@
 }
 
 // 上传后台提交订单
-- (void)creatOrderWithData:(NSString *)data
+- (void)creatOrderWithData:(NSString *)data asset_id:(NSString *)asset_id
 {
     //创建钱包订单
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
@@ -382,6 +382,7 @@
     [dic setObject:[NSString DecimalFuncWithOperatorType:2 first:self.price secend:@"1000000000000000000" value:0] forKey:@"fee"];
     [dic setObject:[NSString DecimalFuncWithOperatorType:2 first:self.totleGasPrice secend:@"1000000000000000000" value:0] forKey:@"handle_fee"];
     [dic setObject:self.tokenModel ? self.tokenModel.flag : self.model.category_name forKey:@"flag"];
+    [dic setObject:@"0x0000000000000000000000000000000000000000" forKey:@"asset_id"];
     
     [PPNetworkHelper POST:@"wallet-order" parameters:dic hudString:@"创建中..." success:^(id responseObject)
      {
@@ -510,7 +511,7 @@
     if (self.isCodeWalletSucess)
     {
         //观察钱包扫描冷钱包成功
-        [self creatOrderWithData:self.data];
+        [self creatOrderWithData:self.data asset_id:@""];
         return;
     }
 

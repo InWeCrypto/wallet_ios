@@ -25,7 +25,7 @@
 {
     _model = model;
     
-    if ([model.balance isEqualToString:@"0"])
+    if (model.balance.floatValue == 0)
     {
         model.balance = @"0.0000";
     }
