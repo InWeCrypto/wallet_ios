@@ -12,6 +12,8 @@
 
 @interface DBHExtractViewController : UIViewController
 
+@property (nonatomic, copy) NSString *wallectId;
+
 @property (nonatomic, strong) WalletInfoGntModel *neoModel;
 
 @property (nonatomic, strong) WalletInfoGntModel *model;

@@ -26,7 +26,7 @@
     _model = model;
     //收款的记录，数量用蓝色，转账的记录，数量用红色
     self.titleLB.text = model.trade_no;
-    self.timeLB.text = [model.created_at substringFromIndex:5];
+    self.timeLB.text = [NSString stringWithFormat:@"%@ %@", [_model.created_at substringToIndex:10], [_model.created_at substringWithRange:NSMakeRange(11, 8)]];
     self.infoLB.text = @"正在打包（0/12）";
     self.slider.value =  0.5;
     if (![model.flag isEqualToString:@"NEO"]) {

@@ -25,10 +25,10 @@
 {
     _model = model;
     
-    if (model.balance.floatValue == 0)
-    {
-        model.balance = @"0.0000";
-    }
+//    if (model.balance.floatValue == 0)
+//    {
+//        model.balance = @"0.0000";
+//    }
     
     self.headerImage.contentMode = UIViewContentModeCenter;
     if ([model.icon containsString:@"NEO_"]) {

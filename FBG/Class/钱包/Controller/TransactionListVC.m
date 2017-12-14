@@ -88,6 +88,8 @@
         self.headerView.priceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
         self.headerView.cnyPriceLB.text = self.cnybanlacePrice;
     }
+    
+    [self addRefresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -443,7 +445,7 @@
                  [self.dataSource removeAllObjects];
              }
              
-             NSArray *data = responseObject;
+             NSArray *data = responseObject[@"list"];
              if (data.count < 10) {
                  [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
              }
@@ -497,6 +499,7 @@
 - (void)addRefresh {
     WEAKSELF
     self.coustromTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf loadBanlaceData];
         if (weakSelf.model.category_id == 2) {
             [weakSelf loadNeoDataIsLoadMore:NO];
         } else {

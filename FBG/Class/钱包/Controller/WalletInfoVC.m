@@ -1034,6 +1034,7 @@
     if (self.model.category_id == 2 && indexPath.row == 2) {
         // 提取Gas
         DBHExtractViewController *extractViewController = [[DBHExtractViewController alloc] init];
+        extractViewController.wallectId = [NSString stringWithFormat:@"%d", self.model.id];
         extractViewController.neoModel = self.dataSource.firstObject;
         extractViewController.model = self.dataSource[2];
         [self.navigationController pushViewController:extractViewController animated:YES];
