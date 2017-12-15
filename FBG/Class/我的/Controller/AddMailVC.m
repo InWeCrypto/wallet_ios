@@ -39,9 +39,9 @@
     
     if (self.id)
     {        
-        [PPNetworkHelper GET:[NSString stringWithFormat:@"contact/%@",self.id] isOtherBaseUrl:NO parameters:nil hudString:@"获取中..." success:^(id responseObject)
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"user/contact/%@",self.id] isOtherBaseUrl:YES parameters:nil hudString:@"获取中..." success:^(id responseObject)
          {
-             NSDictionary * dic = [responseObject objectForKey:@"record"];
+             NSDictionary * dic = responseObject;
              self.nameTF.text = [dic objectForKey:@"name"];
              self.addressTF.text = [dic objectForKey:@"address"];
              if (![NSString isNulllWithObject:[dic objectForKey:@"remark"]])
@@ -107,7 +107,7 @@
             [parametersDic setObject:self.remarkTF.text forKey:@"remark"];
         }
         
-        [PPNetworkHelper PUT:[NSString stringWithFormat:@"contact/%@",self.id] isOtherBaseUrl:NO parameters:parametersDic hudString:@"修改中..." success:^(id responseObject)
+        [PPNetworkHelper PUT:[NSString stringWithFormat:@"user/contact/%@",self.id] isOtherBaseUrl:YES parameters:parametersDic hudString:@"修改中..." success:^(id responseObject)
          {
              [LCProgressHUD showSuccess:@"修改成功"];
              [self.navigationController popViewControllerAnimated:YES];

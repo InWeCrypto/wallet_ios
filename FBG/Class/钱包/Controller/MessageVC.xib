@@ -34,9 +34,6 @@
                                 <segment title="已读"/>
                             </segments>
                             <color key="tintColor" red="0.0" green="0.5490196078431373" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="TypeChange:" destination="-1" eventType="valueChanged" id="gaX-2S-pfj"/>
                             </connections>

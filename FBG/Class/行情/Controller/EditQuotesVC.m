@@ -49,43 +49,36 @@
 - (void)rightButton
 {
     //保存
+    NSMutableArray *markArray = [NSMutableArray array];
+    for (NSInteger i = 0; i < self.market_ids.count; i++) {
+        [markArray addObject:@{@"id":self.market_ids[i], @"sort":@(self.market_ids.count - i)}];
+    }
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-    [parametersDic setObject:[self.market_ids toJSONStringForArray] forKey:@"market_ids"];
+    [parametersDic setObject:[markArray toJSONStringForArray] forKey:@"market_ids"];
     
-    [PPNetworkHelper POST:@"market-category" parameters:parametersDic hudString:@"设置中..." success:^(id responseObject)
-     {
-         [PPNetworkHelper GET:@"market-category" isOtherBaseUrl:NO parameters:nil hudString:nil responseCache:^(id responseCache)
-          {
-          } success:^(id responseObject)
-          {
-              [self.navigationController popViewControllerAnimated:YES];
-          } failure:^(NSString *error)
-          {
-          }];
-     } failure:^(NSString *error)
-     {
-         [LCProgressHUD showFailure:error];
-     }];
+    [PPNetworkHelper PUT:@"user/ticker" isOtherBaseUrl:YES parameters:parametersDic hudString:@"设置中..." success:^(id responseObject) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
 }
 
 - (void)loadData
 {
-    [PPNetworkHelper GET:@"market-category" isOtherBaseUrl:NO parameters:nil hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper GET:@"/user/ticker" isOtherBaseUrl:YES parameters:nil hudString:@"获取中..." success:^(id responseObject)
      {
          //获取数据
-         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
+         if (![NSString isNulllWithObject:responseObject])
          {
              [self.dataSource removeAllObjects];
              [self.market_ids removeAllObjects];
              
-             for (NSDictionary * quotesDic in [responseObject objectForKey:@"list"])
+             for (NSDictionary * quotesDic in responseObject)
              {
-                 for (NSDictionary * dic in [quotesDic objectForKey:@"data"])
-                 {
-                     QuotationModel * quotesModel = [[QuotationModel alloc] initWithDictionary:dic];
-                     [self.market_ids addObject:@(quotesModel.id)];
-                     [self.dataSource addObject:quotesModel];
-                 }
+                 QuotationModel * quotesModel = [[QuotationModel alloc] initWithDictionary:quotesDic];
+                 quotesModel.name = quotesDic[@"unit"];
+                 [self.market_ids addObject:@(quotesModel.id)];
+                 [self.dataSource addObject:quotesModel];
              }
              [self.coustromTableView reloadData];
              [self endRefreshing];

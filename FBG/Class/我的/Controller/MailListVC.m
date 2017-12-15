@@ -201,6 +201,7 @@
     //改变类型
     if (self.typeChangeSM.selectedSegmentIndex == 1) {
         [LCProgressHUD showMessage:@"敬请期待"];
+        [self.coustromTableView reloadData];
         return;
     }
     
@@ -315,6 +316,7 @@
     {
         //通讯录查看
         EditMailVC * vc = [[EditMailVC alloc] init];
+        vc.icoId = !self.typeChangeSM.selectedSegmentIndex ? @"6" : @"7";
         vc.id = [NSString stringWithFormat:@"%d",model.id];
         [self.navigationController pushViewController:vc animated:YES];
     }

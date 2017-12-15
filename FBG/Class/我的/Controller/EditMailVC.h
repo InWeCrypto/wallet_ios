@@ -10,6 +10,8 @@
 
 @interface EditMailVC : UIViewController
 
+@property (nonatomic, copy) NSString *icoId;
+
 @property (nonatomic, copy) NSString * id;
 
 @end

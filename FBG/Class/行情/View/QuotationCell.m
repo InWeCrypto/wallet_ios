@@ -32,26 +32,26 @@
     self.rmbLB.text = [NSString stringWithFormat:@"￥%.2f",[model.timeData.priceCny floatValue]];
     if ([model.timeData.change24h floatValue] < 0)
     {
-        self.changeLB.text = [NSString stringWithFormat:@"%@%%",model.timeData.change24h];
+        self.changeLB.text = [NSString stringWithFormat:@"%.2lf%%",model.timeData.change24h.floatValue];
         self.changeLB.backgroundColor = [UIColor redColor];
     }
     else
     {
         self.changeLB.backgroundColor = [UIColor colorWithHexString:@"008C55"];
-        self.changeLB.text = [NSString stringWithFormat:@"+%@%%",model.timeData.change24h];
+        self.changeLB.text = [NSString stringWithFormat:@"+%.2lf%%",model.timeData.change24h.floatValue];
     }
     
     if ([UserSignData share].user.walletUnitType == 1)
     {
         self.hightLB.text = [NSString stringWithFormat:@"￥%.2f",[model.timeData.maxPriceCny24h floatValue]];
         self.lowLB.text = [NSString stringWithFormat:@"￥%.2f",[model.timeData.minPriceCny24h floatValue]];
-        self.numberLB.text = [NSString getDealNumwithstring:model.timeData.priceUsd];
+        self.numberLB.text = [NSString stringWithFormat:@"￥%@", [NSString getDealNumwithstring:model.timeData.volumeCny24h]];
     }
     else
     {
         self.hightLB.text = [NSString stringWithFormat:@"$%.2f",[model.timeData.maxPriceUsd24h floatValue]];
         self.lowLB.text = [NSString stringWithFormat:@"$%.2f",[model.timeData.minPriceUsd24h floatValue]];
-        self.numberLB.text = [NSString getDealNumwithstring:model.timeData.priceUsd];
+        self.numberLB.text = [NSString stringWithFormat:@"$%@", [NSString getDealNumwithstring:model.timeData.volumeUsd24h]];
     }
     
     

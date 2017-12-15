@@ -38,8 +38,8 @@
     [self addpull2RefreshWithTableView:self.coustromTableView WithIsInset:NO];
     [self addPush2LoadMoreWithTableView:self.coustromTableView WithIsInset:NO];
     
-    self.typeChangeSM.layer.borderWidth = 1;
-    self.typeChangeSM.layer.borderColor = [UIColor whiteColor].CGColor;
+//    self.typeChangeSM.layer.borderWidth = 1;
+//    self.typeChangeSM.layer.borderColor = [UIColor whiteColor].CGColor;
     
     self.dataSource = [[NSMutableArray alloc] init];
     [self.view addSubview:self.coustromTableView];

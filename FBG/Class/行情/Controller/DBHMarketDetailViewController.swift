@@ -46,7 +46,10 @@ class DBHMarketDetailViewController: UIViewController {
         style.sections.removeLast();
         
         // 不显示坐标轴
-        style.showYLabel = CHYAxisShowPosition.none
+        style.showYLabel = CHYAxisShowPosition.left
+        
+        // 把y坐标内嵌到图表中
+        style.isInnerYAxis = true
         
         // 边距
         style.padding = UIEdgeInsetsMake(0, 3, 0, 3)
@@ -167,18 +170,18 @@ extension DBHMarketDetailViewController: CHKLineChartDelegate {
     }
     
     func kLineChart(chart: CHKLineChartView, labelOnYAxisForValue value: CGFloat, section: CHSection) -> String {
-        var strValue = ""
-        if value / 10000 > 1 {
-            strValue = (value / 10000).ch_toString(maxF: section.decimal) + "万"
-        } else {
-            strValue = value.ch_toString(maxF: section.decimal)
-        }
-        return strValue
+//        var strValue = ""
+//        if value / 10000 > 1 {
+//            strValue = (value / 10000).ch_toString(maxF: section.decimal) + "万"
+//        } else {
+//            strValue = value.ch_toString(maxF: section.decimal)
+//        }
+        return ""//strValue
     }
     
     func kLineChart(chart: CHKLineChartView, labelOnXAxisForIndex index: Int) -> String {
         let data : DBHMarketDetailKLineViewModelData = self.klineDatas[index] as! DBHMarketDetailKLineViewModelData
-        let timestamp = Int(data.time)
+        let timestamp = Int(Float(data.time) / 1000.0)
         return Date.ch_getTimeByStamp(timestamp, format: "HH:mm")
     }
     

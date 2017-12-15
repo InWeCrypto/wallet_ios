@@ -113,10 +113,10 @@
     if (![UserSignData share].user.isCode)
     {
         //加载左抽屉数据 热钱包
-        self.headerView.nameLB.text = [UserSignData share].user.nickname;
-        [self.headerView.headerImage sdsetImageWithHeaderimg:[UserSignData share].user.img];
-        [self upAssetsLB];
-        [self.lineDataSource removeAllObjects];
+//        self.headerView.nameLB.text = [UserSignData share].user.nickname;
+//        [self.headerView.headerImage sdsetImageWithHeaderimg:[UserSignData share].user.img];
+//        [self upAssetsLB];
+//        [self.lineDataSource removeAllObjects];
         [self loadLeftData];
         [self timerDown];
     }
@@ -446,7 +446,7 @@
     //获取首页钱包数据
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
     [parametersDic setObject:[wallets toJSONStringForArray] forKey:@"wallet_ids"];
-    
+
     [PPNetworkHelper GET:@"conversion" isOtherBaseUrl:NO parameters:parametersDic hudString:nil responseCache:^(id responseCache)
     {
         NSArray *dataArray = responseCache[@"list"];
@@ -464,7 +464,7 @@
             CGFloat neoNumber = 0;
             CGFloat neoPriceCny = 0;
             CGFloat neoPriceUsd = 0;
-            
+
             for (NSDictionary *dic in dataArray) {
                 NSString *category_id = dic[@"category_id"];
                 NSString *balance = dic[@"balance"];
@@ -487,7 +487,7 @@
                         //                         neoPriceUsd += sum_usd;
                         break;
                     }
-                        
+
                     default: {
                         // BCD
                         bcdNumber += balance.floatValue;
@@ -497,7 +497,7 @@
                     }
                 }
             }
-            
+
             [UserSignData share].user.ETHAssets_ether = [NSString stringWithFormat:@"%.4f", ethNumber];
             [UserSignData share].user.ETHAssets_cny = [NSString stringWithFormat:@"%.2f", ethPriceCny];
             [UserSignData share].user.ETHAssets_usd = [NSString stringWithFormat:@"%.2f", ethPriceUsd];
@@ -511,7 +511,7 @@
             [UserSignData share].user.totalAssets_usd = [NSString stringWithFormat:@"%.2f", ethNumber * ethPriceUsd + bcdNumber * bcdPriceUsd + neoNumber * neoPriceUsd];
             [[UserSignData share] storageData:[UserSignData share].user];
         }
-            
+
 //        if ([[responseCache objectForKey:@"list"] count] > 0)
 //        {
 //            NSString * assets_ether = @"0.0000";
@@ -568,7 +568,7 @@
              CGFloat neoNumber = 0;
              CGFloat neoPriceCny = 0;
              CGFloat neoPriceUsd = 0;
-             
+
              for (NSDictionary *dic in dataArray) {
                  NSString *category_id = dic[@"category_id"];
                  NSString *balance = dic[@"balance"];
@@ -591,7 +591,7 @@
 //                         neoPriceUsd += sum_usd;
                          break;
                      }
-                         
+
                      default: {
                          // BCD
                          bcdNumber += balance.floatValue;
@@ -601,7 +601,7 @@
                      }
                  }
              }
-             
+
              [UserSignData share].user.ETHAssets_ether = [NSString stringWithFormat:@"%.4f", ethNumber];
              [UserSignData share].user.ETHAssets_cny = [NSString stringWithFormat:@"%.2f", ethPriceCny];
              [UserSignData share].user.ETHAssets_usd = [NSString stringWithFormat:@"%.2f", ethPriceUsd];
@@ -613,9 +613,9 @@
              [UserSignData share].user.NEOAssets_usd = [NSString stringWithFormat:@"%.2f", neoPriceUsd];
 //             [UserSignData share].user.totalAssets = [NSString stringWithFormat:@"%.2f",[assets_cny floatValue]];
              [[UserSignData share] storageData:[UserSignData share].user];
-             
-             
-             
+
+
+
 //             NSString * assets_ether = @"0.0000";
 //             NSString * assets_cny = @"0.00";
 //             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
@@ -790,21 +790,34 @@
                      {
                          for (NSDictionary * dic in [responseObject objectForKey:@"list"])
                          {
-                             WalletInfoGntModel * model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
-                             model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
-                             model.price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
-                             model.price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
-                             model.gnt_category_id = 1;
-                             if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-                             {
-                                 model.balance = [dic objectForKey:@"balance"];
+                             NSInteger index = [self foundEthModelWithArray:[lineDataArray copy] name:dic[@"name"]];
+                             if (index >= 0) {
+                                 // 找到
+                                 WalletInfoGntModel *model = lineDataArray[index];
+                                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                                 {
+                                     NSString *balance = [dic objectForKey:@"balance"];
+                                     model.balance = [NSString stringWithFormat:@"%.4lf", model.balance.floatValue + balance.floatValue];
+                                 }
+                                 [lineDataArray replaceObjectAtIndex:index withObject:model];
+                             } else {
+                                 // 没找到
+                                 WalletInfoGntModel *model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
+                                 model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
+                                 model.price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
+                                 model.price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
+                                 model.gnt_category_id = 1;
+                                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                                 {
+                                     model.balance = [dic objectForKey:@"balance"];
+                                 }
+                                 else
+                                 {
+                                     model.balance = @"0";
+                                 }
+                                 
+                                 [lineDataArray addObject:model];
                              }
-                             else
-                             {
-                                 model.balance = @"0";
-                             }
-                             
-                             [lineDataArray addObject:model];
                          }
                      }
                  }
@@ -860,6 +873,24 @@
     });
 }
 
+
+/**
+ 从数组中查找name
+
+ @param array 数组
+ @param name name
+ */
+- (NSInteger)foundEthModelWithArray:(NSArray *)array name:(NSString *)name {
+    for (NSInteger i = 0; i < array.count; i++) {
+        WalletInfoGntModel *model = array[i];
+        
+        if ([model.name isEqualToString:name]) {
+            return i;
+        }
+    }
+    
+    return -1;
+}
 - (void)moreButtonCilick
 {
     //左抽屉

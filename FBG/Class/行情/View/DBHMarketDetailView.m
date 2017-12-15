@@ -101,17 +101,18 @@
     NSMutableAttributedString *changeAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时涨跌      %@%%", change]];
     [changeAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(12, change.length + 1)];
     
+    NSString *money = [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$";
     NSString *maxPrice = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.maxPriceCny24h.floatValue : _model.maxPrice24h.floatValue];
-    NSMutableAttributedString *maxPriceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时最高价  %@", maxPrice]];
-    [maxPriceAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(9, maxPrice.length)];
+    NSMutableAttributedString *maxPriceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时最高价  %@%@", money, maxPrice]];
+    [maxPriceAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(8, maxPrice.length + 2)];
     
-    NSString *volumeTransaction = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.volumeCny.floatValue : _model.volumeCny.floatValue];
-    NSMutableAttributedString *volumeTransactionAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时成交额  %@", volumeTransaction]];
-    [volumeTransactionAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(9, volumeTransaction.length)];
+    NSString *volumeTransaction = [NSString getDealNumwithstring:[NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.volumeCny.floatValue : _model.volumeCny.floatValue]];
+    NSMutableAttributedString *volumeTransactionAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时成交额  %@%@", money, volumeTransaction]];
+    [volumeTransactionAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(8, volumeTransaction.length + 2)];
     
     NSString *minPrice = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.minPriceCny24h.floatValue : _model.minPrice24h.floatValue];
-    NSMutableAttributedString *minPriceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时最低价  %@", minPrice]];
-    [minPriceAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(9, minPrice.length)];
+    NSMutableAttributedString *minPriceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时最低价  %@%@", money, minPrice]];
+    [minPriceAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(8, minPrice.length + 2)];
     
     self.currentPriceLabel.attributedText = currentPriceAttributedString;
     self.changeLabel.attributedText = changeAttributedString;

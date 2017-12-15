@@ -65,13 +65,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/AddOtherWalletInfoVC.m"
-            timestampString = "534937224.309379"
+            filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/WalletHomeVC.m"
+            timestampString = "535025335.598833"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
-            landmarkName = "-sureWithPassWord:"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
+            landmarkName = "-loadHomeInfoWithWalletsId:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/WalletHomeVC.m"
+            timestampString = "535025335.598899"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "581"
+            endingLineNumber = "581"
+            landmarkName = "-loadHomeInfoWithWalletsId:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -61,7 +61,7 @@
         if ([data isKindOfClass:[UIImage class]])
         {
             //获取到图片
-            NSString *endpoint = @"http://oss-cn-shenzhen.aliyuncs.com";
+            NSString *endpoint = @"http://oss-cn-hongkong.aliyuncs.com";
             
             id<OSSCredentialProvider> credential2 = [[OSSFederationCredentialProvider alloc] initWithFederationTokenGetter:^OSSFederationToken *
             {
@@ -115,7 +115,7 @@
             NSTimeInterval a=[dat timeIntervalSince1970];
             NSString*timeString = [NSString stringWithFormat:@"%0.f", a];//转为字符型
             OSSPutObjectRequest * request = [OSSPutObjectRequest new];
-            request.bucketName = @"cryptobox";
+            request.bucketName = @"whalewallet";
             request.objectKey = [NSString stringWithFormat:@"ios_header_%@",timeString];
             request.uploadingData = UIImageJPEGRepresentation(data, 0.5); // 直接上传NSData
             
@@ -135,8 +135,8 @@
                     
                     // sign public url
                     NSString * publicURL = nil;
-                    OSSTask * task1 = [client presignPublicURLWithBucketName:@"cryptobox"
-                                                               withObjectKey:[NSString stringWithFormat:@"ios_header_%@",timeString]];
+                    OSSTask * task1 = [client presignPublicURLWithBucketName:@"whalewallet"
+                                                               withObjectKey:[NSString stringWithFormat:@"ios_header_%@.jpeg",timeString]];
                     
                     if (!task1.error)
                     {

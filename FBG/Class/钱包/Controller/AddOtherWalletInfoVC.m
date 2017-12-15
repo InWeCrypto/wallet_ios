@@ -104,8 +104,18 @@
                                       {
                                           if (!error)
                                           {
-                                              [LCProgressHUD hide];
+                                              NSString *address = self.wallet.address;
+                                              if ([[address substringToIndex:2] isEqualToString:@"0x"]) {
+                                                  address = [self.wallet.address substringFromIndex:2];
+                                              }
+                                              if (![self.infoTextView.text containsString:[address lowercaseString]]) {
+                                                  [self caneButtonClicked];
+                                                  [LCProgressHUD showFailure:@"请输入正确的KeyStore"];
+                                                  return ;
+                                              }
+                                              
                                               [self caneButtonClicked];
+                                              [LCProgressHUD hide];
                                               //创建成功
                                               if (self.islookWallet)
                                               {
