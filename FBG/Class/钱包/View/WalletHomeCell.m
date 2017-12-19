@@ -31,21 +31,27 @@
 //    }
     
     self.headerImage.contentMode = UIViewContentModeCenter;
-    if ([model.icon containsString:@"NEO_"]) {
+    if ([model.icon containsString:@"NEO_"] || [model.icon containsString:@"ETH"]) {
         self.headerImage.image = [UIImage imageNamed:model.icon];
     } else {
         [self.headerImage sdsetImageWithURL:model.icon placeholderImage:Default_General_Image];
     }
     self.titleLB.text = model.name;
 //    NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[model.balance substringFromIndex:2]] secend:@"1000000000000000000"];
-    self.priceLB.text = [NSString stringWithFormat:@"%.4f",[model.balance floatValue]];
+    if ([_model.name isEqualToString:@"NEO"]) {
+        self.priceLB.text = [NSString stringWithFormat:@"%.0f",[model.balance floatValue]];
+    } else if ([_model.name isEqualToString:@"Gas"] || [_model.name isEqualToString:@"可提现Gas"]) {
+        self.priceLB.text = [NSString stringWithFormat:@"%.8f",[model.balance floatValue]];
+    } else {
+        self.priceLB.text = [NSString stringWithFormat:@"%.4f",[model.balance floatValue]];
+    }
     if ([UserSignData share].user.walletUnitType == 1)
     {
-        self.otherPriceLB.text = [NSString stringWithFormat:@"≈￥%.2f",[[NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.price_cny value:2] floatValue]];
+        self.otherPriceLB.text = [NSString stringWithFormat:@"≈￥%.2lf", model.price_cny.floatValue];
     }
     else
     {
-        self.otherPriceLB.text = [NSString stringWithFormat:@"≈$%.2f",[[NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.price_usd value:2] floatValue]];
+        self.otherPriceLB.text = [NSString stringWithFormat:@"≈$%.2lf", model.price_usd.floatValue];
     }
     
 }

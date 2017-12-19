@@ -111,7 +111,7 @@
     //添加一个删除按钮
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(@"Delete", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
     {
-        [PPNetworkHelper DELETE:[NSString stringWithFormat:@"market-notification/%d",model.relation_notification.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
+        [PPNetworkHelper DELETE:[NSString stringWithFormat:@"market-notification/%d",model.relation_notification.id] isOtherBaseUrl:NO parameters:nil hudString:@"删除中..." success:^(id responseObject)
         {
             //1.更新数据
             [self.dataSource removeObjectAtIndex:indexPath.row];

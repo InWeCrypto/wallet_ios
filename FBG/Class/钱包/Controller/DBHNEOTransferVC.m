@@ -57,6 +57,7 @@
     [self.sureButton setTitle:NSLocalizedString(@"Determine", nil) forState:UIControlStateNormal];
     self.gasPrice = @"1";
     self.banlaceLB.text = [NSString stringWithFormat:@"(当前余额:%@)",self.banlacePrice];
+    self.priceTF.keyboardType = [self.tokenModel.name isEqualToString:@"NEO"] ? UIKeyboardTypeNumberPad : UIKeyboardTypeDecimalPad;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -272,7 +272,7 @@ static NSString *const kDBHExtractTableViewCellIdentifier = @"kDBHExtractTableVi
                                               {
                                                   [LCProgressHUD hide];
                                                   [self caneButtonClicked];
-                                                  [LCProgressHUD showMessage:@"转账成功"];
+                                                  [LCProgressHUD showMessage:self.type == 1 ? @"解冻成功" : @"提取成功"];
                                                   
                                                   //热钱包生成订单
                                                   [self creatNeoOrderWithData:tx.data trade_no:tx.id_];
@@ -281,7 +281,7 @@ static NSString *const kDBHExtractTableViewCellIdentifier = @"kDBHExtractTableVi
                                               {
                                                   [LCProgressHUD hide];
                                                   [self caneButtonClicked];
-                                                  [LCProgressHUD showMessage:@"转账失败，请稍后重试"];
+                                                  [LCProgressHUD showMessage:self.type == 1 ? @"解冻失败，请稍后重试" : @"提取失败，请稍后重试"];
                                               }
                                           });
                        }

@@ -297,6 +297,43 @@
          {
              [LCProgressHUD showFailure:error];
          }];
+    } else if ([self.model.category_name isEqualToString:@"ETH"] && !self.tokenModel) {
+        NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+        [parametersDic setObject:[@[@(self.model.id)] toJSONStringForArray] forKey:@"wallet_ids"];
+        
+        [PPNetworkHelper GET:@"conversion" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
+         {
+             if ([[responseObject objectForKey:@"list"] count] > 0)
+             {
+                 
+                 for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+                 {
+                     if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                     {
+                         self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                     }
+                     else
+                     {
+                         self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
+                     }
+                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
+                     
+                     if ([UserSignData share].user.walletUnitType == 1)
+                     {
+                         NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_cny"] value:4];
+                         self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈￥%.2f",[price_cny floatValue]];
+                     }
+                     else
+                     {
+                         NSString * price_usd = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_usd"] value:4];
+                         self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈$%.2f",[price_usd floatValue]];
+                     }
+                 }
+             }
+         } failure:^(NSString *error)
+         {
+             [LCProgressHUD showFailure:error];
+         }];
     } else {
         //代币余额
         NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
@@ -377,7 +414,7 @@
     [parametersDic setObject:@(self.model.id) forKey:@"wallet_id"];
     [parametersDic setObject:@(self.page) forKey:@"page"];
     [parametersDic setObject:self.tokenModel ? self.tokenModel.name : self.model.category_name forKey:@"flag"];
-    [parametersDic setObject:[self.model.name isEqualToString:@"ETH"] ? @"0x0000000000000000000000000000000000000000" : [self.model.address lowercaseString] forKey:@"asset_id"];
+    [parametersDic setObject:!self.tokenModel ? @"0x0000000000000000000000000000000000000000" : [self.tokenModel.address lowercaseString] forKey:@"asset_id"];
     
     //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
     [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
@@ -399,6 +436,7 @@
                  WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
                  model.maxBlockNumber = self.maxBlockNumber;
                  model.minBlockNumber = self.minBlockNumber;
+                 model.flag = @"ether";
                  if ([model.pay_address isEqualToString:self.model.address])
                  {
                      //热钱包 eth

@@ -109,7 +109,7 @@ typedef NSURLSessionTask PPURLSessionTask;
 + (PPURLSessionTask *)PUT:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 // DELETE 请求
-+ (PPURLSessionTask *)DELETE:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)DELETE:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  上传图片文件

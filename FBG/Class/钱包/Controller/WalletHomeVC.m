@@ -47,6 +47,9 @@
 
 @property (nonatomic, strong) ChoseWalletView * choseWalletView;
 @property (nonatomic, strong) CommitOrderVC * commitOrderView;
+@property (nonatomic, strong) WalletInfoGntModel * ethModel;
+@property (nonatomic, strong) WalletInfoGntModel * neoModel;
+@property (nonatomic, strong) WalletInfoGntModel * gasModel;
 
 //转账订单生产
 @property (nonatomic, strong) WalletLeftListModel * walletModel;
@@ -90,8 +93,6 @@
     [center addObserver:self selector:@selector(AddWalletSucessPushWalletInfoNotification:) name:@"AddWalletSucessPushWalletInfoNotification" object:nil];
     [center addObserver:self selector:@selector(choseInterNet) name:@"netNotification" object:nil];
     
-    self.ethDataSource = [[NSMutableArray alloc] init];
-    self.neoDataSource = [[NSMutableArray alloc] init];
     self.localDataSource = [[NSMutableArray alloc] init];
     self.lineDataSource = [[NSMutableArray alloc] init];
     self.defaultGasNum = 90000;
@@ -227,17 +228,17 @@
     if ([UserSignData share].user.walletUnitType == 1)
     {
         self.headerView.priceLB.text = [NSString stringWithFormat:@"￥%@",[UserSignData share].user.totalAssets_cny];
-        self.headerView.ETH_etherLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.ETHAssets_cny];
+        self.headerView.ETH_etherLB.text = [NSString stringWithFormat:@"≈￥%.2lf",[UserSignData share].user.ETHAssets_cny.floatValue];
 //        self.headerView.ETH_cnyLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.ETHAssets_cny];
-        self.headerView.BTC_etherLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.NEOAssets_cny];
+        self.headerView.BTC_etherLB.text = [NSString stringWithFormat:@"≈￥%.2lf",[UserSignData share].user.NEOAssets_cny.floatValue];
 //        self.headerView.BTC_cnyLB.text = [NSString stringWithFormat:@"≈￥%@",[UserSignData share].user.NEOAssets_cny];
     }
     else
     {
         self.headerView.priceLB.text = [NSString stringWithFormat:@"$%@",[UserSignData share].user.totalAssets_usd];
-        self.headerView.ETH_etherLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.ETHAssets_usd];
+        self.headerView.ETH_etherLB.text = [NSString stringWithFormat:@"≈$%.2lf",[UserSignData share].user.ETHAssets_usd.floatValue];
 //        self.headerView.ETH_cnyLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.ETHAssets_usd];
-        self.headerView.BTC_etherLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.NEOAssets_usd];
+        self.headerView.BTC_etherLB.text = [NSString stringWithFormat:@"≈$%.2lf",[UserSignData share].user.NEOAssets_usd.floatValue];
 //        self.headerView.BTC_cnyLB.text = [NSString stringWithFormat:@"≈$%@",[UserSignData share].user.NEOAssets_usd];
     }
 }
@@ -246,60 +247,139 @@
  数据统计
  */
 - (void)dataStatisticsWithWallets:(NSArray *)wallets {
-    if (self.headerView.leftButton.isSelected ? !self.ethDataSource.count : !self.neoDataSource) {
-        // 没有数据时获取本地缓存
-        for (id wallet_id in wallets)
+    // 没有数据时获取本地缓存
+    self.neoModel = nil;
+    self.gasModel = nil;
+    [self.ethDataSource removeAllObjects];
+    [self.neoDataSource removeAllObjects];
+    if (self.ethModel) {
+        [self.ethDataSource addObject:self.ethModel];
+    }
+    for (id wallet_id in wallets)
+    {
+        if (![NSString isNulllWithObject:[PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"conversion/%@",wallet_id]]])
         {
-            if (![NSString isNulllWithObject:[PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"conversion/%@",wallet_id]]])
-            {
-                NSDictionary * data = [PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"conversion/%@",wallet_id]];
-                for (NSDictionary * dic in [data objectForKey:@"list"])
+            NSDictionary *responseObject = [PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"conversion/%@",wallet_id]];
+            WalletLeftListModel * model = self.leftdataSource[[wallets indexOfObject:wallet_id]];
+            if (model.category_id == 2) {
+                NSDictionary *record = responseObject[@"record"];
+                NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
+                NSString *neoPriceForCny = record[@"cap"][@"price_cny"];
+                NSString *neoPriceForUsd = record[@"cap"][@"price_usd"];
+                if (!self.neoModel) {
+                    self.neoModel = [[WalletInfoGntModel alloc] init];
+                    self.neoModel.balance = @"0.00";
+                    self.neoModel.price_cny = @"0.00";
+                    self.neoModel.price_usd = @"0.00";
+                }
+                self.neoModel.address = record[@"address"];
+                self.neoModel.name = @"NEO";
+                self.neoModel.icon = @"NEO_add";
+                self.neoModel.balance = [NSString stringWithFormat:@"%.4lf", self.neoModel.balance.floatValue + neoNumber.floatValue];
+                self.neoModel.price_cny = [NSString DecimalFuncWithOperatorType:0 first:self.neoModel.price_cny secend:[NSString DecimalFuncWithOperatorType:2 first:self.neoModel.balance secend:neoPriceForCny value:2] value:2];
+                self.neoModel.price_usd = [NSString DecimalFuncWithOperatorType:0 first:self.neoModel.price_usd secend:[NSString DecimalFuncWithOperatorType:2 first:self.neoModel.balance secend:neoPriceForUsd value:2] value:2];
+                self.neoModel.flag = @"NEO";
+                self.neoModel.gnt_category_id = 2;
+                
+                NSArray *gny = record[@"gnt"];
+                NSDictionary *gas = gny.firstObject;
+                NSString *gasPriceForCny = gas[@"cap"][@"price_cny"];
+                NSString *gasPriceForUsd = gas[@"cap"][@"price_usd"];
+                NSString *gasNumber = [NSString stringWithFormat:@"%@", gas[@"balance"]];
+                if (!self.gasModel) {
+                    self.gasModel = [[WalletInfoGntModel alloc] init];
+                    self.gasModel.balance = @"0.00";
+                    self.gasModel.price_cny = @"0.00";
+                    self.gasModel.price_usd = @"0.00";
+                }
+                self.gasModel.address = record[@"address"];
+                self.gasModel.name = @"Gas";
+                self.gasModel.icon = @"NEO_project_icon_Gas";
+                self.gasModel.balance = [NSString stringWithFormat:@"%.4lf", self.gasModel.balance.floatValue + gasNumber.floatValue];
+                self.gasModel.price_cny = [NSString DecimalFuncWithOperatorType:0 first:self.gasModel.price_cny secend:[NSString DecimalFuncWithOperatorType:2 first:self.gasModel.balance secend:gasPriceForCny value:2] value:2];
+                self.gasModel.price_usd = [NSString DecimalFuncWithOperatorType:0 first:self.gasModel.price_usd secend:[NSString DecimalFuncWithOperatorType:2 first:self.gasModel.balance secend:gasPriceForUsd value:2] value:2];
+                self.gasModel.flag = @"Gas";
+                self.gasModel.gnt_category_id = 2;
+            } else {
+                if ([[responseObject objectForKey:@"list"] count] > 0)
                 {
-                    WalletInfoGntModel * model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
-                    model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
-                    model.price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
-                    model.price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
-                    if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                    for (NSDictionary * dic in [responseObject objectForKey:@"list"])
                     {
-                        model.balance = [dic objectForKey:@"balance"];
-                    }
-                    else
-                    {
-                        model.balance = @"0";
-                    }
-                    
-                    if (model.gnt_category_id == 2) {
-                        [self.neoDataSource addObject:model];
-                    } else {
-                        [self.ethDataSource addObject:model];
+                        NSString *price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
+                        NSString *price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
+                        NSInteger index = [self foundEthModelWithArray:[self.ethDataSource copy] name:dic[@"name"]];
+                        if (index >= 0) {
+                            // 找到
+                            WalletInfoGntModel *model = self.ethDataSource[index];
+                            if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                            {
+                                NSString *balance = [dic objectForKey:@"balance"];
+                                NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                                model.balance = [NSString DecimalFuncWithOperatorType:0 first:model.balance secend:ether value:4];
+                                model.price_cny = [NSString DecimalFuncWithOperatorType:0 first:model.price_cny secend:[NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2] value:2];
+                                model.price_usd = [NSString DecimalFuncWithOperatorType:0 first:model.price_usd secend:[NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2] value:2];
+                            }
+                            [self.ethDataSource replaceObjectAtIndex:index withObject:model];
+                        } else {
+                            // 没找到
+                            WalletInfoGntModel *model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
+                            model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
+                            model.gnt_category_id = 1;
+                            if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                            {
+                                NSString *balance = [dic objectForKey:@"balance"];
+                                NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                                model.balance = ether;
+                            }
+                            else
+                            {
+                                model.balance = @"0";
+                            }
+                            model.price_cny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
+                            model.price_usd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
+                            
+                            [self.ethDataSource addObject:model];
+                        }
                     }
                 }
             }
         }
     }
     
-    // 统计NEO
-    CGFloat neoNumber = 0;
-    CGFloat neoPriceCny = 0;
-    CGFloat neoPriceUsd = 0;
+    if (self.neoModel) {
+        [self.neoDataSource addObject:self.neoModel];
+        [self.neoDataSource addObject:self.gasModel];
+    }
     
+    // 统计ETH/NEO
+    NSString *ethPriceCny = @"0.00";
+    NSString *ethPriceUsd = @"0.00";
+    NSString *neoPriceCny = @"0.00";
+    NSString *neoPriceUsd = @"0.00";
+    
+    for (WalletInfoGntModel *model in self.ethDataSource) {
+        // ETH
+        ethPriceCny = [NSString DecimalFuncWithOperatorType:0 first:ethPriceCny secend:model.price_cny value:2];
+        ethPriceUsd = [NSString DecimalFuncWithOperatorType:0 first:ethPriceUsd secend:model.price_usd value:2];
+    }
     for (WalletInfoGntModel *model in self.neoDataSource) {
         if (model.gnt_category_id == 2) {
             // NEO
-            neoNumber += model.balance.floatValue;
-            neoPriceCny += model.balance.floatValue * model.price_cny.floatValue;
-            neoPriceUsd += model.balance.floatValue * model.price_usd.floatValue;
+            neoPriceCny = [NSString DecimalFuncWithOperatorType:0 first:neoPriceCny secend:model.price_cny value:2];
+            neoPriceUsd = [NSString DecimalFuncWithOperatorType:0 first:neoPriceUsd secend:model.price_usd value:2];
         }
     }
     
-    [UserSignData share].user.NEOAssets_ether = [NSString stringWithFormat:@"%.4f", neoNumber];
-    [UserSignData share].user.NEOAssets_cny = [NSString stringWithFormat:@"%.2f", neoPriceCny];
-    [UserSignData share].user.NEOAssets_usd = [NSString stringWithFormat:@"%.2f", neoPriceUsd];
-    [UserSignData share].user.totalAssets_cny = [NSString stringWithFormat:@"%.2f", neoPriceCny + [UserSignData share].user.BTCAssets_cny.floatValue * [UserSignData share].user.BTCAssets_ether.floatValue + [UserSignData share].user.ETHAssets_cny.floatValue * [UserSignData share].user.ETHAssets_ether.floatValue];
-    [UserSignData share].user.totalAssets_usd = [NSString stringWithFormat:@"%.2f", neoPriceUsd + [UserSignData share].user.BTCAssets_usd.floatValue * [UserSignData share].user.BTCAssets_ether.floatValue + [UserSignData share].user.ETHAssets_usd.floatValue * [UserSignData share].user.ETHAssets_ether.floatValue];
+    [UserSignData share].user.ETHAssets_cny = ethPriceCny;
+    [UserSignData share].user.ETHAssets_usd = ethPriceUsd;
+    [UserSignData share].user.NEOAssets_cny = neoPriceCny;
+    [UserSignData share].user.NEOAssets_usd = neoPriceUsd;
+    [UserSignData share].user.totalAssets_cny = [NSString DecimalFuncWithOperatorType:0 first:[UserSignData share].user.ETHAssets_cny secend:[UserSignData share].user.NEOAssets_cny value:2];
+    [UserSignData share].user.totalAssets_usd = [NSString DecimalFuncWithOperatorType:0 first:[UserSignData share].user.ETHAssets_usd secend:[UserSignData share].user.NEOAssets_usd value:2];
     
     // 更新UI
     [self upAssetsLB];
+    [self.coustromTableView reloadData];
 }
 
 ///    添加下拉刷新
@@ -391,10 +471,10 @@
              }
              [self.leftTableView reloadData];
              //获取首页钱包数据
-             if ([UserSignData share].user.isRefeshAssets)
-             {
-                 [self loadHomeInfoWithWalletsId:idArray];
-             }
+//             if ([UserSignData share].user.isRefeshAssets)
+//             {
+//                 [self loadHomeInfoWithWalletsId:idArray];
+//             }
          }
     } success:^(id responseObject)
     {
@@ -453,9 +533,9 @@
         if (dataArray.count > 0)
         {
             // ETH
-            CGFloat ethNumber = 0;
-            CGFloat ethPriceCny = 0;
-            CGFloat ethPriceUsd = 0;
+            NSString *ethNumber = @"0.00";
+            NSString *ethPriceCny = @"0.00";
+            NSString *ethPriceUsd = @"0.00";
             // BCD
             CGFloat bcdNumber = 0;
             CGFloat bcdPriceCny = 0;
@@ -475,9 +555,20 @@
                 switch (category_id.integerValue) {
                     case 1: {
                         // ETH
-                        ethNumber += balance.floatValue;
-                        ethPriceCny += sum_cny;
-                        ethPriceUsd += sum_usd;
+                        NSString * price_ether;
+                        if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                        {
+                            price_ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                        }
+                        else
+                        {
+                            price_ether = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
+                        }
+                        ethNumber = [NSString DecimalFuncWithOperatorType:0 first:ethNumber secend:price_ether value:4];
+                        NSString *otherPrice_cny = [NSString DecimalFuncWithOperatorType:2 first:price_ether secend:price_cny value:2];
+                        ethPriceCny = [NSString DecimalFuncWithOperatorType:0 first:ethPriceCny secend:otherPrice_cny value:4];
+                        NSString *otherPrice_usd = [NSString DecimalFuncWithOperatorType:2 first:price_ether secend:price_usd value:2];
+                        ethPriceUsd = [NSString DecimalFuncWithOperatorType:0 first:ethPriceUsd secend:otherPrice_usd value:4];
                         break;
                     }
                     case 2: {
@@ -497,69 +588,43 @@
                     }
                 }
             }
+            
+            if (![NSObject isNulllWithObject:ethNumber]) {
+                self.ethModel = [[WalletInfoGntModel alloc] init];
+                self.ethModel.name = @"ETH";
+                self.ethModel.icon = @"ETH";
+                self.ethModel.balance = ethNumber;
+                self.ethModel.price_cny = ethPriceCny;
+                self.ethModel.price_usd = ethPriceUsd;
+                self.ethModel.flag = @"ETH";
+                self.ethModel.gnt_category_id = 1;
+            }
 
-            [UserSignData share].user.ETHAssets_ether = [NSString stringWithFormat:@"%.4f", ethNumber];
-            [UserSignData share].user.ETHAssets_cny = [NSString stringWithFormat:@"%.2f", ethPriceCny];
-            [UserSignData share].user.ETHAssets_usd = [NSString stringWithFormat:@"%.2f", ethPriceUsd];
-            [UserSignData share].user.BTCAssets_ether = [NSString stringWithFormat:@"%.4f", bcdNumber];
-            [UserSignData share].user.BTCAssets_cny = [NSString stringWithFormat:@"%.2f", bcdPriceCny];
-            [UserSignData share].user.BTCAssets_usd = [NSString stringWithFormat:@"%.2f", bcdPriceUsd];
-            [UserSignData share].user.NEOAssets_ether = [NSString stringWithFormat:@"%.4f", neoNumber];
-            [UserSignData share].user.NEOAssets_cny = [NSString stringWithFormat:@"%.2f", neoPriceCny];
-            [UserSignData share].user.NEOAssets_usd = [NSString stringWithFormat:@"%.2f", neoPriceUsd];
-            [UserSignData share].user.totalAssets_cny = [NSString stringWithFormat:@"%.2f", ethNumber * ethPriceCny + bcdNumber * bcdPriceCny + neoNumber * neoPriceCny];
-            [UserSignData share].user.totalAssets_usd = [NSString stringWithFormat:@"%.2f", ethNumber * ethPriceUsd + bcdNumber * bcdPriceUsd + neoNumber * neoPriceUsd];
+//            [UserSignData share].user.ETHAssets_ether = ethNumber;
+//            [UserSignData share].user.ETHAssets_cny = ethPriceCny;
+//            [UserSignData share].user.ETHAssets_usd = ethPriceUsd;
+//            [UserSignData share].user.BTCAssets_ether = [NSString stringWithFormat:@"%.4f", bcdNumber];
+//            [UserSignData share].user.BTCAssets_cny = [NSString stringWithFormat:@"%.2f", bcdPriceCny];
+//            [UserSignData share].user.BTCAssets_usd = [NSString stringWithFormat:@"%.2f", bcdPriceUsd];
+//            [UserSignData share].user.NEOAssets_ether = [NSString stringWithFormat:@"%.4f", neoNumber];
+//            [UserSignData share].user.NEOAssets_cny = [NSString stringWithFormat:@"%.2f", neoPriceCny];
+//            [UserSignData share].user.NEOAssets_usd = [NSString stringWithFormat:@"%.2f", neoPriceUsd];
+//            [UserSignData share].user.totalAssets_cny = [NSString stringWithFormat:@"%.2f", ethNumber * ethPriceCny + bcdNumber * bcdPriceCny + neoNumber * neoPriceCny];
+//            [UserSignData share].user.totalAssets_usd = [NSString stringWithFormat:@"%.2f", ethNumber * ethPriceUsd + bcdNumber * bcdPriceUsd + neoNumber * neoPriceUsd];
             [[UserSignData share] storageData:[UserSignData share].user];
+            
+            [self dataStatisticsWithWallets:wallets];
         }
-
-//        if ([[responseCache objectForKey:@"list"] count] > 0)
-//        {
-//            NSString * assets_ether = @"0.0000";
-//            NSString * assets_cny = @"0.00";
-//            for (NSDictionary * dic in [responseCache objectForKey:@"list"])
-//            {
-//                NSString * price_ether;
-//                if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-//                {
-//                    price_ether = [NSString DecimalFuncWithOperatorType:3 first:[dic objectForKey:@"balance"]/*[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]]*/ secend:@"1000000000000000000" value:4];
-//                }
-//                else
-//                {
-//                    price_ether = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
-//                }
-//
-//                assets_ether = [NSString DecimalFuncWithOperatorType:0 first:assets_ether secend:price_ether value:4];
-//
-//                if ([UserSignData share].user.walletUnitType == 1)
-//                {
-//                    NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:price_ether secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_cny" ] value:2];
-//                    assets_cny = [NSString DecimalFuncWithOperatorType:0 first:assets_cny secend:price_cny value:2];
-//                }
-//                else
-//                {
-//                    NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:price_ether secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_usd"] value:2];
-//                    assets_cny = [NSString DecimalFuncWithOperatorType:0 first:assets_cny secend:price_cny value:2];
-//                }
-//
-//            }
-//            [UserSignData share].user.ETHAssets_ether = [NSString stringWithFormat:@"%.4f",[assets_ether floatValue]];
-//            [UserSignData share].user.ETHAssets_cny = [NSString stringWithFormat:@"%.2f",[assets_cny floatValue]];
-//            [UserSignData share].user.BTCAssets_ether = @"0.0000";
-//            [UserSignData share].user.BTCAssets_cny = @"0.00";
-//            [UserSignData share].user.totalAssets = [NSString stringWithFormat:@"%.2f",[assets_cny floatValue]];
-////            [UserSignData share].user.isRefeshAssets = NO;
-//            [[UserSignData share] storageData:[UserSignData share].user];
-////            [self upAssetsLB];
-//        }
     } success:^(id responseObject)
      {
+         self.ethModel = nil;
          NSArray *dataArray = responseObject[@"list"];
          if (dataArray.count > 0)
          {
              // ETH
-             CGFloat ethNumber = 0;
-             CGFloat ethPriceCny = 0;
-             CGFloat ethPriceUsd = 0;
+             NSString *ethNumber = @"0.00";
+             NSString *ethPriceCny = @"0.00";
+             NSString *ethPriceUsd = @"0.00";
              // BCD
              CGFloat bcdNumber = 0;
              CGFloat bcdPriceCny = 0;
@@ -579,9 +644,21 @@
                  switch (category_id.integerValue) {
                      case 1: {
                          // ETH
-                         ethNumber += balance.floatValue;
-                         ethPriceCny += sum_cny;
-                         ethPriceUsd += sum_usd;
+                         NSString * price_ether;
+                         if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                         {
+                             price_ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                         }
+                         else
+                         {
+                             price_ether = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
+                         }
+                         ethNumber = [NSString DecimalFuncWithOperatorType:0 first:ethNumber secend:price_ether value:4];
+                         NSString *otherPrice_cny = [NSString DecimalFuncWithOperatorType:2 first:price_ether secend:price_cny value:2];
+                         ethPriceCny = [NSString DecimalFuncWithOperatorType:0 first:ethPriceCny secend:otherPrice_cny value:4];
+                         NSString *otherPrice_usd = [NSString DecimalFuncWithOperatorType:2 first:price_ether secend:price_usd value:2];
+                         ethPriceUsd = [NSString DecimalFuncWithOperatorType:0 first:ethPriceUsd secend:otherPrice_usd value:4];
+                         
                          break;
                      }
                      case 2: {
@@ -601,146 +678,39 @@
                      }
                  }
              }
+             
+             if (![NSObject isNulllWithObject:ethNumber]) {
+                 self.ethModel = [[WalletInfoGntModel alloc] init];
+                 self.ethModel.name = @"ETH";
+                 self.ethModel.icon = @"ETH";
+                 self.ethModel.balance = ethNumber;
+                 self.ethModel.price_cny = ethPriceCny;
+                 self.ethModel.price_usd = ethPriceUsd;
+                 self.ethModel.flag = @"ETH";
+                 self.ethModel.gnt_category_id = 1;
+             }
 
-             [UserSignData share].user.ETHAssets_ether = [NSString stringWithFormat:@"%.4f", ethNumber];
-             [UserSignData share].user.ETHAssets_cny = [NSString stringWithFormat:@"%.2f", ethPriceCny];
-             [UserSignData share].user.ETHAssets_usd = [NSString stringWithFormat:@"%.2f", ethPriceUsd];
-             [UserSignData share].user.BTCAssets_ether = [NSString stringWithFormat:@"%.4f", bcdNumber];
-             [UserSignData share].user.BTCAssets_cny = [NSString stringWithFormat:@"%.2f", bcdPriceCny];
-             [UserSignData share].user.BTCAssets_usd = [NSString stringWithFormat:@"%.2f", bcdPriceUsd];
-             [UserSignData share].user.NEOAssets_ether = [NSString stringWithFormat:@"%.4f", neoNumber];
-             [UserSignData share].user.NEOAssets_cny = [NSString stringWithFormat:@"%.2f", neoPriceCny];
-             [UserSignData share].user.NEOAssets_usd = [NSString stringWithFormat:@"%.2f", neoPriceUsd];
+//             [UserSignData share].user.ETHAssets_ether = ethNumber;
+//             [UserSignData share].user.ETHAssets_cny = ethPriceCny;
+//             [UserSignData share].user.ETHAssets_usd = ethPriceUsd;
+//             [UserSignData share].user.BTCAssets_ether = [NSString stringWithFormat:@"%.4f", bcdNumber];
+//             [UserSignData share].user.BTCAssets_cny = [NSString stringWithFormat:@"%.2f", bcdPriceCny];
+//             [UserSignData share].user.BTCAssets_usd = [NSString stringWithFormat:@"%.2f", bcdPriceUsd];
+//             [UserSignData share].user.NEOAssets_ether = [NSString stringWithFormat:@"%.4f", neoNumber];
+//             [UserSignData share].user.NEOAssets_cny = [NSString stringWithFormat:@"%.2f", neoPriceCny];
+//             [UserSignData share].user.NEOAssets_usd = [NSString stringWithFormat:@"%.2f", neoPriceUsd];
 //             [UserSignData share].user.totalAssets = [NSString stringWithFormat:@"%.2f",[assets_cny floatValue]];
              [[UserSignData share] storageData:[UserSignData share].user];
-
-
-
-//             NSString * assets_ether = @"0.0000";
-//             NSString * assets_cny = @"0.00";
-//             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
-//             {
-//                 NSString * price_ether;
-//                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-//                 {
-//                     price_ether = [NSString DecimalFuncWithOperatorType:3 first:[dic objectForKey:@"balance"]/*[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]]*/ secend:@"1000000000000000000" value:4];
-//                 }
-//                 else
-//                 {
-//                     price_ether = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
-//                 }
-//                 assets_ether = [NSString DecimalFuncWithOperatorType:0 first:assets_ether secend:price_ether value:4];
-//
-////                 if ([UserSignData share].user.walletUnitType == 1)
-////                 {
-////                     NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:price_ether secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_cny" ] value:4];
-////                     assets_cny = [NSString DecimalFuncWithOperatorType:0 first:assets_cny secend:price_cny value:4];
-////                 }
-////                 else
-////                 {
-////                     NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:price_ether secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_usd"] value:4];
-////                     assets_cny = [NSString DecimalFuncWithOperatorType:0 first:assets_cny secend:price_cny value:4];
-////                 }
-//
-//             }
-//             [UserSignData share].user.ETHAssets_ether = [NSString stringWithFormat:@"%.4f",[assets_ether floatValue]];
-//             [UserSignData share].user.ETHAssets_cny = [NSString stringWithFormat:@"%.2f",[assets_cny floatValue]];
-//             [UserSignData share].user.BTCAssets_ether = @"0.0000";
-//             [UserSignData share].user.BTCAssets_cny = @"0.00";
-//             [UserSignData share].user.totalAssets = [NSString stringWithFormat:@"%.2f",[assets_cny floatValue]];
-//             //            [UserSignData share].user.isRefeshAssets = NO;
-//             [[UserSignData share] storageData:[UserSignData share].user];
-////             [self upAssetsLB];
          }
      } failure:^(NSString *error)
      {
          [LCProgressHUD showFailure:error];
      }];
     
-    [self dataStatisticsWithWallets:wallets];
-    
-//    // 后台轮询获取本地缓存
-//    [self.localDataSource removeAllObjects];
-//    for (id wallet_id in wallets)
-//    {
-//        if (![NSString isNulllWithObject:[PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"conversion/%@",wallet_id]]])
-//        {
-//            NSDictionary * data = [PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"conversion/%@",wallet_id]];
-//            for (NSDictionary * dic in [data objectForKey:@"list"])
-//            {
-//                WalletInfoGntModel * model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
-//                model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
-//                model.price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
-//                model.price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
-//                if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-//                {
-//                    model.balance = [dic objectForKey:@"balance"];
-//                }
-//                else
-//                {
-//                    model.balance = @"0";
-//                }
-//
-//                [self.localDataSource addObject:model];
-//            }
-//        }
-//    }
-//
-    //数据统计 本地
-//    NSMutableArray * totleArray = [[NSMutableArray alloc] init];
-//    NSMutableDictionary * typedic = [[NSMutableDictionary alloc] initWithCapacity:0];
-//    for(WalletInfoGntModel * model in self.localDataSource)
-//    {
-//        [typedic setValue:model.name forKey:model.name];
-//    }
-//    NSArray * alltypeArray = [[NSArray alloc] initWithArray:[typedic allKeys]];
-//    __block NSString * totalAssets = [UserSignData share].user.totalAssets;
-//
-//    for (NSString * typeName in alltypeArray)
-//    {
-//        WalletInfoGntModel * typeModel = [[WalletInfoGntModel alloc] init];
-//        NSString * totleBalance = @"0.0000";
-//        NSString * totleBalancecny = @"0.00";
-//        for (WalletInfoGntModel * model in self.localDataSource)
-//        {
-//            if ([model.name isEqualToString:typeName])
-//            {
-//                typeModel = model;
-//                NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[model.balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
-//                totleBalance = [NSString DecimalFuncWithOperatorType:0 first:totleBalance secend:ether value:4];
-//
-//            }
-//        }
-//
-//        if ([UserSignData share].user.walletUnitType == 1)
-//        {
-//            NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:totleBalance secend:typeModel.price_cny value:4];
-//            totleBalancecny = [NSString DecimalFuncWithOperatorType:0 first:totleBalancecny secend:price_cny value:4];
-//        }
-//        else
-//        {
-//            NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:totleBalance secend:typeModel.price_usd value:4];
-//            totleBalancecny = [NSString DecimalFuncWithOperatorType:0 first:totleBalancecny secend:price_cny value:4];
-//        }
-//
-//        typeModel.balance = totleBalance;
-//        [totleArray addObject:typeModel];
-//        totalAssets = [NSString DecimalFuncWithOperatorType:0 first:totalAssets secend:totleBalancecny value:2];
-//    }
-//    [UserSignData share].user.totalAssets = [NSString stringWithFormat:@"%.2f",[totalAssets floatValue]];
-//    [[UserSignData share] storageData:[UserSignData share].user];
-//    [self upAssetsLB];
-//    self.dataSource = totleArray;
-//    [self.coustromTableView reloadData];
-    
     //在线获取
-//    [self.lineDataSource removeAllObjects];
-    NSMutableArray *lineDataArray = [NSMutableArray array];
     dispatch_group_t group = dispatch_group_create();
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
     dispatch_queue_t queue=dispatch_queue_create(NULL, DISPATCH_QUEUE_SERIAL);
-    __block WalletInfoGntModel * neoModel;
-    __block WalletInfoGntModel * gasModel;
     //获取代币余额列表
     for (id wallet_id in wallets)
     {
@@ -751,77 +721,90 @@
              {
              } success:^(id responseObject)
              {
-                 WalletLeftListModel * model = self.leftdataSource[[wallets indexOfObject:wallet_id]];
-                 if (model.category_id == 2) {
-                     NSDictionary *record = responseObject[@"record"];
-                     NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
-                     NSString *neoPriceForCny = record[@"cap"][@"price_cny"];
-                     NSString *neoPriceForUsd = record[@"cap"][@"price_usd"];
-                     if (!neoModel) {
-                         neoModel = [[WalletInfoGntModel alloc] init];
-                     }
-                     neoModel.address = record[@"address"];
-                     neoModel.name = @"NEO";
-                     neoModel.icon = @"NEO_add";
-                     neoModel.balance = [NSString stringWithFormat:@"%.4lf", neoModel.balance.floatValue + neoNumber.floatValue];
-                     neoModel.price_cny = neoPriceForCny;
-                     neoModel.price_usd = neoPriceForUsd;
-                     neoModel.flag = @"NEO";
-                     neoModel.gnt_category_id = 2;
-                     
-                     NSArray *gny = record[@"gnt"];
-                     NSDictionary *gas = gny.firstObject;
-                     NSString *gasPriceForCny = gas[@"cap"][@"price_cny"];
-                     NSString *gasPriceForUsd = gas[@"cap"][@"price_usd"];
-                     NSString *gasNumber = [NSString stringWithFormat:@"%@", gas[@"balance"]];
-                     if (!gasModel) {
-                         gasModel = [[WalletInfoGntModel alloc] init];
-                     }
-                     gasModel.address = record[@"address"];
-                     gasModel.name = @"Gas";
-                     gasModel.icon = @"NEO_project_icon_Gas";
-                     gasModel.balance = [NSString stringWithFormat:@"%.4lf", gasModel.balance.floatValue + gasNumber.floatValue];
-                     gasModel.price_cny = gasPriceForCny;
-                     gasModel.price_usd = gasPriceForUsd;
-                     gasModel.flag = @"Gas";
-                     gasModel.gnt_category_id = 2;
-                 } else {
-                     if ([[responseObject objectForKey:@"list"] count] > 0)
-                     {
-                         for (NSDictionary * dic in [responseObject objectForKey:@"list"])
-                         {
-                             NSInteger index = [self foundEthModelWithArray:[lineDataArray copy] name:dic[@"name"]];
-                             if (index >= 0) {
-                                 // 找到
-                                 WalletInfoGntModel *model = lineDataArray[index];
-                                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-                                 {
-                                     NSString *balance = [dic objectForKey:@"balance"];
-                                     model.balance = [NSString stringWithFormat:@"%.4lf", model.balance.floatValue + balance.floatValue];
-                                 }
-                                 [lineDataArray replaceObjectAtIndex:index withObject:model];
-                             } else {
-                                 // 没找到
-                                 WalletInfoGntModel *model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
-                                 model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
-                                 model.price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
-                                 model.price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
-                                 model.gnt_category_id = 1;
-                                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-                                 {
-                                     model.balance = [dic objectForKey:@"balance"];
-                                 }
-                                 else
-                                 {
-                                     model.balance = @"0";
-                                 }
-                                 
-                                 [lineDataArray addObject:model];
-                             }
-                         }
-                     }
-                 }
-                 dispatch_semaphore_signal(semaphore);
+//                 WalletLeftListModel * model = self.leftdataSource[[wallets indexOfObject:wallet_id]];
+//                 if (model.category_id == 2) {
+//                     NSDictionary *record = responseObject[@"record"];
+//                     NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
+//                     NSString *neoPriceForCny = record[@"cap"][@"price_cny"];
+//                     NSString *neoPriceForUsd = record[@"cap"][@"price_usd"];
+//                     if (!neoModel) {
+//                         neoModel = [[WalletInfoGntModel alloc] init];
+//                         neoModel.balance = @"0.00";
+//                         neoModel.price_cny = @"0.00";
+//                         neoModel.price_usd = @"0.00";
+//                     }
+//                     neoModel.address = record[@"address"];
+//                     neoModel.name = @"NEO";
+//                     neoModel.icon = @"NEO_add";
+//                     neoModel.balance = [NSString stringWithFormat:@"%.4lf", neoModel.balance.floatValue + neoNumber.floatValue];
+//                     neoModel.price_cny = [NSString DecimalFuncWithOperatorType:0 first:neoModel.price_cny secend:[NSString DecimalFuncWithOperatorType:2 first:neoModel.balance secend:neoPriceForCny value:2] value:2];
+//                     neoModel.price_usd = [NSString DecimalFuncWithOperatorType:0 first:neoModel.price_usd secend:[NSString DecimalFuncWithOperatorType:2 first:neoModel.balance secend:neoPriceForUsd value:2] value:2];
+//                     neoModel.flag = @"NEO";
+//                     neoModel.gnt_category_id = 2;
+//
+//                     NSArray *gny = record[@"gnt"];
+//                     NSDictionary *gas = gny.firstObject;
+//                     NSString *gasPriceForCny = gas[@"cap"][@"price_cny"];
+//                     NSString *gasPriceForUsd = gas[@"cap"][@"price_usd"];
+//                     NSString *gasNumber = [NSString stringWithFormat:@"%@", gas[@"balance"]];
+//                     if (!gasModel) {
+//                         gasModel = [[WalletInfoGntModel alloc] init];
+//                         gasModel.balance = @"0.00";
+//                         gasModel.price_cny = @"0.00";
+//                         gasModel.price_usd = @"0.00";
+//                     }
+//                     gasModel.address = record[@"address"];
+//                     gasModel.name = @"Gas";
+//                     gasModel.icon = @"NEO_project_icon_Gas";
+//                     gasModel.balance = [NSString stringWithFormat:@"%.4lf", gasModel.balance.floatValue + gasNumber.floatValue];
+//                     gasModel.price_cny = [NSString DecimalFuncWithOperatorType:0 first:gasModel.price_cny secend:[NSString DecimalFuncWithOperatorType:2 first:gasModel.balance secend:gasPriceForCny value:2] value:2];
+//                     gasModel.price_usd = [NSString DecimalFuncWithOperatorType:0 first:gasModel.price_usd secend:[NSString DecimalFuncWithOperatorType:2 first:gasModel.balance secend:gasPriceForUsd value:2] value:2];
+//                     gasModel.flag = @"Gas";
+//                     gasModel.gnt_category_id = 2;
+//                 } else {
+//                     if ([[responseObject objectForKey:@"list"] count] > 0)
+//                     {
+//                         for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+//                         {
+//                             NSString *price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
+//                             NSString *price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
+//                             NSInteger index = [self foundEthModelWithArray:[lineDataArray copy] name:dic[@"name"]];
+//                             if (index >= 0) {
+//                                 // 找到
+//                                 WalletInfoGntModel *model = lineDataArray[index];
+//                                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+//                                 {
+//                                     NSString *balance = [dic objectForKey:@"balance"];
+//                                     NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+//                                     model.balance = [NSString DecimalFuncWithOperatorType:0 first:model.balance secend:ether value:4];
+//                                     model.price_cny = [NSString DecimalFuncWithOperatorType:0 first:model.price_cny secend:[NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2] value:2];
+//                                     model.price_usd = [NSString DecimalFuncWithOperatorType:0 first:model.price_usd secend:[NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2] value:2];
+//                                 }
+//                                 [lineDataArray replaceObjectAtIndex:index withObject:model];
+//                             } else {
+//                                 // 没找到
+//                                 WalletInfoGntModel *model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
+//                                 model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
+//                                 model.gnt_category_id = 1;
+//                                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+//                                 {
+//                                     NSString *balance = [dic objectForKey:@"balance"];
+//                                     NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+//                                     model.balance = ether;
+//                                 }
+//                                 else
+//                                 {
+//                                     model.balance = @"0";
+//                                 }
+//                                 model.price_cny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
+//                                 model.price_usd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
+//
+//                                 [lineDataArray addObject:model];
+//                             }
+//                         }
+//                     }
+//                 }
+//                 dispatch_semaphore_signal(semaphore);
              } failure:^(NSString *error)
              {
 //                 [LCProgressHUD showFailure:error];
@@ -833,17 +816,18 @@
     dispatch_group_notify(group, queue, ^{
         //所有请求返回数据后执行
         //数据统计
-//        NSMutableArray * totleLineArray = [[NSMutableArray alloc] init];
-//        NSMutableDictionary * typeLinedic = [[NSMutableDictionary alloc]initWithCapacity:0];
-        if (neoModel) {
-            [self.neoDataSource removeAllObjects];
-            [self.neoDataSource addObject:neoModel];
-            [self.neoDataSource addObject:gasModel];
-        }
-        [self.ethDataSource removeAllObjects];
-        [self.ethDataSource addObjectsFromArray:[lineDataArray copy]];
+//        [self.neoDataSource removeAllObjects];
+//        if (neoModel) {
+//            [self.neoDataSource addObject:neoModel];
+//            [self.neoDataSource addObject:gasModel];
+//        }
+//        [self.ethDataSource removeAllObjects];
+//        if (ethModel) {
+//            [self.ethDataSource addObject:ethModel];
+//        }
+//        [self.ethDataSource addObjectsFromArray:[lineDataArray copy]];
         [self dataStatisticsWithWallets:wallets];
-        [self.coustromTableView reloadData];
+//        [self.coustromTableView reloadData];
 //        for(WalletInfoGntModel * model in self.lineDataSource)
 //        {
 //            [typeLinedic setValue:model.name forKey:model.name];
@@ -861,8 +845,8 @@
 //                {
 //                    typeModel = model;
 //                    totleBalance = model.balance;
-////                    NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[model.balance substringFromIndex:2]] secend:@"1000000000000000000"];
-////                    totleBalance = [NSString DecimalFuncWithOperatorType:0 first:totleBalance secend:ether];
+//                    NSString * ether = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[model.balance substringFromIndex:2]] secend:@"1000000000000000000"];
+//                    totleBalance = [NSString DecimalFuncWithOperatorType:0 first:totleBalance secend:ether];
 //                }
 //            }
 //            typeModel.balance = totleBalance;
@@ -1313,6 +1297,19 @@
         _choseWalletView.delegate = self;
     }
     return _choseWalletView;
+}
+
+- (NSMutableArray *)ethDataSource {
+    if (!_ethDataSource) {
+        _ethDataSource = [NSMutableArray array];
+    }
+    return _ethDataSource;
+}
+- (NSMutableArray *)neoDataSource {
+    if (!_neoDataSource) {
+        _neoDataSource = [NSMutableArray array];
+    }
+    return _neoDataSource;
 }
 
 @end

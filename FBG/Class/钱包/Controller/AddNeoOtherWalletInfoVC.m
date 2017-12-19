@@ -298,7 +298,7 @@
         }
         case 4:
         {
-            if ([NSString isAdress:[self.infoTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+            if ([NSString isNEOAdress:[self.infoTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
             {
                 //创建成功
                 WalletNameVC * vc = [[WalletNameVC alloc] init];

@@ -360,11 +360,11 @@
     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(globalQueue, ^
                    {
-//                       if ([self.model.name isEqualToString:@"NEO"]) {
+                       if ([self.model.name isEqualToString:@"NEO"]) {
                            [self getUnspentWithPassword:passWord];
-//                       } else {
-//                           [self transferAccountsForETHWithPassword:passWord];
-//                       }
+                       } else {
+                           [self transferAccountsForETHWithPassword:passWord];
+                       }
                    });
     
 }

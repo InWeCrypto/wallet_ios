@@ -269,7 +269,7 @@
                      case 1:
                      {
                          //删除钱包
-                         [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
+                         [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] isOtherBaseUrl:NO parameters:nil hudString:@"删除中..." success:^(id responseObject)
                           {
                               [LCProgressHUD showSuccess:@"删除成功"];
                               [self.navigationController popViewControllerAnimated:YES];
@@ -363,7 +363,7 @@
          {
              [self.dataSource removeAllObjects];
              
-             CGFloat sum = 0;
+             NSString *sum = @"0.00";
              NSDictionary *record = responseObject[@"record"];
              NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
              NSString *neoPriceForCny = record[@"cap"][@"price_cny"];
@@ -373,10 +373,10 @@
              neoModel.name = @"NEO";
              neoModel.icon = @"NEO_add";
              neoModel.balance = neoNumber;
-             neoModel.price_cny = neoPriceForCny;
-             neoModel.price_usd = neoPriceForUsd;
+             neoModel.price_cny = [NSString DecimalFuncWithOperatorType:2 first:neoNumber secend:neoPriceForCny value:2];;
+             neoModel.price_usd = [NSString DecimalFuncWithOperatorType:2 first:neoNumber secend:neoPriceForUsd value:2];
              neoModel.flag = @"NEO";
-             sum += neoModel.price_cny.floatValue * neoNumber.floatValue;
+             sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:neoModel.price_cny value:2];
              
              NSArray *gny = record[@"gnt"];
              NSDictionary *gas = gny.firstObject;
@@ -388,25 +388,25 @@
              gasModel.name = @"Gas";
              gasModel.icon = @"NEO_project_icon_Gas";
              gasModel.balance = gasNumber;
-             gasModel.price_cny = gasPriceForCny;
-             gasModel.price_usd = gasPriceForUsd;
+             gasModel.price_cny = [NSString DecimalFuncWithOperatorType:2 first:gasNumber secend:gasPriceForCny value:2];
+             gasModel.price_usd = [NSString DecimalFuncWithOperatorType:2 first:gasNumber secend:gasPriceForUsd value:2];;
              gasModel.flag = @"Gas";
-             sum += gasModel.price_cny.floatValue * gasNumber.floatValue;
+             sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:gasModel.price_cny value:2];
              
              WalletInfoGntModel * canGasModel = [[WalletInfoGntModel alloc] init];
              canGasModel.name = @"可提现Gas";
              canGasModel.icon = @"NEO_project_icon_Gas";
              canGasModel.balance = gas[@"available"];
              canGasModel.noExtractbalance = gas[@"unavailable"];
-             canGasModel.price_cny = gasPriceForCny;
-             canGasModel.price_usd = gasPriceForUsd;
+             canGasModel.price_cny = [NSString DecimalFuncWithOperatorType:2 first:canGasModel.balance secend:gasPriceForCny value:2];
+             canGasModel.price_usd = [NSString DecimalFuncWithOperatorType:2 first:canGasModel.balance secend:gasPriceForUsd value:2];
              canGasModel.address = self.model.address;
              
              [self.dataSource addObject:neoModel];
              [self.dataSource addObject:gasModel];
              [self.dataSource addObject:canGasModel];
              
-             self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2lf", sum];
+             self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2lf", sum.floatValue];
              [self.coustromTableView reloadData];
              [self endRefreshing];
          }failure:^(NSString *error)
@@ -416,7 +416,7 @@
          }];
     } else {
         // ETH钱包代币
-        self.headerView.priceLB.text = @"0.00";
+        self.headerView.priceLB.text = @"≈0.00";
         //用户已添加代币类型列表
         [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%d",self.model.id] isOtherBaseUrl:NO parameters:nil hudString:nil success:^(id responseObject)
          {
@@ -429,8 +429,6 @@
                      model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
                      model.address = [[dic objectForKey:@"gnt_category"] objectForKey:@"address"];
                      model.symbol = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"symbol"];
-                     model.price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
-                     model.price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
                      model.flag = [dic objectForKey:@"name"];
                      if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
                      {
@@ -440,17 +438,21 @@
                      {
                          model.balance = @"0.0000";
                      }
+                     NSString *price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
+                     NSString *price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
+                     model.price_cny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
+                     model.price_usd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
                      model.gas = [[[dic objectForKey:@"gnt_category"] objectForKey:@"gas"] intValue];
                      
                      if ([UserSignData share].user.walletUnitType == 1)
                      {
                          NSString * price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.price_cny value:2];
-                         self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price value:2] floatValue]];
+                         self.headerView.priceLB.text = [NSString stringWithFormat:@"≈%.2f",[[NSString DecimalFuncWithOperatorType:0 first:[self.headerView.priceLB.text substringFromIndex:1] secend:price value:2] floatValue]];
                      }
                      else
                      {
                          NSString * price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.price_usd value:2];
-                         self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price value:2] floatValue]];
+                         self.headerView.priceLB.text = [NSString stringWithFormat:@"≈%.2f",[[NSString DecimalFuncWithOperatorType:0 first:[self.headerView.priceLB.text substringFromIndex:1] secend:price value:2] floatValue]];
                      }
                      
                      [self.dataSource addObject:model];
@@ -463,61 +465,46 @@
              [self endRefreshing];
              [LCProgressHUD showFailure:error];
          }];
+        
+        NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+        [parametersDic setObject:[@[@(self.model.id)] toJSONStringForArray] forKey:@"wallet_ids"];
+        
+        [PPNetworkHelper GET:@"conversion" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
+         {
+             if ([[responseObject objectForKey:@"list"] count] > 0)
+             {
+                 
+                 for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+                 {
+                     if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                     {
+                         self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                     }
+                     else
+                     {
+                         self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
+                     }
+                     self.headerView.ETHpriceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
+                     
+                     if ([UserSignData share].user.walletUnitType == 1)
+                     {
+                         NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_cny"] value:4];
+                         self.headerView.priceLB.text = [NSString stringWithFormat:@"≈%.2f",[[NSString DecimalFuncWithOperatorType:0 first:[self.headerView.priceLB.text substringFromIndex:1] secend:price_cny value:2] floatValue]];
+                         self.headerView.ETHcnyLB.text = [NSString stringWithFormat:@"≈￥%.2f",[price_cny floatValue]];
+                     }
+                     else
+                     {
+                         NSString * price_usd = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_usd"] value:4];
+                         self.headerView.priceLB.text = [NSString stringWithFormat:@"≈%.2f",[[NSString DecimalFuncWithOperatorType:0 first:[self.headerView.priceLB.text substringFromIndex:1] secend:price_usd value:2] floatValue]];
+                         self.headerView.ETHcnyLB.text = [NSString stringWithFormat:@"≈$%.2f",[price_usd floatValue]];
+                     }
+                 }
+             }
+         } failure:^(NSString *error)
+         {
+             [LCProgressHUD showFailure:error];
+         }];
     }
-    
-    //获取账户余额
-//    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-//    [dic setObject:self.model.address forKey:@"address"];
-//    
-//    [PPNetworkHelper POST:@"extend/getBalance" parameters:dic hudString:nil success:^(id responseObject)
-//     {
-//         self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[responseObject objectForKey:@"value"] substringFromIndex:2]] secend:@"1000000000000000000"];
-//         self.headerView.priceLB.text = self.banlacePrice;
-//         self.headerView.infoLB.text = [NSString stringWithFormat:@"≈￥0.00"];
-//         
-//     } failure:^(NSString *error)
-//     {
-//         [LCProgressHUD showFailure:error];
-//     }];
-    
-//    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-//    [parametersDic setObject:[@[@(self.model.id)] toJSONStringForArray] forKey:@"wallet_ids"];
-//
-//    [PPNetworkHelper GET:@"conversion" parameters:parametersDic hudString:nil success:^(id responseObject)
-//     {
-//         if ([[responseObject objectForKey:@"list"] count] > 0)
-//         {
-//
-//             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
-//             {
-//                 if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
-//                 {
-//                     self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
-//                 }
-//                 else
-//                 {
-//                     self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:@"0" secend:@"1000000000000000000" value:4];
-//                 }
-//                 self.headerView.ETHpriceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
-//
-//                 if ([UserSignData share].user.walletUnitType == 1)
-//                 {
-//                     NSString * price_cny = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_cny"] value:4];
-//                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price_cny value:2] floatValue]];
-//                     self.headerView.ETHcnyLB.text = [NSString stringWithFormat:@"≈￥%.2f",[price_cny floatValue]];
-//                 }
-//                 else
-//                 {
-//                     NSString * price_usd = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:[[[dic objectForKey:@"category"] objectForKey:@"cap"] objectForKey:@"price_usd"] value:4];
-//                     self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2f",[[NSString DecimalFuncWithOperatorType:0 first:self.headerView.priceLB.text secend:price_usd value:2] floatValue]];
-//                     self.headerView.ETHcnyLB.text = [NSString stringWithFormat:@"≈$%.2f",[price_usd floatValue]];
-//                 }
-//             }
-//         }
-//     } failure:^(NSString *error)
-//     {
-//         [LCProgressHUD showFailure:error];
-//     }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
@@ -742,7 +729,7 @@
                                                               [LCProgressHUD hide];
                                                               [self caneButtonClicked];
                                                               
-                                                              [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
+                                                              [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] isOtherBaseUrl:NO parameters:nil hudString:@"删除中..." success:^(id responseObject)
                                                                {
                                                                    [LCProgressHUD showSuccess:@"删除成功"];
                                                                    [PDKeyChain delete:self.model.address];
@@ -927,7 +914,7 @@
                                                               [LCProgressHUD hide];
                                                               [self caneButtonClicked];
                                                               
-                                                              [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
+                                                              [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%d",self.model.id] isOtherBaseUrl:NO parameters:nil hudString:@"删除中..." success:^(id responseObject)
                                                                {
                                                                    [LCProgressHUD showSuccess:@"删除成功"];
                                                                    [PDKeyChain delete:self.model.address];
@@ -1082,7 +1069,7 @@
     //添加一个删除按钮
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(@"Delete", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
     {
-        [PPNetworkHelper DELETE:[NSString stringWithFormat:@"user-gnt/%d",model.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
+        [PPNetworkHelper DELETE:[NSString stringWithFormat:@"user-gnt/%d",model.id] isOtherBaseUrl:NO parameters:nil hudString:@"删除中..." success:^(id responseObject)
         {
             //1.更新数据
             [self.dataSource removeObjectAtIndex:indexPath.row];

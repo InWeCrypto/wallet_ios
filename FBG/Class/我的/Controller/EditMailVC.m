@@ -78,7 +78,7 @@
 - (IBAction)deleteButtonCilick:(id)sender
 {
     //删除
-    [PPNetworkHelper DELETE:[NSString stringWithFormat:@"contact/%@",self.id] parameters:nil hudString:@"删除中..." success:^(id responseObject)
+    [PPNetworkHelper DELETE:[NSString stringWithFormat:@"user/contact/%@",self.id] isOtherBaseUrl:YES parameters:nil hudString:@"删除中..." success:^(id responseObject)
      {
          [LCProgressHUD showSuccess:@"删除成功"];
          [self.navigationController popViewControllerAnimated:YES];

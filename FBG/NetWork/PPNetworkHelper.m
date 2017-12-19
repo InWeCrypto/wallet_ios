@@ -455,7 +455,7 @@ static NetworkStatus _status;
     }];
 }
 
-+ (PPURLSessionTask *)DELETE:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (PPURLSessionTask *)DELETE:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
 {
     if (![NSString isNulllWithObject:hudString])
     {
@@ -464,7 +464,7 @@ static NetworkStatus _status;
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:NO];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL isOtherBaseUrl:isOtherBaseUrl];
     PPLog(@"❤️DELETE URL❤️ = %@",URL);
     PPLog(@"⚽️DELETE 数据⚽️ = %@",parameters);
     
