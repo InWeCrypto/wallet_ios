@@ -55,7 +55,8 @@
     self.remarksLB.text = NSLocalizedString(@"Remarks", nil);
     self.remarksTF.placeholder = NSLocalizedString(@"Please input remarks", nil);
     [self.sureButton setTitle:NSLocalizedString(@"Determine", nil) forState:UIControlStateNormal];
-    self.gasPrice = @"1";
+    self.gasPrice = @"0";
+    self.totleGasPrice = @"0.000000";
     self.banlaceLB.text = [NSString stringWithFormat:@"(当前余额:%@)",self.banlacePrice];
     self.priceTF.keyboardType = [self.tokenModel.name isEqualToString:@"NEO"] ? UIKeyboardTypeNumberPad : UIKeyboardTypeDecimalPad;
 }
@@ -115,45 +116,45 @@
 
     NSString * duibiPriceWeiValue = [NSString DecimalFuncWithOperatorType:0 first:priceWeiValue secend:totleGasPriceWeiValue value:18];
     NSString * banlacePriceWeiValue = [NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:@"1000000000000000000" value:18];
-//    if (self.tokenModel)
-//    {
-//        //代币判断余额   手续费 <= ether钱包余额    转账金额 <= 代币余额
-//        if (self.priceTF.text.length == 0)
-//        {
-//            [LCProgressHUD showMessage:@"请输入正确价格"];
-//            return;
-//        }
-//
-//        NSComparisonResult result = [NSString DecimalFuncComparefirst:priceWeiValue secend:[NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:@"1000000000000000000" value:18]];
-//        if (result ==NSOrderedDescending)
-//        {
-//            [LCProgressHUD showMessage:@"代币余额不足"];
-//            return;
-//        }
-//
-//        NSComparisonResult result1 = [NSString DecimalFuncComparefirst:totleGasPriceWeiValue secend:[NSString DecimalFuncWithOperatorType:2 first:self.walletBanlacePrice secend:@"1000000000000000000" value:18]];
-//        if (result1 ==NSOrderedDescending)
-//        {
-//            [LCProgressHUD showMessage:@"钱包余额不足"];
-//            return;
-//        }
-//    }
-//    else
-//    {
-//        //钱包余额判断   手续费 + 转账金额 <= ether钱包余额
-//        if (self.priceTF.text.length == 0)
-//        {
-//            [LCProgressHUD showMessage:@"请输入正确价格"];
-//            return;
-//        }
-//
-//        NSComparisonResult result = [NSString DecimalFuncComparefirst:duibiPriceWeiValue secend:banlacePriceWeiValue];
-//        if (result == NSOrderedDescending)
-//        {
-//            [LCProgressHUD showMessage:@"钱包余额不足"];
-//            return;
-//        }
-//    }
+    if (self.tokenModel)
+    {
+        //代币判断余额   手续费 <= ether钱包余额    转账金额 <= 代币余额
+        if (self.priceTF.text.length == 0)
+        {
+            [LCProgressHUD showMessage:@"请输入正确价格"];
+            return;
+        }
+
+        NSComparisonResult result = [NSString DecimalFuncComparefirst:priceWeiValue secend:[NSString DecimalFuncWithOperatorType:2 first:self.banlacePrice secend:@"1000000000000000000" value:18]];
+        if (result ==NSOrderedDescending)
+        {
+            [LCProgressHUD showMessage:@"代币余额不足"];
+            return;
+        }
+
+        NSComparisonResult result1 = [NSString DecimalFuncComparefirst:totleGasPriceWeiValue secend:[NSString DecimalFuncWithOperatorType:2 first:self.walletBanlacePrice secend:@"1000000000000000000" value:18]];
+        if (result1 ==NSOrderedDescending)
+        {
+            [LCProgressHUD showMessage:@"钱包余额不足"];
+            return;
+        }
+    }
+    else
+    {
+        //钱包余额判断   手续费 + 转账金额 <= ether钱包余额
+        if (self.priceTF.text.length == 0)
+        {
+            [LCProgressHUD showMessage:@"请输入正确价格"];
+            return;
+        }
+
+        NSComparisonResult result = [NSString DecimalFuncComparefirst:duibiPriceWeiValue secend:banlacePriceWeiValue];
+        if (result == NSOrderedDescending)
+        {
+            [LCProgressHUD showMessage:@"钱包余额不足"];
+            return;
+        }
+    }
 
     ConfirmationTransferVC * vc = [[ConfirmationTransferVC alloc] init];
     vc.totleGasPrice = self.totleGasPrice;

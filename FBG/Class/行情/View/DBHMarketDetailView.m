@@ -94,12 +94,12 @@
     
     NSString *usdPrice = [NSString stringWithFormat:@"%.2lf", _model.price.floatValue];
     NSString *cnyPrice = [NSString stringWithFormat:@"%.2lf", _model.priceCny.floatValue];
-    NSMutableAttributedString *currentPriceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@↑￥%@", usdPrice, cnyPrice]];
-    [currentPriceAttributedString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(16)], NSForegroundColorAttributeName:COLORFROM16(0x008C55, 1)} range:NSMakeRange(0, usdPrice.length + 1)];
+    NSMutableAttributedString *currentPriceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"$%@￥%@", usdPrice, cnyPrice]];
+    [currentPriceAttributedString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:AUTOLAYOUTSIZE(16)]} range:NSMakeRange(0, usdPrice.length + 1)];
     
     NSString *change = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.changeCny24h.floatValue : _model.change24h.floatValue];
-    NSMutableAttributedString *changeAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时涨跌      %@%%", change]];
-    [changeAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(12, change.length + 1)];
+    NSMutableAttributedString *changeAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"24小时涨跌      %@%@%%", change.floatValue > 0 ? @"+" : @"", change]];
+    [changeAttributedString addAttribute:NSForegroundColorAttributeName value:change.floatValue > 0 ? COLORFROM16(0x008C55, 1) : [UIColor redColor] range:NSMakeRange(12, change.length + 1 + (change.floatValue > 0 ? 1 : 0))];
     
     NSString *money = [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$";
     NSString *maxPrice = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.maxPriceCny24h.floatValue : _model.maxPrice24h.floatValue];

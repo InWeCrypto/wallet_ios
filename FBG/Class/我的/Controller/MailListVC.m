@@ -157,9 +157,8 @@
                      i = 1;
                  }
              }
-             [self.coustromTableView reloadData];
          }
-         
+         [self.coustromTableView reloadData];
     } failure:^(NSString *error)
     {
         [LCProgressHUD showFailure:error];
@@ -199,9 +198,10 @@
 - (IBAction)TypeChange:(id)sender
 {
     //改变类型
+    [self.coustromTableView reloadData];
+    
     if (self.typeChangeSM.selectedSegmentIndex == 1) {
         [LCProgressHUD showMessage:@"敬请期待"];
-        [self.coustromTableView reloadData];
         return;
     }
     

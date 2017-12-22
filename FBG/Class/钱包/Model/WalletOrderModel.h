@@ -37,6 +37,7 @@
 @property (nonatomic, assign) int status;
 @property (nonatomic, copy) NSString * finished_at;
 @property (nonatomic, copy) NSString * updated_at;
+@property (nonatomic, copy) NSString * confirm_at;
 @property (nonatomic, copy) NSString * created_at;
 @property (nonatomic, copy) NSString * block_number;  //当前块高
 @property (nonatomic, copy) NSString * maxBlockNumber;  //最大块号 当前

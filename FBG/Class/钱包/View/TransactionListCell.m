@@ -26,7 +26,7 @@
     _model = model;
     //收款的记录，数量用蓝色，转账的记录，数量用红色
     self.titleLB.text = model.trade_no;
-    self.timeLB.text = [NSString stringWithFormat:@"%@ %@", [_model.created_at substringToIndex:10], [_model.created_at substringWithRange:NSMakeRange(11, 8)]];
+    self.timeLB.text = [NSString getLocalDateFormateUTCDate:_model.created_at];
     self.infoLB.text = @"正在打包（0/12）";
     self.slider.value =  0.5;
     if (![model.flag isEqualToString:@"NEO"]) {
@@ -57,8 +57,7 @@
             }
         }
         
-        self.infoLB.text = @"待确认";
-        self.infoLB.hidden = ![NSObject isNulllWithObject:_model.finished_at];
+        self.infoLB.text = ![NSObject isNulllWithObject:_model.finished_at] ? @"交易成功" : @"待确认";
         
         self.slider.hidden = YES;
     } else {
@@ -77,60 +76,95 @@
             self.headImage.image = [UIImage imageNamed:@"转出"];
         }
         
-        switch (model.status)
+        //（当前块高-订单里的块高 + 1）/最小块高
+        int number;
+        if ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1 < 0)
         {
-                //0交易失败,1准备打包,2打包中,3交易成功
-            case 0:
-            {
+            //小于0 置为0
+            number = 0;
+        }
+        else
+        {
+            number = ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1);
+        }
+        
+        if ([NSObject isNulllWithObject:model.confirm_at]) {
+            if (number >= model.minBlockNumber.floatValue) {
+                // 交易失败
                 self.headImage.image = [UIImage imageNamed:@"提示"];
                 self.infoLB.text = @"交易失败";
                 self.slider.hidden = YES;
-                break;
-            }
-            case 1:
-            {
+            } else {
+                // 准备打包
                 self.infoLB.text = @"正在打包";
                 self.slider.value = 0;
-                break;
             }
-            case 2:
-            {   //（当前块高-订单里的块高 + 1）/最小块高
-                int number;
-                
-                if ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1 < 0)
-                {
-                    //小于0 置为0
-                    number = 0;
-                }
-                else
-                {
-                    number = ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1);
-                }
-                
-                if (number >= [model.minBlockNumber intValue])
-                {
-                    //大于1 交易成功
-                    self.slider.hidden = YES;
-                    self.infoLB.hidden = YES;
-                }
-                else
-                {
-                    //小于1 打包过程
-                    self.infoLB.text = [NSString stringWithFormat:@"已经确认%d/%@",number,model.minBlockNumber];
-                    self.slider.value = number/[model.minBlockNumber floatValue];
-                }
-                
-                break;
-            }
-            case 3:
-            {
+        } else {
+            if (number >= model.minBlockNumber.floatValue) {
+                // 交易成功
                 self.slider.hidden = YES;
-                self.infoLB.hidden = YES;
-                break;
+                self.infoLB.text = @"交易成功";
+            } else {
+                // 打包中
+                self.infoLB.text = [NSString stringWithFormat:@"已经确认%d/%@",number,model.minBlockNumber];
+                self.slider.value = number/[model.minBlockNumber floatValue];
             }
-            default:
-                break;
         }
+        
+//        switch (model.status)
+//        {
+//                //0交易失败,1准备打包,2打包中,3交易成功
+//            case 0:
+//            {
+//                self.headImage.image = [UIImage imageNamed:@"提示"];
+//                self.infoLB.text = @"交易失败";
+//                self.slider.hidden = YES;
+//                break;
+//            }
+//            case 1:
+//            {
+//                self.infoLB.text = @"正在打包";
+//                self.slider.value = 0;
+//                break;
+//            }
+//            case 2:
+//            {   //（当前块高-订单里的块高 + 1）/最小块高
+//                int number;
+//
+//                if ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1 < 0)
+//                {
+//                    //小于0 置为0
+//                    number = 0;
+//                }
+//                else
+//                {
+//                    number = ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1);
+//                }
+//
+//                if (number >= [model.minBlockNumber intValue])
+//                {
+//                    //大于1 交易成功
+//                    self.slider.hidden = YES;
+//                    self.infoLB.hidden = YES;
+//                }
+//                else
+//                {
+//                    //小于1 打包过程
+//                    self.infoLB.text = [NSString stringWithFormat:@"已经确认%d/%@",number,model.minBlockNumber];
+//                    self.slider.value = number/[model.minBlockNumber floatValue];
+//                }
+//
+//                break;
+//            }
+//            case 3:
+//            {
+//                self.slider.hidden = YES;
+//                self.infoLB.hidden = YES;
+//                break;
+//            }
+//            default:
+//                break;
+//        }
     }
 }
 

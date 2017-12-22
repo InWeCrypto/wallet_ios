@@ -31,14 +31,9 @@
     {
         self.title = @"添加联系人";
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
     if (self.id)
-    {        
+    {
         [PPNetworkHelper GET:[NSString stringWithFormat:@"user/contact/%@",self.id] isOtherBaseUrl:YES parameters:nil hudString:@"获取中..." success:^(id responseObject)
          {
              NSDictionary * dic = responseObject;
@@ -67,6 +62,21 @@
 
 - (void)scanSucessWithObject:(id)object
 {
+    if ([self.icoId isEqualToString:@"6"]) {
+        // ETH
+        if (![NSString isAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+        {
+            [LCProgressHUD showMessage:@"请输入正确的ETH钱包地址"];
+            return;
+        }
+    } else {
+        // NEO
+        if (![NSString isNEOAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+        {
+            [LCProgressHUD showMessage:@"请输入正确的NEO钱包地址"];
+            return;
+        }
+    }
     self.addressTF.text = object;
 }
 

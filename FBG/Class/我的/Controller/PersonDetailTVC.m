@@ -116,7 +116,7 @@
             NSString*timeString = [NSString stringWithFormat:@"%0.f", a];//转为字符型
             OSSPutObjectRequest * request = [OSSPutObjectRequest new];
             request.bucketName = @"whalewallet";
-            request.objectKey = [NSString stringWithFormat:@"ios_header_%@",timeString];
+            request.objectKey = [NSString stringWithFormat:@"ios_header_%@.jpeg",timeString];
             request.uploadingData = UIImageJPEGRepresentation(data, 0.5); // 直接上传NSData
             
             request.uploadProgress = ^(int64_t bytesSent, int64_t totalByteSent, int64_t totalBytesExpectedToSend) {

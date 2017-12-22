@@ -307,6 +307,10 @@
                     {
                         NSString *price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
                         NSString *price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
+                        if ([NSObject isNulllWithObject:dic[@"gnt_category"][@"cap"]]) {
+                            price_cny = @"0";
+                            price_usd = @"0";
+                        }
                         NSInteger index = [self foundEthModelWithArray:[self.ethDataSource copy] name:dic[@"name"]];
                         if (index >= 0) {
                             // 找到
@@ -334,6 +338,10 @@
                             else
                             {
                                 model.balance = @"0";
+                            }
+                            if ([NSObject isNulllWithObject:dic[@"gnt_category"][@"cap"]]) {
+                                price_cny = @"0";
+                                price_usd = @"0";
                             }
                             model.price_cny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
                             model.price_usd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
@@ -717,6 +725,7 @@
         dispatch_group_async(group, queue, ^
         {
             //获取代币余额列表
+            NSLog(@"%@found", wallet_id);
             [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%@",wallet_id] isOtherBaseUrl:NO parameters:nil hudString:nil responseCache:^(id responseCache)
              {
              } success:^(id responseObject)
@@ -804,7 +813,7 @@
 //                         }
 //                     }
 //                 }
-//                 dispatch_semaphore_signal(semaphore);
+                 dispatch_semaphore_signal(semaphore);
              } failure:^(NSString *error)
              {
 //                 [LCProgressHUD showFailure:error];

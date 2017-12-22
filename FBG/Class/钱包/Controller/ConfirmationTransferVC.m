@@ -360,7 +360,7 @@
     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(globalQueue, ^
                    {
-                       if ([self.model.name isEqualToString:@"NEO"]) {
+                       if ([self.model.category_name isEqualToString:@"NEO"]) {
                            [self getUnspentWithPassword:passWord];
                        } else {
                            [self transferAccountsForETHWithPassword:passWord];
@@ -382,7 +382,7 @@
     [dic setObject:[NSString DecimalFuncWithOperatorType:2 first:self.price secend:@"1000000000000000000" value:0] forKey:@"fee"];
     [dic setObject:[NSString DecimalFuncWithOperatorType:2 first:self.totleGasPrice secend:@"1000000000000000000" value:0] forKey:@"handle_fee"];
     [dic setObject:self.tokenModel ? self.tokenModel.flag : self.model.category_name forKey:@"flag"];
-    [dic setObject:@"0x0000000000000000000000000000000000000000" forKey:@"asset_id"];
+    [dic setObject:asset_id forKey:@"asset_id"];
     
     [PPNetworkHelper POST:@"wallet-order" parameters:dic hudString:@"创建中..." success:^(id responseObject)
      {

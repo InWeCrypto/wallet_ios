@@ -134,7 +134,7 @@
     self.headerView.headImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-1",self.model.img]];
     self.headerView.titleLB.text = self.model.name;
     self.headerView.addressLB.text = self.model.address;
-    self.headerView.priceLB.text = @"0.00";
+    self.headerView.priceLB.text = @"≈0.00";
     if ([UserSignData share].user.walletUnitType == 1)
     {
         self.headerView.infoLB.text = @"总资产（￥）";
@@ -395,7 +395,7 @@
              
              WalletInfoGntModel * canGasModel = [[WalletInfoGntModel alloc] init];
              canGasModel.name = @"可提现Gas";
-             canGasModel.icon = @"NEO_project_icon_Gas";
+             canGasModel.icon = @"NEO_project_icon_get_gas";
              canGasModel.balance = gas[@"available"];
              canGasModel.noExtractbalance = gas[@"unavailable"];
              canGasModel.price_cny = [NSString DecimalFuncWithOperatorType:2 first:canGasModel.balance secend:gasPriceForCny value:2];
@@ -406,7 +406,7 @@
              [self.dataSource addObject:gasModel];
              [self.dataSource addObject:canGasModel];
              
-             self.headerView.priceLB.text = [NSString stringWithFormat:@"%.2lf", sum.floatValue];
+             self.headerView.priceLB.text = [NSString stringWithFormat:@"≈%.2lf", sum.floatValue];
              [self.coustromTableView reloadData];
              [self endRefreshing];
          }failure:^(NSString *error)
@@ -440,6 +440,10 @@
                      }
                      NSString *price_cny = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_cny"];
                      NSString *price_usd = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"price_usd"];
+                     if ([NSObject isNulllWithObject:dic[@"gnt_category"][@"cap"]]) {
+                         price_cny = @"0";
+                         price_usd = @"0";
+                     }
                      model.price_cny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
                      model.price_usd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
                      model.gas = [[[dic objectForKey:@"gnt_category"] objectForKey:@"gas"] intValue];
@@ -983,6 +987,7 @@
 {
     //交易记录
     TransactionRecordVC  * vc = [[TransactionRecordVC alloc] init];
+    
     vc.model = self.model;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -1141,7 +1146,6 @@
         
         [_headerView.codeButton addTarget:self action:@selector(receivablesButtonCilick) forControlEvents:UIControlEventTouchUpInside];
         [_headerView.ETHButton addTarget:self action:@selector(ETHButtonCilick) forControlEvents:UIControlEventTouchUpInside];
-        _headerView.addTokenButton.hidden = self.model.category_id == 2;
         [_headerView.addTokenButton addTarget:self action:@selector(editButtonCilick) forControlEvents:UIControlEventTouchUpInside];
         if ([self.model.name isEqualToString:@"ETH"])
         {

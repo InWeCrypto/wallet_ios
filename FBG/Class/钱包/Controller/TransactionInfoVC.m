@@ -59,7 +59,7 @@
         self.priceChangeLB.hidden = NO;
         self.priceChangeImage.hidden = NO;
         self.priceChangeImage.image = [UIImage imageNamed:@"icon_complete"];
-        self.priceNameTiLB.text = @"转账金额";
+        self.priceNameTiLB.text = [NSString stringWithFormat:@"转账金额(%@)", self.model.flag];
         self.priceLB.text = [NSString stringWithFormat:@"-%.4f",[self.model.fee floatValue]];
     }
     else
@@ -67,7 +67,7 @@
         //收款
         self.priceChangeLB.hidden = YES;
         self.priceChangeImage.hidden = YES;
-        self.priceNameTiLB.text = @"收款金额";
+        self.priceNameTiLB.text = [NSString stringWithFormat:@"收款金额(%@)", self.model.flag];
         self.priceLB.text = [NSString stringWithFormat:@"+%.4f",[self.model.fee floatValue]];
 //        self.priceChangeLB.text = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"Additional service charge:", nil),self.model.handle_fee];
     }
@@ -75,7 +75,7 @@
     self.priceChangeLB.text = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"Additional service charge:", nil),self.model.handle_fee];
     self.transferLB.text = self.model.pay_address;
     self.receivablesLB.text = self.model.receive_address;
-    self.exhangeLB.text = self.model.created_at;
+    self.exhangeLB.text = [NSString getLocalDateFormateUTCDate:self.model.created_at];
     self.arrivalLB.text = self.model.remark;
     self.orderNumLB.text = [NSString stringWithFormat:@"订单号:%@",self.model.trade_no];
     

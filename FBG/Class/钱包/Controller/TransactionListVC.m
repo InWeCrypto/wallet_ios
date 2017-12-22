@@ -436,7 +436,7 @@
                  WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
                  model.maxBlockNumber = self.maxBlockNumber;
                  model.minBlockNumber = self.minBlockNumber;
-                 model.flag = @"ether";
+                 model.flag = [NSObject isNulllWithObject:self.tokenModel] ? @"ether" : [self.tokenModel.flag lowercaseString];
                  if ([model.pay_address isEqualToString:self.model.address])
                  {
                      //热钱包 eth
@@ -495,12 +495,13 @@
                  model.trade_no = dic[@"tx"];
                  model.created_at = dic[@"createTime"];
                  model.fee = dic[@"value"];
-                 model.flag = @"NEO";
+                 model.flag = self.tokenModel.flag;
                  model.maxBlockNumber = self.maxBlockNumber;
                  model.minBlockNumber = self.minBlockNumber;
                  model.pay_address = dic[@"from"];
                  model.receive_address = dic[@"to"];
                  model.finished_at = dic[@"confirmTime"];
+                 model.remark = dic[@"remark"];
                  if ([NSObject isNulllWithObject:model.finished_at]) {
                      isHaveNoFinishOrder = YES;
                  }

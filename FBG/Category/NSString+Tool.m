@@ -73,6 +73,26 @@ yy-MM-dd HH:mm:ss
     return currentDateStr;
 }
 
+
+/**
+ 将UTC日期字符串转为本地时间字符串
+
+ @param utcDate UTC日期字符串
+ @return 本地时间字符串
+ */
++ (NSString *)getLocalDateFormateUTCDate:(NSString *)utcDate {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //输入格式
+    [dateFormatter setDateFormat:[utcDate containsString:@"."] ? @"yyyy-MM-dd HH:mm:ss.SSS" : @"yyyy-MM-dd'T'HH:mm:ssZ"];
+    NSTimeZone *localTimeZone = [NSTimeZone localTimeZone];
+    [dateFormatter setTimeZone:localTimeZone];
+    NSDate *dateFormatted = [dateFormatter dateFromString:utcDate];
+    //输出格式
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:dateFormatted];
+    return dateString;
+}
+
 //md5加密
 - (NSString *)md5WithString
 {

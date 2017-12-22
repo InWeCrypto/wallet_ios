@@ -63,11 +63,15 @@
         NSArray *dataArray = responseCache;
         
         if (!dataArray.count) {
+            weakSelf.requestBlock(@[]);
             return ;
         }
         
         NSMutableArray *kLineDataArray = [NSMutableArray array];
         for (NSDictionary *dic in dataArray) {
+            if (![dic isKindOfClass:[NSDictionary class]]) {
+                continue;
+            }
             DBHMarketDetailKLineViewModelData *model = [DBHMarketDetailKLineViewModelData modelObjectWithDictionary:dic];
             
             [kLineDataArray addObject:model];
@@ -78,11 +82,15 @@
         NSArray *dataArray = responseObject;
         
         if (!dataArray.count) {
+            weakSelf.requestBlock(@[]);
             return ;
         }
         
         NSMutableArray *kLineDataArray = [NSMutableArray array];
         for (NSDictionary *dic in dataArray) {
+            if (![dic isKindOfClass:[NSDictionary class]]) {
+                continue;
+            }
             DBHMarketDetailKLineViewModelData *model = [DBHMarketDetailKLineViewModelData modelObjectWithDictionary:dic];
             
             [kLineDataArray addObject:model];

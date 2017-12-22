@@ -58,7 +58,7 @@
         //正式
         api = APIEHEAD1;
     }
-    KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",api,url]];
+    KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@", [api substringToIndex:api.length - 4], url]];
     vc.title = title;
     [self.navigationController pushViewController:vc animated:YES];
 }

@@ -21,6 +21,9 @@
 //时间格式转换
 + (NSString *)timeExchangeWithType:(NSString *)type timeString:(NSString *)timeString;
 
+// 将UTC日期字符串转为本地时间字符串
++ (NSString *)getLocalDateFormateUTCDate:(NSString *)utcDate;
+
 //MD5加密
 - (NSString *)md5WithString;
 
