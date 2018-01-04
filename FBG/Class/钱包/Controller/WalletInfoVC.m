@@ -406,6 +406,30 @@
              [self.dataSource addObject:gasModel];
              [self.dataSource addObject:canGasModel];
              
+             if ([[responseObject objectForKey:@"list"] count] > 0)
+             {
+                 for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+                 {
+                     WalletInfoGntModel * model = [[WalletInfoGntModel alloc] initWithDictionary:dic];
+                     model.icon = [[dic objectForKey:@"gnt_category"] objectForKey:@"icon"];
+                     model.address = [[dic objectForKey:@"gnt_category"] objectForKey:@"address"];
+                     model.symbol = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"symbol"];
+                     model.flag = [dic objectForKey:@"name"];
+                     if (![NSString isNulllWithObject:[dic objectForKey:@"balance"]])
+                     {
+                         model.balance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[dic objectForKey:@"balance"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                     }
+                     else
+                     {
+                         model.balance = @"0.0000";
+                     }
+                     model.price_cny = @"0";
+                     model.price_usd = @"0";
+                     model.gas = [[[dic objectForKey:@"gnt_category"] objectForKey:@"gas"] intValue];
+                     [self.dataSource addObject:model];
+                 }
+             }
+             
              self.headerView.priceLB.text = [NSString stringWithFormat:@"≈%.2lf", sum.floatValue];
              [self.coustromTableView reloadData];
              [self endRefreshing];
@@ -1070,6 +1094,10 @@
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row < 3) {
+        return @[];
+    }
+    
     WalletInfoGntModel * model = self.dataSource[indexPath.row];
     //添加一个删除按钮
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(@"Delete", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)

@@ -153,7 +153,8 @@
     WalletLeftListModel * model = self.dataSource[indexPath.row];
     if ([self.delegate respondsToSelector:@selector(sureButtonCilickWithData:)])
     {
-        [self.delegate sureButtonCilickWithData:model];
+        [self.delegate sureButtonCilickWithData:@(indexPath.row)];
+//        [self.delegate sureButtonCilickWithData:model];
     }
 }
 

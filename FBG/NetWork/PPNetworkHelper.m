@@ -183,7 +183,8 @@ static NetworkStatus _status;
         if ([[responseObject objectForKey:@"code"] intValue] == 4000)
         {
             success([responseObject objectForKey:@"data"]);
-            [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:URL];
+            NSString *type = [@"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" isEqualToString:parameters[@"asset_id"]] ? @"neo" : @"gas";
+            [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:[URL isEqualToString:@"wallet-order"] ? [NSString stringWithFormat:@"%@/%@/%@", URL, type , parameters[@"wallet_id"]] : URL];
             PPLog(@"responseObject = %@",responseObject);
         }
         else if ([[responseObject objectForKey:@"code"] intValue] == 4007)

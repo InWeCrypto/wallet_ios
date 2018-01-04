@@ -60,7 +60,7 @@
         self.priceChangeImage.hidden = NO;
         self.priceChangeImage.image = [UIImage imageNamed:@"icon_complete"];
         self.priceNameTiLB.text = [NSString stringWithFormat:@"转账金额(%@)", self.model.flag];
-        self.priceLB.text = [NSString stringWithFormat:@"-%.4f",[self.model.fee floatValue]];
+        self.priceLB.text = [NSString stringWithFormat:@"%@%.4f", self.model.isMySelf ? @"" : @"-", [self.model.fee floatValue]];
     }
     else
     {
@@ -72,11 +72,11 @@
 //        self.priceChangeLB.text = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"Additional service charge:", nil),self.model.handle_fee];
     }
     self.priceChangeImage.image = [UIImage imageNamed:@"icon_complete"];
-    self.priceChangeLB.text = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"Additional service charge:", nil),self.model.handle_fee];
+    self.priceChangeLB.text = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"Additional service charge:", nil), [NSString DecimalFuncWithOperatorType:3 first:self.model.handle_fee secend:@"1000000000000000000" value:6]];
     self.transferLB.text = self.model.pay_address;
     self.receivablesLB.text = self.model.receive_address;
     self.exhangeLB.text = [NSString getLocalDateFormateUTCDate:self.model.created_at];
-    self.arrivalLB.text = self.model.remark;
+    self.arrivalLB.text = [NSObject isNulllWithObject:self.model.remark] ? @"" : self.model.remark;
     self.orderNumLB.text = [NSString stringWithFormat:@"订单号:%@",self.model.trade_no];
     
     NSString *text = [NSString stringWithFormat:@"订单号:%@",self.model.trade_no];
@@ -87,17 +87,18 @@
         NSLog(@"linkedURLTag =%ld",linkedURLTag);
         
         NSString * url;
-        if ([APP_APIEHEAD isEqualToString:@"https://ropsten.unichain.io/api/"])
+        if ([APP_APIEHEAD isEqualToString:APIEHEAD])
         {
             //测试
-            url = @"https://neo.io/tx/"; // https://ropsten.etherscan.io/tx/
+            url = [self.model.flag isEqualToString:@"ETH"] ? @"https://ropsten.etherscan.io/tx/" : @"https://neoscan-testnet.io/transaction/";
         }
         else
         {
             //正式
-            url = @"https://neo.io/tx/";
+            url = [self.model.flag isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
         }
-        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url,strongSelf.model.trade_no]];
+        NSString *orderNumber = [[strongSelf.model.trade_no substringToIndex:2] isEqualToString:@"0x"] ? [strongSelf.model.trade_no substringFromIndex:2] : strongSelf.model.trade_no;
+        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, orderNumber]];
         vc.title = @"订单详情";
         [self.navigationController pushViewController:vc animated:YES];
     } withUnderLineTextString:[NSString stringWithFormat:@"订单号:%@",self.model.trade_no],nil];

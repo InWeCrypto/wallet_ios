@@ -397,7 +397,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         if ([UserSignData share].user.isCode)
         {
             
-            [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"netNotification" object:nil userInfo:nil]];
+            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"netNotification" object:nil userInfo:nil]];
             switch (status)
             {
                 case AFNetworkReachabilityStatusUnknown:

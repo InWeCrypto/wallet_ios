@@ -51,14 +51,14 @@ static NSString * const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIde
     [self.headerView.headImageView sdsetImageWithHeaderimg:[UserSignData share].user.img];
     self.headerView.nameLabel.text = [UserSignData share].user.nickname;
     
-    [self setStatusBarBackgroundColor:[UIColor whiteColor]];
+//    [self setStatusBarBackgroundColor:[UIColor whiteColor]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
-    [self setStatusBarBackgroundColor:[UIColor clearColor]];
+//    [self setStatusBarBackgroundColor:[UIColor clearColor]];
 }
 
 #pragma mark ------ UI ------

@@ -29,29 +29,29 @@
     self.timeLB.text = [NSString getLocalDateFormateUTCDate:_model.created_at];
     self.infoLB.text = @"正在打包（0/12）";
     self.slider.value =  0.5;
-    if (![model.flag isEqualToString:@"NEO"]) {
+    if (!([model.flag isEqualToString:@"NEO"] || [model.flag isEqualToString:@"Gas"])) {
         model.fee = [NSString stringWithFormat:@"%.4f",[[NSString DecimalFuncWithOperatorType:3 first:model.fee secend:@"1000000000000000000" value:4] floatValue]];
     }
     model.handle_fee = [NSString stringWithFormat:@"%f",[[NSString DecimalFuncWithOperatorType:3 first:model.handle_fee secend:@"1000000000000000000" value:8] floatValue]];
     
-    if ([model.flag isEqualToString:@"NEO"]) {
+    if ([model.flag isEqualToString:@"NEO"] || [model.flag isEqualToString:@"Gas"]) {
         if (model.isMySelf) {
             // 自己转自己
-            self.priceLB.text = [NSString stringWithFormat:@"+%.4f",[model.fee floatValue]];
+            self.priceLB.text = [NSString stringWithFormat:@"%.8f",[model.fee floatValue]];
             self.priceLB.textColor = [UIColor colorWithHexString:@"232772"];
             self.headImage.image = [UIImage imageNamed:@"toself"];
         } else {
             if (model.isReceivables)
             {
                 // 收款
-                self.priceLB.text = [NSString stringWithFormat:@"+%.4f",[model.fee floatValue]];
+                self.priceLB.text = [NSString stringWithFormat:@"+%.8f",[model.fee floatValue]];
                 self.priceLB.textColor = [UIColor colorWithHexString:@"232772"];
                 self.headImage.image = [UIImage imageNamed:@"转入"];
             }
             else
             {
                 // 转账
-                self.priceLB.text = [NSString stringWithFormat:@"-%.4f",[model.fee floatValue]];
+                self.priceLB.text = [NSString stringWithFormat:@"-%.8f",[model.fee floatValue]];
                 self.priceLB.textColor = [UIColor redColor];
                 self.headImage.image = [UIImage imageNamed:@"转出"];
             }
@@ -61,19 +61,26 @@
         
         self.slider.hidden = YES;
     } else {
-        if (model.isReceivables)
-        {
-            //收款
-            self.priceLB.text = [NSString stringWithFormat:@"+%.4f %@",[model.fee floatValue], [model.flag lowercaseString]];
+        if (model.isMySelf) {
+            // 自己转自己
+            self.priceLB.text = [NSString stringWithFormat:@"%.4f",[model.fee floatValue]];
             self.priceLB.textColor = [UIColor colorWithHexString:@"232772"];
-            self.headImage.image = [UIImage imageNamed:@"转入"];
-        }
-        else
-        {
-            //转账
-            self.priceLB.text = [NSString stringWithFormat:@"-%.4f %@",[model.fee floatValue], [model.flag lowercaseString]];
-            self.priceLB.textColor = [UIColor redColor];
-            self.headImage.image = [UIImage imageNamed:@"转出"];
+            self.headImage.image = [UIImage imageNamed:@"toself"];
+        } else {
+            if (model.isReceivables)
+            {
+                //收款
+                self.priceLB.text = [NSString stringWithFormat:@"+%.4f %@",[model.fee floatValue], [model.flag lowercaseString]];
+                self.priceLB.textColor = [UIColor colorWithHexString:@"232772"];
+                self.headImage.image = [UIImage imageNamed:@"转入"];
+            }
+            else
+            {
+                //转账
+                self.priceLB.text = [NSString stringWithFormat:@"-%.4f %@",[model.fee floatValue], [model.flag lowercaseString]];
+                self.priceLB.textColor = [UIColor redColor];
+                self.headImage.image = [UIImage imageNamed:@"转出"];
+            }
         }
         
         //（当前块高-订单里的块高 + 1）/最小块高
@@ -88,26 +95,35 @@
             number = ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1);
         }
         
-        if ([NSObject isNulllWithObject:model.confirm_at]) {
-            if (number >= model.minBlockNumber.floatValue) {
-                // 交易失败
-                self.headImage.image = [UIImage imageNamed:@"提示"];
-                self.infoLB.text = @"交易失败";
-                self.slider.hidden = YES;
+        if ([model.flag isEqualToString:@"NEO"] || [model.flag isEqualToString:@"Gas"]) {
+            self.slider.hidden = YES;
+            if ([NSObject isNulllWithObject:model.finished_at]) {
+                self.infoLB.text = @"确认中";
             } else {
-                // 准备打包
-                self.infoLB.text = @"正在打包";
-                self.slider.value = 0;
+                self.infoLB.text = @"交易成功";
             }
         } else {
-            if (number >= model.minBlockNumber.floatValue) {
-                // 交易成功
-                self.slider.hidden = YES;
-                self.infoLB.text = @"交易成功";
+            if ([NSObject isNulllWithObject:model.confirm_at]) {
+                if (number >= model.minBlockNumber.floatValue) {
+                    // 交易失败
+                    self.headImage.image = [UIImage imageNamed:@"提示"];
+                    self.infoLB.text = @"交易失败";
+                    self.slider.hidden = YES;
+                } else {
+                    // 准备打包
+                    self.infoLB.text = @"正在打包";
+                    self.slider.value = 0;
+                }
             } else {
-                // 打包中
-                self.infoLB.text = [NSString stringWithFormat:@"已经确认%d/%@",number,model.minBlockNumber];
-                self.slider.value = number/[model.minBlockNumber floatValue];
+                if (number >= model.minBlockNumber.floatValue) {
+                    // 交易成功
+                    self.slider.hidden = YES;
+                    self.infoLB.text = @"交易成功";
+                } else {
+                    // 打包中
+                    self.infoLB.text = [NSString stringWithFormat:@"已经确认%d/%@",number,model.minBlockNumber];
+                    self.slider.value = number/[model.minBlockNumber floatValue];
+                }
             }
         }
         

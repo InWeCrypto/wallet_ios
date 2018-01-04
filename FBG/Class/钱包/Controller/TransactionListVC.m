@@ -7,6 +7,9 @@
 //
 
 #import "TransactionListVC.h"
+
+#import "PPNetworkCache.h"
+
 #import "TransactionListHeaderView.h"
 #import "TransactionListCell.h"
 #import "TransferVC.h"
@@ -26,6 +29,7 @@
 @property (nonatomic, strong) UIButton * receivablesButton;    //收款
 
 @property (nonatomic, assign) NSInteger page; // 分页
+@property (nonatomic, assign) BOOL isRequestSuccess; // 是否请求成功
 @property (nonatomic, assign) BOOL isCanTransferAccounts; // 是否可以转账
 @property (nonatomic, assign) NSString * maxBlockNumber;  //最大块号 当前
 @property (nonatomic, copy) NSString * blockPerSecond;  //发生时间  5
@@ -77,6 +81,19 @@
     {
         if ([self.tokenModel.flag isEqualToString:@"NEO"] || [self.tokenModel.flag isEqualToString:@"Gas"]) {
             self.headerView.headImage.image = [UIImage imageNamed:self.tokenModel.icon];
+            if ([self.tokenModel.flag isEqualToString:@"NEO"]) {
+                self.headerView.priceLB.text = [NSString stringWithFormat:@"%.0f", [self.tokenModel.balance floatValue]];
+            } else {
+                self.headerView.priceLB.text = [NSString stringWithFormat:@"%.8f", [self.tokenModel.balance floatValue]];
+            }
+            if ([UserSignData share].user.walletUnitType == 1)
+            {
+                self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈￥%.2f", self.tokenModel.price_cny.floatValue];
+            }
+            else
+            {
+                self.headerView.cnyPriceLB.text = [NSString stringWithFormat:@"≈$%.2f", self.tokenModel.price_usd.floatValue];
+            }
         } else {
             [self.headerView.headImage sdsetImageWithURL:self.tokenModel.icon placeholderImage:Default_General_Image];
         }
@@ -85,11 +102,12 @@
     else
     {
         self.headerView.headImage.image = [UIImage imageNamed:self.model.category_name];
-        self.headerView.priceLB.text = [NSString stringWithFormat:@"%.4f",[self.banlacePrice floatValue]];
+        self.headerView.priceLB.text = [NSString stringWithFormat:@"%.4f", [self.banlacePrice floatValue]];
         self.headerView.cnyPriceLB.text = self.cnybanlacePrice;
     }
     
     [self addRefresh];
+    [self getOrderListCache];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -99,6 +117,7 @@
     if (![UserSignData share].user.isCode)
     {
         if (self.model.category_id == 2) {
+            [self countDownTime];
             [self timerDown];
         } else {
             [self loadData];
@@ -174,7 +193,7 @@
         {
             //代币
             if (self.model.category_id == 2) {
-                if ([NSObject isNulllWithObject:_dataSource]) {
+                if (!self.isRequestSuccess) {
                     [LCProgressHUD showFailure:@"订单列表尚未加载完成"];
                     
                     return;
@@ -283,7 +302,11 @@
              NSString *price_cny = [self.tokenModel.flag isEqualToString:@"NEO"] ? neoPriceForCny : gasPriceForCny;
              NSString *price_usd = [self.tokenModel.flag isEqualToString:@"NEO"] ? neoPriceForUsd : gasPriceForUsd;
              
-             self.banlacePrice = [NSString stringWithFormat:@"%.4f", [price floatValue]];
+             if ([self.tokenModel.flag isEqualToString:@"NEO"]) {
+                 self.banlacePrice = [NSString stringWithFormat:@"%.0f", [price floatValue]];
+             } else {
+                 self.banlacePrice = [NSString stringWithFormat:@"%.8f", [price floatValue]];
+             }
              self.headerView.priceLB.text = self.banlacePrice;
              if ([UserSignData share].user.walletUnitType == 1)
              {
@@ -403,6 +426,85 @@
      {
      }];
 }
+- (void)getOrderListCache {
+    if (![NSString isNulllWithObject:[PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"wallet-order/%@/%d", [self.tokenModel.flag isEqualToString:@"NEO"] ? @"neo" : @"gas",  self.model.id]]])
+    {
+        NSDictionary *responseCache = [PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"wallet-order/%@/%d", [self.tokenModel.flag isEqualToString:@"NEO"] ? @"neo" : @"gas",  self.model.id]];
+        if (self.model.category_id == 2) {
+            if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]])
+            {
+                [self.dataSource removeAllObjects];
+                
+                for (NSDictionary * dic in [responseCache objectForKey:@"list"])
+                {
+                    WalletOrderModel * model = [[WalletOrderModel alloc] init];
+                    model.trade_no = dic[@"tx"];
+                    model.created_at = dic[@"createTime"];
+                    model.fee = dic[@"value"];
+                    model.flag = self.tokenModel.flag;
+                    model.maxBlockNumber = self.maxBlockNumber;
+                    model.minBlockNumber = self.minBlockNumber;
+                    model.pay_address = dic[@"from"];
+                    model.receive_address = dic[@"to"];
+                    model.finished_at = dic[@"confirmTime"];
+                    model.remark = dic[@"remark"];
+                    model.handle_fee = @"0.00";
+                    if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
+                        model.isMySelf = YES;
+                    } else {
+                        model.isMySelf = NO;
+                        
+                        if ([dic[@"from"] isEqualToString:self.model.address])
+                        {
+                            //热钱包 eth
+                            //转账
+                            model.isReceivables = NO;
+                        }
+                        else
+                        {
+                            //收款
+                            model.isReceivables = YES;
+                        }
+                    }
+                    [self.dataSource addObject:model];
+                }
+                [self.coustromTableView reloadData];
+            }
+        } else {
+            if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]])
+            {
+                [self.dataSource removeAllObjects];
+                
+                for (NSDictionary * dic in [responseCache objectForKey:@"list"])
+                {
+                    WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
+                    model.maxBlockNumber = self.maxBlockNumber;
+                    model.minBlockNumber = self.minBlockNumber;
+                    model.flag = [NSObject isNulllWithObject:self.tokenModel] ? @"ether" : [self.tokenModel.flag lowercaseString];
+                    if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
+                        model.isMySelf = YES;
+                    } else {
+                        model.isMySelf = NO;
+                        
+                        if ([model.pay_address isEqualToString:self.model.address])
+                        {
+                            //热钱包 eth
+                            //转账
+                            model.isReceivables = NO;
+                        }
+                        else
+                        {
+                            //收款
+                            model.isReceivables = YES;
+                        }
+                    }
+                    [self.dataSource addObject:model];
+                }
+                [self.coustromTableView reloadData];
+            }
+        }
+        }
+}
 - (void)loadOtherDataIsLoadMore:(BOOL)isLoadMore {
     if (isLoadMore) {
         self.page += 1;
@@ -417,48 +519,85 @@
     [parametersDic setObject:!self.tokenModel ? @"0x0000000000000000000000000000000000000000" : [self.tokenModel.address lowercaseString] forKey:@"asset_id"];
     
     //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
-    [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
-     {
-         [weakSelf endRefresh];
-         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
-         {
-             if (!isLoadMore) {
-                 [self.dataSource removeAllObjects];
-             }
-             
-             NSArray *data = responseObject;
-             if (data.count < 10) {
-                 [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
-             }
-             
-             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
-             {
-                 WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
-                 model.maxBlockNumber = self.maxBlockNumber;
-                 model.minBlockNumber = self.minBlockNumber;
-                 model.flag = [NSObject isNulllWithObject:self.tokenModel] ? @"ether" : [self.tokenModel.flag lowercaseString];
-                 if ([model.pay_address isEqualToString:self.model.address])
-                 {
-                     //热钱包 eth
-                     //转账
-                     model.isReceivables = NO;
-                 }
-                 else
-                 {
-                     //收款
-                     model.isReceivables = YES;
-                 }
-                 [self.dataSource addObject:model];
-             }
-             [self.coustromTableView reloadData];
-         } else {
-             [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
-         }
-     } failure:^(NSString *error)
-     {
-         [weakSelf endRefresh];
-         [LCProgressHUD showFailure:error];
-     }];
+    [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil responseCache:^(id responseCache) {
+//        if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]])
+//        {
+//            [self.dataSource removeAllObjects];
+//
+//            for (NSDictionary * dic in [responseCache objectForKey:@"list"])
+//            {
+//                WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
+//                model.maxBlockNumber = self.maxBlockNumber;
+//                model.minBlockNumber = self.minBlockNumber;
+//                model.flag = [NSObject isNulllWithObject:self.tokenModel] ? @"ether" : [self.tokenModel.flag lowercaseString];
+//                if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
+//                    model.isMySelf = YES;
+//                } else {
+//                    model.isMySelf = NO;
+//
+//                    if ([model.pay_address isEqualToString:self.model.address])
+//                    {
+//                        //热钱包 eth
+//                        //转账
+//                        model.isReceivables = NO;
+//                    }
+//                    else
+//                    {
+//                        //收款
+//                        model.isReceivables = YES;
+//                    }
+//                }
+//                [self.dataSource addObject:model];
+//            }
+//            [self.coustromTableView reloadData];
+//        }
+    } success:^(id responseObject) {
+        [weakSelf endRefresh];
+        if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
+        {
+            weakSelf.isRequestSuccess = YES;
+            if (!isLoadMore) {
+                [self.dataSource removeAllObjects];
+            }
+            
+            NSArray *data = responseObject;
+            if (data.count < 10) {
+                [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            
+            for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+            {
+                WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
+                model.maxBlockNumber = self.maxBlockNumber;
+                model.minBlockNumber = self.minBlockNumber;
+                model.flag = [NSObject isNulllWithObject:self.tokenModel] ? @"ether" : [self.tokenModel.flag lowercaseString];
+                if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
+                    model.isMySelf = YES;
+                } else {
+                    model.isMySelf = NO;
+                    
+                    if ([model.pay_address isEqualToString:self.model.address])
+                    {
+                        //热钱包 eth
+                        //转账
+                        model.isReceivables = NO;
+                    }
+                    else
+                    {
+                        //收款
+                        model.isReceivables = YES;
+                    }
+                }
+                [self.dataSource addObject:model];
+            }
+            [self.coustromTableView reloadData];
+        } else {
+            [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
+        }
+    } failure:^(NSString *error) {
+        [weakSelf endRefresh];
+        [LCProgressHUD showFailure:error];
+    }];
 }
 - (void)loadNeoDataIsLoadMore:(BOOL)isLoadMore {
     if (isLoadMore) {
@@ -474,66 +613,108 @@
     [parametersDic setObject:[self.tokenModel.flag isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7" forKey:@"asset_id"];
     
     //包含事务块高  列表   （当前块高-订单里的块高）/最小块高
-    [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
-     {
-         [weakSelf endRefresh];
-         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
-         {
-             if (!isLoadMore) {
-                 [self.dataSource removeAllObjects];
-             }
-             
-             NSArray *data = responseObject[@"list"];
-             if (data.count < 10) {
-                 [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
-             }
-             
-             BOOL isHaveNoFinishOrder = NO;
-             for (NSDictionary * dic in [responseObject objectForKey:@"list"])
-             {
-                 WalletOrderModel * model = [[WalletOrderModel alloc] init];
-                 model.trade_no = dic[@"tx"];
-                 model.created_at = dic[@"createTime"];
-                 model.fee = dic[@"value"];
-                 model.flag = self.tokenModel.flag;
-                 model.maxBlockNumber = self.maxBlockNumber;
-                 model.minBlockNumber = self.minBlockNumber;
-                 model.pay_address = dic[@"from"];
-                 model.receive_address = dic[@"to"];
-                 model.finished_at = dic[@"confirmTime"];
-                 model.remark = dic[@"remark"];
-                 if ([NSObject isNulllWithObject:model.finished_at]) {
-                     isHaveNoFinishOrder = YES;
-                 }
-                 if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
-                     model.isMySelf = YES;
-                 } else {
-                     model.isMySelf = NO;
-                     
-                     if ([dic[@"from"] isEqualToString:self.model.address])
-                     {
-                         //热钱包 eth
-                         //转账
-                         model.isReceivables = NO;
-                     }
-                     else
-                     {
-                         //收款
-                         model.isReceivables = YES;
-                     }
-                 }
-                 [self.dataSource addObject:model];
-             }
-             self.isCanTransferAccounts = !isHaveNoFinishOrder;
-             [self.coustromTableView reloadData];
-         } else {
-             [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
-         }
-     } failure:^(NSString *error)
-     {
-         [weakSelf endRefresh];
-         [LCProgressHUD showFailure:error];
-     }];
+    [PPNetworkHelper GET:@"wallet-order" isOtherBaseUrl:NO parameters:parametersDic hudString:nil responseCache:^(id responseCache) {
+//        if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]])
+//        {
+//            weakSelf.isRequestSuccess = YES;
+//            [self.dataSource removeAllObjects];
+//
+//            for (NSDictionary * dic in [responseCache objectForKey:@"list"])
+//            {
+//                WalletOrderModel * model = [[WalletOrderModel alloc] init];
+//                model.trade_no = dic[@"tx"];
+//                model.created_at = dic[@"createTime"];
+//                model.fee = dic[@"value"];
+//                model.flag = self.tokenModel.flag;
+//                model.maxBlockNumber = self.maxBlockNumber;
+//                model.minBlockNumber = self.minBlockNumber;
+//                model.pay_address = dic[@"from"];
+//                model.receive_address = dic[@"to"];
+//                model.finished_at = dic[@"confirmTime"];
+//                model.remark = dic[@"remark"];
+//                model.handle_fee = @"0.00";
+//                if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
+//                    model.isMySelf = YES;
+//                } else {
+//                    model.isMySelf = NO;
+//
+//                    if ([dic[@"from"] isEqualToString:self.model.address])
+//                    {
+//                        //热钱包 eth
+//                        //转账
+//                        model.isReceivables = NO;
+//                    }
+//                    else
+//                    {
+//                        //收款
+//                        model.isReceivables = YES;
+//                    }
+//                }
+//                [self.dataSource addObject:model];
+//            }
+//            self.isCanTransferAccounts = NO;
+//            [self.coustromTableView reloadData];
+//        }
+    } success:^(id responseObject) {
+        weakSelf.isRequestSuccess = YES;
+        [weakSelf endRefresh];
+        if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
+        {
+            if (!isLoadMore) {
+                [self.dataSource removeAllObjects];
+            }
+            
+            NSArray *data = responseObject[@"list"];
+            if (data.count < 10) {
+                [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            
+            BOOL isHaveNoFinishOrder = NO;
+            for (NSDictionary * dic in [responseObject objectForKey:@"list"])
+            {
+                WalletOrderModel * model = [[WalletOrderModel alloc] init];
+                model.trade_no = dic[@"tx"];
+                model.created_at = dic[@"createTime"];
+                model.fee = dic[@"value"];
+                model.flag = self.tokenModel.flag;
+                model.maxBlockNumber = self.maxBlockNumber;
+                model.minBlockNumber = self.minBlockNumber;
+                model.pay_address = dic[@"from"];
+                model.receive_address = dic[@"to"];
+                model.finished_at = dic[@"confirmTime"];
+                model.remark = dic[@"remark"];
+                model.handle_fee = @"0.00";
+                if ([NSObject isNulllWithObject:model.finished_at]) {
+                    isHaveNoFinishOrder = YES;
+                }
+                if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
+                    model.isMySelf = YES;
+                } else {
+                    model.isMySelf = NO;
+                    
+                    if ([dic[@"from"] isEqualToString:self.model.address])
+                    {
+                        //热钱包 eth
+                        //转账
+                        model.isReceivables = NO;
+                    }
+                    else
+                    {
+                        //收款
+                        model.isReceivables = YES;
+                    }
+                }
+                [self.dataSource addObject:model];
+            }
+            self.isCanTransferAccounts = !isHaveNoFinishOrder;
+            [self.coustromTableView reloadData];
+        } else {
+            [weakSelf.coustromTableView.mj_footer endRefreshingWithNoMoreData];
+        }
+    } failure:^(NSString *error) {
+        [weakSelf endRefresh];
+        [LCProgressHUD showFailure:error];
+    }];
 }
 - (void)addRefresh {
     WEAKSELF

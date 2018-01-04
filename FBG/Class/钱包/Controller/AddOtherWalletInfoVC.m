@@ -147,7 +147,7 @@
                                           {
                                               [LCProgressHUD hide];
                                               [self caneButtonClicked];
-                                              [LCProgressHUD showMessage:@"获取钱包失败，请稍后重试"];
+                                              [LCProgressHUD showMessage:@"钱包输入密码错误"];
                                           }
                                       });
                        
@@ -157,6 +157,12 @@
 - (void)scanSucessWithObject:(id)object
 {
     //扫一扫回调
+    NSString *string = object;
+    if (self.type == 1 && (![[string substringToIndex:1] isEqualToString:@"{"] || ![[object substringFromIndex:string.length - 1] isEqualToString:@"}"])) {
+        [LCProgressHUD showFailure:@"请输入正确的KeyStore"];
+        
+        return;
+    }
     self.infoTextView.text = [NSString stringWithFormat:@"%@",object];
 }
 
@@ -244,7 +250,7 @@
                                                   {
                                                       [LCProgressHUD hide];
                                                       [self caneButtonClicked];
-                                                      [LCProgressHUD showMessage:@"获取钱包失败，请稍后重试"];
+                                                      [LCProgressHUD showMessage:@"钱包输入密码错误"];
                                                   }
                                               });
                                
@@ -298,7 +304,7 @@
                                                   {
                                                       [LCProgressHUD hide];
                                                       [self caneButtonClicked];
-                                                      [LCProgressHUD showMessage:@"获取钱包失败，请稍后重试"];
+                                                      [LCProgressHUD showMessage:@"钱包输入密码错误"];
                                                   }
                                               });
                                

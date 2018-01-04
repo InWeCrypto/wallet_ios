@@ -37,6 +37,8 @@
     
     // 初始化所有的子控制器
     [self setupAllChildViewControllers];
+    
+    [self setStatusBarBackgroundColor:[APIEHEAD isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"]] ? [UIColor redColor] : [UIColor whiteColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -104,7 +106,7 @@
     // 3.资产
     WalletHomeVC *home = [[WalletHomeVC alloc] init];
     home.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:home title:@"资产" imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
+    [self setupChildViewController:home title:NSLocalizedString(@"Property", nil) imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
     
     // 4.定制
     DBHMyViewController * my = [[DBHMyViewController alloc] init];
@@ -145,6 +147,17 @@
     
     // 3.添加tabbar内部的按钮
     [self.customTabBar addTabBarButtonWithItem:childVc.tabBarItem];
+}
+
+
+/**
+ 设置状态栏颜色
+ */
+- (void)setStatusBarBackgroundColor:(UIColor *)color {
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+        statusBar.backgroundColor = color;
+    }
 }
 
 @end

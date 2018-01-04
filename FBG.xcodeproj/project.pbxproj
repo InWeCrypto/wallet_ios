@@ -353,6 +353,7 @@
 		D524EEB41FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEAF1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m */; };
 		D524EEB51FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEB11FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m */; };
 		D524EEB81FC4359A00AC0DF9 /* DBHSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEB71FC4359A00AC0DF9 /* DBHSearchViewController.m */; };
+		D534FD821FFE30EF00FDA8BE /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D534FD811FFE30EF00FDA8BE /* Neomobile.framework */; };
 		D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */; };
 		D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */; };
 		D53C638A1FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53C63891FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m */; };
@@ -403,7 +404,6 @@
 		D55558061FC975C100F0963B /* CHChartAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */; };
 		D55CA9CB1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */; };
 		D55CA9CE1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */; };
-		D57A66A51FDA9E21007B65CD /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D57A66A41FDA9E21007B65CD /* Neomobile.framework */; };
 		D59BFC8C1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D59BFC891FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib */; };
 		D59BFC8D1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D59BFC8B1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m */; };
 		D59BFCA01FCD4D0C00C5C13B /* AddNeoWalletInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D59BFC9D1FCD4D0B00C5C13B /* AddNeoWalletInfoVC.xib */; };
@@ -1059,6 +1059,7 @@
 		D524EEB21FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionModelData.h; sourceTree = "<group>"; };
 		D524EEB61FC4359A00AC0DF9 /* DBHSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchViewController.h; sourceTree = "<group>"; };
 		D524EEB71FC4359A00AC0DF9 /* DBHSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSearchViewController.m; sourceTree = "<group>"; };
+		D534FD811FFE30EF00FDA8BE /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
 		D53812E91FB07DAF009D681E /* DBHBrowserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserViewController.h; sourceTree = "<group>"; };
 		D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserViewController.m; sourceTree = "<group>"; };
 		D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserTableViewCell.h; sourceTree = "<group>"; };
@@ -1160,7 +1161,6 @@
 		D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForCrowdfundingContentTableViewCell.m; sourceTree = "<group>"; };
 		D55CA9CC1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForIcoFinePrintTableViewCell.h; sourceTree = "<group>"; };
 		D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForIcoFinePrintTableViewCell.m; sourceTree = "<group>"; };
-		D57A66A41FDA9E21007B65CD /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
 		D59BFC891FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddNeoOtherWalletInfoVC.xib; sourceTree = "<group>"; };
 		D59BFC8A1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNeoOtherWalletInfoVC.h; sourceTree = "<group>"; };
 		D59BFC8B1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNeoOtherWalletInfoVC.m; sourceTree = "<group>"; };
@@ -1213,7 +1213,7 @@
 			files = (
 				A8016B561F4197B7003848CD /* libresolv.tbd in Frameworks */,
 				A85A01C71F36EE44002F0141 /* Security.framework in Frameworks */,
-				D57A66A51FDA9E21007B65CD /* Neomobile.framework in Frameworks */,
+				D534FD821FFE30EF00FDA8BE /* Neomobile.framework in Frameworks */,
 				A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */,
 				A84475A41F32E50A003C7BDB /* libc++.tbd in Frameworks */,
 				A84475A21F32E502003C7BDB /* libz.tbd in Frameworks */,
@@ -1388,7 +1388,7 @@
 		0F0CFE1B1F15F92300476A86 /* OtherTool */ = {
 			isa = PBXGroup;
 			children = (
-				D57A66A41FDA9E21007B65CD /* Neomobile.framework */,
+				D534FD811FFE30EF00FDA8BE /* Neomobile.framework */,
 				D5099F601FD4F3880065F0AA /* MXNavigationBarManager */,
 				D55557F61FC975C100F0963B /* CHKLineChart */,
 				A88A787F1F6992E90058094C /* SGQRCode */,
@@ -3216,7 +3216,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Station and friends information technology co., LTD (A586DWSV4P)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = A586DWSV4P;
@@ -3261,8 +3261,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "289b0dd3-c8c4-42ea-9017-4811259b86f9";
-				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
+				PROVISIONING_PROFILE = "7453fb39-2b9d-4567-9ec5-8d78c6d124fa";
+				PROVISIONING_PROFILE_SPECIFIER = ios_distribution;
 				SWIFT_OBJC_BRIDGING_HEADER = "FBG/Class/行情/Controller/FBG-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -3279,7 +3279,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Station and friends information technology co., LTD (A586DWSV4P)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = A586DWSV4P;
@@ -3324,8 +3324,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "289b0dd3-c8c4-42ea-9017-4811259b86f9";
-				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
+				PROVISIONING_PROFILE = "7453fb39-2b9d-4567-9ec5-8d78c6d124fa";
+				PROVISIONING_PROFILE_SPECIFIER = ios_distribution;
 				SWIFT_OBJC_BRIDGING_HEADER = "FBG/Class/行情/Controller/FBG-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";

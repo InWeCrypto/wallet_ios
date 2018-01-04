@@ -50,6 +50,14 @@
  */
 - (NeomobileTx*)createClaimTx:(double)amount address:(NSString*)address unspent:(NSString*)unspent error:(NSError**)error;
 /**
+ * CreateNep5Tx create nep5 transfer transaction
+ */
+- (NeomobileTx*)createNep5Tx:(NSString*)asset from:(NSString*)from to:(NSString*)to gas:(double)gas amount:(int64_t)amount unspent:(NSString*)unspent error:(NSError**)error;
+/**
+ * MintToken .
+ */
+- (NeomobileTx*)mintToken:(NSString*)asset gas:(double)gas amount:(double)amount unspent:(NSString*)unspent error:(NSError**)error;
+/**
  * Mnemonic gete mnemonic string
  */
 - (NSString*)mnemonic:(NSError**)error;
@@ -60,9 +68,19 @@
 @end
 
 /**
+ * DecodeAddress decode address
+ */
+FOUNDATION_EXPORT NSString* NeomobileDecodeAddress(NSString* address, NSError** error);
+
+/**
+ * EncodeAddress encode address
+ */
+FOUNDATION_EXPORT NSString* NeomobileEncodeAddress(NSString* address, NSError** error);
+
+/**
  * FromKeyStore create wallet from keystore
  */
-FOUNDATION_EXPORT NeomobileWallet* NeomobileFromKeyStore(NSString* keystore, NSString* password, NSError** error);
+FOUNDATION_EXPORT NeomobileWallet* NeomobileFromKeyStore(NSString* ks, NSString* password, NSError** error);
 
 /**
  * FromMnemonic create wallet from mnemonic

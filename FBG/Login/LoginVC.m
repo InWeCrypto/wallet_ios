@@ -79,7 +79,6 @@
     [progress.layer addSublayer:layer];
     _progresslayer = layer;
     
-    
 //    if ([NSString isNulllWithObject:[PPNetworkCache getResponseCacheForKey:@"wallet-category"]])
 //    {
 //        //获取钱包类型
@@ -92,6 +91,21 @@
 //         }];
 //        return;
 //    }
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self setStatusBarBackgroundColor:[UIColor whiteColor]];
+}
+
+/**
+ 设置状态栏颜色
+ */
+- (void)setStatusBarBackgroundColor:(UIColor *)color {
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+        statusBar.backgroundColor = color;
+    }
 }
 
 - (void)weChatLogin

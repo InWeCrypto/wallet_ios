@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Add Wallet", nil);
+    self.title = NSLocalizedString(self.isimport ? @"Import Wallet" : @"Add Wallet", nil);
     self.view.backgroundColor = [UIColor backgroudColor];
     
     self.coustromTableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - 75);
@@ -36,12 +36,11 @@
     self.coustromTableView.backgroundColor = [UIColor backgroudColor];
 //    [self addpull2RefreshWithTableView:self.coustromTableView WithIsInset:NO];
     
-    self.dataSource = [[NSMutableArray alloc] init];
     [self.view addSubview:self.coustromTableView];
     [self.view addSubview:self.sureButton];
     
 //    [self.sureButton setTitle:NSLocalizedString(@"Determine", nil) forState:UIControlStateNormal];
-    [self loadData];
+//    [self loadData];
     
     WEAKSELF
     [self.sureButton mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -156,7 +155,7 @@
 //下拉刷新回调
 - (void)pull2RefreshWithScrollerView:(UIScrollView *)scrollerView
 {
-    [self loadData];
+//    [self loadData];
 }
 
 #pragma mark UITableViewDataSource
@@ -210,6 +209,34 @@
         [_sureButton addTarget:self action:@selector(sureButtonCilick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _sureButton;
+}
+
+- (NSMutableArray *)dataSource {
+    if (!_dataSource) {
+        _dataSource = [NSMutableArray array];
+        
+        WalletTypeModel * model = [[WalletTypeModel alloc] init];
+        model.id = 1;
+        model.name = @"ETH";
+        model.gas = @"21000";
+        model.icon = @"ETH";
+        [_dataSource addObject:model];
+        
+        WalletTypeModel * model1 = [[WalletTypeModel alloc] init];
+        model1.id = 3;
+        model1.name = @"BTC";
+        model1.gas = @"21000";
+        model1.icon = @"BTC";
+        [_dataSource addObject:model1];
+        
+        WalletTypeModel * model2 = [[WalletTypeModel alloc] init];
+        model2.id = 2;
+        model2.name = @"NEO";
+        model2.gas = @"21000";
+        model2.icon = @"NEO";
+        [_dataSource addObject:model2];
+    }
+    return _dataSource;
 }
 
 @end

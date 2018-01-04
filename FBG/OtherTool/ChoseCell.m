@@ -24,6 +24,7 @@
 - (void)setModel:(WalletLeftListModel *)model
 {
     _model = model;
+
     if ([model.category_name isEqualToString:@"ETH"])
     {
         self.headImageView.image = [UIImage imageNamed:@"ETH_add"];
@@ -31,6 +32,10 @@
     else if ([model.category_name isEqualToString:@"BTC"])
     {
         self.headImageView.image = [UIImage imageNamed:@"BTC_add"];
+    }
+    else if ([model.category_name isEqualToString:@"NEO"])
+    {
+        self.headImageView.image = [UIImage imageNamed:@"NEO_add"];
     }
     else
     {

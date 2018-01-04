@@ -134,6 +134,11 @@
 - (void)scanSucessWithObject:(id)object
 {
     //扫一扫成功代理
+    if (![NSString isAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+    {
+        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+        return;
+    }
     self.addressTF.text = object;
 }
 
