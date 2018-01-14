@@ -25,6 +25,8 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 #import <YYCache/YYCache.h>
 #import "CDNavigationController.h"
+#import "DBHBaseNavigationController.h"
+#import "DBHHomePageViewController.h"
 #import "MessageVC.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
@@ -440,9 +442,14 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 - (void)goToTabbar
 {
-    ZFTabBarViewController * tab = [[ZFTabBarViewController alloc] init];
-    self.window.rootViewController = tab;
+    DBHHomePageViewController *homePageViewController = [[DBHHomePageViewController alloc] init];
+    DBHBaseNavigationController *mainNavigationController = [[DBHBaseNavigationController alloc] initWithRootViewController:homePageViewController];
+    self.window.rootViewController = mainNavigationController;
     [self.window makeKeyAndVisible];
+    
+//    ZFTabBarViewController * tab = [[ZFTabBarViewController alloc] init];
+//    self.window.rootViewController = tab;
+//    [self.window makeKeyAndVisible];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

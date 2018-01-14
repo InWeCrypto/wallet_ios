@@ -47,7 +47,7 @@
 /**
  *  背景颜色
  */
-#define BACKGROUNDCOLOR COLORFROM10(245, 245, 245, 1)
+#define BACKGROUNDCOLOR [UIColor whiteColor]
 
 /**
  *  列表分界线
@@ -88,6 +88,10 @@
  *  字体大小设置
  */
 #define FONT(size) [UIFont systemFontOfSize:(size) * (SCREENWIDTH / 375)]
+/**
+ *  字体大小设置（粗体）
+ */
+#define BOLDFONT(size) [UIFont boldSystemFontOfSize:(size) * (SCREENWIDTH / 375)]
 /**
  *  导航栏标题字体大小
  */

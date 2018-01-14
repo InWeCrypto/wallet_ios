@@ -51,14 +51,14 @@ static NSString * const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIde
     [self.headerView.headImageView sdsetImageWithHeaderimg:[UserSignData share].user.img];
     self.headerView.nameLabel.text = [UserSignData share].user.nickname;
     
-//    [self setStatusBarBackgroundColor:[UIColor whiteColor]];
+    [self setStatusBarBackgroundColor:[UIColor whiteColor]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
-//    [self setStatusBarBackgroundColor:[UIColor clearColor]];
+    [self setStatusBarBackgroundColor:[UIColor clearColor]];
 }
 
 #pragma mark ------ UI ------
@@ -221,8 +221,14 @@ static NSString * const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIde
         _headerView = [[DBHMyHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(170))];
         
         WEAKSELF
-        [_headerView clickButtonBlock:^() {
-            [weakSelf editButtonClick];
+        [_headerView clickButtonBlock:^(NSInteger type) {
+            if (type == 1) {
+                // 编辑
+                [weakSelf editButtonClick];
+            } else {
+                // 返回
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
         }];
     }
     return _headerView;

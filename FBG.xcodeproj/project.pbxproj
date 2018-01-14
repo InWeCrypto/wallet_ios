@@ -353,7 +353,52 @@
 		D524EEB41FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEAF1FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m */; };
 		D524EEB51FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEB11FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m */; };
 		D524EEB81FC4359A00AC0DF9 /* DBHSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D524EEB71FC4359A00AC0DF9 /* DBHSearchViewController.m */; };
+		D527E7C72008E10700A724CB /* DBHTncTransferViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D527E7C62008E10700A724CB /* DBHTncTransferViewController.m */; };
 		D534FD821FFE30EF00FDA8BE /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D534FD811FFE30EF00FDA8BE /* Neomobile.framework */; };
+		D534FD881FFF4DE100FDA8BE /* DBHBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FD841FFF4DE100FDA8BE /* DBHBaseNavigationController.m */; };
+		D534FD891FFF4DE200FDA8BE /* DBHBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FD861FFF4DE100FDA8BE /* DBHBaseViewController.m */; };
+		D534FD8F1FFF540400FDA8BE /* DBHBaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FD8E1FFF540300FDA8BE /* DBHBaseTableViewCell.m */; };
+		D534FD951FFF546D00FDA8BE /* DBHHomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FD931FFF546D00FDA8BE /* DBHHomePageViewController.m */; };
+		D534FD981FFF548600FDA8BE /* DBHHomePageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FD971FFF548600FDA8BE /* DBHHomePageTableViewCell.m */; };
+		D534FD9B1FFF5B2C00FDA8BE /* DBHWalletManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FD9A1FFF5B2C00FDA8BE /* DBHWalletManagerViewController.m */; };
+		D534FD9E1FFF5B9400FDA8BE /* DBHWalletManagerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FD9D1FFF5B9400FDA8BE /* DBHWalletManagerTableViewCell.m */; };
+		D534FDA11FFF602700FDA8BE /* DBHAddWalletPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDA01FFF602700FDA8BE /* DBHAddWalletPromptView.m */; };
+		D534FDA41FFF623800FDA8BE /* DBHAddWalletPromptViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDA31FFF623800FDA8BE /* DBHAddWalletPromptViewTableViewCell.m */; };
+		D534FDA71FFF663C00FDA8BE /* DBHImportWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDA61FFF663C00FDA8BE /* DBHImportWalletViewController.m */; };
+		D534FDAA1FFF73EE00FDA8BE /* DBHInputPasswordPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDA91FFF73EE00FDA8BE /* DBHInputPasswordPromptView.m */; };
+		D534FDAD1FFF7D9900FDA8BE /* DBHSelectWalletTypeOnePromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDAC1FFF7D9900FDA8BE /* DBHSelectWalletTypeOnePromptView.m */; };
+		D534FDB01FFF7E3800FDA8BE /* DBHSelectWalletTypeTwoPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDAF1FFF7E3800FDA8BE /* DBHSelectWalletTypeTwoPromptView.m */; };
+		D534FDB61FFF862A00FDA8BE /* DBHCreateWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDB51FFF862A00FDA8BE /* DBHCreateWalletViewController.m */; };
+		D534FDB91FFF8B1000FDA8BE /* DBHWalletDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDB81FFF8B1000FDA8BE /* DBHWalletDetailViewController.m */; };
+		D534FDBC2003093A00FDA8BE /* DBHWalletDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDBB2003093A00FDA8BE /* DBHWalletDetailTableViewCell.m */; };
+		D534FDBF2003116000FDA8BE /* DBHWalletDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDBE2003116000FDA8BE /* DBHWalletDetailHeaderView.m */; };
+		D534FDC22003232F00FDA8BE /* DBHMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDC12003232F00FDA8BE /* DBHMenuView.m */; };
+		D534FDC520032D7B00FDA8BE /* DBHMenuViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDC420032D7B00FDA8BE /* DBHMenuViewTableViewCell.m */; };
+		D534FDC8200343C000FDA8BE /* DBHQrCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDC7200343C000FDA8BE /* DBHQrCodeViewController.m */; };
+		D534FDCB20034A3C00FDA8BE /* DBHAddPropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDCA20034A3C00FDA8BE /* DBHAddPropertyViewController.m */; };
+		D534FDCE20034AF300FDA8BE /* DBHAddPropertyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDCD20034AF300FDA8BE /* DBHAddPropertyTableViewCell.m */; };
+		D534FDD420034FA000FDA8BE /* DBHExtractGasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDD320034FA000FDA8BE /* DBHExtractGasViewController.m */; };
+		D534FDD72003503500FDA8BE /* DBHExtractGasTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDD62003503500FDA8BE /* DBHExtractGasTableViewCell.m */; };
+		D534FDDA2003562200FDA8BE /* DBHTransferListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDD92003562200FDA8BE /* DBHTransferListViewController.m */; };
+		D534FDDD2003568100FDA8BE /* DBHTransferListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDDC2003568100FDA8BE /* DBHTransferListTableViewCell.m */; };
+		D534FDE02003597A00FDA8BE /* DBHTransferListHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDDF2003597A00FDA8BE /* DBHTransferListHeaderView.m */; };
+		D534FDE320035FAD00FDA8BE /* DBHTransferViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDE220035FAD00FDA8BE /* DBHTransferViewController.m */; };
+		D534FDE6200366D700FDA8BE /* DBHTransferConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDE5200366D700FDA8BE /* DBHTransferConfirmationViewController.m */; };
+		D534FDE920036EFE00FDA8BE /* DBHTokenSaleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDE820036EFE00FDA8BE /* DBHTokenSaleViewController.m */; };
+		D534FDEC200373BD00FDA8BE /* DBHTokenSaleConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDEB200373BD00FDA8BE /* DBHTokenSaleConfirmationViewController.m */; };
+		D534FDEF200464B600FDA8BE /* DBHHomePageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDEE200464B600FDA8BE /* DBHHomePageHeaderView.m */; };
+		D534FDF22004731500FDA8BE /* DBHWalletLookPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDF12004731500FDA8BE /* DBHWalletLookPromptView.m */; };
+		D534FDF52004943200FDA8BE /* DBHWalletLookPromptViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDF42004943200FDA8BE /* DBHWalletLookPromptViewTableViewCell.m */; };
+		D534FDF82004AB1900FDA8BE /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FDF72004AB1900FDA8BE /* UIViewController+BackButtonHandler.m */; };
+		D534FE0F2004B5E700FDA8BE /* DBHWalletManagerForNeoModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE062004B5E500FDA8BE /* DBHWalletManagerForNeoModelDataBase.m */; };
+		D534FE102004B5E700FDA8BE /* DBHWalletManagerForNeoModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE072004B5E500FDA8BE /* DBHWalletManagerForNeoModelData.m */; };
+		D534FE112004B5E700FDA8BE /* DBHWalletManagerForNeoModelList.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE082004B5E500FDA8BE /* DBHWalletManagerForNeoModelList.m */; };
+		D534FE122004B5E700FDA8BE /* DBHWalletManagerForNeoModelCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE0A2004B5E500FDA8BE /* DBHWalletManagerForNeoModelCategory.m */; };
+		D534FE182004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE142004BBCD00FDA8BE /* DBHWalletDetailTokenInfomationModelDataBase.m */; };
+		D534FE192004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE152004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelData.m */; };
+		D534FE212004CF7100FDA8BE /* DBHAddPropertyModelList.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE1C2004CF6F00FDA8BE /* DBHAddPropertyModelList.m */; };
+		D534FE222004CF7100FDA8BE /* DBHAddPropertyModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE1D2004CF7000FDA8BE /* DBHAddPropertyModelDataBase.m */; };
+		D534FE232004CF7100FDA8BE /* DBHAddPropertyModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D534FE202004CF7100FDA8BE /* DBHAddPropertyModelData.m */; };
 		D53812EB1FB07DAF009D681E /* DBHBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */; };
 		D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53812ED1FB08054009D681E /* DBHBrowserTableViewCell.m */; };
 		D53C638A1FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53C63891FD8DB770002CFDB /* DBHInformationDetailForInweReportSelectedView.m */; };
@@ -402,6 +447,13 @@
 		D55558041FC975C100F0963B /* CHChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FC1FC975C100F0963B /* CHChartModel.swift */; };
 		D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FD1FC975C100F0963B /* CHKLineChartStyle.swift */; };
 		D55558061FC975C100F0963B /* CHChartAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */; };
+		D557BA302005AFB200D8105E /* DBHCreateWalletWithNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D557BA2F2005AFB200D8105E /* DBHCreateWalletWithNameViewController.m */; };
+		D557BA382005E1D700D8105E /* DBHTransferListModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D557BA312005E1D600D8105E /* DBHTransferListModelData.m */; };
+		D557BA392005E1D700D8105E /* DBHTransferListModelList.m in Sources */ = {isa = PBXBuildFile; fileRef = D557BA342005E1D600D8105E /* DBHTransferListModelList.m */; };
+		D557BA3A2005E1D700D8105E /* DBHTransferListModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D557BA372005E1D700D8105E /* DBHTransferListModelDataBase.m */; };
+		D557BA3D2005FB8D00D8105E /* DBHTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D557BA3C2005FB8D00D8105E /* DBHTransferDetailViewController.m */; };
+		D557BA402007593700D8105E /* DBHHomePageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D557BA3F2007593700D8105E /* DBHHomePageView.m */; };
+		D557BA852008A68800D8105E /* DBHWalletDetailTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D557BA842008A68800D8105E /* DBHWalletDetailTitleView.m */; };
 		D55CA9CB1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */; };
 		D55CA9CE1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D55CA9CD1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m */; };
 		D59BFC8C1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D59BFC891FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.xib */; };
@@ -1059,7 +1111,100 @@
 		D524EEB21FC41F9D00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationForRoastingChartCollectionModelData.h; sourceTree = "<group>"; };
 		D524EEB61FC4359A00AC0DF9 /* DBHSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSearchViewController.h; sourceTree = "<group>"; };
 		D524EEB71FC4359A00AC0DF9 /* DBHSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSearchViewController.m; sourceTree = "<group>"; };
+		D527E7C52008E10700A724CB /* DBHTncTransferViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTncTransferViewController.h; sourceTree = "<group>"; };
+		D527E7C62008E10700A724CB /* DBHTncTransferViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTncTransferViewController.m; sourceTree = "<group>"; };
 		D534FD811FFE30EF00FDA8BE /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
+		D534FD841FFF4DE100FDA8BE /* DBHBaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHBaseNavigationController.m; sourceTree = "<group>"; };
+		D534FD851FFF4DE100FDA8BE /* DBHBaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHBaseNavigationController.h; sourceTree = "<group>"; };
+		D534FD861FFF4DE100FDA8BE /* DBHBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHBaseViewController.m; sourceTree = "<group>"; };
+		D534FD871FFF4DE100FDA8BE /* DBHBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHBaseViewController.h; sourceTree = "<group>"; };
+		D534FD8D1FFF540300FDA8BE /* DBHBaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHBaseTableViewCell.h; sourceTree = "<group>"; };
+		D534FD8E1FFF540300FDA8BE /* DBHBaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHBaseTableViewCell.m; sourceTree = "<group>"; };
+		D534FD921FFF546D00FDA8BE /* DBHHomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHomePageViewController.h; sourceTree = "<group>"; };
+		D534FD931FFF546D00FDA8BE /* DBHHomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHHomePageViewController.m; sourceTree = "<group>"; };
+		D534FD961FFF548600FDA8BE /* DBHHomePageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHHomePageTableViewCell.h; sourceTree = "<group>"; };
+		D534FD971FFF548600FDA8BE /* DBHHomePageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHHomePageTableViewCell.m; sourceTree = "<group>"; };
+		D534FD991FFF5B2C00FDA8BE /* DBHWalletManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletManagerViewController.h; sourceTree = "<group>"; };
+		D534FD9A1FFF5B2C00FDA8BE /* DBHWalletManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletManagerViewController.m; sourceTree = "<group>"; };
+		D534FD9C1FFF5B9400FDA8BE /* DBHWalletManagerTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletManagerTableViewCell.h; sourceTree = "<group>"; };
+		D534FD9D1FFF5B9400FDA8BE /* DBHWalletManagerTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletManagerTableViewCell.m; sourceTree = "<group>"; };
+		D534FD9F1FFF602700FDA8BE /* DBHAddWalletPromptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAddWalletPromptView.h; sourceTree = "<group>"; };
+		D534FDA01FFF602700FDA8BE /* DBHAddWalletPromptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHAddWalletPromptView.m; sourceTree = "<group>"; };
+		D534FDA21FFF623800FDA8BE /* DBHAddWalletPromptViewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAddWalletPromptViewTableViewCell.h; sourceTree = "<group>"; };
+		D534FDA31FFF623800FDA8BE /* DBHAddWalletPromptViewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHAddWalletPromptViewTableViewCell.m; sourceTree = "<group>"; };
+		D534FDA51FFF663C00FDA8BE /* DBHImportWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHImportWalletViewController.h; sourceTree = "<group>"; };
+		D534FDA61FFF663C00FDA8BE /* DBHImportWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHImportWalletViewController.m; sourceTree = "<group>"; };
+		D534FDA81FFF73EE00FDA8BE /* DBHInputPasswordPromptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInputPasswordPromptView.h; sourceTree = "<group>"; };
+		D534FDA91FFF73EE00FDA8BE /* DBHInputPasswordPromptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInputPasswordPromptView.m; sourceTree = "<group>"; };
+		D534FDAB1FFF7D9900FDA8BE /* DBHSelectWalletTypeOnePromptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSelectWalletTypeOnePromptView.h; sourceTree = "<group>"; };
+		D534FDAC1FFF7D9900FDA8BE /* DBHSelectWalletTypeOnePromptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSelectWalletTypeOnePromptView.m; sourceTree = "<group>"; };
+		D534FDAE1FFF7E3800FDA8BE /* DBHSelectWalletTypeTwoPromptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSelectWalletTypeTwoPromptView.h; sourceTree = "<group>"; };
+		D534FDAF1FFF7E3800FDA8BE /* DBHSelectWalletTypeTwoPromptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSelectWalletTypeTwoPromptView.m; sourceTree = "<group>"; };
+		D534FDB41FFF862A00FDA8BE /* DBHCreateWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHCreateWalletViewController.h; sourceTree = "<group>"; };
+		D534FDB51FFF862A00FDA8BE /* DBHCreateWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHCreateWalletViewController.m; sourceTree = "<group>"; };
+		D534FDB71FFF8B1000FDA8BE /* DBHWalletDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailViewController.h; sourceTree = "<group>"; };
+		D534FDB81FFF8B1000FDA8BE /* DBHWalletDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletDetailViewController.m; sourceTree = "<group>"; };
+		D534FDBA2003093A00FDA8BE /* DBHWalletDetailTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailTableViewCell.h; sourceTree = "<group>"; };
+		D534FDBB2003093A00FDA8BE /* DBHWalletDetailTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletDetailTableViewCell.m; sourceTree = "<group>"; };
+		D534FDBD2003116000FDA8BE /* DBHWalletDetailHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailHeaderView.h; sourceTree = "<group>"; };
+		D534FDBE2003116000FDA8BE /* DBHWalletDetailHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletDetailHeaderView.m; sourceTree = "<group>"; };
+		D534FDC02003232F00FDA8BE /* DBHMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMenuView.h; sourceTree = "<group>"; };
+		D534FDC12003232F00FDA8BE /* DBHMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMenuView.m; sourceTree = "<group>"; };
+		D534FDC320032D7B00FDA8BE /* DBHMenuViewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMenuViewTableViewCell.h; sourceTree = "<group>"; };
+		D534FDC420032D7B00FDA8BE /* DBHMenuViewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMenuViewTableViewCell.m; sourceTree = "<group>"; };
+		D534FDC6200343C000FDA8BE /* DBHQrCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHQrCodeViewController.h; sourceTree = "<group>"; };
+		D534FDC7200343C000FDA8BE /* DBHQrCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHQrCodeViewController.m; sourceTree = "<group>"; };
+		D534FDC920034A3C00FDA8BE /* DBHAddPropertyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAddPropertyViewController.h; sourceTree = "<group>"; };
+		D534FDCA20034A3C00FDA8BE /* DBHAddPropertyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHAddPropertyViewController.m; sourceTree = "<group>"; };
+		D534FDCC20034AF300FDA8BE /* DBHAddPropertyTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHAddPropertyTableViewCell.h; sourceTree = "<group>"; };
+		D534FDCD20034AF300FDA8BE /* DBHAddPropertyTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHAddPropertyTableViewCell.m; sourceTree = "<group>"; };
+		D534FDD220034FA000FDA8BE /* DBHExtractGasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHExtractGasViewController.h; sourceTree = "<group>"; };
+		D534FDD320034FA000FDA8BE /* DBHExtractGasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHExtractGasViewController.m; sourceTree = "<group>"; };
+		D534FDD52003503500FDA8BE /* DBHExtractGasTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHExtractGasTableViewCell.h; sourceTree = "<group>"; };
+		D534FDD62003503500FDA8BE /* DBHExtractGasTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHExtractGasTableViewCell.m; sourceTree = "<group>"; };
+		D534FDD82003562200FDA8BE /* DBHTransferListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTransferListViewController.h; sourceTree = "<group>"; };
+		D534FDD92003562200FDA8BE /* DBHTransferListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTransferListViewController.m; sourceTree = "<group>"; };
+		D534FDDB2003568100FDA8BE /* DBHTransferListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTransferListTableViewCell.h; sourceTree = "<group>"; };
+		D534FDDC2003568100FDA8BE /* DBHTransferListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTransferListTableViewCell.m; sourceTree = "<group>"; };
+		D534FDDE2003597A00FDA8BE /* DBHTransferListHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTransferListHeaderView.h; sourceTree = "<group>"; };
+		D534FDDF2003597A00FDA8BE /* DBHTransferListHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTransferListHeaderView.m; sourceTree = "<group>"; };
+		D534FDE120035FAD00FDA8BE /* DBHTransferViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTransferViewController.h; sourceTree = "<group>"; };
+		D534FDE220035FAD00FDA8BE /* DBHTransferViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTransferViewController.m; sourceTree = "<group>"; };
+		D534FDE4200366D700FDA8BE /* DBHTransferConfirmationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTransferConfirmationViewController.h; sourceTree = "<group>"; };
+		D534FDE5200366D700FDA8BE /* DBHTransferConfirmationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTransferConfirmationViewController.m; sourceTree = "<group>"; };
+		D534FDE720036EFE00FDA8BE /* DBHTokenSaleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTokenSaleViewController.h; sourceTree = "<group>"; };
+		D534FDE820036EFE00FDA8BE /* DBHTokenSaleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTokenSaleViewController.m; sourceTree = "<group>"; };
+		D534FDEA200373BD00FDA8BE /* DBHTokenSaleConfirmationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTokenSaleConfirmationViewController.h; sourceTree = "<group>"; };
+		D534FDEB200373BD00FDA8BE /* DBHTokenSaleConfirmationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTokenSaleConfirmationViewController.m; sourceTree = "<group>"; };
+		D534FDED200464B600FDA8BE /* DBHHomePageHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHHomePageHeaderView.h; sourceTree = "<group>"; };
+		D534FDEE200464B600FDA8BE /* DBHHomePageHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHHomePageHeaderView.m; sourceTree = "<group>"; };
+		D534FDF02004731500FDA8BE /* DBHWalletLookPromptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletLookPromptView.h; sourceTree = "<group>"; };
+		D534FDF12004731500FDA8BE /* DBHWalletLookPromptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletLookPromptView.m; sourceTree = "<group>"; };
+		D534FDF32004943200FDA8BE /* DBHWalletLookPromptViewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletLookPromptViewTableViewCell.h; sourceTree = "<group>"; };
+		D534FDF42004943200FDA8BE /* DBHWalletLookPromptViewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletLookPromptViewTableViewCell.m; sourceTree = "<group>"; };
+		D534FDF62004AB1900FDA8BE /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
+		D534FDF72004AB1900FDA8BE /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
+		D534FE062004B5E500FDA8BE /* DBHWalletManagerForNeoModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHWalletManagerForNeoModelDataBase.m; sourceTree = "<group>"; };
+		D534FE072004B5E500FDA8BE /* DBHWalletManagerForNeoModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHWalletManagerForNeoModelData.m; sourceTree = "<group>"; };
+		D534FE082004B5E500FDA8BE /* DBHWalletManagerForNeoModelList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHWalletManagerForNeoModelList.m; sourceTree = "<group>"; };
+		D534FE092004B5E500FDA8BE /* DBHWalletManagerForNeoModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletManagerForNeoModelData.h; sourceTree = "<group>"; };
+		D534FE0A2004B5E500FDA8BE /* DBHWalletManagerForNeoModelCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHWalletManagerForNeoModelCategory.m; sourceTree = "<group>"; };
+		D534FE0B2004B5E600FDA8BE /* DBHWalletManagerForNeoModelCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletManagerForNeoModelCategory.h; sourceTree = "<group>"; };
+		D534FE0C2004B5E600FDA8BE /* DBHWalletManagerForNeoDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletManagerForNeoDataModels.h; sourceTree = "<group>"; };
+		D534FE0D2004B5E600FDA8BE /* DBHWalletManagerForNeoModelList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletManagerForNeoModelList.h; sourceTree = "<group>"; };
+		D534FE0E2004B5E600FDA8BE /* DBHWalletManagerForNeoModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletManagerForNeoModelDataBase.h; sourceTree = "<group>"; };
+		D534FE132004BBCD00FDA8BE /* DBHWalletDetailTokenInfomationDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailTokenInfomationDataModels.h; sourceTree = "<group>"; };
+		D534FE142004BBCD00FDA8BE /* DBHWalletDetailTokenInfomationModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHWalletDetailTokenInfomationModelDataBase.m; sourceTree = "<group>"; };
+		D534FE152004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHWalletDetailTokenInfomationModelData.m; sourceTree = "<group>"; };
+		D534FE162004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailTokenInfomationModelDataBase.h; sourceTree = "<group>"; };
+		D534FE172004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailTokenInfomationModelData.h; sourceTree = "<group>"; };
+		D534FE1A2004CF6E00FDA8BE /* DBHAddPropertyModelList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddPropertyModelList.h; sourceTree = "<group>"; };
+		D534FE1B2004CF6F00FDA8BE /* DBHAddPropertyDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddPropertyDataModels.h; sourceTree = "<group>"; };
+		D534FE1C2004CF6F00FDA8BE /* DBHAddPropertyModelList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddPropertyModelList.m; sourceTree = "<group>"; };
+		D534FE1D2004CF7000FDA8BE /* DBHAddPropertyModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddPropertyModelDataBase.m; sourceTree = "<group>"; };
+		D534FE1E2004CF7000FDA8BE /* DBHAddPropertyModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddPropertyModelData.h; sourceTree = "<group>"; };
+		D534FE1F2004CF7100FDA8BE /* DBHAddPropertyModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddPropertyModelDataBase.h; sourceTree = "<group>"; };
+		D534FE202004CF7100FDA8BE /* DBHAddPropertyModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddPropertyModelData.m; sourceTree = "<group>"; };
 		D53812E91FB07DAF009D681E /* DBHBrowserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserViewController.h; sourceTree = "<group>"; };
 		D53812EA1FB07DAF009D681E /* DBHBrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHBrowserViewController.m; sourceTree = "<group>"; };
 		D53812EC1FB08054009D681E /* DBHBrowserTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHBrowserTableViewCell.h; sourceTree = "<group>"; };
@@ -1157,6 +1302,21 @@
 		D55557FC1FC975C100F0963B /* CHChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHChartModel.swift; sourceTree = "<group>"; };
 		D55557FD1FC975C100F0963B /* CHKLineChartStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHKLineChartStyle.swift; sourceTree = "<group>"; };
 		D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHChartAlgorithm.swift; sourceTree = "<group>"; };
+		D557BA2E2005AFB200D8105E /* DBHCreateWalletWithNameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHCreateWalletWithNameViewController.h; sourceTree = "<group>"; };
+		D557BA2F2005AFB200D8105E /* DBHCreateWalletWithNameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHCreateWalletWithNameViewController.m; sourceTree = "<group>"; };
+		D557BA312005E1D600D8105E /* DBHTransferListModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHTransferListModelData.m; sourceTree = "<group>"; };
+		D557BA322005E1D600D8105E /* DBHTransferListModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTransferListModelData.h; sourceTree = "<group>"; };
+		D557BA332005E1D600D8105E /* DBHTransferListDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTransferListDataModels.h; sourceTree = "<group>"; };
+		D557BA342005E1D600D8105E /* DBHTransferListModelList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHTransferListModelList.m; sourceTree = "<group>"; };
+		D557BA352005E1D700D8105E /* DBHTransferListModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTransferListModelDataBase.h; sourceTree = "<group>"; };
+		D557BA362005E1D700D8105E /* DBHTransferListModelList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTransferListModelList.h; sourceTree = "<group>"; };
+		D557BA372005E1D700D8105E /* DBHTransferListModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHTransferListModelDataBase.m; sourceTree = "<group>"; };
+		D557BA3B2005FB8D00D8105E /* DBHTransferDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHTransferDetailViewController.h; sourceTree = "<group>"; };
+		D557BA3C2005FB8D00D8105E /* DBHTransferDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHTransferDetailViewController.m; sourceTree = "<group>"; };
+		D557BA3E2007593700D8105E /* DBHHomePageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHHomePageView.h; sourceTree = "<group>"; };
+		D557BA3F2007593700D8105E /* DBHHomePageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHHomePageView.m; sourceTree = "<group>"; };
+		D557BA832008A68800D8105E /* DBHWalletDetailTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailTitleView.h; sourceTree = "<group>"; };
+		D557BA842008A68800D8105E /* DBHWalletDetailTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletDetailTitleView.m; sourceTree = "<group>"; };
 		D55CA9C91FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForCrowdfundingContentTableViewCell.h; sourceTree = "<group>"; };
 		D55CA9CA1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationDetailForCrowdfundingContentTableViewCell.m; sourceTree = "<group>"; };
 		D55CA9CC1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationDetailForIcoFinePrintTableViewCell.h; sourceTree = "<group>"; };
@@ -1361,6 +1521,8 @@
 				D521D9D51FBACEE2009566EA /* NSString+Height.m */,
 				D5215DA21FD7E83500536248 /* NSString+Null.h */,
 				D5215DA31FD7E83500536248 /* NSString+Null.m */,
+				D534FDF62004AB1900FDA8BE /* UIViewController+BackButtonHandler.h */,
+				D534FDF72004AB1900FDA8BE /* UIViewController+BackButtonHandler.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1368,6 +1530,7 @@
 		0F0CFE191F15F92300476A86 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				D534FD831FFF4DA800FDA8BE /* 主页 */,
 				0FBED4211F19DEAD006C5CA8 /* 钱包 */,
 				A8CD773C1F32449400005027 /* 行情 */,
 				A8CD772C1F32449400005027 /* 发现 */,
@@ -1473,6 +1636,10 @@
 		0F0CFE4E1F161F4C00476A86 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				D534FD851FFF4DE100FDA8BE /* DBHBaseNavigationController.h */,
+				D534FD841FFF4DE100FDA8BE /* DBHBaseNavigationController.m */,
+				D534FD871FFF4DE100FDA8BE /* DBHBaseViewController.h */,
+				D534FD861FFF4DE100FDA8BE /* DBHBaseViewController.m */,
 				0FFEA9D11F170361009F6151 /* CDNavigationController.h */,
 				0FFEA9D21F170361009F6151 /* CDNavigationController.m */,
 				D5F679E81FB9B4A900EB773D /* DBHNavigationController.h */,
@@ -1486,6 +1653,8 @@
 		0F0CFE511F161F4C00476A86 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D534FD8D1FFF540300FDA8BE /* DBHBaseTableViewCell.h */,
+				D534FD8E1FFF540300FDA8BE /* DBHBaseTableViewCell.m */,
 				0F0CFE521F161F4C00476A86 /* ZFBadgeButton.h */,
 				0F0CFE531F161F4C00476A86 /* ZFBadgeButton.m */,
 				0F0CFE541F161F4C00476A86 /* ZFTabBar.h */,
@@ -2399,6 +2568,137 @@
 			path = MXNavigationBarManager;
 			sourceTree = "<group>";
 		};
+		D534FD831FFF4DA800FDA8BE /* 主页 */ = {
+			isa = PBXGroup;
+			children = (
+				D534FD911FFF546D00FDA8BE /* Controller */,
+				D534FD901FFF546D00FDA8BE /* Model */,
+				D534FD941FFF546D00FDA8BE /* View */,
+			);
+			path = "主页";
+			sourceTree = "<group>";
+		};
+		D534FD901FFF546D00FDA8BE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D557BA332005E1D600D8105E /* DBHTransferListDataModels.h */,
+				D557BA322005E1D600D8105E /* DBHTransferListModelData.h */,
+				D557BA312005E1D600D8105E /* DBHTransferListModelData.m */,
+				D557BA352005E1D700D8105E /* DBHTransferListModelDataBase.h */,
+				D557BA372005E1D700D8105E /* DBHTransferListModelDataBase.m */,
+				D557BA362005E1D700D8105E /* DBHTransferListModelList.h */,
+				D557BA342005E1D600D8105E /* DBHTransferListModelList.m */,
+				D534FE1B2004CF6F00FDA8BE /* DBHAddPropertyDataModels.h */,
+				D534FE1E2004CF7000FDA8BE /* DBHAddPropertyModelData.h */,
+				D534FE202004CF7100FDA8BE /* DBHAddPropertyModelData.m */,
+				D534FE1F2004CF7100FDA8BE /* DBHAddPropertyModelDataBase.h */,
+				D534FE1D2004CF7000FDA8BE /* DBHAddPropertyModelDataBase.m */,
+				D534FE1A2004CF6E00FDA8BE /* DBHAddPropertyModelList.h */,
+				D534FE1C2004CF6F00FDA8BE /* DBHAddPropertyModelList.m */,
+				D534FE132004BBCD00FDA8BE /* DBHWalletDetailTokenInfomationDataModels.h */,
+				D534FE172004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelData.h */,
+				D534FE152004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelData.m */,
+				D534FE162004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelDataBase.h */,
+				D534FE142004BBCD00FDA8BE /* DBHWalletDetailTokenInfomationModelDataBase.m */,
+				D534FE0C2004B5E600FDA8BE /* DBHWalletManagerForNeoDataModels.h */,
+				D534FE0B2004B5E600FDA8BE /* DBHWalletManagerForNeoModelCategory.h */,
+				D534FE0A2004B5E500FDA8BE /* DBHWalletManagerForNeoModelCategory.m */,
+				D534FE092004B5E500FDA8BE /* DBHWalletManagerForNeoModelData.h */,
+				D534FE072004B5E500FDA8BE /* DBHWalletManagerForNeoModelData.m */,
+				D534FE0E2004B5E600FDA8BE /* DBHWalletManagerForNeoModelDataBase.h */,
+				D534FE062004B5E500FDA8BE /* DBHWalletManagerForNeoModelDataBase.m */,
+				D534FE0D2004B5E600FDA8BE /* DBHWalletManagerForNeoModelList.h */,
+				D534FE082004B5E500FDA8BE /* DBHWalletManagerForNeoModelList.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D534FD911FFF546D00FDA8BE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D534FD921FFF546D00FDA8BE /* DBHHomePageViewController.h */,
+				D534FD931FFF546D00FDA8BE /* DBHHomePageViewController.m */,
+				D534FD991FFF5B2C00FDA8BE /* DBHWalletManagerViewController.h */,
+				D534FD9A1FFF5B2C00FDA8BE /* DBHWalletManagerViewController.m */,
+				D534FDA51FFF663C00FDA8BE /* DBHImportWalletViewController.h */,
+				D534FDA61FFF663C00FDA8BE /* DBHImportWalletViewController.m */,
+				D534FDB41FFF862A00FDA8BE /* DBHCreateWalletViewController.h */,
+				D534FDB51FFF862A00FDA8BE /* DBHCreateWalletViewController.m */,
+				D557BA2E2005AFB200D8105E /* DBHCreateWalletWithNameViewController.h */,
+				D557BA2F2005AFB200D8105E /* DBHCreateWalletWithNameViewController.m */,
+				D534FDB71FFF8B1000FDA8BE /* DBHWalletDetailViewController.h */,
+				D534FDB81FFF8B1000FDA8BE /* DBHWalletDetailViewController.m */,
+				D534FDC6200343C000FDA8BE /* DBHQrCodeViewController.h */,
+				D534FDC7200343C000FDA8BE /* DBHQrCodeViewController.m */,
+				D534FDC920034A3C00FDA8BE /* DBHAddPropertyViewController.h */,
+				D534FDCA20034A3C00FDA8BE /* DBHAddPropertyViewController.m */,
+				D534FDD220034FA000FDA8BE /* DBHExtractGasViewController.h */,
+				D534FDD320034FA000FDA8BE /* DBHExtractGasViewController.m */,
+				D534FDD82003562200FDA8BE /* DBHTransferListViewController.h */,
+				D534FDD92003562200FDA8BE /* DBHTransferListViewController.m */,
+				D534FDE120035FAD00FDA8BE /* DBHTransferViewController.h */,
+				D534FDE220035FAD00FDA8BE /* DBHTransferViewController.m */,
+				D527E7C52008E10700A724CB /* DBHTncTransferViewController.h */,
+				D527E7C62008E10700A724CB /* DBHTncTransferViewController.m */,
+				D557BA3B2005FB8D00D8105E /* DBHTransferDetailViewController.h */,
+				D557BA3C2005FB8D00D8105E /* DBHTransferDetailViewController.m */,
+				D534FDE4200366D700FDA8BE /* DBHTransferConfirmationViewController.h */,
+				D534FDE5200366D700FDA8BE /* DBHTransferConfirmationViewController.m */,
+				D534FDE720036EFE00FDA8BE /* DBHTokenSaleViewController.h */,
+				D534FDE820036EFE00FDA8BE /* DBHTokenSaleViewController.m */,
+				D534FDEA200373BD00FDA8BE /* DBHTokenSaleConfirmationViewController.h */,
+				D534FDEB200373BD00FDA8BE /* DBHTokenSaleConfirmationViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		D534FD941FFF546D00FDA8BE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D534FD961FFF548600FDA8BE /* DBHHomePageTableViewCell.h */,
+				D534FD971FFF548600FDA8BE /* DBHHomePageTableViewCell.m */,
+				D557BA3E2007593700D8105E /* DBHHomePageView.h */,
+				D557BA3F2007593700D8105E /* DBHHomePageView.m */,
+				D534FDED200464B600FDA8BE /* DBHHomePageHeaderView.h */,
+				D534FDEE200464B600FDA8BE /* DBHHomePageHeaderView.m */,
+				D534FDF02004731500FDA8BE /* DBHWalletLookPromptView.h */,
+				D534FDF12004731500FDA8BE /* DBHWalletLookPromptView.m */,
+				D534FDF32004943200FDA8BE /* DBHWalletLookPromptViewTableViewCell.h */,
+				D534FDF42004943200FDA8BE /* DBHWalletLookPromptViewTableViewCell.m */,
+				D534FD9C1FFF5B9400FDA8BE /* DBHWalletManagerTableViewCell.h */,
+				D534FD9D1FFF5B9400FDA8BE /* DBHWalletManagerTableViewCell.m */,
+				D534FD9F1FFF602700FDA8BE /* DBHAddWalletPromptView.h */,
+				D534FDA01FFF602700FDA8BE /* DBHAddWalletPromptView.m */,
+				D534FDA21FFF623800FDA8BE /* DBHAddWalletPromptViewTableViewCell.h */,
+				D534FDA31FFF623800FDA8BE /* DBHAddWalletPromptViewTableViewCell.m */,
+				D534FDA81FFF73EE00FDA8BE /* DBHInputPasswordPromptView.h */,
+				D534FDA91FFF73EE00FDA8BE /* DBHInputPasswordPromptView.m */,
+				D534FDAB1FFF7D9900FDA8BE /* DBHSelectWalletTypeOnePromptView.h */,
+				D534FDAC1FFF7D9900FDA8BE /* DBHSelectWalletTypeOnePromptView.m */,
+				D534FDAE1FFF7E3800FDA8BE /* DBHSelectWalletTypeTwoPromptView.h */,
+				D534FDAF1FFF7E3800FDA8BE /* DBHSelectWalletTypeTwoPromptView.m */,
+				D534FDBA2003093A00FDA8BE /* DBHWalletDetailTableViewCell.h */,
+				D534FDBB2003093A00FDA8BE /* DBHWalletDetailTableViewCell.m */,
+				D534FDBD2003116000FDA8BE /* DBHWalletDetailHeaderView.h */,
+				D534FDBE2003116000FDA8BE /* DBHWalletDetailHeaderView.m */,
+				D557BA832008A68800D8105E /* DBHWalletDetailTitleView.h */,
+				D557BA842008A68800D8105E /* DBHWalletDetailTitleView.m */,
+				D534FDC02003232F00FDA8BE /* DBHMenuView.h */,
+				D534FDC12003232F00FDA8BE /* DBHMenuView.m */,
+				D534FDC320032D7B00FDA8BE /* DBHMenuViewTableViewCell.h */,
+				D534FDC420032D7B00FDA8BE /* DBHMenuViewTableViewCell.m */,
+				D534FDCC20034AF300FDA8BE /* DBHAddPropertyTableViewCell.h */,
+				D534FDCD20034AF300FDA8BE /* DBHAddPropertyTableViewCell.m */,
+				D534FDD52003503500FDA8BE /* DBHExtractGasTableViewCell.h */,
+				D534FDD62003503500FDA8BE /* DBHExtractGasTableViewCell.m */,
+				D534FDDB2003568100FDA8BE /* DBHTransferListTableViewCell.h */,
+				D534FDDC2003568100FDA8BE /* DBHTransferListTableViewCell.m */,
+				D534FDDE2003597A00FDA8BE /* DBHTransferListHeaderView.h */,
+				D534FDDF2003597A00FDA8BE /* DBHTransferListHeaderView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		D55557F61FC975C100F0963B /* CHKLineChart */ = {
 			isa = PBXGroup;
 			children = (
@@ -2731,13 +3031,17 @@
 				D521D9FB1FBB0CC1009566EA /* DBHInformationDetailForTradingMarketContentTableViewCell.m in Sources */,
 				D53F8F401FD2941A00E85DE0 /* DBHQuotationVCModelTimeData.m in Sources */,
 				0FAC291A1F2F7C4A009B3EC9 /* AAPlotOptions.m in Sources */,
+				D534FDCB20034A3C00FDA8BE /* DBHAddPropertyViewController.m in Sources */,
 				A8F275411F429A910035B5B8 /* RelationCapMinModel.m in Sources */,
+				D534FDD420034FA000FDA8BE /* DBHExtractGasViewController.m in Sources */,
+				D534FDF22004731500FDA8BE /* DBHWalletLookPromptView.m in Sources */,
 				D55558011FC975C100F0963B /* CHSeries.swift in Sources */,
 				A85A01C51F36BB70002F0141 /* FindArticleModel.m in Sources */,
 				D53D47151FBED42C00FDFB61 /* DBHInformationDetailModelProjectMarkets.m in Sources */,
 				0F1AFCA41F1A556500BA81EF /* WalletHomeVC.m in Sources */,
 				D53D47361FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelData.m in Sources */,
 				D55CA9CE1FBBDEA7003C3DD1 /* DBHInformationDetailForIcoFinePrintTableViewCell.m in Sources */,
+				D557BA302005AFB200D8105E /* DBHCreateWalletWithNameViewController.m in Sources */,
 				A81A5AF71F3AFD3C0015CC0D /* PDKeyChain.m in Sources */,
 				A80713561F5563CE00C5B862 /* MASViewAttribute.m in Sources */,
 				0FE4741A1F28E4DA009E1DF8 /* AddEthOrBtcVC.m in Sources */,
@@ -2745,6 +3049,7 @@
 				D55558061FC975C100F0963B /* CHChartAlgorithm.swift in Sources */,
 				A8AAFBE31F3FFB0E00724FF6 /* WalletOrderModel.m in Sources */,
 				0FDCACB61F20FAEF0090D12A /* TransactionInfoVC.m in Sources */,
+				D534FD891FFF4DE200FDA8BE /* DBHBaseViewController.m in Sources */,
 				0F0CFE581F161F4C00476A86 /* ZFTabBarViewController.m in Sources */,
 				A8CD77781F32453300005027 /* SetValueFormatter.m in Sources */,
 				D509B52C1FBFE58B002782DC /* DBHInformationDetailModelIcoDetail.m in Sources */,
@@ -2761,6 +3066,7 @@
 				0FFEA9DA1F173905009F6151 /* UserModel.m in Sources */,
 				D50F10E61FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m in Sources */,
 				0FB9DD181F1F9517005CEA39 /* TransferVC.m in Sources */,
+				D557BA3D2005FB8D00D8105E /* DBHTransferDetailViewController.m in Sources */,
 				A84475871F32BE0E003C7BDB /* ICOTranSuccesVC.m in Sources */,
 				D5215D981FD7C54C00536248 /* DBHInformationDetailForOnLineBeforeViewController.m in Sources */,
 				A80713191F55509800C5B862 /* PackupsWordsVC.m in Sources */,
@@ -2780,6 +3086,7 @@
 				0FAC29171F2F7C4A009B3EC9 /* AAOptions3d.m in Sources */,
 				0FAC290A1F2F7C4A009B3EC9 /* AAAnimation.m in Sources */,
 				D53F8F321FD2596100E85DE0 /* AddQuotesVCModelData.m in Sources */,
+				D534FDEF200464B600FDA8BE /* DBHHomePageHeaderView.m in Sources */,
 				D51B9CDF1FCFFFB000B29028 /* DBHInformationForNewsCollectionViewTableViewCell.m in Sources */,
 				A88A78921F6992E90058094C /* SGQRCodeGenerateManager.m in Sources */,
 				D521D9F81FBB0878009566EA /* DBHInformationDetailForTradingMarketButton.m in Sources */,
@@ -2787,10 +3094,14 @@
 				A8CD776C1F32449400005027 /* QuotationCell.m in Sources */,
 				D5F679F01FB9BE5100EB773D /* DBHEvaluatingIcoViewController.m in Sources */,
 				0FAC29131F2F7C4A009B3EC9 /* AALegend.m in Sources */,
+				D534FD8F1FFF540400FDA8BE /* DBHBaseTableViewCell.m in Sources */,
+				D534FE192004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelData.m in Sources */,
 				D5B822011FC02131009A50E3 /* DBHInformationForMoneyConditionModelData.m in Sources */,
+				D534FDC8200343C000FDA8BE /* DBHQrCodeViewController.m in Sources */,
 				0FAC29221F2F7C4A009B3EC9 /* AAXAxis.m in Sources */,
 				0FB9DD221F1FA76E005CEA39 /* ReceivablesVC.m in Sources */,
 				D50F10E51FD6986E004E14C3 /* DBHMarketDetailMoneyRealTimePriceModelData.m in Sources */,
+				D534FDB01FFF7E3800FDA8BE /* DBHSelectWalletTypeTwoPromptView.m in Sources */,
 				D5FB40221FB691FF00070D03 /* DBHMyTableViewCell.m in Sources */,
 				D53D47561FBF125900FDFB61 /* DBHInformationDetailForInweModelDataBase.m in Sources */,
 				0FC281911F23891700A1E57B /* MyTVC.m in Sources */,
@@ -2798,6 +3109,7 @@
 				0FAC29001F2F7C4A009B3EC9 /* AAChartView.m in Sources */,
 				0FAC291C1F2F7C4A009B3EC9 /* AASeriesElement.m in Sources */,
 				D54F57F41FBD826500ED334E /* DBHInformationForProjectCollectionModelDataBase.m in Sources */,
+				D534FE102004B5E700FDA8BE /* DBHWalletManagerForNeoModelData.m in Sources */,
 				D59BFC8D1FCD4A2200C5C13B /* AddNeoOtherWalletInfoVC.m in Sources */,
 				A807135D1F5563CE00C5B862 /* View+MASAdditions.m in Sources */,
 				0F1AFCBA1F1A64B600BA81EF /* WalletLeiftView.m in Sources */,
@@ -2814,6 +3126,7 @@
 				0FD2A8621F2A38AF00C210D3 /* AddOtherWalletInfoVC.m in Sources */,
 				0FAC29111F2F7C4A009B3EC9 /* AAItemStyle.m in Sources */,
 				0F0CFDED1F15E54100476A86 /* ViewController.m in Sources */,
+				D534FDE02003597A00FDA8BE /* DBHTransferListHeaderView.m in Sources */,
 				D50F10CF1FD63C23004E14C3 /* DBHTimeSelectView.m in Sources */,
 				0FDCACA91F20ED780090D12A /* TransactionRecordVC.m in Sources */,
 				D521D9DC1FBAE8FB009566EA /* DBHInformationDetailForDealViewController.m in Sources */,
@@ -2821,6 +3134,7 @@
 				0FAC29141F2F7C4A009B3EC9 /* AALine.m in Sources */,
 				A81A5AE61F3AD6E10015CC0D /* RemindModel.m in Sources */,
 				D521D9D01FBACCF2009566EA /* DBHAllInformationTypeOneTableViewCell.m in Sources */,
+				D534FDF82004AB1900FDA8BE /* UIViewController+BackButtonHandler.m in Sources */,
 				D521D9DF1FBAEF05009566EA /* DBHInformationDetailForCrowdfundingViewController.m in Sources */,
 				D51B7A0C1FC45959001B363E /* DBHSearchModelDataBase.m in Sources */,
 				A8CD778C1F32457D00005027 /* TADotView.m in Sources */,
@@ -2832,14 +3146,18 @@
 				A8CD77661F32449400005027 /* RemindVC.m in Sources */,
 				A84475B11F331FA7003C7BDB /* LXFPhotoHelper.m in Sources */,
 				A84475911F32D5CC003C7BDB /* EditMailVC.m in Sources */,
+				D534FDDD2003568100FDA8BE /* DBHTransferListTableViewCell.m in Sources */,
 				A8D982C11F420ED70080DFF8 /* RelationCapModel.m in Sources */,
+				D534FDE920036EFE00FDA8BE /* DBHTokenSaleViewController.m in Sources */,
 				D53D472F1FBEE67C00FDFB61 /* DBHSpinnerViewTableViewCell.m in Sources */,
 				A88A78931F6992E90058094C /* SGQRCodeHelperTool.m in Sources */,
+				D527E7C72008E10700A724CB /* DBHTncTransferViewController.m in Sources */,
 				A85A01B81F35D4DB002F0141 /* MonetaryUnitModel.m in Sources */,
 				A88A78911F6992E90058094C /* SGQRCodeAlbumManager.m in Sources */,
 				A833037B1F34782D000C08B4 /* MailMdel.m in Sources */,
 				D5FB401F1FB6901600070D03 /* DBHMyViewController.m in Sources */,
 				A855ADC11F3C859700E10B03 /* WalletNameVC.m in Sources */,
+				D534FDAD1FFF7D9900FDA8BE /* DBHSelectWalletTypeOnePromptView.m in Sources */,
 				D524EEB41FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelDataBase.m in Sources */,
 				A80713521F5563CE00C5B862 /* MASCompositeConstraint.m in Sources */,
 				0FC2819C1F23991900A1E57B /* MailListVC.m in Sources */,
@@ -2849,6 +3167,8 @@
 				0FAC29021F2F7C4A009B3EC9 /* AAOptionsConstructor.m in Sources */,
 				D521D9F11FBAF0E0009566EA /* DBHInformationDetailForTwitterTableViewCell.m in Sources */,
 				D53F8F3E1FD2941A00E85DE0 /* DBHQuotationVCModelData.m in Sources */,
+				D534FDE6200366D700FDA8BE /* DBHTransferConfirmationViewController.m in Sources */,
+				D534FE182004BBCE00FDA8BE /* DBHWalletDetailTokenInfomationModelDataBase.m in Sources */,
 				A8DB29031F405CBA007A8A24 /* SystemConvert.m in Sources */,
 				0FDCAC9F1F20E7010090D12A /* AddTokenCell.m in Sources */,
 				D5EBE0F81FC523A900CC66E1 /* DBHInformationForNewsCollectionModelDataBase.m in Sources */,
@@ -2857,6 +3177,7 @@
 				A8CD776A1F32449400005027 /* EditQuotesCell.m in Sources */,
 				D509B52B1FBFE58B002782DC /* DBHInformationDetailModelProjectDetail.m in Sources */,
 				A8CD778F1F32457D00005027 /* SDCycleScrollView.m in Sources */,
+				D534FE232004CF7100FDA8BE /* DBHAddPropertyModelData.m in Sources */,
 				D5215D9B1FD7C55A00536248 /* DBHInformationDetailForOnLineAfterViewController.m in Sources */,
 				D55558041FC975C100F0963B /* CHChartModel.swift in Sources */,
 				A81A5AE01F3A115B0015CC0D /* KKWebView.m in Sources */,
@@ -2866,20 +3187,26 @@
 				D55558031FC975C100F0963B /* CHSection.swift in Sources */,
 				D524EEB51FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelList.m in Sources */,
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
+				D557BA852008A68800D8105E /* DBHWalletDetailTitleView.m in Sources */,
 				A83303751F346F24000C08B4 /* UIScrollView+EmptyDataSet.m in Sources */,
 				A8CD77791F32453300005027 /* SymbolsValueFormatter.m in Sources */,
 				A88A787B1F694BB30058094C /* JKBigDecimal.m in Sources */,
 				A8AAFBCC1F3EF6B000724FF6 /* PayPriceView.m in Sources */,
+				D534FD981FFF548600FDA8BE /* DBHHomePageTableViewCell.m in Sources */,
 				0F0CFE5A1F161F4C00476A86 /* ZFTabBar.m in Sources */,
+				D534FDA71FFF663C00FDA8BE /* DBHImportWalletViewController.m in Sources */,
 				A8CD77901F32457D00005027 /* UIView+SDExtension.m in Sources */,
+				D534FD881FFF4DE100FDA8BE /* DBHBaseNavigationController.m in Sources */,
 				D55CA9CB1FBBDE80003C3DD1 /* DBHInformationDetailForCrowdfundingContentTableViewCell.m in Sources */,
 				D53D47401FBF065800FDFB61 /* DBHListView.m in Sources */,
 				A81A5AE91F3AD79C0015CC0D /* RemindRelationNotificationModel.m in Sources */,
 				A8823D301F4FD6F80092DF0F /* TransactionListVC.m in Sources */,
+				D534FDB61FFF862A00FDA8BE /* DBHCreateWalletViewController.m in Sources */,
 				D51B7A0D1FC45959001B363E /* DBHSearchModelData.m in Sources */,
 				A8D510E61F43F861001DD9EE /* WalletHomeModel.m in Sources */,
 				A81A5AD81F3A07890015CC0D /* TowButtonAlertView.m in Sources */,
 				A807135E1F5563CE00C5B862 /* ViewController+MASAdditions.m in Sources */,
+				D534FE112004B5E700FDA8BE /* DBHWalletManagerForNeoModelList.m in Sources */,
 				0FAE3CD31F1CF88800BB343A /* WalletInfoHeaderView.m in Sources */,
 				D521DA011FBB1DFE009566EA /* DBHInformationDetailForInweReportContentTableViewCell.m in Sources */,
 				A80713571F5563CE00C5B862 /* MASViewConstraint.m in Sources */,
@@ -2900,7 +3227,9 @@
 				D53D47181FBED42C00FDFB61 /* DBHInformationDetailModelProjectTimePrices.m in Sources */,
 				A8B2AAB61F3CB3EC0047A626 /* EditRemindVC.m in Sources */,
 				0F0CFE4A1F1602E000476A86 /* LCProgressHUD.m in Sources */,
+				D534FDCE20034AF300FDA8BE /* DBHAddPropertyTableViewCell.m in Sources */,
 				A80713531F5563CE00C5B862 /* MASConstraint.m in Sources */,
+				D534FE212004CF7100FDA8BE /* DBHAddPropertyModelList.m in Sources */,
 				D524EEB31FC41F9E00AC0DF9 /* DBHInformationForRoastingChartCollectionModelData.m in Sources */,
 				A8CD77631F32449400005027 /* QuotationInfoVC.m in Sources */,
 				D521D9E81FBAF057009566EA /* DBHInformationDetailForTradingMarketTableViewCell.m in Sources */,
@@ -2910,12 +3239,14 @@
 				0FAC290C1F2F7C4A009B3EC9 /* AAAreaspline.m in Sources */,
 				D521D9D91FBADAE1009566EA /* DBHEvaluatingIcoTableViewCell.m in Sources */,
 				D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */,
+				D534FDAA1FFF73EE00FDA8BE /* DBHInputPasswordPromptView.m in Sources */,
 				D5EBE0F71FC523A900CC66E1 /* DBHInformationForNewsCollectionModelData.m in Sources */,
 				A84475BA1F332742003C7BDB /* GenderSettingVC.m in Sources */,
 				A85F8A991F59408800340D49 /* YsLabel.m in Sources */,
 				D521D9FE1FBB162A009566EA /* UIImage+ImageForColor.m in Sources */,
 				D55557DB1FC951F800F0963B /* DBHExtractViewController.m in Sources */,
 				D54F57EB1FBD325B00ED334E /* DBHEvaluatingIcoModelDataBase.m in Sources */,
+				D534FDBC2003093A00FDA8BE /* DBHWalletDetailTableViewCell.m in Sources */,
 				0FDCACAE1F20F7410090D12A /* TransactionCell.m in Sources */,
 				0FB8DFF81F262D28003D1BF9 /* ICOListCell.m in Sources */,
 				0FDCAC8F1F20CF280090D12A /* UIViewController+Tool.m in Sources */,
@@ -2933,6 +3264,7 @@
 				A8AAFBE41F3FFB0E00724FF6 /* WalletTypeModel.m in Sources */,
 				0F0CFE431F15FD0800476A86 /* PPNetworkCache.m in Sources */,
 				D521D9E51FBAF031009566EA /* DBHInformationDetailForDealInfomationChartTableViewCell.m in Sources */,
+				D534FD9E1FFF5B9400FDA8BE /* DBHWalletManagerTableViewCell.m in Sources */,
 				A8CD778E1F32457D00005027 /* SDCollectionViewCell.m in Sources */,
 				A80713551F5563CE00C5B862 /* MASLayoutConstraint.m in Sources */,
 				0FC281961F238C0E00A1E57B /* MyHeaderView.m in Sources */,
@@ -2957,13 +3289,18 @@
 				A80713281F5558B900C5B862 /* CCTagModel.m in Sources */,
 				A85A01B41F35D0CD002F0141 /* MonetaryUnitCell.m in Sources */,
 				A8CD778A1F32457D00005027 /* TAAbstractDotView.m in Sources */,
+				D534FDA41FFF623800FDA8BE /* DBHAddWalletPromptViewTableViewCell.m in Sources */,
+				D534FE122004B5E700FDA8BE /* DBHWalletManagerForNeoModelCategory.m in Sources */,
 				D53D47591FBF1A3500FDFB61 /* DBHInformationDetailModelProjectWallets.m in Sources */,
 				A8AAFBE11F3FFB0E00724FF6 /* WalletInfoGntModel.m in Sources */,
 				A8CD77601F32449400005027 /* AddQuotesVC.m in Sources */,
+				D534FDB91FFF8B1000FDA8BE /* DBHWalletDetailViewController.m in Sources */,
 				0FB9DD271F1FAB09005CEA39 /* ConfirmationReceivableVC.m in Sources */,
 				D54F57F51FBD826500ED334E /* DBHInformationForProjectCollectionModelData.m in Sources */,
+				D534FDE320035FAD00FDA8BE /* DBHTransferViewController.m in Sources */,
 				D59BFCA11FCD4D0C00C5C13B /* AddNeoWalletInfoVC.m in Sources */,
 				A80713541F5563CE00C5B862 /* MASConstraintMaker.m in Sources */,
+				D557BA402007593700D8105E /* DBHHomePageView.m in Sources */,
 				D509B5261FBFD74C002782DC /* DBHInformationDetailForMoreCollectionViewCell.m in Sources */,
 				D53C63931FD8E6310002CFDB /* DBHInformationDetailHeaderButton.m in Sources */,
 				D55558021FC975C100F0963B /* CHKLineChart.swift in Sources */,
@@ -2983,28 +3320,38 @@
 				0FB8E0071F263792003D1BF9 /* MonetaryUnitVC.m in Sources */,
 				0FD2A85D1F2A343A00C210D3 /* AddOtherWalletVC.m in Sources */,
 				A8CD77771F32453300005027 /* DateValueFormatter.m in Sources */,
+				D534FE222004CF7100FDA8BE /* DBHAddPropertyModelDataBase.m in Sources */,
 				0F0CFE321F15FB3F00476A86 /* NSObject+Tool.m in Sources */,
 				D53D47551FBF125900FDFB61 /* DBHInformationDetailForInweModelData.m in Sources */,
 				0FE4741F1F28E940009E1DF8 /* AddWalletInfoVC.m in Sources */,
 				D50F10DD1FD676FB004E14C3 /* DBHMarketDetailKLineViewModelDataBase.m in Sources */,
 				D51B7A031FC451E6001B363E /* DBHSearchView.m in Sources */,
 				0FAC29101F2F7C4A009B3EC9 /* AADataLabels.m in Sources */,
+				D534FDBF2003116000FDA8BE /* DBHWalletDetailHeaderView.m in Sources */,
 				D50DF7811FCBB66D00B74F6D /* DBHNEOTransferVC.m in Sources */,
 				0FAC28FF1F2F7C4A009B3EC9 /* AAChartModel.m in Sources */,
 				D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */,
 				D53812EE1FB08054009D681E /* DBHBrowserTableViewCell.m in Sources */,
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,
+				D534FDC520032D7B00FDA8BE /* DBHMenuViewTableViewCell.m in Sources */,
 				0FAE3CCF1F1CF78600BB343A /* WalletInfoVC.m in Sources */,
 				A80713141F55371F00C5B862 /* AboutVC.m in Sources */,
+				D534FDD72003503500FDA8BE /* DBHExtractGasTableViewCell.m in Sources */,
 				D54F57EA1FBD325B00ED334E /* DBHEvaluatingIcoModelData.m in Sources */,
+				D534FDDA2003562200FDA8BE /* DBHTransferListViewController.m in Sources */,
 				A8CD775A1F32449400005027 /* FindCoCell.m in Sources */,
 				0FAC291B1F2F7C4A009B3EC9 /* AASeries.m in Sources */,
+				D534FDC22003232F00FDA8BE /* DBHMenuView.m in Sources */,
+				D557BA382005E1D700D8105E /* DBHTransferListModelData.m in Sources */,
 				D50F10D61FD65F67004E14C3 /* DBHMarketDetailViewModel.m in Sources */,
+				D534FDA11FFF602700FDA8BE /* DBHAddWalletPromptView.m in Sources */,
 				A84475AB1F331B34003C7BDB /* PersonDetailTVC.m in Sources */,
 				0F0CFE2F1F15FB3F00476A86 /* NSArray+Tool.m in Sources */,
 				0FFEA9D71F17382A009F6151 /* BaseModel.m in Sources */,
+				D534FD9B1FFF5B2C00FDA8BE /* DBHWalletManagerViewController.m in Sources */,
 				A8A8184F1F44849B00FFF088 /* ChoseCell.m in Sources */,
 				A844758C1F32CC7C003C7BDB /* AddMailVC.m in Sources */,
+				D534FDEC200373BD00FDA8BE /* DBHTokenSaleConfirmationViewController.m in Sources */,
 				D5215D9E1FD7D51F00536248 /* DBHInformationDetailForProjectFlashTableViewCell.m in Sources */,
 				D53D474B1FBF0D7F00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelData.m in Sources */,
 				A81A5AF01F3AE6E70015CC0D /* AddWalletChoseTypeCell.m in Sources */,
@@ -3016,9 +3363,11 @@
 				A85A01CA1F36F024002F0141 /* ICOListModel.m in Sources */,
 				0F0CFE351F15FB3F00476A86 /* UIImage+Tool.m in Sources */,
 				D53D474D1FBF0D7F00FDFB61 /* DBHInformationDetailForNewMoneyPriceModelDataBase.m in Sources */,
+				D534FDF52004943200FDA8BE /* DBHWalletLookPromptViewTableViewCell.m in Sources */,
 				0F0CFE3E1F15FC2A00476A86 /* UIImageView+SDSetImage.m in Sources */,
 				D53D47161FBED42C00FDFB61 /* DBHInformationDetailModelDataBase.m in Sources */,
 				D54F57FF1FBDB74100ED334E /* DBHInformationDetailForExplorerAndWalletTableViewCell.m in Sources */,
+				D557BA3A2005E1D700D8105E /* DBHTransferListModelDataBase.m in Sources */,
 				D549CFAF1FC6A0D600D3ED82 /* DBHLookPrivateKeyViewController.m in Sources */,
 				D53D47351FBEF24900FDFB61 /* DBHInformationDetailForTradingMarketContentModelDataBase.m in Sources */,
 				0FE474241F28EBF0009E1DF8 /* AddWalletSucessVC.m in Sources */,
@@ -3028,6 +3377,7 @@
 				0F0CFE341F15FB3F00476A86 /* UIColor+Tool.m in Sources */,
 				A80713271F5558B900C5B862 /* CCTagCollectionLayout.m in Sources */,
 				0FAC29181F2F7C4A009B3EC9 /* AAPie.m in Sources */,
+				D557BA392005E1D700D8105E /* DBHTransferListModelList.m in Sources */,
 				A8CD77581F32449400005027 /* FindVC.m in Sources */,
 				A88A78951F6992E90058094C /* SGQRCodeScanningView.m in Sources */,
 				D55557FF1FC975C100F0963B /* CHExtension.swift in Sources */,
@@ -3040,7 +3390,9 @@
 				D53F8F361FD28A2E00E85DE0 /* AddQuotesVCModelUserTicker.m in Sources */,
 				D53F8F331FD2596100E85DE0 /* AddQuotesVCModelDataBase.m in Sources */,
 				0F0CFE361F15FB3F00476A86 /* UIView+Tool.m in Sources */,
+				D534FE0F2004B5E700FDA8BE /* DBHWalletManagerForNeoModelDataBase.m in Sources */,
 				D53D474C1FBF0D7F00FDFB61 /* DBHInformationDetailModelProjectDesc.m in Sources */,
+				D534FD951FFF546D00FDA8BE /* DBHHomePageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

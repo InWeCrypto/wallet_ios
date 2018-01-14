@@ -21,6 +21,7 @@
 @property (nonatomic, copy) NSString * img;
 @property (nonatomic, assign) BOOL isCode; //是不是从冷钱包进入
 @property (nonatomic, assign) int walletUnitType; // 1 = rmb  2 = usd
+@property (nonatomic, assign) BOOL isHideAsset; // 是否隐藏资产
 
 @property (nonatomic, copy) NSString * API;
 @property (nonatomic, copy) NSString * IMAGE;

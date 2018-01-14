@@ -11,6 +11,7 @@
 
 @interface DBHMyHeaderView ()
 
+@property (nonatomic, strong) UIButton *backButton;
 @property (nonatomic, strong) UIButton *editButton;
 @property (nonatomic, strong) UILabel *stateLabel;
 
@@ -34,12 +35,18 @@
 
 #pragma mark ------ UI ------
 - (void)setUI {
+    [self addSubview:self.backButton];
     [self addSubview:self.editButton];
     [self addSubview:self.headImageView];
     [self addSubview:self.nameLabel];
     [self addSubview:self.stateLabel];
     
     WEAKSELF
+    [self.backButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(weakSelf.editButton);
+        make.left.offset(AUTOLAYOUTSIZE(13.75));
+        make.centerY.equalTo(weakSelf.editButton);
+    }];
     [self.editButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.offset(AUTOLAYOUTSIZE(38.5));
         make.right.offset(- AUTOLAYOUTSIZE(13.75));
@@ -65,16 +72,22 @@
 
 #pragma mark ------ Event Responds ------
 /**
+ 返回
+ */
+- (void)respondsToBackButton {
+    self.clickButtonBlock(2);
+}
+/**
  编辑
  */
 - (void)respondsToEditButton {
-    self.clickButtonBlock();
+    self.clickButtonBlock(1);
 }
 /**
  头像
  */
 - (void)respondsToHeadImageView {
-    self.clickButtonBlock();
+    self.clickButtonBlock(1);
 }
 
 #pragma mark ------ Public Methods ------
@@ -83,6 +96,14 @@
 }
 
 #pragma mark ------ Getters And Setter ------
+- (UIButton *)backButton {
+    if (!_backButton) {
+        _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_backButton setImage:[UIImage imageNamed:@"返回-3"] forState:UIControlStateNormal];
+        [_backButton addTarget:self action:@selector(respondsToBackButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _backButton;
+}
 - (UIButton *)editButton {
     if (!_editButton) {
         _editButton = [UIButton buttonWithType:UIButtonTypeCustom];

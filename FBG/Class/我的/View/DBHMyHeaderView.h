@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^ClickButtonBlock)();
+typedef void(^ClickButtonBlock)(NSInteger type);
 
 @interface DBHMyHeaderView : UIView
 
@@ -25,7 +25,7 @@ typedef void(^ClickButtonBlock)();
 /**
  点击按钮回调
 
- @param clickButtonBlock 1:编辑 2:头像
+ @param clickButtonBlock 1:编辑 2:返回
  */
 - (void)clickButtonBlock:(ClickButtonBlock)clickButtonBlock;
 

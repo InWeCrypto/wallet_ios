@@ -166,9 +166,9 @@
         _headerView = [[DBHMyHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(170))];
         
         WEAKSELF
-        [_headerView clickButtonBlock:^() {
-            [weakSelf editButtonClick];
-        }];
+//        [_headerView clickButtonBlock:^() {
+//            [weakSelf editButtonClick];
+//        }];
     }
     return _headerView;
 }

@@ -95,7 +95,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self setStatusBarBackgroundColor:[UIColor whiteColor]];
+//    [self setStatusBarBackgroundColor:[UIColor whiteColor]];
 }
 
 /**

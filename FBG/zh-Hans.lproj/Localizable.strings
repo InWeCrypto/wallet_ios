@@ -25,7 +25,7 @@
 "Log in" = "登录";
 "Hot Purse" = "热钱包";
 "Cold Purse" = "冷钱包";
-"Determine" = "确定";
+"Confirm" = "确定";
 "Cancel" = "取消";
 "Complete" = "提示";
 "Please input a password" = "请输入密码";
@@ -150,5 +150,44 @@
 "Bonbonniere" = "糖果盒";
 
 /*
- 我的
+ 主页
  */
+"Wallet Manager" = "钱包管理";
+"Add Wallet" = "新增钱包";
+"Create Wallet" = "创建钱包";
+"Import" = "导入";
+"Import Success" = "导入成功";
+"Keystore" = "Keystore";
+"Input Password" = "输入密码";
+"Sure Password" = "确认密码";
+"Commit" = "提交";
+"Select Wallet Type" = "选择钱包类型";
+"Asset" = "资产";
+"Join" = "加入";
+"Look" = "查看";
+"Wallet QR Code" = "钱包二维码";
+"Add NEP-5 Property" = "添加NEP-5资产";
+"Extract Gas" = "提取Gas";
+"Recently Transaction Record" = "最近交易记录";
+"Transfer Number" = "转账数量";
+"Collection Wallet Address" = "收款钱包地址";
+"Pay Wallet Address" = "付款钱包地址";
+"（Free handling charge under 10Gas）" = "（10Gas以下免收手续费）";
+"Intelligent Contract Address" = "智能合约地址";
+"Transaction Fee" = "交易手续费";
+"Token Sale Confirmation" = "Token Sale 确认";
+"Poundage" = "手续费";
+"Original Poundage" = "原手续费";
+"Total Balance" = "总资产";
+"Wallet Look" = "钱包查看";
+"Available Quantity" = "可用数量";
+"Please select a token" = "请选择一种代币";
+"Transform Wallet" = "转化钱包";
+"Available Number" = "可用数量";
+"Transaction Details" = "交易详情";
+"Can Extracted" = "可提取";
+"No Extracted" = "不可提取";
+"In gas extraction, Please be patient" = "gas提取中，请耐心等待";
+"In the validation..." = "验证中...";
+"Coming Soon" = "敬请期待";
+"The current wallet GAS balance is insufficient and cannot be submitted" = "当前钱包GAS余额不足，无法提交";
