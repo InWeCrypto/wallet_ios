@@ -7,17 +7,13 @@
 //
 
 #import "ZFTabBarViewController.h"
+
 #import "ZFTabBar.h"
-//#import "FindVC.h"
-//#import "DBHWebViewController.h"
-#import "CDNavigationController.h"
-#import "DBHNavigationController.h"
-#import "WalletHomeVC.h"
-//#import "MyTVC.h"
-#import "QuotationVC.h"
-#import "DBHMyViewController.h"
+#import "DBHBaseNavigationController.h"
+
 #import "DBHInformationViewController.h"
-#import "DBHInformationWebViewController.h"
+#import "DBHHomePageViewController.h"
+#import "DBHMyViewController.h"
 
 @interface ZFTabBarViewController () <ZFTabBarDelegate>
 /**
@@ -38,7 +34,7 @@
     // 初始化所有的子控制器
     [self setupAllChildViewControllers];
     
-    [self setStatusBarBackgroundColor:[APIEHEAD isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"]] ? [UIColor redColor] : [UIColor whiteColor]];
+//    [self setStatusBarBackgroundColor:[TESTAPIEHEAD1 isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"]] ? [UIColor redColor] : [UIColor whiteColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -90,28 +86,20 @@
  */
 - (void)setupAllChildViewControllers
 {
-    // 1.行情
-    QuotationVC * quotation = [[QuotationVC alloc] init];
-    quotation.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:quotation title:NSLocalizedString(@"Market", nil) imageName:@"tab_hangqing_nor" selectedImageName:@"tab_hangqing_pre"];
+    // 1.资讯
+    DBHInformationViewController *informationViewController = [[DBHInformationViewController alloc] init];
+    informationViewController.tabBarItem.badgeValue = @"";
+    [self setupChildViewController:informationViewController title:NSLocalizedString(@"Information", nil) imageName:@"zixun_ico_s" selectedImageName:@"zixun_ico"];
     
-    // 2.资讯
-    DBHInformationWebViewController *home1 = [[DBHInformationWebViewController alloc] init];
-    home1.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:home1 title:NSLocalizedString(@"Information", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
-//    DBHInformationViewController *home1 = [[DBHInformationViewController alloc] init];
-//    home1.tabBarItem.badgeValue = @"";
-//    [self setupChildViewController:home1 title:NSLocalizedString(@"Information", nil) imageName:@"tab_faxian_nor" selectedImageName:@"tab_faxian_pre"];
+    // 2.钱包
+    DBHHomePageViewController *homePageViewController = [[DBHHomePageViewController alloc] init];
+    homePageViewController.tabBarItem.badgeValue = @"";
+    [self setupChildViewController:homePageViewController title:NSLocalizedString(@"Wallet", nil) imageName:@"qianbao_ico_s" selectedImageName:@"qianbao_ico"];
     
-    // 3.资产
-    WalletHomeVC *home = [[WalletHomeVC alloc] init];
-    home.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:home title:NSLocalizedString(@"Property", nil) imageName:@"tab_qianbao_nor" selectedImageName:@"tab_qianbao_pre"];
-    
-    // 4.定制
+    // 3.我的
     DBHMyViewController * my = [[DBHMyViewController alloc] init];
     my.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:my title:NSLocalizedString(@"Custom", nil) imageName:@"tab_wode_nor" selectedImageName:@"tab_wode_pre"];
+    [self setupChildViewController:my title:NSLocalizedString(@"My", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
 }
 
 /**
@@ -125,10 +113,10 @@
 - (void)setupChildViewController:(UIViewController *)childVc title:(NSString *)title imageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName
 {
     // 1.设置控制器的属性
-    if (![title isEqualToString:NSLocalizedString(@"Information", nil)]) {
+    if ([title isEqualToString:NSLocalizedString(@"My", nil)]) {
         childVc.title = title;
     } else {
-        childVc.tabBarItem.title = NSLocalizedString(@"Information", nil);
+        childVc.tabBarItem.title = title;
     }
     // 设置图标
     childVc.tabBarItem.image = [UIImage imageNamed:imageName];
@@ -141,7 +129,7 @@
     }
     
     // 2.包装一个导航控制器
-    CDNavigationController *nav = [[CDNavigationController alloc] initWithRootViewController:childVc];
+    DBHBaseNavigationController *nav = [[DBHBaseNavigationController alloc] initWithRootViewController:childVc];
     
     [self addChildViewController:nav];
     

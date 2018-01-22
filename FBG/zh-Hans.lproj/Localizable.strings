@@ -60,7 +60,6 @@
 "Confirm Add" = "确认添加";
 "Add Success" = "添加成功";
 "Please enter the wallet in time and backup the seed to ensure the safety of the wallet. Once the seed is backed up, it will disappear on the APP. It should be kept in mind, otherwise the wallet can not be retrieved" = "请及时进入钱包并备份助记词保障钱包的安全，助记词一经备份则会在APP上消失，需要牢记，否则钱包无法找回";
-"Enter The Wallet And Start Backup" = "进入钱包开始备份";
 
 
 "Safety Code" = "助记词";
@@ -150,7 +149,7 @@
 "Bonbonniere" = "糖果盒";
 
 /*
- 主页
+ 钱包
  */
 "Wallet Manager" = "钱包管理";
 "Add Wallet" = "新增钱包";
@@ -191,3 +190,37 @@
 "In the validation..." = "验证中...";
 "Coming Soon" = "敬请期待";
 "The current wallet GAS balance is insufficient and cannot be submitted" = "当前钱包GAS余额不足，无法提交";
+"Copy success, you can send it to friends" = "复制成功，可以发给朋友们了";
+"Transaction Number" = "交易单号";
+"Enter The Wallet And Start Backup" = "进入钱包开始备份";
+
+/*
+ 我的
+ */
+"My" = "我的";
+"Hello," = "嗨,";
+"Welcome Back!" = "欢迎回来!";
+"Email" = "邮箱";
+"Password" = "密码";
+"Forget the password？" = "忘记密码？";
+"Enter InWeCrypto" = "进入InWeCrypto";
+"Register" = "注册";
+
+/*
+ 登录注册
+ */
+"Please input a email" = "请输入邮箱";
+"Please input a verification code" = "请输入验证码";
+"Get Verification Code" = "获取验证码";
+"Confirm input a password" = "确认输入密码";
+"Please enter your password again" = "请再次输入密码";
+"Sign Up" = "注册";
+"Registration means agreement" = "注册即表示同意";
+"And" = "与";
+"《Service Agreement》" = "《服务协议》";
+"《Privacy Policy》" = "《隐私条款》";
+"Retrieves" = "重新获取";
+"The two passwords differ" = "两次密码不一致";
+"New Password" = "新密码";
+"Password reset successful" = "密码重置成功";
+"Forget Password" = "忘记密码";

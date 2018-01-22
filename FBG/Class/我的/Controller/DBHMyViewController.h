@@ -2,12 +2,12 @@
 //  DBHMyViewController.h
 //  FBG
 //
-//  Created by 邓毕华 on 2017/11/11.
-//  Copyright © 2017年 ButtonRoot. All rights reserved.
+//  Created by 邓毕华 on 2018/1/19.
+//  Copyright © 2018年 ButtonRoot. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "DBHBaseViewController.h"
 
-@interface DBHMyViewController : UIViewController
+@interface DBHMyViewController : DBHBaseViewController
 
 @end

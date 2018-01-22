@@ -27,7 +27,7 @@
 /**
  *  自适应大小
  */
-#define AUTOLAYOUTSIZE(size) (375.0 / SCREEN_WIDTH * size)
+#define AUTOLAYOUTSIZE(size) (SCREEN_WIDTH / 375.0 * size)
 
 /**
  *  将10进制rgb颜色转换成UIColor

@@ -36,7 +36,7 @@
 
 - (void)showWithView:(UIView *)view
 {
-    if ([APP_APIEHEAD isEqualToString:APIEHEAD])
+    if ([APP_APIEHEAD isEqualToString:TESTAPIEHEAD1])
     {
         //测试
         self.testImage.image = [UIImage imageNamed:@"list_btn_selected"];
@@ -48,6 +48,7 @@
         self.testImage.image = [UIImage imageNamed:@"list_btn_default"];
         self.mainImage.image = [UIImage imageNamed:@"list_btn_selected"];
     }
+    self.isNotTest = [APP_APIEHEAD isEqualToString:APIEHEAD1];
     
     if (view)
     {
@@ -98,7 +99,7 @@
     //确定按钮
     [self  canel];
     
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"] isEqualToString:(self.isNotTest ? APIEHEAD1 : APIEHEAD)]) {
+    if ([APP_APIEHEAD isEqualToString:(self.isNotTest ? APIEHEAD1 : TESTAPIEHEAD1)]) {
         return;
     }
     

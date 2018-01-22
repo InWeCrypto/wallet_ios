@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class WalletLeftListModel;
+
 @interface SurePackupsWordVC : UIViewController
 
-@property (nonatomic, strong) WalletLeftListModel * model;
+@property (nonatomic, strong) WalletLeftListModel *model;
 @property (nonatomic, copy) NSString * mnemonic;
 
 @end

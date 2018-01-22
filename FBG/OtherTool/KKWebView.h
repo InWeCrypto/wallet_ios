@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ICOListModel.h"
+//#import "ICOListModel.h"
 
 @interface KKWebView : UIViewController
 
 @property(nonatomic,copy)NSString *urlStr;
 
-@property (nonatomic, strong) ICOListModel * icoModel;
+//@property (nonatomic, strong) ICOListModel * icoModel;
 
 @property (nonatomic, assign) BOOL isLogin; //登录页面协议
 

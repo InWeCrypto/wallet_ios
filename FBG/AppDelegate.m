@@ -27,7 +27,8 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 #import "CDNavigationController.h"
 #import "DBHBaseNavigationController.h"
 #import "DBHHomePageViewController.h"
-#import "MessageVC.h"
+#import "DBHLoginViewController.h"
+//#import "MessageVC.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 {
@@ -49,7 +50,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     NSLog(@"%@",[UserSignData share].user);
     if (!APP_APIEHEAD)
     {
-        [[NSUserDefaults standardUserDefaults] setObject:APIEHEAD1 forKey:@"appNetWorkApi"];
+        [[NSUserDefaults standardUserDefaults] setObject:TESTAPIEHEAD1 forKey:@"appNetWorkApi"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
@@ -280,8 +281,8 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         //跳转消息页面
         ZFTabBarViewController * tab = (ZFTabBarViewController*) (self.window.rootViewController);
         CDNavigationController * nav = tab.childViewControllers[tab.selectedIndex];
-        MessageVC * vc = [[MessageVC alloc]init];
-        [nav pushViewController:vc animated:YES];
+//        MessageVC * vc = [[MessageVC alloc]init];
+//        [nav pushViewController:vc animated:YES];
     }
     // 通知dismiss，category创建时传入UNNotificationCategoryOptionCustomDismissAction才可以触发
     if ([userAction isEqualToString:UNNotificationDismissActionIdentifier])
@@ -435,21 +436,17 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 - (void)showLoginController
 {
-    LoginVC * loginVc = [[LoginVC alloc] init];
-    self.window.rootViewController = loginVc;
+    DBHLoginViewController *loginViewController = [[DBHLoginViewController alloc] init];
+    DBHBaseNavigationController *loginNavigationController = [[DBHBaseNavigationController alloc] initWithRootViewController:loginViewController];
+    self.window.rootViewController = loginNavigationController;
     [self.window makeKeyAndVisible];
 }
 
 - (void)goToTabbar
 {
-    DBHHomePageViewController *homePageViewController = [[DBHHomePageViewController alloc] init];
-    DBHBaseNavigationController *mainNavigationController = [[DBHBaseNavigationController alloc] initWithRootViewController:homePageViewController];
-    self.window.rootViewController = mainNavigationController;
+    ZFTabBarViewController * tab = [[ZFTabBarViewController alloc] init];
+    self.window.rootViewController = tab;
     [self.window makeKeyAndVisible];
-    
-//    ZFTabBarViewController * tab = [[ZFTabBarViewController alloc] init];
-//    self.window.rootViewController = tab;
-//    [self.window makeKeyAndVisible];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

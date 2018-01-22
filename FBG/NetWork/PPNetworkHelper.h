@@ -63,7 +63,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)GET:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  GET请求,自动缓存
@@ -76,7 +76,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)GET:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  POST请求,无缓存
@@ -88,7 +88,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 + (PPURLSessionTask *)POSTOtherURL:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
@@ -106,10 +106,10 @@ typedef NSURLSessionTask PPURLSessionTask;
 + (PPURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 // PUT 请求
-+ (PPURLSessionTask *)PUT:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)PUT:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 // DELETE 请求
-+ (PPURLSessionTask *)DELETE:(NSString *)URL isOtherBaseUrl:(BOOL)isOtherBaseUrl parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)DELETE:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  上传图片文件

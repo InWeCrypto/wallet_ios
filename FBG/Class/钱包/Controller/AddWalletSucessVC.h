@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WalletLeftListModel.h"
+#import "DBHBaseViewController.h"
 
-@interface AddWalletSucessVC : UIViewController
+@class DBHWalletManagerForNeoModelList;
 
-@property (nonatomic, strong) WalletLeftListModel * model;
+@interface AddWalletSucessVC : DBHBaseViewController
+
+@property (nonatomic, strong) DBHWalletManagerForNeoModelList *neoWalletModel;
 
 @end

@@ -131,7 +131,7 @@
     NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
     [parametersDic setObject:device forKey:@"open_id"];
     
-    [PPNetworkHelper POST:@"auth" parameters:parametersDic hudString:@"登录中..." success:^(id responseObject)
+    [PPNetworkHelper POST:@"auth" baseUrlType:1 parameters:parametersDic hudString:@"登录中..." success:^(id responseObject)
      {
          //登录成功
          if ([NSString isNulllWithObject:[PDKeyChain load:@"APP_DEVICEID"]])

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class WalletLeftListModel;
+
 @interface PackupsWordsVC : UIViewController
 
 @property (nonatomic, copy) NSString * mnemonic;

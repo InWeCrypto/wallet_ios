@@ -13,6 +13,8 @@
 #import "CCTagModel.h"
 #import "Masonry.h"
 
+#import "WalletLeftListModel.h"
+
 NSString *const kLabelSelectionCellIdentifier = @"kLabelSelectionCellIdentifier";
 NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentifier";
 

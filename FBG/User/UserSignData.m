@@ -41,6 +41,8 @@ static NSString *const kUserCacheKey = @"FBGCacheKey";
     if (!_userCache)
     {
         _userCache = [[YYCache alloc] initWithName:kUserCacheKey];
+        UserModel *user = [[UserModel alloc] init];
+        [self setUser:user];
     }
     return _userCache;
 }
@@ -54,6 +56,7 @@ static NSString *const kUserCacheKey = @"FBGCacheKey";
         return user;
     }
     UserModel *user = [[UserModel alloc] init];
+    [self setUser:user];
     return user;
 }
 

@@ -9,6 +9,8 @@
 #import "PackupsWordsVC.h"
 #import "SurePackupsWordVC.h"
 
+#import "WalletLeftListModel.h"
+
 @interface PackupsWordsVC ()
 
 @property (weak, nonatomic) IBOutlet UITextView *mnemonicTextView;

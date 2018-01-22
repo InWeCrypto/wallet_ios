@@ -10,7 +10,9 @@
 #import <WebKit/WebKit.h>
 #import "ChoseWalletView.h"
 #import "CommitOrderView.h"
-#import "ConfirmationTransferVC.h"
+//#import "ConfirmationTransferVC.h"
+
+#import "WalletLeftListModel.h"
 
 @interface KKWebView ()<WKUIDelegate,WKNavigationDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, ChoseWalletViewDelegate, CommitOrderViewDelegate>
 
@@ -158,114 +160,114 @@
 //选择钱包回调
 - (void)sureButtonCilickWithData:(id)data
 {
-    self.walletModel = data;
-    
-    [LCProgressHUD showLoading:@"加载中..."];
-    //获取账户余额
-    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-    [dic setObject:self.walletModel.address forKey:@"address"];
-    
-    [PPNetworkHelper POST:@"extend/getBalance" parameters:dic hudString:nil success:^(id responseObject)
-     {
-         self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[responseObject objectForKey:@"value"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
-         self.commitOrderView.banalceLB.text = [NSString stringWithFormat:@"(当前余额:%@)",self.banlacePrice];
-         
-         //获取gas手续费
-         NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-         [parametersDic setObject:@(self.walletModel.category_id) forKey:@"category_id"];
-         [parametersDic setObject:@"1" forKey:@"type"];
-         
-         [PPNetworkHelper GET:@"gas" isOtherBaseUrl:NO parameters:parametersDic hudString:nil success:^(id responseObject)
-          {
-              //获取单价
-              NSString * per = @"0";
-              if (![NSString isNulllWithObject:[responseObject objectForKey:@"gas"]])
-              {
-                  per = [[responseObject objectForKey:@"record"] objectForKey:@"gas"];
-              }
-              self.gasPrice = [NSString DecimalFuncWithOperatorType:3 first:per secend:@"1000000000000000000" value:4];
-              self.totleGasPrice = [NSString DecimalFuncWithOperatorType:2 first:self.gasPrice secend:[NSString stringWithFormat:@"%d",self.defaultGasNum] value:4];
-              self.commitOrderView.changesPriceLB.text = self.totleGasPrice;
-              
-              [self.commitOrderView.priceSilder setValue:[self.totleGasPrice floatValue]];
-              
-              //获取交易次数
-              NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-              [dic setObject:self.walletModel.address forKey:@"address"];
-              
-              [PPNetworkHelper POST:@"extend/getTransactionCount" parameters:dic hudString:nil success:^(id responseObject)
-               {
-                   // nonce 参数
-                   if (![NSString isNulllWithObject:[responseObject objectForKey:@"count"]])
-                   {
-                       self.nonce = [responseObject objectForKey:@"count"];
-                   }
-                   
-                   dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                   //异步返回主线程，根据获取的数据，更新UI
-                   dispatch_async(mainQueue, ^
-                  {
-                      [LCProgressHUD hide];
-                  });
-                   //初始化钱包订单页面
-                   self.commitOrderView.orderLB.text = self.icoModel.title;
-                   self.commitOrderView.transferAddressLB.text = self.icoModel.address;
-                   self.commitOrderView.addressLB.text = self.walletModel.address;
-                   
-                   if (self.walletModel.isLookWallet)
-                   {
-                       //观察钱包
-                       [self.view addSubview:self.commitOrderView];
-                       
-                       [UIView animateWithDuration:0.3 animations:^{
-                           self.commitOrderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64);
-                       } completion:^(BOOL finished){
-                           
-                       }];
-                   }
-                   else
-                   {
-                       //普通钱包
-                       [self.view addSubview:self.commitOrderView];
-                       
-                       [UIView animateWithDuration:0.3 animations:^{
-                           self.commitOrderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64);
-                       } completion:^(BOOL finished){
-                           
-                       }];
-                       
-                   }
-               } failure:^(NSString *error)
-               {
-                   [LCProgressHUD showFailure:error];
-                   dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                   //异步返回主线程，根据获取的数据，更新UI
-                   dispatch_async(mainQueue, ^
-                                  {
-                                      [LCProgressHUD hide];
-                                  });
-               }];
-              
-          } failure:^(NSString *error)
-          {
-              [LCProgressHUD showFailure:error];
-              dispatch_queue_t mainQueue = dispatch_get_main_queue();
-              //异步返回主线程，根据获取的数据，更新UI
-              dispatch_async(mainQueue, ^
-                             {
-                                 [LCProgressHUD hide];
-                             });
-          }];
-     } failure:^(NSString *error)
-     {
-         [LCProgressHUD showFailure:error];
-         dispatch_queue_t mainQueue = dispatch_get_main_queue();
-         //异步返回主线程，根据获取的数据，更新UI
-         dispatch_async(mainQueue, ^
-                        {
-                            [LCProgressHUD hide];
-                        });
-     }];
+//    self.walletModel = data;
+//
+//    [LCProgressHUD showLoading:@"加载中..."];
+//    //获取账户余额
+//    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+//    [dic setObject:self.walletModel.address forKey:@"address"];
+//
+//    [PPNetworkHelper POST:@"extend/getBalance" parameters:dic hudString:nil success:^(id responseObject)
+//     {
+//         self.banlacePrice = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[[responseObject objectForKey:@"value"] substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+//         self.commitOrderView.banalceLB.text = [NSString stringWithFormat:@"(当前余额:%@)",self.banlacePrice];
+//
+//         //获取gas手续费
+//         NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+//         [parametersDic setObject:@(self.walletModel.category_id) forKey:@"category_id"];
+//         [parametersDic setObject:@"1" forKey:@"type"];
+//
+//         [PPNetworkHelper GET:@"gas" baseUrlType:1 parameters:parametersDic hudString:nil success:^(id responseObject)
+//          {
+//              //获取单价
+//              NSString * per = @"0";
+//              if (![NSString isNulllWithObject:[responseObject objectForKey:@"gas"]])
+//              {
+//                  per = [[responseObject objectForKey:@"record"] objectForKey:@"gas"];
+//              }
+//              self.gasPrice = [NSString DecimalFuncWithOperatorType:3 first:per secend:@"1000000000000000000" value:4];
+//              self.totleGasPrice = [NSString DecimalFuncWithOperatorType:2 first:self.gasPrice secend:[NSString stringWithFormat:@"%d",self.defaultGasNum] value:4];
+//              self.commitOrderView.changesPriceLB.text = self.totleGasPrice;
+//
+//              [self.commitOrderView.priceSilder setValue:[self.totleGasPrice floatValue]];
+//
+//              //获取交易次数
+//              NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+//              [dic setObject:self.walletModel.address forKey:@"address"];
+//
+//              [PPNetworkHelper POST:@"extend/getTransactionCount" parameters:dic hudString:nil success:^(id responseObject)
+//               {
+//                   // nonce 参数
+//                   if (![NSString isNulllWithObject:[responseObject objectForKey:@"count"]])
+//                   {
+//                       self.nonce = [responseObject objectForKey:@"count"];
+//                   }
+//
+//                   dispatch_queue_t mainQueue = dispatch_get_main_queue();
+//                   //异步返回主线程，根据获取的数据，更新UI
+//                   dispatch_async(mainQueue, ^
+//                  {
+//                      [LCProgressHUD hide];
+//                  });
+//                   //初始化钱包订单页面
+//                   self.commitOrderView.orderLB.text = self.icoModel.title;
+//                   self.commitOrderView.transferAddressLB.text = self.icoModel.address;
+//                   self.commitOrderView.addressLB.text = self.walletModel.address;
+//
+//                   if (self.walletModel.isLookWallet)
+//                   {
+//                       //观察钱包
+//                       [self.view addSubview:self.commitOrderView];
+//
+//                       [UIView animateWithDuration:0.3 animations:^{
+//                           self.commitOrderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64);
+//                       } completion:^(BOOL finished){
+//
+//                       }];
+//                   }
+//                   else
+//                   {
+//                       //普通钱包
+//                       [self.view addSubview:self.commitOrderView];
+//
+//                       [UIView animateWithDuration:0.3 animations:^{
+//                           self.commitOrderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64);
+//                       } completion:^(BOOL finished){
+//
+//                       }];
+//
+//                   }
+//               } failure:^(NSString *error)
+//               {
+//                   [LCProgressHUD showFailure:error];
+//                   dispatch_queue_t mainQueue = dispatch_get_main_queue();
+//                   //异步返回主线程，根据获取的数据，更新UI
+//                   dispatch_async(mainQueue, ^
+//                                  {
+//                                      [LCProgressHUD hide];
+//                                  });
+//               }];
+//
+//          } failure:^(NSString *error)
+//          {
+//              [LCProgressHUD showFailure:error];
+//              dispatch_queue_t mainQueue = dispatch_get_main_queue();
+//              //异步返回主线程，根据获取的数据，更新UI
+//              dispatch_async(mainQueue, ^
+//                             {
+//                                 [LCProgressHUD hide];
+//                             });
+//          }];
+//     } failure:^(NSString *error)
+//     {
+//         [LCProgressHUD showFailure:error];
+//         dispatch_queue_t mainQueue = dispatch_get_main_queue();
+//         //异步返回主线程，根据获取的数据，更新UI
+//         dispatch_async(mainQueue, ^
+//                        {
+//                            [LCProgressHUD hide];
+//                        });
+//     }];
 
 }
 
@@ -281,36 +283,36 @@
 
 - (void)comiitButtonCilickWithData:(id)data
 {
-    //确定
-    
-    if (self.nonce.length == 0)
-    {
-        [LCProgressHUD showMessage:@"暂未获取到交易次数。请稍后再试"];
-        return;
-    }
-    //钱包余额判断   手续费 + 转账金额 <= ether钱包余额
-    if (self.commitOrderView.priceTF.text.length == 0)
-    {
-        [LCProgressHUD showMessage:@"请输入正确价格"];
-        return;
-    }
-    
-    NSComparisonResult result = [NSString DecimalFuncComparefirst:self.commitOrderView.priceTF.text secend:self.banlacePrice];
-    if (result == NSOrderedDescending)
-    {
-        [LCProgressHUD showMessage:@"钱包余额不足"];
-        return;
-    }
-    
-    ConfirmationTransferVC * vc = [[ConfirmationTransferVC alloc] init];
-    vc.totleGasPrice = self.totleGasPrice;
-    vc.gasprice = self.gasPrice;
-    vc.nonce = self.nonce;
-    vc.price = self.commitOrderView.priceTF.text;
-    vc.address = self.commitOrderView.transferAddressLB.text;
-    vc.remark = @"";
-    vc.model = self.walletModel;
-    [self.navigationController pushViewController:vc animated:YES];
+//    //确定
+//    
+//    if (self.nonce.length == 0)
+//    {
+//        [LCProgressHUD showMessage:@"暂未获取到交易次数。请稍后再试"];
+//        return;
+//    }
+//    //钱包余额判断   手续费 + 转账金额 <= ether钱包余额
+//    if (self.commitOrderView.priceTF.text.length == 0)
+//    {
+//        [LCProgressHUD showMessage:@"请输入正确价格"];
+//        return;
+//    }
+//    
+//    NSComparisonResult result = [NSString DecimalFuncComparefirst:self.commitOrderView.priceTF.text secend:self.banlacePrice];
+//    if (result == NSOrderedDescending)
+//    {
+//        [LCProgressHUD showMessage:@"钱包余额不足"];
+//        return;
+//    }
+//    
+//    ConfirmationTransferVC * vc = [[ConfirmationTransferVC alloc] init];
+//    vc.totleGasPrice = self.totleGasPrice;
+//    vc.gasprice = self.gasPrice;
+//    vc.nonce = self.nonce;
+//    vc.price = self.commitOrderView.priceTF.text;
+//    vc.address = self.commitOrderView.transferAddressLB.text;
+//    vc.remark = @"";
+//    vc.model = self.walletModel;
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

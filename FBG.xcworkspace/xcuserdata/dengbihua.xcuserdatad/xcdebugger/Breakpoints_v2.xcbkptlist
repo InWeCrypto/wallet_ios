@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/AddWalletInfoVC.m"
-            timestampString = "533544357.469863"
+            timestampString = "538044653.034474"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308">
+            startingLineNumber = "307"
+            endingLineNumber = "307">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -52,7 +52,7 @@
 - (void)loadData
 {
     //加载左抽屉数据
-    [PPNetworkHelper GET:@"wallet" isOtherBaseUrl:NO parameters:nil hudString:@"加载中..."  responseCache:^(id responseCache)
+    [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:@"加载中..."  responseCache:^(id responseCache)
      {
          if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]])
          {

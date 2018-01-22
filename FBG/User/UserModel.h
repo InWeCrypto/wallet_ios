@@ -7,7 +7,7 @@
 //
 
 #import "BaseModel.h"
-#import "WalletLeftListModel.h"
+//#import "WalletLeftListModel.h"
 
 @interface UserModel : BaseModel <NSCoding>
 

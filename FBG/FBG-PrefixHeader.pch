@@ -49,12 +49,14 @@
 #define Default_General_Image [UIImage imageNamed:@"tao"]
 
 //测试环境
-#define APIEHEAD @"https://dev.inwecrypto.com:4430/api/"  //网络请求头
-#define APIEHEADOTHER @"https://dev.inwecrypto.com:4431/"  //网络请求头
+#define TESTAPIEHEAD1 @"https://dev.inwecrypto.com:4430/api/"  //网络请求头
+#define TESTAPIEHEAD2 @"https://dev.inwecrypto.com:4431/v1/"  //网络请求头
+#define TESTAPIEHEAD3 @"https://dev.inwecrypto.com:4431/v2/"  //网络请求头
 #define IMAGEHEAD @"https://china.inwecrypto.com:4431/"  //图片头
 //正式环境
 #define APIEHEAD1 @"https://china.inwecrypto.com:4430/api/"  //网络请求头
-#define APIEHEAD1OTHER @"https://china.inwecrypto.com:4431/"  //网络请求头
+#define APIEHEAD2 @"https://china.inwecrypto.com:4431/"  //网络请求头
+#define APIEHEAD3 @"https://china.inwecrypto.com:4431/v2/"  //网络请求头
 #define IMAGEHEAD1 @"https://china.inwecrypto.com:4431/"  //图片头
 
 #define APP_APIEHEAD  [[NSUserDefaults standardUserDefaults]stringForKey:@"appNetWorkApi"]  //网络状态
