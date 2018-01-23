@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,21 +22,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Dcx-gR-i1D">
-                                <rect key="frame" x="66" y="158" width="188" height="50"/>
+                                <rect key="frame" x="66" y="478" width="188" height="50"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2017 Unichain. All rights reserved." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cdf-HW-aZk">
-                                <rect key="frame" x="47" y="517.5" width="227.5" height="12"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Dcx-gR-i1D" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="F87-Gd-fTI"/>
-                            <constraint firstAttribute="bottom" secondItem="Cdf-HW-aZk" secondAttribute="bottom" constant="38.5" id="V1a-0f-azO"/>
-                            <constraint firstItem="Dcx-gR-i1D" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="158" id="W8O-XL-H0f"/>
-                            <constraint firstItem="Cdf-HW-aZk" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="pNH-p9-L9b"/>
+                            <constraint firstAttribute="bottom" secondItem="Dcx-gR-i1D" secondAttribute="bottom" constant="40" id="Uo8-QW-o2R"/>
                         </constraints>
                     </view>
                 </viewController>

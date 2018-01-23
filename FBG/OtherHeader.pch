@@ -47,7 +47,7 @@
 /**
  *  背景颜色
  */
-#define BACKGROUNDCOLOR [UIColor whiteColor]
+#define BACKGROUNDCOLOR COLORFROM16(0xF8F8F8, 1)
 
 /**
  *  列表分界线

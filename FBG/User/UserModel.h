@@ -9,6 +9,12 @@
 #import "BaseModel.h"
 //#import "WalletLeftListModel.h"
 
+typedef enum : NSUInteger {
+    DBHCanUseUnlockTypeNone,      // 都不可用
+    DBHCanUseUnlockTypeTouchID,   // Touch ID可用
+    DBHCanUseUnlockTypeFaceID,    // Face ID可用
+} DBHCanUseUnlockType;
+
 @interface UserModel : BaseModel <NSCoding>
 
 //储存字段
@@ -22,6 +28,9 @@
 @property (nonatomic, assign) BOOL isCode; //是不是从冷钱包进入
 @property (nonatomic, assign) int walletUnitType; // 1 = rmb  2 = usd
 @property (nonatomic, assign) BOOL isHideAsset; // 是否隐藏资产
+@property (nonatomic, assign) BOOL isOpenTouchId; // 是否开启TouchID
+@property (nonatomic, assign) BOOL isOpenFaceId; // 是否开启FaceID
+@property (nonatomic, assign) DBHCanUseUnlockType canUseUnlockType; // 可以使用的第三方解锁方式
 
 @property (nonatomic, copy) NSString * API;
 @property (nonatomic, copy) NSString * IMAGE;
