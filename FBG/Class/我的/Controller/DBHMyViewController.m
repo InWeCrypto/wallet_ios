@@ -11,6 +11,8 @@
 #import "DBHPersonalSettingViewController.h"
 #import "DBHAddressBookViewController.h"
 #import "DBHMyFavoriteViewController.h"
+#import "DBHMyQuotationReminderViewController.h"
+#import "DBHSettingUpViewController.h"
 
 #import "DBHMyForUserInfomationTableViewCell.h"
 #import "DBHMyTableViewCell.h"
@@ -37,6 +39,11 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
     
     [self setUI];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.tableView reloadData];
+}
 
 #pragma mark ------ UI ------
 - (void)setUI {
@@ -59,6 +66,9 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!indexPath.section) {
         DBHMyForUserInfomationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyForUserInfomationTableViewCellIdentifier forIndexPath:indexPath];
+        [cell.headImageView sdsetImageWithURL:[UserSignData share].user.img placeholderImage:[UIImage imageNamed:@"touxiang"]];
+        cell.nameLabel.text = [UserSignData share].user.nickname;
+        cell.accountLabel.text = [NSString stringWithFormat:@"%@：%@", NSLocalizedString(@"Login Account", nil), [UserSignData share].user.email];
         
         return cell;
     } else {
@@ -99,6 +109,8 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
                 }
                 case 3: {
                     // 我的行情提醒
+                    DBHMyQuotationReminderViewController *myQuotationReminderViewController = [[DBHMyQuotationReminderViewController alloc] init];
+                    [self.navigationController pushViewController:myQuotationReminderViewController animated:YES];
                     break;
                 }
                     
@@ -109,6 +121,8 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
         }
         case 2: {
             // 设置
+            DBHSettingUpViewController *settingUpViewController = [[DBHSettingUpViewController alloc] init];
+            [self.navigationController pushViewController:settingUpViewController animated:YES];
             break;
         }
         case 3: {

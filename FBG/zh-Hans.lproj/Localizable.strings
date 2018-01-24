@@ -129,7 +129,6 @@
 "All tokens" = "全部代币";
 "Complete" = "完成";
 
-"Scan" = "扫描";
 /*
  行情
  */
@@ -232,6 +231,12 @@
 "About Us" = "关于我们";
 "Originality" = "原创";
 "Cancel Collection" = "取消收藏";
+"Login Account" = "登陆账户";
+
+/*
+ 资讯
+ */
+"Payment Received" = "收付款";
 
 /*
  个人设置
@@ -239,8 +244,11 @@
 "Personal Setting" = "个人设置";
 "Head Portrait" = "头像";
 "Nickname" = "昵称";
+"Please enter your nickname" = "请输入您的昵称";
+"Please enter a nickname of 2~12 non-special characters" = "请输入2~12位非特殊字符";
 "Account Number" = "账号";
 "Change Password" = "修改密码";
+"Change Success" = "修改成功";
 "Set a Nickname" = "设置昵称";
 "Save" = "保存";
 
@@ -257,3 +265,13 @@
 "Edit Contact" = "编辑联系人";
 "Address" = "地址";
 "Submit" = "提交";
+
+/*
+ 设置
+ */
+"Monetary Unit" = "货币单位";
+"CNY" = "人民币";
+"USD" = "美元";
+"Network Switcher" = "网络切换";
+"Formal Network" = "正式网络";
+"Test Network" = "测试网络";

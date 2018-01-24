@@ -15,7 +15,6 @@
 @property (nonatomic, strong) UIButton *btcButton;
 @property (nonatomic, strong) UIView *bottomLineView;
 
-@property (nonatomic, assign) NSInteger currentSelectedIndex; // 当前选中下标
 @property (nonatomic, copy) SelectedTypeBlock selectedTypeBlock;
 
 @end
@@ -158,7 +157,7 @@
         _btcButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _btcButton.tag = 202;
         _btcButton.titleLabel.font = BOLDFONT(12);
-        [_btcButton setTitle:@"NEO" forState:UIControlStateNormal];
+        [_btcButton setTitle:@"BTC" forState:UIControlStateNormal];
         [_btcButton setTitleColor:COLORFROM16(0xD8D8D8, 1) forState:UIControlStateNormal];
         [_btcButton setTitleColor:COLORFROM16(0xFF6806, 1) forState:UIControlStateSelected];
         [_btcButton addTarget:self action:@selector(respondsToTypeButton:) forControlEvents:UIControlEventTouchUpInside];

@@ -69,12 +69,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>SnapKit.xcscheme</key>
+		<key>TTTAttributedLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>TTTAttributedLabel.xcscheme</key>
+		<key>TZImagePickerController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

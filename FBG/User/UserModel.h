@@ -22,7 +22,8 @@ typedef enum : NSUInteger {
 #pragma mark -- 用户基本信息
 @property (nonatomic, copy) NSString * token;
 @property (nonatomic, copy) NSString * open_id;
-@property (nonatomic, copy) NSString * nickname;
+@property (nonatomic, copy) NSString * email; // 账号
+@property (nonatomic, copy) NSString * nickname; //昵称
 @property (nonatomic, copy) NSString * sex;
 @property (nonatomic, copy) NSString * img;
 @property (nonatomic, assign) BOOL isCode; //是不是从冷钱包进入

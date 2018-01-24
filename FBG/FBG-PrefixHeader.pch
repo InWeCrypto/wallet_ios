@@ -49,7 +49,7 @@
 #define Default_General_Image [UIImage imageNamed:@"tao"]
 
 //测试环境
-#define TESTAPIEHEAD1 @"https://dev.inwecrypto.com:4430/api/"  //网络请求头
+#define TESTAPIEHEAD1 @"https://dev.inwecrypto.com:4431/v2/api/"  //网络请求头
 #define TESTAPIEHEAD2 @"https://dev.inwecrypto.com:4431/v1/"  //网络请求头
 #define TESTAPIEHEAD3 @"https://dev.inwecrypto.com:4431/v2/"  //网络请求头
 #define IMAGEHEAD @"https://china.inwecrypto.com:4431/"  //图片头

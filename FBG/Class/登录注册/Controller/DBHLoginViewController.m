@@ -132,8 +132,12 @@
         }
         
         [UserSignData share].user.token = responseObject[@"token"];
+        [UserSignData share].user.open_id = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
+        [UserSignData share].user.email = responseObject[@"email"];
         [UserSignData share].user.nickname = responseObject[@"name"];
         [UserSignData share].user.img = responseObject[@"img"];
+        [UserSignData share].user.walletUnitType = 1;
+        [[UserSignData share] storageData:[UserSignData share].user];
         
         [[AppDelegate delegate] goToTabbar];
     } failure:^(NSString *error) {

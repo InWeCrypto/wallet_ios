@@ -87,11 +87,11 @@
 /**
  *  字体大小设置
  */
-#define FONT(size) [UIFont systemFontOfSize:(size) * (SCREENWIDTH / 375)]
+#define FONT(size) [UIFont systemFontOfSize:(size) * (375.0 / SCREENWIDTH)]
 /**
  *  字体大小设置（粗体）
  */
-#define BOLDFONT(size) [UIFont boldSystemFontOfSize:(size) * (SCREENWIDTH / 375)]
+#define BOLDFONT(size) [UIFont boldSystemFontOfSize:(size) * (375.0 / SCREENWIDTH)]
 /**
  *  导航栏标题字体大小
  */

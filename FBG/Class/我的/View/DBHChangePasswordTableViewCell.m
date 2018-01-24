@@ -11,7 +11,8 @@
 @interface DBHChangePasswordTableViewCell ()
 
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIButton *emailVerificationCodeButton;
+
+@property (nonatomic, copy) GetVerificationCodeBlock getVerificationCodeBlock;
 
 @end
 
@@ -57,7 +58,12 @@
  邮箱验证码
  */
 - (void)respondsToEmailVerificationCodeButton {
-    
+    self.getVerificationCodeBlock();
+}
+
+#pragma mark ------ Public Methods ------
+- (void)getVerificationCodeBlock:(GetVerificationCodeBlock)getVerificationCodeBlock {
+    self.getVerificationCodeBlock = getVerificationCodeBlock;
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -65,6 +71,8 @@
     _title = title;
     
     self.emailVerificationCodeButton.hidden = ![_title isEqualToString:@"Verification code"];
+    self.valueTextField.keyboardType = [_title isEqualToString:@"Verification code"] ? UIKeyboardTypeNumberPad : UIKeyboardTypeASCIICapable;
+    self.valueTextField.secureTextEntry = ![_title isEqualToString:@"Verification code"];
     
     WEAKSELF
     if (self.emailVerificationCodeButton.hidden) {

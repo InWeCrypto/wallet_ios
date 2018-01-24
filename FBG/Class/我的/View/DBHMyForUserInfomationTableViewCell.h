@@ -10,4 +10,19 @@
 
 @interface DBHMyForUserInfomationTableViewCell : DBHBaseTableViewCell
 
+/**
+ 头像
+ */
+@property (nonatomic, strong) UIImageView *headImageView;
+
+/**
+ 昵称
+ */
+@property (nonatomic, strong) UILabel *nameLabel;
+
+/**
+ 账号
+ */
+@property (nonatomic, strong) UILabel *accountLabel;
+
 @end

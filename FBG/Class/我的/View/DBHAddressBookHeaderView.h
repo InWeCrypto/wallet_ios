@@ -13,6 +13,11 @@ typedef void(^SelectedTypeBlock)(NSInteger type);
 @interface DBHAddressBookHeaderView : UIView
 
 /**
+ 当前选中下标
+ */
+@property (nonatomic, assign) NSInteger currentSelectedIndex;
+
+/**
  选中类型
  */
 - (void)selectedType:(NSInteger)type;

@@ -8,6 +8,8 @@
 
 #import "DBHBaseTableViewCell.h"
 
+typedef void(^GetVerificationCodeBlock)();
+
 @interface DBHChangePasswordTableViewCell : DBHBaseTableViewCell
 
 /**
@@ -19,5 +21,15 @@
  标题
  */
 @property (nonatomic, copy) NSString *title;
+
+/**
+ 邮箱验证码
+ */
+@property (nonatomic, strong) UIButton *emailVerificationCodeButton;
+
+/**
+ 获取验证码回调
+ */
+- (void)getVerificationCodeBlock:(GetVerificationCodeBlock)getVerificationCodeBlock;
 
 @end

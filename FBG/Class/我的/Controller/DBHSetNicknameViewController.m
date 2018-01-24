@@ -58,12 +58,41 @@ static NSString *const kDBHSetNicknameTableViewCellIdentifier = @"kDBHSetNicknam
     return AUTOLAYOUTSIZE(11.5);
 }
 
+#pragma mark ------ Data ------
+/**
+ 修改昵称
+ */
+- (void)updateNickname {
+    DBHSetNicknameTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSDictionary *paramters = @{@"img":[UserSignData share].user.img,
+                                @"name":cell.nicknameTextField.text};
+    WEAKSELF
+    [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", NSLocalizedString(@"Commit", nil)] success:^(id responseObject) {
+        [UserSignData share].user.nickname = responseObject[@"name"];
+        [LCProgressHUD showSuccess:NSLocalizedString(@"Change Success", nil)];
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+
 #pragma mark ------ Event Responds ------
 /**
  保存
  */
 - (void)respondsToSaveBarButtonItem {
+    DBHSetNicknameTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    if (!cell.nicknameTextField.text.length) {
+        [LCProgressHUD showFailure:NSLocalizedString(@"Please enter your nickname", nil)];
+        
+        return;
+    }
+    if (![NSString isNickName:cell.nicknameTextField.text]){
+        [LCProgressHUD showFailure:NSLocalizedString(@"Please enter a nickname of 2~12 non-special characters", nil)];
+        return;
+    }
     
+    [self updateNickname];
 }
 
 #pragma mark ------ Getters And Setters ------

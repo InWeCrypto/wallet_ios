@@ -261,6 +261,18 @@
 		D565E907201738C100930274 /* DBHMyFavoriteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E906201738C100930274 /* DBHMyFavoriteTableViewCell.m */; };
 		D565E90A201743BC00930274 /* DBHMyQuotationReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E909201743BC00930274 /* DBHMyQuotationReminderViewController.m */; };
 		D565E90D2017440600930274 /* DBHMyQuotationReminderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E90C2017440600930274 /* DBHMyQuotationReminderTableViewCell.m */; };
+		D565E91020182BC600930274 /* DBHSettingUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E90F20182BC600930274 /* DBHSettingUpViewController.m */; };
+		D565E91320182D2B00930274 /* DBHSettingUpTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91220182D2B00930274 /* DBHSettingUpTableViewCell.m */; };
+		D565E91620182F1400930274 /* DBHMonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91520182F1400930274 /* DBHMonetaryUnitViewController.m */; };
+		D565E91920182F6E00930274 /* DBHMonetaryUnitTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91820182F6E00930274 /* DBHMonetaryUnitTableViewCell.m */; };
+		D565E91C201831F900930274 /* DBHNetworkSwitcherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91B201831F900930274 /* DBHNetworkSwitcherViewController.m */; };
+		D565E9242018750500930274 /* DBHProjectModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91D2018750400930274 /* DBHProjectModelDataBase.m */; };
+		D565E9252018750500930274 /* DBHProjectModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91F2018750400930274 /* DBHProjectModelData.m */; };
+		D565E9262018750500930274 /* DBHProjectModelCategoryUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E9202018750500930274 /* DBHProjectModelCategoryUser.m */; };
+		D565E9292018854E00930274 /* DBHInformationTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E9282018854E00930274 /* DBHInformationTitleView.m */; };
+		D565E92C2018961D00930274 /* DBHPaymentReceivedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E92B2018961D00930274 /* DBHPaymentReceivedViewController.m */; };
+		D565E92F2018B49800930274 /* DBHInformationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E92E2018B49800930274 /* DBHInformationTableViewCell.m */; };
+		D565E9322018B8E700930274 /* DBHInformationHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E9312018B8E700930274 /* DBHInformationHeaderView.m */; };
 		D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */; };
 		D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E91FB9B4A900EB773D /* DBHNavigationController.m */; };
 /* End PBXBuildFile section */
@@ -760,6 +772,31 @@
 		D565E909201743BC00930274 /* DBHMyQuotationReminderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMyQuotationReminderViewController.m; sourceTree = "<group>"; };
 		D565E90B2017440600930274 /* DBHMyQuotationReminderTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMyQuotationReminderTableViewCell.h; sourceTree = "<group>"; };
 		D565E90C2017440600930274 /* DBHMyQuotationReminderTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMyQuotationReminderTableViewCell.m; sourceTree = "<group>"; };
+		D565E90E20182BC600930274 /* DBHSettingUpViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSettingUpViewController.h; sourceTree = "<group>"; };
+		D565E90F20182BC600930274 /* DBHSettingUpViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSettingUpViewController.m; sourceTree = "<group>"; };
+		D565E91120182D2B00930274 /* DBHSettingUpTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSettingUpTableViewCell.h; sourceTree = "<group>"; };
+		D565E91220182D2B00930274 /* DBHSettingUpTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSettingUpTableViewCell.m; sourceTree = "<group>"; };
+		D565E91420182F1400930274 /* DBHMonetaryUnitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMonetaryUnitViewController.h; sourceTree = "<group>"; };
+		D565E91520182F1400930274 /* DBHMonetaryUnitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMonetaryUnitViewController.m; sourceTree = "<group>"; };
+		D565E91720182F6E00930274 /* DBHMonetaryUnitTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMonetaryUnitTableViewCell.h; sourceTree = "<group>"; };
+		D565E91820182F6E00930274 /* DBHMonetaryUnitTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMonetaryUnitTableViewCell.m; sourceTree = "<group>"; };
+		D565E91A201831F900930274 /* DBHNetworkSwitcherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHNetworkSwitcherViewController.h; sourceTree = "<group>"; };
+		D565E91B201831F900930274 /* DBHNetworkSwitcherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHNetworkSwitcherViewController.m; sourceTree = "<group>"; };
+		D565E91D2018750400930274 /* DBHProjectModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectModelDataBase.m; sourceTree = "<group>"; };
+		D565E91E2018750400930274 /* DBHProjectDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDataModels.h; sourceTree = "<group>"; };
+		D565E91F2018750400930274 /* DBHProjectModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectModelData.m; sourceTree = "<group>"; };
+		D565E9202018750500930274 /* DBHProjectModelCategoryUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectModelCategoryUser.m; sourceTree = "<group>"; };
+		D565E9212018750500930274 /* DBHProjectModelCategoryUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectModelCategoryUser.h; sourceTree = "<group>"; };
+		D565E9222018750500930274 /* DBHProjectModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectModelData.h; sourceTree = "<group>"; };
+		D565E9232018750500930274 /* DBHProjectModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectModelDataBase.h; sourceTree = "<group>"; };
+		D565E9272018854E00930274 /* DBHInformationTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationTitleView.h; sourceTree = "<group>"; };
+		D565E9282018854E00930274 /* DBHInformationTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationTitleView.m; sourceTree = "<group>"; };
+		D565E92A2018961D00930274 /* DBHPaymentReceivedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHPaymentReceivedViewController.h; sourceTree = "<group>"; };
+		D565E92B2018961D00930274 /* DBHPaymentReceivedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHPaymentReceivedViewController.m; sourceTree = "<group>"; };
+		D565E92D2018B49800930274 /* DBHInformationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationTableViewCell.h; sourceTree = "<group>"; };
+		D565E92E2018B49800930274 /* DBHInformationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationTableViewCell.m; sourceTree = "<group>"; };
+		D565E9302018B8E700930274 /* DBHInformationHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationHeaderView.h; sourceTree = "<group>"; };
+		D565E9312018B8E700930274 /* DBHInformationHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationHeaderView.m; sourceTree = "<group>"; };
 		D5F679E51FB9A30400EB773D /* NSTimer+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Extension.h"; sourceTree = "<group>"; };
 		D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Extension.m"; sourceTree = "<group>"; };
 		D5F679E81FB9B4A900EB773D /* DBHNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHNavigationController.h; sourceTree = "<group>"; };
@@ -1539,6 +1576,8 @@
 			children = (
 				D51E66972011F59C0025B502 /* DBHInformationViewController.h */,
 				D51E66982011F59C0025B502 /* DBHInformationViewController.m */,
+				D565E92A2018961D00930274 /* DBHPaymentReceivedViewController.h */,
+				D565E92B2018961D00930274 /* DBHPaymentReceivedViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1553,6 +1592,12 @@
 		D51E66922011F4B90025B502 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D565E9272018854E00930274 /* DBHInformationTitleView.h */,
+				D565E9282018854E00930274 /* DBHInformationTitleView.m */,
+				D565E9302018B8E700930274 /* DBHInformationHeaderView.h */,
+				D565E9312018B8E700930274 /* DBHInformationHeaderView.m */,
+				D565E92D2018B49800930274 /* DBHInformationTableViewCell.h */,
+				D565E92E2018B49800930274 /* DBHInformationTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1586,6 +1631,12 @@
 				D565E9032017383600930274 /* DBHMyFavoriteViewController.m */,
 				D565E908201743BC00930274 /* DBHMyQuotationReminderViewController.h */,
 				D565E909201743BC00930274 /* DBHMyQuotationReminderViewController.m */,
+				D565E90E20182BC600930274 /* DBHSettingUpViewController.h */,
+				D565E90F20182BC600930274 /* DBHSettingUpViewController.m */,
+				D565E91420182F1400930274 /* DBHMonetaryUnitViewController.h */,
+				D565E91520182F1400930274 /* DBHMonetaryUnitViewController.m */,
+				D565E91A201831F900930274 /* DBHNetworkSwitcherViewController.h */,
+				D565E91B201831F900930274 /* DBHNetworkSwitcherViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1593,6 +1644,13 @@
 		D51E66952011F4BA0025B502 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D565E91E2018750400930274 /* DBHProjectDataModels.h */,
+				D565E9212018750500930274 /* DBHProjectModelCategoryUser.h */,
+				D565E9202018750500930274 /* DBHProjectModelCategoryUser.m */,
+				D565E9222018750500930274 /* DBHProjectModelData.h */,
+				D565E91F2018750400930274 /* DBHProjectModelData.m */,
+				D565E9232018750500930274 /* DBHProjectModelDataBase.h */,
+				D565E91D2018750400930274 /* DBHProjectModelDataBase.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1628,6 +1686,10 @@
 				D565E906201738C100930274 /* DBHMyFavoriteTableViewCell.m */,
 				D565E90B2017440600930274 /* DBHMyQuotationReminderTableViewCell.h */,
 				D565E90C2017440600930274 /* DBHMyQuotationReminderTableViewCell.m */,
+				D565E91120182D2B00930274 /* DBHSettingUpTableViewCell.h */,
+				D565E91220182D2B00930274 /* DBHSettingUpTableViewCell.m */,
+				D565E91720182F6E00930274 /* DBHMonetaryUnitTableViewCell.h */,
+				D565E91820182F6E00930274 /* DBHMonetaryUnitTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1905,8 +1967,8 @@
 				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/SDCycleScrollView/SDCycleScrollView.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TTTAttributedLabel/TTTAttributedLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/YUSegment/YUSegment.framework",
 				"${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework",
 			);
@@ -1923,8 +1985,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCycleScrollView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTTAttributedLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TZImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YUSegment.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCache.framework",
 			);
@@ -1957,6 +2019,7 @@
 			files = (
 				D51E666F2011F01B0025B502 /* DBHHomePageTableViewCell.m in Sources */,
 				0FAC291A1F2F7C4A009B3EC9 /* AAPlotOptions.m in Sources */,
+				D565E91320182D2B00930274 /* DBHSettingUpTableViewCell.m in Sources */,
 				D55558011FC975C100F0963B /* CHSeries.swift in Sources */,
 				A81A5AF71F3AFD3C0015CC0D /* PDKeyChain.m in Sources */,
 				A80713561F5563CE00C5B862 /* MASViewAttribute.m in Sources */,
@@ -1970,6 +2033,7 @@
 				A8CD77781F32453300005027 /* SetValueFormatter.m in Sources */,
 				0FAC290D1F2F7C4A009B3EC9 /* AABar.m in Sources */,
 				D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */,
+				D565E9242018750500930274 /* DBHProjectModelDataBase.m in Sources */,
 				D51E66612011F01B0025B502 /* DBHTransferListTableViewCell.m in Sources */,
 				D565E8D72016E3F200930274 /* DBHPersonalSettingForHeadTableViewCell.m in Sources */,
 				0FAC291E1F2F7C4A009B3EC9 /* AAStyle.m in Sources */,
@@ -2056,16 +2120,20 @@
 				D534FD881FFF4DE100FDA8BE /* DBHBaseNavigationController.m in Sources */,
 				A81A5AD81F3A07890015CC0D /* TowButtonAlertView.m in Sources */,
 				A807135E1F5563CE00C5B862 /* ViewController+MASAdditions.m in Sources */,
+				D565E92F2018B49800930274 /* DBHInformationTableViewCell.m in Sources */,
 				A80713571F5563CE00C5B862 /* MASViewConstraint.m in Sources */,
 				D565E8FE2017290E00930274 /* DBHAddressBookMenuTableViewCell.m in Sources */,
 				D51E66672011F01B0025B502 /* DBHInputPasswordPromptView.m in Sources */,
+				D565E91920182F6E00930274 /* DBHMonetaryUnitTableViewCell.m in Sources */,
 				D51E66712011F01B0025B502 /* DBHSelectWalletTypeOnePromptView.m in Sources */,
 				0FDD5F271F2D671600228CE0 /* PassWordView.m in Sources */,
 				0FAC29231F2F7C4A009B3EC9 /* AAYAxis.m in Sources */,
 				0F0CFDEA1F15E54100476A86 /* AppDelegate.m in Sources */,
+				D565E9262018750500930274 /* DBHProjectModelCategoryUser.m in Sources */,
 				D565E8CE2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.m in Sources */,
 				0FAC29121F2F7C4A009B3EC9 /* AALabels.m in Sources */,
 				0FDD5F391F2DD6E800228CE0 /* YCXMenu.m in Sources */,
+				D565E92C2018961D00930274 /* DBHPaymentReceivedViewController.m in Sources */,
 				A8A818531F44889D00FFF088 /* CommitOrderView.m in Sources */,
 				A8B804631F4D16F600633C34 /* ChoseNetView.m in Sources */,
 				0FFEA9D31F170361009F6151 /* CDNavigationController.m in Sources */,
@@ -2080,14 +2148,17 @@
 				D51E66652011F01B0025B502 /* DBHAddWalletPromptViewTableViewCell.m in Sources */,
 				D51E665C2011F01B0025B502 /* DBHWalletManagerForNeoModelList.m in Sources */,
 				D51E666C2011F01B0025B502 /* DBHHomePageHeaderView.m in Sources */,
+				D565E91620182F1400930274 /* DBHMonetaryUnitViewController.m in Sources */,
 				D5215DA41FD7E83500536248 /* NSString+Null.m in Sources */,
 				0FAC290C1F2F7C4A009B3EC9 /* AAAreaspline.m in Sources */,
 				D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */,
+				D565E91C201831F900930274 /* DBHNetworkSwitcherViewController.m in Sources */,
 				D51E666D2011F01B0025B502 /* DBHTransferListHeaderView.m in Sources */,
 				D51E66D72015E20C0025B502 /* DBHQrCodeViewController.m in Sources */,
 				A85F8A991F59408800340D49 /* YsLabel.m in Sources */,
 				D521D9FE1FBB162A009566EA /* UIImage+ImageForColor.m in Sources */,
 				0FDCAC8F1F20CF280090D12A /* UIViewController+Tool.m in Sources */,
+				D565E91020182BC600930274 /* DBHSettingUpViewController.m in Sources */,
 				0FAC290E1F2F7C4A009B3EC9 /* AAChart.m in Sources */,
 				0FAC29201F2F7C4A009B3EC9 /* AATitle.m in Sources */,
 				A8D982BE1F4206BB0080DFF8 /* LookWalletCodeView.m in Sources */,
@@ -2130,6 +2201,7 @@
 				A80713291F5558B900C5B862 /* CCTagSelectSectionHeaderView.m in Sources */,
 				0FDD5F3D1F2DE0C400228CE0 /* AlertView.m in Sources */,
 				0FAC29211F2F7C4A009B3EC9 /* AATooltip.m in Sources */,
+				D565E9322018B8E700930274 /* DBHInformationHeaderView.m in Sources */,
 				A8CD77771F32453300005027 /* DateValueFormatter.m in Sources */,
 				D51E66EA2015E20C0025B502 /* ScanVC.m in Sources */,
 				0F0CFE321F15FB3F00476A86 /* NSObject+Tool.m in Sources */,
@@ -2141,6 +2213,7 @@
 				D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */,
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,
 				0FAC291B1F2F7C4A009B3EC9 /* AASeries.m in Sources */,
+				D565E9252018750500930274 /* DBHProjectModelData.m in Sources */,
 				0F0CFE2F1F15FB3F00476A86 /* NSArray+Tool.m in Sources */,
 				0FFEA9D71F17382A009F6151 /* BaseModel.m in Sources */,
 				A8A8184F1F44849B00FFF088 /* ChoseCell.m in Sources */,
@@ -2156,6 +2229,7 @@
 				0F0CFE341F15FB3F00476A86 /* UIColor+Tool.m in Sources */,
 				A80713271F5558B900C5B862 /* CCTagCollectionLayout.m in Sources */,
 				0FAC29181F2F7C4A009B3EC9 /* AAPie.m in Sources */,
+				D565E9292018854E00930274 /* DBHInformationTitleView.m in Sources */,
 				D51E66A52015D4300025B502 /* DBHForgetPasswordViewController.m in Sources */,
 				A88A78951F6992E90058094C /* SGQRCodeScanningView.m in Sources */,
 				D55557FF1FC975C100F0963B /* CHExtension.swift in Sources */,

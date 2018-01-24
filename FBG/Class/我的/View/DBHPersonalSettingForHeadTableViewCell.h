@@ -10,4 +10,9 @@
 
 @interface DBHPersonalSettingForHeadTableViewCell : DBHBaseTableViewCell
 
+/**
+ 头像
+ */
+@property (nonatomic, strong) UIImageView *headImageView;
+
 @end
