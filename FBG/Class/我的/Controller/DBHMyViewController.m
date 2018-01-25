@@ -35,7 +35,7 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = BACKGROUNDCOLOR;
+    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];
 }

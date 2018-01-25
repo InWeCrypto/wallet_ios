@@ -10,4 +10,17 @@
 
 @implementation UserModel
 
+- (NSMutableArray *)functionalUnitArray {
+    if (!_functionalUnitArray) {
+        _functionalUnitArray = [NSMutableArray array];
+        [_functionalUnitArray addObject:@"0"];
+        [_functionalUnitArray addObject:@"0"];
+        [_functionalUnitArray addObject:@"0"];
+        [_functionalUnitArray addObject:@"0"];
+        [_functionalUnitArray addObject:@"0"];
+        [_functionalUnitArray addObject:@"0"];
+    }
+    return _functionalUnitArray;
+}
+
 @end

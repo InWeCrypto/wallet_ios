@@ -230,6 +230,10 @@ Apache License
 
 
 
+## HyphenateLite
+
+Hyphenate Inc. 2017
+
 ## IQKeyboardManager
 
 IQKeyboardManager license

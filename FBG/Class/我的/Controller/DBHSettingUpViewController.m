@@ -31,7 +31,7 @@ static NSString *const kDBHSettingUpTableViewCellIdentifier = @"kDBHSettingUpTab
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Setting Up", nil);
-    self.view.backgroundColor = BACKGROUNDCOLOR;
+    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];
 }

@@ -8,8 +8,11 @@
 
 #import "DBHInformationTableViewCell.h"
 
+#import "DBHInformationDataModels.h"
+
 @interface DBHInformationTableViewCell ()
 
+@property (nonatomic, strong) UIImageView *iconBackImageView;
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *contentLabel;
@@ -33,6 +36,7 @@
 
 #pragma mark ------ UI ------
 - (void)setUI {
+    [self.contentView addSubview:self.iconBackImageView];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.contentLabel];
@@ -41,13 +45,17 @@
     [self.contentView addSubview:self.timeLabel];
     
     WEAKSELF
-    [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+    [self.iconBackImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.offset(AUTOLAYOUTSIZE(45));
         make.left.offset(AUTOLAYOUTSIZE(15));
         make.centerY.equalTo(weakSelf.contentView);
     }];
+    [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.offset(AUTOLAYOUTSIZE(30));
+        make.center.equalTo(weakSelf.iconBackImageView);
+    }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.iconImageView.mas_right).offset(AUTOLAYOUTSIZE(10));
+        make.left.equalTo(weakSelf.iconBackImageView.mas_right).offset(AUTOLAYOUTSIZE(10));
         make.top.offset(AUTOLAYOUTSIZE(10));
     }];
     [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -69,21 +77,68 @@
         make.right.equalTo(weakSelf.changeLabel);
         make.centerY.equalTo(weakSelf.contentLabel);
     }];
-    
-    self.iconImageView.image = [UIImage imageNamed:@"zhuye_inwe_ico"];
-    self.titleLabel.text = @"NEO（NEO）";
-    self.contentLabel.text = @"（3条）新韩银行推出跨境比特币韩银行推出跨境比特币韩银行推出跨境比特币";
-    self.priceLabel.text = @"$87.07";
-    self.changeLabel.text = @"+11.09";
-    self.timeLabel.text = @"2017-11-11";
+}
+
+#pragma mark ------ Data ------
+/**
+ 获取代币价格
+ */
+- (void)getPrice {
+    WEAKSELF
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/rank/%@/cny", self.model.unit] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        NSString *price = [UserSignData share].user.walletUnitType == 1 ? responseCache[@"price_cny"] : responseCache[@"price_usd"];
+        NSString *change = responseCache[@"percent_change_24h"];
+        weakSelf.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
+        weakSelf.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf", change.floatValue >= 0 ? @"+" : @"", change.floatValue];
+    } success:^(id responseObject) {
+        NSString *price = [UserSignData share].user.walletUnitType == 1 ? responseObject[@"price_cny"] : responseObject[@"price_usd"];
+        NSString *change = responseObject[@"percent_change_24h"];
+        weakSelf.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
+        weakSelf.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf", change.floatValue >= 0 ? @"+" : @"", change.floatValue];
+    } failure:^(NSString *error) {
+//        [LCProgressHUD showFailure:error];
+    }];
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setModel:(DBHInformationModelData *)model {
+    _model = model;
+    
+    self.iconBackImageView.image = nil;
+    self.iconImageView.hidden = NO;
+    [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@""]];
+    self.titleLabel.text = [NSString stringWithFormat:@"%@（%@）", _model.unit, _model.name];
+    self.contentLabel.text = _model.lastArticle.title;
+    self.timeLabel.text = _model.lastArticle.createdAt;
+    self.priceLabel.hidden = _model.type != 1;
+    self.changeLabel.hidden = _model.type != 1;
+    
+    if (_model.type == 1) {
+        [self getPrice];
+    }
+}
+- (void)setFunctionalUnitTitle:(NSString *)functionalUnitTitle {
+    _functionalUnitTitle = functionalUnitTitle;
+    
+    self.iconImageView.hidden = YES;
+    self.iconBackImageView.image = [UIImage imageNamed:_functionalUnitTitle];
+    self.titleLabel.text = _functionalUnitTitle;
+    self.priceLabel.hidden = YES;
+    self.changeLabel.hidden = YES;
+}
+
+- (UIImageView *)iconBackImageView {
+    if (!_iconBackImageView) {
+        _iconBackImageView = [[UIImageView alloc] init];
+        _iconBackImageView.backgroundColor = COLORFROM16(0xF8F4F4, 1);
+        _iconBackImageView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
+    }
+    return _iconBackImageView;
+}
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
         _iconImageView = [[UIImageView alloc] init];
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _iconImageView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
     }
     return _iconImageView;
 }

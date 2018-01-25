@@ -8,6 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^SelectTypeBlock)();
+
 @interface DBHInformationHeaderView : UIView
+
+/**
+ 当前选中下标
+ */
+@property (nonatomic, assign) NSInteger currentSelectedIndex;
+
+/**
+ 选择类型回调
+ */
+- (void)selectTypeBlock:(SelectTypeBlock)selectTypeBlock;
 
 @end

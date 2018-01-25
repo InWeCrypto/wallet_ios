@@ -624,10 +624,10 @@ static NetworkStatus _status;
     //设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"application/x-www-form-urlencoded", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
+    [manager.requestSerializer setValue:[[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"] ? @"zh" : @"en" forHTTPHeaderField:@"lang"];
     if ([UserSignData share].user.token.length > 0)
     {
         [manager.requestSerializer setValue:[UserSignData share].user.token forHTTPHeaderField:@"Authorization"];
-        [manager.requestSerializer setValue:[[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"] ? @"zh" : @"en" forHTTPHeaderField:@"lang"];
         [manager.requestSerializer setValue:@"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" forHTTPHeaderField:@"neo-asset-id"];
         [manager.requestSerializer setValue:@"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7" forHTTPHeaderField:@"neo-gas-asset-id"];
     }

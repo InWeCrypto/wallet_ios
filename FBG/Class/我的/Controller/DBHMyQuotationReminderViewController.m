@@ -27,7 +27,7 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"My Quotation Reminder", nil);
-    self.view.backgroundColor = BACKGROUNDCOLOR;
+    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];
 }

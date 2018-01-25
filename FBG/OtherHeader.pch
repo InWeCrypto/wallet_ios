@@ -47,7 +47,7 @@
 /**
  *  背景颜色
  */
-#define BACKGROUNDCOLOR COLORFROM16(0xF8F8F8, 1)
+#define BACKGROUNDCOLOR COLORFROM16(0xFFFFFF, 1)
 
 /**
  *  列表分界线

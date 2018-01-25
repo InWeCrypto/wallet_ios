@@ -104,6 +104,7 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Charts/Charts.framework"
+  install_framework "${PODS_ROOT}/HyphenateLite/ios_IM_HyphenateLite_sdk_3.3.6/HyphenateSDK/HyphenateLite.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/JKBigInteger/JKBigInteger.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework"
@@ -121,6 +122,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Charts/Charts.framework"
+  install_framework "${PODS_ROOT}/HyphenateLite/ios_IM_HyphenateLite_sdk_3.3.6/HyphenateSDK/HyphenateLite.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/JKBigInteger/JKBigInteger.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework"

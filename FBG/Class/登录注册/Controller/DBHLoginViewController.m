@@ -8,6 +8,8 @@
 
 #import "DBHLoginViewController.h"
 
+#import <HyphenateLite/HyphenateLite.h>
+
 #import "DBHForgetPasswordViewController.h"
 #import "DBHSignUpViewController.h"
 
@@ -126,20 +128,28 @@
 - (void)login {
     NSDictionary *paramters = @{@"email":self.accountTextField.text,
                                 @"password":self.passwordTextField.text};
+    
+    WEAKSELF
     [PPNetworkHelper POST:@"login" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", NSLocalizedString(@"Log in", nil)] success:^(id responseObject) {
-        if ([NSString isNulllWithObject:[UserSignData share].user.token]) {
-            [UserSignData share].user = [[UserModel alloc] init];
+        EMError *error = [[EMClient sharedClient] loginWithUsername:[NSString stringWithFormat:@"%@", responseObject[@"id"]] password:weakSelf.passwordTextField.text];
+        if (!error) {
+            // 环信登录成功
+            if ([NSString isNulllWithObject:[UserSignData share].user.token]) {
+                [UserSignData share].user = [[UserModel alloc] init];
+            }
+            
+            [UserSignData share].user.token = responseObject[@"token"];
+            [UserSignData share].user.open_id = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
+            [UserSignData share].user.email = responseObject[@"email"];
+            [UserSignData share].user.nickname = responseObject[@"name"];
+            [UserSignData share].user.img = responseObject[@"img"];
+            [UserSignData share].user.walletUnitType = 1;
+            [[UserSignData share] storageData:[UserSignData share].user];
+            
+            [[AppDelegate delegate] goToTabbar];
+        } else {
+            [LCProgressHUD showFailure:NSLocalizedString(@"Login Failed", nil)];
         }
-        
-        [UserSignData share].user.token = responseObject[@"token"];
-        [UserSignData share].user.open_id = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
-        [UserSignData share].user.email = responseObject[@"email"];
-        [UserSignData share].user.nickname = responseObject[@"name"];
-        [UserSignData share].user.img = responseObject[@"img"];
-        [UserSignData share].user.walletUnitType = 1;
-        [[UserSignData share] storageData:[UserSignData share].user];
-        
-        [[AppDelegate delegate] goToTabbar];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];

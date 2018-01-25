@@ -10,6 +10,9 @@
 #import "IQKeyboardManager.h"
 #import "ZFTabBarViewController.h"
 #import <AFNetworking/AFNetworking.h>
+
+// 环信
+#import <HyphenateLite/HyphenateLite.h>
 //友盟统计
 #import "UMMobClick/MobClick.h"
 //阿里云
@@ -60,6 +63,13 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
+    // 环信sdk注册
+    //AppKey:注册的AppKey，详细见下面注释。
+    //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
+    EMOptions *options = [EMOptions optionsWithAppkey:@"1109180116115999#test"];
+    options.apnsCertName = @"aps_development";
+    [[EMClient sharedClient] initializeSDKWithOptions:options];
+    
     //添加网络状态提醒
     [self netNotification];
     
@@ -69,29 +79,29 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     //白色导航
 //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
-//    if ([APP_WALLETSTATUS isEqualToString:@"HOT"])
-//    {
-//        //未使用过冷钱包
-//        if ([UserSignData share].user.token)
-//        {
-//            [self goToTabbar];
-//        }
-//        else
-//        {
-//            [self showLoginController];
-//        }
-//    }
-//    else
-//    {
-//        //始终进入冷钱包
-//        [UserSignData share].user.isCode = YES;
-//        [[UserSignData share] storageData:[UserSignData share].user];
-//        YYCache * dataCache = [YYCache cacheWithName:@"FBGNetworkResponseCache"];
-//        [dataCache removeAllObjects];
-//
+    if ([APP_WALLETSTATUS isEqualToString:@"HOT"])
+    {
+        //未使用过冷钱包
+        if ([UserSignData share].user.token)
+        {
+            [self goToTabbar];
+        }
+        else
+        {
+            [self showLoginController];
+        }
+    }
+    else
+    {
+        //始终进入冷钱包
+        [UserSignData share].user.isCode = YES;
+        [[UserSignData share] storageData:[UserSignData share].user];
+        YYCache * dataCache = [YYCache cacheWithName:@"FBGNetworkResponseCache"];
+        [dataCache removeAllObjects];
+
         [self goToTabbar];
-//    }
-    
+    }
+
     //友盟统计
     UMConfigInstance.appKey = UM_APP_KEY;
     UMConfigInstance.channelId = @"App Store";
@@ -456,6 +466,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 /// APP进入后台
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    [[EMClient sharedClient] applicationDidEnterBackground:application];
     //后台运行timer
     /*
     UIApplication*   app = [UIApplication sharedApplication];
@@ -481,6 +492,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    [[EMClient sharedClient] applicationWillEnterForeground:application];
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }
 

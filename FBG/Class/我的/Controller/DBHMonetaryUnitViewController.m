@@ -28,7 +28,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Monetary Unit", nil);
-    self.view.backgroundColor = BACKGROUNDCOLOR;
+    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     self.currentSelectedRow = [UserSignData share].user.walletUnitType - 1;
     
     [self setUI];

@@ -323,7 +323,6 @@
         _verificationCodeTextField = [[UITextField alloc] init];
         _verificationCodeTextField.font = FONT(14);
         _verificationCodeTextField.textColor = COLORFROM16(0x333333, 1);
-        _verificationCodeTextField.secureTextEntry = YES;
         _verificationCodeTextField.placeholder = NSLocalizedString(@"Please input a verification code", nil);
     }
     return _verificationCodeTextField;

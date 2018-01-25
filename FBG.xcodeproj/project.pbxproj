@@ -161,6 +161,13 @@
 		A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB11F56553000C2F9AF /* CloudPushSDK.framework */; };
 		A8FEACB51F56553100C2F9AF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FEACB21F56553000C2F9AF /* UTDID.framework */; };
 		A8FEACB71F568DE500C2F9AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8FEACB61F568DE500C2F9AF /* Assets.xcassets */; };
+		D50254542019AF4E00B82A7B /* DBHSelectWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D50254532019AF4E00B82A7B /* DBHSelectWalletViewController.m */; };
+		D50254572019AFCE00B82A7B /* DBHSelectWalletTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D50254562019AFCE00B82A7B /* DBHSelectWalletTableViewCell.m */; };
+		D502545A2019C40800B82A7B /* DBHInformationTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = D50254592019C40800B82A7B /* DBHInformationTopView.m */; };
+		D50254642019D69600B82A7B /* DBHInformationModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D502545D2019D69500B82A7B /* DBHInformationModelDataBase.m */; };
+		D50254652019D69600B82A7B /* DBHInformationModelCategoryUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D502545F2019D69600B82A7B /* DBHInformationModelCategoryUser.m */; };
+		D50254662019D69600B82A7B /* DBHInformationModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D50254602019D69600B82A7B /* DBHInformationModelData.m */; };
+		D50254672019D69600B82A7B /* DBHInformationModelLastArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = D50254612019D69600B82A7B /* DBHInformationModelLastArticle.m */; };
 		D5099F631FD4F3880065F0AA /* MXNavigationBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D5099F621FD4F3880065F0AA /* MXNavigationBarManager.m */; };
 		D51E65DB2011C2E70025B502 /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51E65DA2011C2E70025B502 /* Neomobile.framework */; };
 		D51E66542011F01B0025B502 /* DBHWalletManagerForNeoModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D51E66002011F01B0025B502 /* DBHWalletManagerForNeoModelData.m */; };
@@ -273,6 +280,7 @@
 		D565E92C2018961D00930274 /* DBHPaymentReceivedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E92B2018961D00930274 /* DBHPaymentReceivedViewController.m */; };
 		D565E92F2018B49800930274 /* DBHInformationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E92E2018B49800930274 /* DBHInformationTableViewCell.m */; };
 		D565E9322018B8E700930274 /* DBHInformationHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E9312018B8E700930274 /* DBHInformationHeaderView.m */; };
+		D56CEE56201A0C810081DE05 /* DBHProjectHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE55201A0C810081DE05 /* DBHProjectHomeViewController.m */; };
 		D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */; };
 		D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E91FB9B4A900EB773D /* DBHNavigationController.m */; };
 /* End PBXBuildFile section */
@@ -580,6 +588,21 @@
 		A8FEACB21F56553000C2F9AF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		A8FEACB61F568DE500C2F9AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4EF8E3460E908B2B9C8C464 /* Pods_FBG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FBG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D50254522019AF4E00B82A7B /* DBHSelectWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSelectWalletViewController.h; sourceTree = "<group>"; };
+		D50254532019AF4E00B82A7B /* DBHSelectWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSelectWalletViewController.m; sourceTree = "<group>"; };
+		D50254552019AFCE00B82A7B /* DBHSelectWalletTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSelectWalletTableViewCell.h; sourceTree = "<group>"; };
+		D50254562019AFCE00B82A7B /* DBHSelectWalletTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSelectWalletTableViewCell.m; sourceTree = "<group>"; };
+		D50254582019C40800B82A7B /* DBHInformationTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationTopView.h; sourceTree = "<group>"; };
+		D50254592019C40800B82A7B /* DBHInformationTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationTopView.m; sourceTree = "<group>"; };
+		D502545B2019D69500B82A7B /* DBHInformationModelLastArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationModelLastArticle.h; sourceTree = "<group>"; };
+		D502545C2019D69500B82A7B /* DBHInformationDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationDataModels.h; sourceTree = "<group>"; };
+		D502545D2019D69500B82A7B /* DBHInformationModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationModelDataBase.m; sourceTree = "<group>"; };
+		D502545E2019D69500B82A7B /* DBHInformationModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationModelDataBase.h; sourceTree = "<group>"; };
+		D502545F2019D69600B82A7B /* DBHInformationModelCategoryUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationModelCategoryUser.m; sourceTree = "<group>"; };
+		D50254602019D69600B82A7B /* DBHInformationModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationModelData.m; sourceTree = "<group>"; };
+		D50254612019D69600B82A7B /* DBHInformationModelLastArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInformationModelLastArticle.m; sourceTree = "<group>"; };
+		D50254622019D69600B82A7B /* DBHInformationModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationModelData.h; sourceTree = "<group>"; };
+		D50254632019D69600B82A7B /* DBHInformationModelCategoryUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInformationModelCategoryUser.h; sourceTree = "<group>"; };
 		D5099F611FD4F3880065F0AA /* MXNavigationBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXNavigationBarManager.h; sourceTree = "<group>"; };
 		D5099F621FD4F3880065F0AA /* MXNavigationBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXNavigationBarManager.m; sourceTree = "<group>"; };
 		D51E65DA2011C2E70025B502 /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
@@ -797,6 +820,8 @@
 		D565E92E2018B49800930274 /* DBHInformationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationTableViewCell.m; sourceTree = "<group>"; };
 		D565E9302018B8E700930274 /* DBHInformationHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationHeaderView.h; sourceTree = "<group>"; };
 		D565E9312018B8E700930274 /* DBHInformationHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationHeaderView.m; sourceTree = "<group>"; };
+		D56CEE54201A0C810081DE05 /* DBHProjectHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHProjectHomeViewController.h; sourceTree = "<group>"; };
+		D56CEE55201A0C810081DE05 /* DBHProjectHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectHomeViewController.m; sourceTree = "<group>"; };
 		D5F679E51FB9A30400EB773D /* NSTimer+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Extension.h"; sourceTree = "<group>"; };
 		D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Extension.m"; sourceTree = "<group>"; };
 		D5F679E81FB9B4A900EB773D /* DBHNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHNavigationController.h; sourceTree = "<group>"; };
@@ -1578,6 +1603,10 @@
 				D51E66982011F59C0025B502 /* DBHInformationViewController.m */,
 				D565E92A2018961D00930274 /* DBHPaymentReceivedViewController.h */,
 				D565E92B2018961D00930274 /* DBHPaymentReceivedViewController.m */,
+				D50254522019AF4E00B82A7B /* DBHSelectWalletViewController.h */,
+				D50254532019AF4E00B82A7B /* DBHSelectWalletViewController.m */,
+				D56CEE54201A0C810081DE05 /* DBHProjectHomeViewController.h */,
+				D56CEE55201A0C810081DE05 /* DBHProjectHomeViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1585,6 +1614,15 @@
 		D51E66912011F4B90025B502 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D502545C2019D69500B82A7B /* DBHInformationDataModels.h */,
+				D50254632019D69600B82A7B /* DBHInformationModelCategoryUser.h */,
+				D502545F2019D69600B82A7B /* DBHInformationModelCategoryUser.m */,
+				D50254622019D69600B82A7B /* DBHInformationModelData.h */,
+				D50254602019D69600B82A7B /* DBHInformationModelData.m */,
+				D502545E2019D69500B82A7B /* DBHInformationModelDataBase.h */,
+				D502545D2019D69500B82A7B /* DBHInformationModelDataBase.m */,
+				D502545B2019D69500B82A7B /* DBHInformationModelLastArticle.h */,
+				D50254612019D69600B82A7B /* DBHInformationModelLastArticle.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1596,8 +1634,12 @@
 				D565E9282018854E00930274 /* DBHInformationTitleView.m */,
 				D565E9302018B8E700930274 /* DBHInformationHeaderView.h */,
 				D565E9312018B8E700930274 /* DBHInformationHeaderView.m */,
+				D50254582019C40800B82A7B /* DBHInformationTopView.h */,
+				D50254592019C40800B82A7B /* DBHInformationTopView.m */,
 				D565E92D2018B49800930274 /* DBHInformationTableViewCell.h */,
 				D565E92E2018B49800930274 /* DBHInformationTableViewCell.m */,
+				D50254552019AFCE00B82A7B /* DBHSelectWalletTableViewCell.h */,
+				D50254562019AFCE00B82A7B /* DBHSelectWalletTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1958,6 +2000,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-FBG/Pods-FBG-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${PODS_ROOT}/HyphenateLite/ios_IM_HyphenateLite_sdk_3.3.6/HyphenateSDK/HyphenateLite.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/JKBigInteger/JKBigInteger.framework",
 				"${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework",
@@ -1976,6 +2019,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HyphenateLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKBigInteger.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONModel.framework",
@@ -2019,6 +2063,7 @@
 			files = (
 				D51E666F2011F01B0025B502 /* DBHHomePageTableViewCell.m in Sources */,
 				0FAC291A1F2F7C4A009B3EC9 /* AAPlotOptions.m in Sources */,
+				D50254642019D69600B82A7B /* DBHInformationModelDataBase.m in Sources */,
 				D565E91320182D2B00930274 /* DBHSettingUpTableViewCell.m in Sources */,
 				D55558011FC975C100F0963B /* CHSeries.swift in Sources */,
 				A81A5AF71F3AFD3C0015CC0D /* PDKeyChain.m in Sources */,
@@ -2028,11 +2073,14 @@
 				D565E8E02017124900930274 /* DBHSetNicknameViewController.m in Sources */,
 				D534FD891FFF4DE200FDA8BE /* DBHBaseViewController.m in Sources */,
 				D565E8D42016E13D00930274 /* DBHPersonalSettingViewController.m in Sources */,
+				D50254672019D69600B82A7B /* DBHInformationModelLastArticle.m in Sources */,
 				0F0CFE581F161F4C00476A86 /* ZFTabBarViewController.m in Sources */,
 				D51E66722011F01B0025B502 /* DBHMenuView.m in Sources */,
 				A8CD77781F32453300005027 /* SetValueFormatter.m in Sources */,
 				0FAC290D1F2F7C4A009B3EC9 /* AABar.m in Sources */,
+				D50254652019D69600B82A7B /* DBHInformationModelCategoryUser.m in Sources */,
 				D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */,
+				D50254572019AFCE00B82A7B /* DBHSelectWalletTableViewCell.m in Sources */,
 				D565E9242018750500930274 /* DBHProjectModelDataBase.m in Sources */,
 				D51E66612011F01B0025B502 /* DBHTransferListTableViewCell.m in Sources */,
 				D565E8D72016E3F200930274 /* DBHPersonalSettingForHeadTableViewCell.m in Sources */,
@@ -2061,12 +2109,15 @@
 				0FAC29221F2F7C4A009B3EC9 /* AAXAxis.m in Sources */,
 				D51E66632011F01B0025B502 /* DBHWalletManagerTableViewCell.m in Sources */,
 				A8CD778B1F32457D00005027 /* TAAnimatedDotView.m in Sources */,
+				D56CEE56201A0C810081DE05 /* DBHProjectHomeViewController.m in Sources */,
 				D51E66622011F01B0025B502 /* DBHWalletDetailTitleView.m in Sources */,
 				0FAC29001F2F7C4A009B3EC9 /* AAChartView.m in Sources */,
 				0FAC291C1F2F7C4A009B3EC9 /* AASeriesElement.m in Sources */,
 				A807135D1F5563CE00C5B862 /* View+MASAdditions.m in Sources */,
+				D50254542019AF4E00B82A7B /* DBHSelectWalletViewController.m in Sources */,
 				0FDD5F3A1F2DD6E800228CE0 /* YCXMenuItem.m in Sources */,
 				0F0CFE3D1F15FC2A00476A86 /* UIButton+SDSetImage.m in Sources */,
+				D502545A2019C40800B82A7B /* DBHInformationTopView.m in Sources */,
 				D565E8F82017212000930274 /* DBHAddOrEditAddressTableViewCell.m in Sources */,
 				D521D9D61FBACEE2009566EA /* NSString+Height.m in Sources */,
 				D51E66592011F01B0025B502 /* DBHTransferListModelList.m in Sources */,
@@ -2205,6 +2256,7 @@
 				A8CD77771F32453300005027 /* DateValueFormatter.m in Sources */,
 				D51E66EA2015E20C0025B502 /* ScanVC.m in Sources */,
 				0F0CFE321F15FB3F00476A86 /* NSObject+Tool.m in Sources */,
+				D50254662019D69600B82A7B /* DBHInformationModelData.m in Sources */,
 				D565E8D12016D55700930274 /* DBHMyTableViewCell.m in Sources */,
 				0FAC29101F2F7C4A009B3EC9 /* AADataLabels.m in Sources */,
 				0FAC28FF1F2F7C4A009B3EC9 /* AAChartModel.m in Sources */,

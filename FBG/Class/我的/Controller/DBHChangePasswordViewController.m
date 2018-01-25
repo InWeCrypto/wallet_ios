@@ -30,7 +30,7 @@ static NSString *const kDBHChangePasswordTableViewCellIdentifier = @"kDBHChangeP
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Change Password", nil);
-    self.view.backgroundColor = BACKGROUNDCOLOR;
+    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];
 }

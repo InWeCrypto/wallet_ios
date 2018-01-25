@@ -201,6 +201,7 @@
 "Welcome Back!" = "欢迎回来!";
 "Email" = "邮箱";
 "Password" = "密码";
+"Login Failed" = "登录失败";
 "Forget the password？" = "忘记密码？";
 "Enter InWeCrypto" = "进入InWeCrypto";
 "Register" = "注册";
@@ -237,6 +238,7 @@
  资讯
  */
 "Payment Received" = "收付款";
+"Please select a wallet" = "请选择一个钱包";
 
 /*
  个人设置
