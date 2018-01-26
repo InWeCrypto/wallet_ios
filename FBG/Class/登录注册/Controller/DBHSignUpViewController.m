@@ -244,6 +244,7 @@
         return;
     }
     
+    [self.view endEditing:YES];
     [self signUp];
 }
 

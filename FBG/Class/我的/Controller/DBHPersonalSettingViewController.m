@@ -136,7 +136,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
                                                  NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@sts",APP_APIEHEAD]];
                                                  NSURLRequest * request = [NSURLRequest requestWithURL:url];
                                                  NSMutableURLRequest *mutableRequest = [request mutableCopy];    //拷贝request
-                                                 [mutableRequest addValue:[UserSignData share].user.token forHTTPHeaderField:@"ct"];
+                                                 [mutableRequest addValue:[UserSignData share].user.token forHTTPHeaderField:@"Authorization"];
                                                  request = [mutableRequest copy];
                                                  OSSTaskCompletionSource * tcs = [OSSTaskCompletionSource taskCompletionSource];
                                                  NSURLSession * session = [NSURLSession sharedSession];

@@ -19,50 +19,46 @@ static NSString *const kUserCacheKey = @"FBGCacheKey";
 
 @implementation UserSignData
 
+#pragma mark ------ Init ------
 + (instancetype)share{
-    static UserSignData * userModel;
+    static UserSignData *userSignData;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        userModel = [[UserSignData alloc] init];
+        userSignData = [[UserSignData alloc] init];
     });
-    return userModel;
+    return userSignData;
 }
 
-
+#pragma mark ------ Public Methods ------
 /** 更新存储本地数据 */
 - (void)storageData:(UserModel *)user
 {
     [self.userCache setObject:user forKey:kUserCacheKey];
 }
 
-#pragma mark - getter and setter
-- (YYCache *)userCache
-{
-    if (!_userCache)
-    {
-        _userCache = [[YYCache alloc] initWithName:kUserCacheKey];
-        UserModel *user = [[UserModel alloc] init];
-        [self setUser:user];
-    }
-    return _userCache;
+#pragma mark ------ Getters And Setters ------
+- (void)setUserModel:(UserModel *)userModel {
+    [self storageData:userModel];
 }
-
 - (UserModel *)user
 {
     // 检查 读取（直接读取，不存在则是 nil）
-    if ([self.userCache containsObjectForKey:kUserCacheKey])
+    if ([self.userCache objectForKey:kUserCacheKey])
     {
         UserModel *user = (UserModel *)[self.userCache objectForKey:kUserCacheKey];
         return user;
     }
     UserModel *user = [[UserModel alloc] init];
-    [self setUser:user];
+    [self setUserModel:user];
     return user;
 }
-
-- (void)setUser:(UserModel *)user
+- (YYCache *)userCache
 {
-    [self storageData:user];
+    if (!_userCache)
+    {
+        _userCache = [[YYCache alloc] initWithName:kUserCacheKey];
+    }
+    return _userCache;
 }
 
 @end

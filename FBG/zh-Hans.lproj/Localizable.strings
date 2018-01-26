@@ -241,6 +241,22 @@
 "Please select a wallet" = "请选择一个钱包";
 
 /*
+ 项目主页
+ */
+"Project overview" = "项目全览";
+"Real-Time Quotes" = "实时行情";
+"Trading Market" = "交易市场";
+"Project Overview" = "项目概况";
+"Historical Information" = "历史资讯";
+"Project Introduction" = "项目介绍";
+"Project Community" = "项目社区";
+"Project Grade" = "项目评分";
+"State" = "状态";
+"Project Skype" = "项目官网";
+"The project's website" = "实时资讯推送";
+"Project Stick" = "项目置顶";
+
+/*
  个人设置
  */
 "Personal Setting" = "个人设置";

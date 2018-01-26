@@ -79,27 +79,6 @@
     }];
 }
 
-#pragma mark ------ Data ------
-/**
- 获取代币价格
- */
-- (void)getPrice {
-    WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/rank/%@/cny", self.model.unit] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        NSString *price = [UserSignData share].user.walletUnitType == 1 ? responseCache[@"price_cny"] : responseCache[@"price_usd"];
-        NSString *change = responseCache[@"percent_change_24h"];
-        weakSelf.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-        weakSelf.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf", change.floatValue >= 0 ? @"+" : @"", change.floatValue];
-    } success:^(id responseObject) {
-        NSString *price = [UserSignData share].user.walletUnitType == 1 ? responseObject[@"price_cny"] : responseObject[@"price_usd"];
-        NSString *change = responseObject[@"percent_change_24h"];
-        weakSelf.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-        weakSelf.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf", change.floatValue >= 0 ? @"+" : @"", change.floatValue];
-    } failure:^(NSString *error) {
-//        [LCProgressHUD showFailure:error];
-    }];
-}
-
 #pragma mark ------ Getters And Setters ------
 - (void)setModel:(DBHInformationModelData *)model {
     _model = model;
@@ -112,9 +91,10 @@
     self.timeLabel.text = _model.lastArticle.createdAt;
     self.priceLabel.hidden = _model.type != 1;
     self.changeLabel.hidden = _model.type != 1;
-    
     if (_model.type == 1) {
-        [self getPrice];
+        NSString *price = [UserSignData share].user.walletUnitType == 1 ? _model.ico.priceCny : _model.ico.priceUsd;
+        self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
+        self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf", _model.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _model.ico.percentChange24h.floatValue];
     }
 }
 - (void)setFunctionalUnitTitle:(NSString *)functionalUnitTitle {

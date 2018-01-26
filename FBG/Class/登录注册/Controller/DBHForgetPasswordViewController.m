@@ -220,6 +220,7 @@
         return;
     }
     
+    [self.view endEditing:YES];
     [self updatePassword];
 }
 

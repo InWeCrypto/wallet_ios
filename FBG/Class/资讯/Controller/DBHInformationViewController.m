@@ -11,6 +11,7 @@
 #import <HyphenateLite/HyphenateLite.h>
 
 #import "DBHPaymentReceivedViewController.h"
+#import "DBHProjectHomeViewController.h"
 
 #import "DBHInformationTitleView.h"
 #import "DBHMenuView.h"
@@ -101,7 +102,13 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (!indexPath.section && !self.informationHeaderView.currentSelectedIndex) {
+        
+    } else {
+        DBHProjectHomeViewController *projectHomeViewController = [[DBHProjectHomeViewController alloc] init];
+        projectHomeViewController.projectModel = self.dataSource[indexPath.row];
+        [self.navigationController pushViewController:projectHomeViewController animated:YES];
+    }
 }
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -118,6 +125,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
             [weakSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         } else {
             // 取消收藏
+            [weakSelf cancelColletWithRow:indexPath.row];
         }
     }];
     //删除按钮颜色
@@ -183,6 +191,21 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         }
         
         [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+/**
+ 取消收藏
+ */
+- (void)cancelColletWithRow:(NSInteger)row {
+    DBHInformationModelData *projectModel = self.dataSource[row];
+    NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:false]};
+    
+    WEAKSELF
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/collect", (NSInteger)projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
+        [weakSelf.dataSource removeObjectAtIndex:row];
+        [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];

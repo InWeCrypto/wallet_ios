@@ -13,7 +13,7 @@
 
 + (instancetype)share;
 
-@property (nonatomic, strong) UserModel * user;
+@property (nonatomic, strong) UserModel *user;
 
 /** 更新存储本地数据 */
 - (void)storageData:(UserModel *)user;

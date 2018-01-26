@@ -1,8 +1,8 @@
 //
-//  DBHProjectHomeViewController.h
+//  DBHProjectLookViewController.h
 //  FBG
 //
-//  Created by 邓毕华 on 2018/1/25.
+//  Created by 邓毕华 on 2018/1/26.
 //  Copyright © 2018年 ButtonRoot. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 @class DBHInformationModelData;
 
-@interface DBHProjectHomeViewController : DBHBaseViewController
+@interface DBHProjectLookViewController : DBHBaseViewController
 
 /**
  项目信息

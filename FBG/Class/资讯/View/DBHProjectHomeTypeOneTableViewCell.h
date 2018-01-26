@@ -1,16 +1,16 @@
 //
-//  DBHProjectHomeViewController.h
+//  DBHProjectHomeTypeOneTableViewCell.h
 //  FBG
 //
-//  Created by 邓毕华 on 2018/1/25.
+//  Created by 邓毕华 on 2018/1/26.
 //  Copyright © 2018年 ButtonRoot. All rights reserved.
 //
 
-#import "DBHBaseViewController.h"
+#import "DBHBaseTableViewCell.h"
 
 @class DBHInformationModelData;
 
-@interface DBHProjectHomeViewController : DBHBaseViewController
+@interface DBHProjectHomeTypeOneTableViewCell : DBHBaseTableViewCell
 
 /**
  项目信息

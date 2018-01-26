@@ -134,10 +134,6 @@
         EMError *error = [[EMClient sharedClient] loginWithUsername:[NSString stringWithFormat:@"%@", responseObject[@"id"]] password:weakSelf.passwordTextField.text];
         if (!error) {
             // 环信登录成功
-            if ([NSString isNulllWithObject:[UserSignData share].user.token]) {
-                [UserSignData share].user = [[UserModel alloc] init];
-            }
-            
             [UserSignData share].user.token = responseObject[@"token"];
             [UserSignData share].user.open_id = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
             [UserSignData share].user.email = responseObject[@"email"];
@@ -183,6 +179,7 @@
         return;
     }
     
+    [self.view endEditing:YES];
     [self login];
 }
 /**
