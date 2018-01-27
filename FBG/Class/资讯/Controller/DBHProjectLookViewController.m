@@ -8,11 +8,16 @@
 
 #import "DBHProjectLookViewController.h"
 
+#import "KKWebView.h"
+
+#import "DBHHistoricalInformationViewController.h"
+
 #import "DBHProjectLookForProjectInfomationTableViewCell.h"
 #import "DBHProjectLookForProjectCommunityTableViewCell.h"
 #import "DBHPersonalSettingForSwitchTableViewCell.h"
 
 #import "DBHInformationDataModels.h"
+#import "DBHProjectDetailInformationDataModels.h"
 
 static NSString *const kDBHProjectLookForProjectInfomationTableViewCellIdentifier = @"kDBHProjectLookForProjectInfomationTableViewCellIdentifier";
 static NSString *const kDBHProjectLookForProjectCommunityTableViewCellIdentifier = @"kDBHProjectLookForProjectCommunityTableViewCellIdentifier";
@@ -24,8 +29,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 @property (nonatomic, strong) UITableView *tableView;
 
-@property (nonatomic, copy) NSArray *titleArray;
-@property (nonatomic, strong) NSMutableArray *projectCommunityArray; // 项目社区
+@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
 
 @end
 
@@ -38,6 +42,11 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     self.title = self.projectModel.unit;
     
     [self setUI];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self getProjectDetailInfomation];
 }
 
 #pragma mark ------ UI ------
@@ -63,10 +72,10 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
             return 1;
             break;
         case 1:
-            return self.projectCommunityArray.count;
+            return self.projectDetailModel.categoryMedia.count;
             break;
         case 2:
-            return 2;
+            return self.projectModel.categoryUser.categoryId == 0 ? 1 : 2;
             break;
             
         default:
@@ -78,13 +87,18 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     switch (indexPath.section) {
         case 0: {
             DBHProjectLookForProjectInfomationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectLookForProjectInfomationTableViewCellIdentifier forIndexPath:indexPath];
+            cell.projectDetailModel = self.projectDetailModel;
             
             WEAKSELF
             [cell clickTypeButtonBlock:^(NSInteger type) {
                 if (!type) {
                     // 项目官网
+                    KKWebView * vc = [[KKWebView alloc] initWithUrl:weakSelf.projectDetailModel.website];
+                    [weakSelf.navigationController pushViewController:vc animated:YES];
                 } else {
                     // 历史资讯
+                    DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
+                    [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                 }
             }];
             
@@ -93,6 +107,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         }
         case 1: {
             DBHProjectLookForProjectCommunityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectLookForProjectCommunityTableViewCellIdentifier forIndexPath:indexPath];
+            cell.model = self.projectDetailModel.categoryMedia[indexPath.row];
             
             return cell;
             break;
@@ -123,10 +138,31 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     return section == 2 ? AUTOLAYOUTSIZE(37) : AUTOLAYOUTSIZE(0);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return !indexPath.section ? AUTOLAYOUTSIZE(324.5) : AUTOLAYOUTSIZE(50.5);
+    return !indexPath.section ? AUTOLAYOUTSIZE(324.5) + (self.projectDetailModel.categoryMedia.count ? 0 : - AUTOLAYOUTSIZE(37)) : AUTOLAYOUTSIZE(50.5);
 }
 
 #pragma mark ------ Data ------
+/**
+ 获取项目详细信息
+ */
+- (void)getProjectDetailInfomation {
+    WEAKSELF
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"category/%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.projectDetailModel) {
+            return ;
+        }
+        
+        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseCache];
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseObject];
+        
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
 /**
  项目收藏
  */
@@ -189,21 +225,6 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         [_tableView registerClass:[DBHPersonalSettingForSwitchTableViewCell class] forCellReuseIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier];
     }
     return _tableView;
-}
-
-- (NSArray *)titleArray {
-    if (!_titleArray) {
-        _titleArray = @[@"", @""];
-    }
-    return _titleArray;
-}
-- (NSMutableArray *)projectCommunityArray {
-    if (!_projectCommunityArray) {
-        _projectCommunityArray = [NSMutableArray array];
-        [_projectCommunityArray addObject:@""];
-        [_projectCommunityArray addObject:@""];
-    }
-    return _projectCommunityArray;
 }
 
 @end

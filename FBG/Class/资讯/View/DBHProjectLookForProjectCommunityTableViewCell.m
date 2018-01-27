@@ -8,6 +8,8 @@
 
 #import "DBHProjectLookForProjectCommunityTableViewCell.h"
 
+#import "DBHProjectDetailInformationModelCategoryMedia.h"
+
 @interface DBHProjectLookForProjectCommunityTableViewCell ()
 
 @property (nonatomic, strong) UIImageView *iconImageView;
@@ -50,15 +52,19 @@
         make.right.offset(- AUTOLAYOUTSIZE(15));
         make.centerY.equalTo(weakSelf.contentView);
     }];
-    
-    self.titleLabel.text = @"Telegram";
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setModel:(DBHProjectDetailInformationModelCategoryMedia *)model {
+    _model = model;
+    
+    [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@"xiangmuchakan_xiaofeiji"]];
+    self.titleLabel.text = _model.name;
+}
+
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
         _iconImageView = [[UIImageView alloc] init];
-        _iconImageView.backgroundColor = PICTURECOLOR;
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _iconImageView;

@@ -8,6 +8,13 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHProjectDetailInformationModelCategoryMedia;
+
 @interface DBHProjectLookForProjectCommunityTableViewCell : DBHBaseTableViewCell
+
+/**
+ 项目社区信息
+ */
+@property (nonatomic, strong) DBHProjectDetailInformationModelCategoryMedia *model;
 
 @end

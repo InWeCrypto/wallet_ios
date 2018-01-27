@@ -8,6 +8,13 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHProjectHomeNewsModelData;
+
 @interface DBHProjectHomeTypeTwoTableViewCell : DBHBaseTableViewCell
+
+/**
+ 项目资讯数据
+ */
+@property (nonatomic, strong) DBHProjectHomeNewsModelData *model;
 
 @end

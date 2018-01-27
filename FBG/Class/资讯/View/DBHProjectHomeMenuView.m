@@ -80,8 +80,8 @@ static NSString *const kDBHProjectHomeMenuTableViewCellIdentifier = @"kDBHProjec
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self respondsToQuitButton];
     self.selectedBlock(indexPath.row);
+    [self respondsToQuitButton];
 }
 
 #pragma mark ------ Event Responds ------
@@ -148,6 +148,7 @@ static NSString *const kDBHProjectHomeMenuTableViewCellIdentifier = @"kDBHProjec
     if (!_boxImageView) {
         _boxImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"xiangmugaikuang_xialakuang"]];
         _boxImageView.clipsToBounds = YES;
+        _boxImageView.userInteractionEnabled = YES;
     }
     return _boxImageView;
 }

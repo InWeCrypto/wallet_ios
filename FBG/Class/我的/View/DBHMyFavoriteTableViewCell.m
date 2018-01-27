@@ -8,6 +8,8 @@
 
 #import "DBHMyFavoriteTableViewCell.h"
 
+#import "DBHHistoricalInformationModelData.h"
+
 @interface DBHMyFavoriteTableViewCell ()
 
 @property (nonatomic, strong) UIImageView *pictureImageView;
@@ -58,12 +60,17 @@
         make.left.equalTo(weakSelf.timeLabel.mas_right).offset(AUTOLAYOUTSIZE(7));
         make.centerY.equalTo(weakSelf.timeLabel);
     }];
-    
-    self.titleLabel.text = @"新韩银行推出跨境比特币服务";
-    self.timeLabel.text = @"2017-11-11 11:11:11";
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setModel:(DBHHistoricalInformationModelData *)model {
+    _model = model;
+    
+    self.titleLabel.text = _model.title;
+    self.timeLabel.text = _model.updatedAt;
+    self.originalLabel.hidden = !_model.isSole;
+}
+
 - (UIImageView *)pictureImageView {
     if (!_pictureImageView) {
         _pictureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fenxiang_jietu"]];
@@ -95,7 +102,7 @@
         _originalLabel.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _originalLabel.layer.borderWidth = AUTOLAYOUTSIZE(0.5);
         _originalLabel.layer.borderColor = COLORFROM16(0xA1C7B5, 1).CGColor;
-        _originalLabel.text = NSLocalizedString(@"Originality", nil);
+        _originalLabel.text = DBHGetStringWithKeyFromTable(@"Originality", nil);
         _originalLabel.textColor = COLORFROM16(0xA1C7B5, 1);
         _originalLabel.textAlignment = NSTextAlignmentCenter;
     }

@@ -8,6 +8,13 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHHistoricalInformationModelData;
+
 @interface DBHMyFavoriteTableViewCell : DBHBaseTableViewCell
+
+/**
+ 资讯信息
+ */
+@property (nonatomic, strong) DBHHistoricalInformationModelData *model;
 
 @end

@@ -294,6 +294,33 @@
 		D56CEE84201B328A0081DE05 /* DBHProjectLookForProjectInfomationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE83201B328A0081DE05 /* DBHProjectLookForProjectInfomationTableViewCell.m */; };
 		D56CEE87201B32BE0081DE05 /* DBHProjectLookForProjectCommunityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE86201B32BE0081DE05 /* DBHProjectLookForProjectCommunityTableViewCell.m */; };
 		D56CEE8A201B478A0081DE05 /* DBHGradeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE89201B478A0081DE05 /* DBHGradeView.m */; };
+		D56CEE94201C1AE50081DE05 /* DBHProjectHomeNewsModelCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE8F201C1AE40081DE05 /* DBHProjectHomeNewsModelCategory.m */; };
+		D56CEE95201C1AE50081DE05 /* DBHProjectHomeNewsModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE91201C1AE50081DE05 /* DBHProjectHomeNewsModelData.m */; };
+		D56CEE96201C1AE50081DE05 /* DBHProjectHomeNewsModelArticleUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE92201C1AE50081DE05 /* DBHProjectHomeNewsModelArticleUser.m */; };
+		D56CEE97201C1AE50081DE05 /* DBHProjectHomeNewsModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE93201C1AE50081DE05 /* DBHProjectHomeNewsModelDataBase.m */; };
+		D56CEEAD201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryScore.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE98201C20ED0081DE05 /* DBHProjectDetailInformationModelCategoryScore.m */; };
+		D56CEEAE201C20F10081DE05 /* DBHProjectDetailInformationModelLastArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE9A201C20EE0081DE05 /* DBHProjectDetailInformationModelLastArticle.m */; };
+		D56CEEAF201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE9C201C20EE0081DE05 /* DBHProjectDetailInformationModelCategoryMedia.m */; };
+		D56CEEB0201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryExplorer.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE9E201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryExplorer.m */; };
+		D56CEEB1201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEE9F201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryStructure.m */; };
+		D56CEEB2201C20F10081DE05 /* DBHProjectDetailInformationModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEA0201C20EF0081DE05 /* DBHProjectDetailInformationModelDataBase.m */; };
+		D56CEEB3201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryDesc.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEA1201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryDesc.m */; };
+		D56CEEB4201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEA4201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryUser.m */; };
+		D56CEEB5201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryPresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEA7201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryPresentation.m */; };
+		D56CEEB6201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryWallet.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEA9201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryWallet.m */; };
+		D56CEEB9201C28C90081DE05 /* DBHHistoricalInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEB8201C28C90081DE05 /* DBHHistoricalInformationViewController.m */; };
+		D56CEEC2201C5CC60081DE05 /* DBHHistoricalInformationForTagModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEBD201C5CC40081DE05 /* DBHHistoricalInformationForTagModelData.m */; };
+		D56CEEC3201C5CC60081DE05 /* DBHHistoricalInformationForTagModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEC1201C5CC50081DE05 /* DBHHistoricalInformationForTagModelDataBase.m */; };
+		D56CEECD201C60B80081DE05 /* DBHHistoricalInformationModelArticleUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEC7201C60B70081DE05 /* DBHHistoricalInformationModelArticleUser.m */; };
+		D56CEECE201C60B80081DE05 /* DBHHistoricalInformationModelCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEC8201C60B70081DE05 /* DBHHistoricalInformationModelCategory.m */; };
+		D56CEECF201C60B80081DE05 /* DBHHistoricalInformationModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEC9201C60B70081DE05 /* DBHHistoricalInformationModelDataBase.m */; };
+		D56CEED0201C60B80081DE05 /* DBHHistoricalInformationModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEECA201C60B70081DE05 /* DBHHistoricalInformationModelData.m */; };
+		D56CEED3201C699D0081DE05 /* DBHProjectOverviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEED2201C699D0081DE05 /* DBHProjectOverviewViewController.m */; };
+		D56CEED6201C72580081DE05 /* DBHProjectOverviewForProjectInfomtaionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEED5201C72580081DE05 /* DBHProjectOverviewForProjectInfomtaionTableViewCell.m */; };
+		D56CEED9201C72860081DE05 /* DBHProjectOverviewForRelevantInformationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEED8201C72860081DE05 /* DBHProjectOverviewForRelevantInformationTableViewCell.m */; };
+		D56CEEDC201C830E0081DE05 /* DBHProjectDetailInformationModelIco.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEDB201C830E0081DE05 /* DBHProjectDetailInformationModelIco.m */; };
+		D56CEEDF201C9F210081DE05 /* DBHLanguageSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEDE201C9F210081DE05 /* DBHLanguageSetViewController.m */; };
+		D56CEEE2201CA4C10081DE05 /* DBHLanguageTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D56CEEE1201CA4C10081DE05 /* DBHLanguageTool.m */; };
 		D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */; };
 		D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F679E91FB9B4A900EB773D /* DBHNavigationController.m */; };
 /* End PBXBuildFile section */
@@ -861,6 +888,64 @@
 		D56CEE86201B32BE0081DE05 /* DBHProjectLookForProjectCommunityTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectLookForProjectCommunityTableViewCell.m; sourceTree = "<group>"; };
 		D56CEE88201B478A0081DE05 /* DBHGradeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHGradeView.h; sourceTree = "<group>"; };
 		D56CEE89201B478A0081DE05 /* DBHGradeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHGradeView.m; sourceTree = "<group>"; };
+		D56CEE8B201C1AE40081DE05 /* DBHProjectHomeNewsModelCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectHomeNewsModelCategory.h; sourceTree = "<group>"; };
+		D56CEE8C201C1AE40081DE05 /* DBHProjectHomeNewsModelArticleUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectHomeNewsModelArticleUser.h; sourceTree = "<group>"; };
+		D56CEE8D201C1AE40081DE05 /* DBHProjectHomeNewsModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectHomeNewsModelData.h; sourceTree = "<group>"; };
+		D56CEE8E201C1AE40081DE05 /* DBHProjectHomeNewsDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectHomeNewsDataModels.h; sourceTree = "<group>"; };
+		D56CEE8F201C1AE40081DE05 /* DBHProjectHomeNewsModelCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectHomeNewsModelCategory.m; sourceTree = "<group>"; };
+		D56CEE90201C1AE40081DE05 /* DBHProjectHomeNewsModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectHomeNewsModelDataBase.h; sourceTree = "<group>"; };
+		D56CEE91201C1AE50081DE05 /* DBHProjectHomeNewsModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectHomeNewsModelData.m; sourceTree = "<group>"; };
+		D56CEE92201C1AE50081DE05 /* DBHProjectHomeNewsModelArticleUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectHomeNewsModelArticleUser.m; sourceTree = "<group>"; };
+		D56CEE93201C1AE50081DE05 /* DBHProjectHomeNewsModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectHomeNewsModelDataBase.m; sourceTree = "<group>"; };
+		D56CEE98201C20ED0081DE05 /* DBHProjectDetailInformationModelCategoryScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelCategoryScore.m; sourceTree = "<group>"; };
+		D56CEE99201C20EE0081DE05 /* DBHProjectDetailInformationModelCategoryWallet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelCategoryWallet.h; sourceTree = "<group>"; };
+		D56CEE9A201C20EE0081DE05 /* DBHProjectDetailInformationModelLastArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelLastArticle.m; sourceTree = "<group>"; };
+		D56CEE9B201C20EE0081DE05 /* DBHProjectDetailInformationModelLastArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelLastArticle.h; sourceTree = "<group>"; };
+		D56CEE9C201C20EE0081DE05 /* DBHProjectDetailInformationModelCategoryMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelCategoryMedia.m; sourceTree = "<group>"; };
+		D56CEE9D201C20EE0081DE05 /* DBHProjectDetailInformationModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelDataBase.h; sourceTree = "<group>"; };
+		D56CEE9E201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryExplorer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelCategoryExplorer.m; sourceTree = "<group>"; };
+		D56CEE9F201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelCategoryStructure.m; sourceTree = "<group>"; };
+		D56CEEA0201C20EF0081DE05 /* DBHProjectDetailInformationModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelDataBase.m; sourceTree = "<group>"; };
+		D56CEEA1201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryDesc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelCategoryDesc.m; sourceTree = "<group>"; };
+		D56CEEA2201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryExplorer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelCategoryExplorer.h; sourceTree = "<group>"; };
+		D56CEEA3201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryDesc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelCategoryDesc.h; sourceTree = "<group>"; };
+		D56CEEA4201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelCategoryUser.m; sourceTree = "<group>"; };
+		D56CEEA5201C20EF0081DE05 /* DBHProjectDetailInformationDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationDataModels.h; sourceTree = "<group>"; };
+		D56CEEA6201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelCategoryMedia.h; sourceTree = "<group>"; };
+		D56CEEA7201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryPresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelCategoryPresentation.m; sourceTree = "<group>"; };
+		D56CEEA8201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelCategoryScore.h; sourceTree = "<group>"; };
+		D56CEEA9201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryWallet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelCategoryWallet.m; sourceTree = "<group>"; };
+		D56CEEAA201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelCategoryStructure.h; sourceTree = "<group>"; };
+		D56CEEAB201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryPresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelCategoryPresentation.h; sourceTree = "<group>"; };
+		D56CEEAC201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelCategoryUser.h; sourceTree = "<group>"; };
+		D56CEEB7201C28C90081DE05 /* DBHHistoricalInformationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationViewController.h; sourceTree = "<group>"; };
+		D56CEEB8201C28C90081DE05 /* DBHHistoricalInformationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHHistoricalInformationViewController.m; sourceTree = "<group>"; };
+		D56CEEBD201C5CC40081DE05 /* DBHHistoricalInformationForTagModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHHistoricalInformationForTagModelData.m; sourceTree = "<group>"; };
+		D56CEEBE201C5CC40081DE05 /* DBHHistoricalInformationForTagDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationForTagDataModels.h; sourceTree = "<group>"; };
+		D56CEEBF201C5CC50081DE05 /* DBHHistoricalInformationForTagModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationForTagModelDataBase.h; sourceTree = "<group>"; };
+		D56CEEC0201C5CC50081DE05 /* DBHHistoricalInformationForTagModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationForTagModelData.h; sourceTree = "<group>"; };
+		D56CEEC1201C5CC50081DE05 /* DBHHistoricalInformationForTagModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHHistoricalInformationForTagModelDataBase.m; sourceTree = "<group>"; };
+		D56CEEC4201C60B50081DE05 /* DBHHistoricalInformationModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationModelDataBase.h; sourceTree = "<group>"; };
+		D56CEEC5201C60B50081DE05 /* DBHHistoricalInformationModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationModelData.h; sourceTree = "<group>"; };
+		D56CEEC6201C60B60081DE05 /* DBHHistoricalInformationDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationDataModels.h; sourceTree = "<group>"; };
+		D56CEEC7201C60B70081DE05 /* DBHHistoricalInformationModelArticleUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHHistoricalInformationModelArticleUser.m; sourceTree = "<group>"; };
+		D56CEEC8201C60B70081DE05 /* DBHHistoricalInformationModelCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHHistoricalInformationModelCategory.m; sourceTree = "<group>"; };
+		D56CEEC9201C60B70081DE05 /* DBHHistoricalInformationModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHHistoricalInformationModelDataBase.m; sourceTree = "<group>"; };
+		D56CEECA201C60B70081DE05 /* DBHHistoricalInformationModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHHistoricalInformationModelData.m; sourceTree = "<group>"; };
+		D56CEECB201C60B70081DE05 /* DBHHistoricalInformationModelCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationModelCategory.h; sourceTree = "<group>"; };
+		D56CEECC201C60B80081DE05 /* DBHHistoricalInformationModelArticleUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHHistoricalInformationModelArticleUser.h; sourceTree = "<group>"; };
+		D56CEED1201C699D0081DE05 /* DBHProjectOverviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHProjectOverviewViewController.h; sourceTree = "<group>"; };
+		D56CEED2201C699D0081DE05 /* DBHProjectOverviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectOverviewViewController.m; sourceTree = "<group>"; };
+		D56CEED4201C72580081DE05 /* DBHProjectOverviewForProjectInfomtaionTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHProjectOverviewForProjectInfomtaionTableViewCell.h; sourceTree = "<group>"; };
+		D56CEED5201C72580081DE05 /* DBHProjectOverviewForProjectInfomtaionTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectOverviewForProjectInfomtaionTableViewCell.m; sourceTree = "<group>"; };
+		D56CEED7201C72860081DE05 /* DBHProjectOverviewForRelevantInformationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHProjectOverviewForRelevantInformationTableViewCell.h; sourceTree = "<group>"; };
+		D56CEED8201C72860081DE05 /* DBHProjectOverviewForRelevantInformationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectOverviewForRelevantInformationTableViewCell.m; sourceTree = "<group>"; };
+		D56CEEDA201C830E0081DE05 /* DBHProjectDetailInformationModelIco.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDetailInformationModelIco.h; sourceTree = "<group>"; };
+		D56CEEDB201C830E0081DE05 /* DBHProjectDetailInformationModelIco.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectDetailInformationModelIco.m; sourceTree = "<group>"; };
+		D56CEEDD201C9F210081DE05 /* DBHLanguageSetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHLanguageSetViewController.h; sourceTree = "<group>"; };
+		D56CEEDE201C9F210081DE05 /* DBHLanguageSetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHLanguageSetViewController.m; sourceTree = "<group>"; };
+		D56CEEE0201CA4C10081DE05 /* DBHLanguageTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHLanguageTool.h; sourceTree = "<group>"; };
+		D56CEEE1201CA4C10081DE05 /* DBHLanguageTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHLanguageTool.m; sourceTree = "<group>"; };
 		D5F679E51FB9A30400EB773D /* NSTimer+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Extension.h"; sourceTree = "<group>"; };
 		D5F679E61FB9A30400EB773D /* NSTimer+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Extension.m"; sourceTree = "<group>"; };
 		D5F679E81FB9B4A900EB773D /* DBHNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHNavigationController.h; sourceTree = "<group>"; };
@@ -1109,6 +1194,8 @@
 				A84475B01F331FA7003C7BDB /* LXFPhotoHelper.m */,
 				A81A5ADE1F3A115B0015CC0D /* KKWebView.h */,
 				A81A5ADF1F3A115B0015CC0D /* KKWebView.m */,
+				D56CEEE0201CA4C10081DE05 /* DBHLanguageTool.h */,
+				D56CEEE1201CA4C10081DE05 /* DBHLanguageTool.m */,
 			);
 			path = OtherTool;
 			sourceTree = "<group>";
@@ -1650,6 +1737,10 @@
 				D56CEE7D201B27650081DE05 /* DBHProjectHomeNoTradingViewController.m */,
 				D56CEE7F201B30950081DE05 /* DBHProjectLookViewController.h */,
 				D56CEE80201B30950081DE05 /* DBHProjectLookViewController.m */,
+				D56CEEB7201C28C90081DE05 /* DBHHistoricalInformationViewController.h */,
+				D56CEEB8201C28C90081DE05 /* DBHHistoricalInformationViewController.m */,
+				D56CEED1201C699D0081DE05 /* DBHProjectOverviewViewController.h */,
+				D56CEED2201C699D0081DE05 /* DBHProjectOverviewViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1657,6 +1748,52 @@
 		D51E66912011F4B90025B502 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D56CEEDA201C830E0081DE05 /* DBHProjectDetailInformationModelIco.h */,
+				D56CEEDB201C830E0081DE05 /* DBHProjectDetailInformationModelIco.m */,
+				D56CEEC6201C60B60081DE05 /* DBHHistoricalInformationDataModels.h */,
+				D56CEECC201C60B80081DE05 /* DBHHistoricalInformationModelArticleUser.h */,
+				D56CEEC7201C60B70081DE05 /* DBHHistoricalInformationModelArticleUser.m */,
+				D56CEECB201C60B70081DE05 /* DBHHistoricalInformationModelCategory.h */,
+				D56CEEC8201C60B70081DE05 /* DBHHistoricalInformationModelCategory.m */,
+				D56CEEC5201C60B50081DE05 /* DBHHistoricalInformationModelData.h */,
+				D56CEECA201C60B70081DE05 /* DBHHistoricalInformationModelData.m */,
+				D56CEEC4201C60B50081DE05 /* DBHHistoricalInformationModelDataBase.h */,
+				D56CEEC9201C60B70081DE05 /* DBHHistoricalInformationModelDataBase.m */,
+				D56CEEBE201C5CC40081DE05 /* DBHHistoricalInformationForTagDataModels.h */,
+				D56CEEC0201C5CC50081DE05 /* DBHHistoricalInformationForTagModelData.h */,
+				D56CEEBD201C5CC40081DE05 /* DBHHistoricalInformationForTagModelData.m */,
+				D56CEEBF201C5CC50081DE05 /* DBHHistoricalInformationForTagModelDataBase.h */,
+				D56CEEC1201C5CC50081DE05 /* DBHHistoricalInformationForTagModelDataBase.m */,
+				D56CEEA5201C20EF0081DE05 /* DBHProjectDetailInformationDataModels.h */,
+				D56CEEA3201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryDesc.h */,
+				D56CEEA1201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryDesc.m */,
+				D56CEEA2201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryExplorer.h */,
+				D56CEE9E201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryExplorer.m */,
+				D56CEEA6201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryMedia.h */,
+				D56CEE9C201C20EE0081DE05 /* DBHProjectDetailInformationModelCategoryMedia.m */,
+				D56CEEAB201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryPresentation.h */,
+				D56CEEA7201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryPresentation.m */,
+				D56CEEA8201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryScore.h */,
+				D56CEE98201C20ED0081DE05 /* DBHProjectDetailInformationModelCategoryScore.m */,
+				D56CEEAA201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryStructure.h */,
+				D56CEE9F201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryStructure.m */,
+				D56CEEAC201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryUser.h */,
+				D56CEEA4201C20EF0081DE05 /* DBHProjectDetailInformationModelCategoryUser.m */,
+				D56CEE99201C20EE0081DE05 /* DBHProjectDetailInformationModelCategoryWallet.h */,
+				D56CEEA9201C20F00081DE05 /* DBHProjectDetailInformationModelCategoryWallet.m */,
+				D56CEE9D201C20EE0081DE05 /* DBHProjectDetailInformationModelDataBase.h */,
+				D56CEEA0201C20EF0081DE05 /* DBHProjectDetailInformationModelDataBase.m */,
+				D56CEE9B201C20EE0081DE05 /* DBHProjectDetailInformationModelLastArticle.h */,
+				D56CEE9A201C20EE0081DE05 /* DBHProjectDetailInformationModelLastArticle.m */,
+				D56CEE8E201C1AE40081DE05 /* DBHProjectHomeNewsDataModels.h */,
+				D56CEE8C201C1AE40081DE05 /* DBHProjectHomeNewsModelArticleUser.h */,
+				D56CEE92201C1AE50081DE05 /* DBHProjectHomeNewsModelArticleUser.m */,
+				D56CEE8B201C1AE40081DE05 /* DBHProjectHomeNewsModelCategory.h */,
+				D56CEE8F201C1AE40081DE05 /* DBHProjectHomeNewsModelCategory.m */,
+				D56CEE8D201C1AE40081DE05 /* DBHProjectHomeNewsModelData.h */,
+				D56CEE91201C1AE50081DE05 /* DBHProjectHomeNewsModelData.m */,
+				D56CEE90201C1AE40081DE05 /* DBHProjectHomeNewsModelDataBase.h */,
+				D56CEE93201C1AE50081DE05 /* DBHProjectHomeNewsModelDataBase.m */,
 				D56CEE67201B0DBE0081DE05 /* DBHInformationDataModels.h */,
 				D56CEE6F201B0DBF0081DE05 /* DBHInformationModelCategoryUser.h */,
 				D56CEE6B201B0DBE0081DE05 /* DBHInformationModelCategoryUser.m */,
@@ -1705,6 +1842,10 @@
 				D56CEE86201B32BE0081DE05 /* DBHProjectLookForProjectCommunityTableViewCell.m */,
 				D56CEE88201B478A0081DE05 /* DBHGradeView.h */,
 				D56CEE89201B478A0081DE05 /* DBHGradeView.m */,
+				D56CEED4201C72580081DE05 /* DBHProjectOverviewForProjectInfomtaionTableViewCell.h */,
+				D56CEED5201C72580081DE05 /* DBHProjectOverviewForProjectInfomtaionTableViewCell.m */,
+				D56CEED7201C72860081DE05 /* DBHProjectOverviewForRelevantInformationTableViewCell.h */,
+				D56CEED8201C72860081DE05 /* DBHProjectOverviewForRelevantInformationTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1744,6 +1885,8 @@
 				D565E91520182F1400930274 /* DBHMonetaryUnitViewController.m */,
 				D565E91A201831F900930274 /* DBHNetworkSwitcherViewController.h */,
 				D565E91B201831F900930274 /* DBHNetworkSwitcherViewController.m */,
+				D56CEEDD201C9F210081DE05 /* DBHLanguageSetViewController.h */,
+				D56CEEDE201C9F210081DE05 /* DBHLanguageSetViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2133,6 +2276,7 @@
 				D55558011FC975C100F0963B /* CHSeries.swift in Sources */,
 				A81A5AF71F3AFD3C0015CC0D /* PDKeyChain.m in Sources */,
 				A80713561F5563CE00C5B862 /* MASViewAttribute.m in Sources */,
+				D56CEE94201C1AE50081DE05 /* DBHProjectHomeNewsModelCategory.m in Sources */,
 				A807135A1F5563CE00C5B862 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				D55558061FC975C100F0963B /* CHChartAlgorithm.swift in Sources */,
 				D565E8E02017124900930274 /* DBHSetNicknameViewController.m in Sources */,
@@ -2140,7 +2284,9 @@
 				D565E8D42016E13D00930274 /* DBHPersonalSettingViewController.m in Sources */,
 				D56CEE7B201B18950081DE05 /* DBHProjectHomeMenuTableViewCell.m in Sources */,
 				0F0CFE581F161F4C00476A86 /* ZFTabBarViewController.m in Sources */,
+				D56CEEAE201C20F10081DE05 /* DBHProjectDetailInformationModelLastArticle.m in Sources */,
 				D51E66722011F01B0025B502 /* DBHMenuView.m in Sources */,
+				D56CEEE2201CA4C10081DE05 /* DBHLanguageTool.m in Sources */,
 				A8CD77781F32453300005027 /* SetValueFormatter.m in Sources */,
 				0FAC290D1F2F7C4A009B3EC9 /* AABar.m in Sources */,
 				D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */,
@@ -2164,6 +2310,7 @@
 				A807132A1F5558B900C5B862 /* SectionModel.m in Sources */,
 				A80713591F5563CE00C5B862 /* NSDictionary+ValueNoNull.m in Sources */,
 				D565E8E62017162800930274 /* DBHChangePasswordViewController.m in Sources */,
+				D56CEEB5201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryPresentation.m in Sources */,
 				D51E665A2011F01B0025B502 /* DBHTransferListModelData.m in Sources */,
 				0FAC29171F2F7C4A009B3EC9 /* AAOptions3d.m in Sources */,
 				0FAC290A1F2F7C4A009B3EC9 /* AAAnimation.m in Sources */,
@@ -2173,6 +2320,7 @@
 				0FAC29131F2F7C4A009B3EC9 /* AALegend.m in Sources */,
 				D534FD8F1FFF540400FDA8BE /* DBHBaseTableViewCell.m in Sources */,
 				0FAC29221F2F7C4A009B3EC9 /* AAXAxis.m in Sources */,
+				D56CEEAD201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryScore.m in Sources */,
 				D51E66632011F01B0025B502 /* DBHWalletManagerTableViewCell.m in Sources */,
 				A8CD778B1F32457D00005027 /* TAAnimatedDotView.m in Sources */,
 				D56CEE56201A0C810081DE05 /* DBHProjectHomeViewController.m in Sources */,
@@ -2183,6 +2331,7 @@
 				D50254542019AF4E00B82A7B /* DBHSelectWalletViewController.m in Sources */,
 				0FDD5F3A1F2DD6E800228CE0 /* YCXMenuItem.m in Sources */,
 				0F0CFE3D1F15FC2A00476A86 /* UIButton+SDSetImage.m in Sources */,
+				D56CEED0201C60B80081DE05 /* DBHHistoricalInformationModelData.m in Sources */,
 				D502545A2019C40800B82A7B /* DBHInformationTopView.m in Sources */,
 				D565E8F82017212000930274 /* DBHAddOrEditAddressTableViewCell.m in Sources */,
 				D56CEE8A201B478A0081DE05 /* DBHGradeView.m in Sources */,
@@ -2202,6 +2351,7 @@
 				D534FDF82004AB1900FDA8BE /* UIViewController+BackButtonHandler.m in Sources */,
 				A8CD778C1F32457D00005027 /* TADotView.m in Sources */,
 				D51E66E12015E20C0025B502 /* DBHTransferListViewController.m in Sources */,
+				D56CEEC3201C5CC60081DE05 /* DBHHistoricalInformationForTagModelDataBase.m in Sources */,
 				A84475B11F331FA7003C7BDB /* LXFPhotoHelper.m in Sources */,
 				D565E90120172C3C00930274 /* DBHAddressBookHeaderView.m in Sources */,
 				A88A78931F6992E90058094C /* SGQRCodeHelperTool.m in Sources */,
@@ -2212,6 +2362,7 @@
 				D55558001FC975C100F0963B /* CHAxisModel.swift in Sources */,
 				D51E666E2011F01B0025B502 /* DBHWalletLookPromptViewTableViewCell.m in Sources */,
 				D51E66E82015E20C0025B502 /* DBHTransferDetailViewController.m in Sources */,
+				D56CEECD201C60B80081DE05 /* DBHHistoricalInformationModelArticleUser.m in Sources */,
 				D51E66A2201594710025B502 /* DBHSignUpViewController.m in Sources */,
 				0FAC291D1F2F7C4A009B3EC9 /* AASpline.m in Sources */,
 				D56CEE59201AC06F0081DE05 /* DBHProjectHomeTypeOneTableViewCell.m in Sources */,
@@ -2219,7 +2370,9 @@
 				D51E66E52015E20C0025B502 /* DBHTokenSaleViewController.m in Sources */,
 				D51E66DF2015E20C0025B502 /* DBHTokenSaleConfirmationViewController.m in Sources */,
 				D56CEE75201B0DBF0081DE05 /* DBHInformationModelLastArticle.m in Sources */,
+				D56CEEB1201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryStructure.m in Sources */,
 				A8DB29031F405CBA007A8A24 /* SystemConvert.m in Sources */,
+				D56CEEB9201C28C90081DE05 /* DBHHistoricalInformationViewController.m in Sources */,
 				0FAC29161F2F7C4A009B3EC9 /* AAOptions.m in Sources */,
 				A8CD778F1F32457D00005027 /* SDCycleScrollView.m in Sources */,
 				D55558041FC975C100F0963B /* CHChartModel.swift in Sources */,
@@ -2227,6 +2380,7 @@
 				D51E66572011F01B0025B502 /* DBHWalletManagerForNeoModelCategory.m in Sources */,
 				D565E8FB201728C200930274 /* DBHAddressBookMenuView.m in Sources */,
 				D51E66D42015E20C0025B502 /* AddWalletSucessVC.m in Sources */,
+				D56CEEB2201C20F10081DE05 /* DBHProjectDetailInformationModelDataBase.m in Sources */,
 				D55558031FC975C100F0963B /* CHSection.swift in Sources */,
 				D51E66852011F18F0025B502 /* WalletLeftListModel.m in Sources */,
 				D56CEE65201AD6300081DE05 /* DBHInputMenuButton.m in Sources */,
@@ -2235,13 +2389,16 @@
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
 				A83303751F346F24000C08B4 /* UIScrollView+EmptyDataSet.m in Sources */,
 				A8CD77791F32453300005027 /* SymbolsValueFormatter.m in Sources */,
+				D56CEECF201C60B80081DE05 /* DBHHistoricalInformationModelDataBase.m in Sources */,
 				A88A787B1F694BB30058094C /* JKBigDecimal.m in Sources */,
+				D56CEEB0201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryExplorer.m in Sources */,
 				A8AAFBCC1F3EF6B000724FF6 /* PayPriceView.m in Sources */,
 				D51E66642011F01B0025B502 /* DBHMenuViewTableViewCell.m in Sources */,
 				0F0CFE5A1F161F4C00476A86 /* ZFTabBar.m in Sources */,
 				D51E665D2011F01B0025B502 /* DBHTransferListModelDataBase.m in Sources */,
 				A8CD77901F32457D00005027 /* UIView+SDExtension.m in Sources */,
 				D534FD881FFF4DE100FDA8BE /* DBHBaseNavigationController.m in Sources */,
+				D56CEED3201C699D0081DE05 /* DBHProjectOverviewViewController.m in Sources */,
 				A81A5AD81F3A07890015CC0D /* TowButtonAlertView.m in Sources */,
 				A807135E1F5563CE00C5B862 /* ViewController+MASAdditions.m in Sources */,
 				D565E92F2018B49800930274 /* DBHInformationTableViewCell.m in Sources */,
@@ -2252,6 +2409,8 @@
 				D51E66712011F01B0025B502 /* DBHSelectWalletTypeOnePromptView.m in Sources */,
 				0FDD5F271F2D671600228CE0 /* PassWordView.m in Sources */,
 				0FAC29231F2F7C4A009B3EC9 /* AAYAxis.m in Sources */,
+				D56CEEDC201C830E0081DE05 /* DBHProjectDetailInformationModelIco.m in Sources */,
+				D56CEE97201C1AE50081DE05 /* DBHProjectHomeNewsModelDataBase.m in Sources */,
 				0F0CFDEA1F15E54100476A86 /* AppDelegate.m in Sources */,
 				D565E9262018750500930274 /* DBHProjectModelCategoryUser.m in Sources */,
 				D565E8CE2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.m in Sources */,
@@ -2262,6 +2421,9 @@
 				A8B804631F4D16F600633C34 /* ChoseNetView.m in Sources */,
 				0FFEA9D31F170361009F6151 /* CDNavigationController.m in Sources */,
 				D565E8DA2016E40500930274 /* DBHPersonalSettingForTitleTableViewCell.m in Sources */,
+				D56CEECE201C60B80081DE05 /* DBHHistoricalInformationModelCategory.m in Sources */,
+				D56CEED9201C72860081DE05 /* DBHProjectOverviewForRelevantInformationTableViewCell.m in Sources */,
+				D56CEEB4201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryUser.m in Sources */,
 				D56CEE74201B0DBF0081DE05 /* DBHInformationModelData.m in Sources */,
 				0FAC291F1F2F7C4A009B3EC9 /* AASubtitle.m in Sources */,
 				D565E8EF2017202A00930274 /* DBHAddressBookViewController.m in Sources */,
@@ -2289,10 +2451,13 @@
 				A8D982BE1F4206BB0080DFF8 /* LookWalletCodeView.m in Sources */,
 				0F0CFE431F15FD0800476A86 /* PPNetworkCache.m in Sources */,
 				D51E66D62015E20C0025B502 /* DBHWalletManagerViewController.m in Sources */,
+				D56CEEAF201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryMedia.m in Sources */,
+				D56CEEB3201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryDesc.m in Sources */,
 				D51E669F201200B40025B502 /* DBHLoginViewController.m in Sources */,
 				D565E907201738C100930274 /* DBHMyFavoriteTableViewCell.m in Sources */,
 				D56CEE7E201B27650081DE05 /* DBHProjectHomeNoTradingViewController.m in Sources */,
 				A8CD778E1F32457D00005027 /* SDCollectionViewCell.m in Sources */,
+				D56CEED6201C72580081DE05 /* DBHProjectOverviewForProjectInfomtaionTableViewCell.m in Sources */,
 				A80713551F5563CE00C5B862 /* MASLayoutConstraint.m in Sources */,
 				D56CEE5F201AC95B0081DE05 /* DBHProjectHomeHeaderView.m in Sources */,
 				D51E66682011F01B0025B502 /* DBHWalletDetailHeaderView.m in Sources */,
@@ -2303,10 +2468,13 @@
 				D51E66542011F01B0025B502 /* DBHWalletManagerForNeoModelData.m in Sources */,
 				D5099F631FD4F3880065F0AA /* MXNavigationBarManager.m in Sources */,
 				D51E665F2011F01B0025B502 /* DBHWalletDetailTokenInfomationModelDataBase.m in Sources */,
+				D56CEEDF201C9F210081DE05 /* DBHLanguageSetViewController.m in Sources */,
 				D565E8E9201716CB00930274 /* DBHChangePasswordTableViewCell.m in Sources */,
 				D51E666A2011F01B0025B502 /* DBHExtractGasTableViewCell.m in Sources */,
 				D51E66E62015E20C0025B502 /* PackupsWordsVC.m in Sources */,
+				D56CEE96201C1AE50081DE05 /* DBHProjectHomeNewsModelArticleUser.m in Sources */,
 				0F0CFE441F15FD0800476A86 /* PPNetworkHelper.m in Sources */,
+				D56CEEC2201C5CC60081DE05 /* DBHHistoricalInformationForTagModelData.m in Sources */,
 				D51E66602011F01B0025B502 /* DBHAddWalletPromptView.m in Sources */,
 				0FDCAC921F20CF460090D12A /* ObjcRuntime.m in Sources */,
 				D565E9042017383600930274 /* DBHMyFavoriteViewController.m in Sources */,
@@ -2319,6 +2487,7 @@
 				A8CD778A1F32457D00005027 /* TAAbstractDotView.m in Sources */,
 				A80713541F5563CE00C5B862 /* MASConstraintMaker.m in Sources */,
 				D55558021FC975C100F0963B /* CHKLineChart.swift in Sources */,
+				D56CEE95201C1AE50081DE05 /* DBHProjectHomeNewsModelData.m in Sources */,
 				0F0CFE4D1F1609E300476A86 /* CoustromViewController.m in Sources */,
 				0F0CFE331F15FB3F00476A86 /* NSString+Tool.m in Sources */,
 				0F0CFE301F15FB3F00476A86 /* NSDictionary+Tool.m in Sources */,
@@ -2338,6 +2507,7 @@
 				0FAC28FF1F2F7C4A009B3EC9 /* AAChartModel.m in Sources */,
 				D51E665E2011F01B0025B502 /* DBHAddPropertyModelData.m in Sources */,
 				D51E66E92015E20C0025B502 /* DBHAddPropertyViewController.m in Sources */,
+				D56CEEB6201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryWallet.m in Sources */,
 				D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */,
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,
 				0FAC291B1F2F7C4A009B3EC9 /* AASeries.m in Sources */,

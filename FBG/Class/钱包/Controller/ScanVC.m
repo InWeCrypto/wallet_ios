@@ -34,7 +34,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Scan", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Scan", nil);
     self.view.backgroundColor = [UIColor blackColor];
 
     //明暗对比

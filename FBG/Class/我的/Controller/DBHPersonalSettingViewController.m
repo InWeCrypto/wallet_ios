@@ -37,7 +37,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Personal Setting", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Personal Setting", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];
@@ -74,7 +74,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         return cell;
     } else if (!indexPath.section || (indexPath.section && !indexPath.row)) {
         DBHPersonalSettingForTitleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHPersonalSettingForTitleTableViewCellIdentifier forIndexPath:indexPath];
-        cell.title = NSLocalizedString(self.titleArray[indexPath.section][indexPath.row], nil);
+        cell.title = DBHGetStringWithKeyFromTable(self.titleArray[indexPath.section][indexPath.row], nil);
         if (!indexPath.section) {
             cell.value = indexPath.row == 1 ? [UserSignData share].user.nickname : [UserSignData share].user.email;
         }

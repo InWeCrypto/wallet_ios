@@ -24,7 +24,7 @@ static NSString *const kDBHSetNicknameTableViewCellIdentifier = @"kDBHSetNicknam
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Set a Nickname", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Set a Nickname", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];

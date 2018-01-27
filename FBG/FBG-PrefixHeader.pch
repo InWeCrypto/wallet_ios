@@ -95,6 +95,11 @@
 #import "NSString+Null.h"
 
 /**
+ *  语言工具类
+ */
+#import "DBHLanguageTool.h"
+
+/**
  *  根据传入的字符串计算出所占高度
  */
 #import "NSString+Height.h"

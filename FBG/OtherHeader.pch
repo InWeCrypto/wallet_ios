@@ -10,6 +10,21 @@
 #define OtherHeader_pch
 
 /**
+ *  简体中文
+ */
+#define CNS @"zh-Hans"
+
+/**
+ *  英文
+ */
+#define EN @"en"
+
+/**
+ *  语言
+ */
+#define LANGUAGE [[NSUserDefaults standardUserDefaults] objectForKey:@"language"]
+
+/**
  *  屏幕宽度
  */
 #define  SCREENWIDTH [UIScreen mainScreen].bounds.size.width

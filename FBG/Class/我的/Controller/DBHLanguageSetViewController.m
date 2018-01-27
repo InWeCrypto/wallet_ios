@@ -1,44 +1,43 @@
-
 //
-//  DBHSettingUpViewController.m
+//  DBHLanguageSetViewController.m
 //  FBG
 //
-//  Created by 邓毕华 on 2018/1/24.
+//  Created by 邓毕华 on 2018/1/27.
 //  Copyright © 2018年 ButtonRoot. All rights reserved.
 //
 
-#import "DBHSettingUpViewController.h"
-
-#import "DBHMonetaryUnitViewController.h"
-#import "DBHNetworkSwitcherViewController.h"
 #import "DBHLanguageSetViewController.h"
 
-#import "DBHSettingUpTableViewCell.h"
+#import "DBHMonetaryUnitTableViewCell.h"
 
-static NSString *const kDBHSettingUpTableViewCellIdentifier = @"kDBHSettingUpTableViewCellIdentifier";
+static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryUnitTableViewCellIdentifier";
 
-@interface DBHSettingUpViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface DBHLanguageSetViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
+@property (nonatomic, assign) NSInteger currentSelectedRow;
 @property (nonatomic, copy) NSArray *titleArray;
 
 @end
 
-@implementation DBHSettingUpViewController
+@implementation DBHLanguageSetViewController
 
 #pragma mark ------ Lifecycle ------
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Setting Up", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Language Settings", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+    self.currentSelectedRow = [LANGUAGE isEqualToString:EN] ? 1 : 0;
     
     [self setUI];
 }
 
 #pragma mark ------ UI ------
 - (void)setUI {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Confirm", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToSureBarButtonItem)];
+    
     [self.view addSubview:self.tableView];
     
     WEAKSELF
@@ -53,40 +52,29 @@ static NSString *const kDBHSettingUpTableViewCellIdentifier = @"kDBHSettingUpTab
     return self.titleArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHSettingUpTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHSettingUpTableViewCellIdentifier forIndexPath:indexPath];
+    DBHMonetaryUnitTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMonetaryUnitTableViewCellIdentifier forIndexPath:indexPath];
     cell.title = self.titleArray[indexPath.row];
+    cell.isSelected = self.currentSelectedRow == indexPath.row;
     
     return cell;
 }
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.row) {
-        case 0: {
-            // 货币单位
-            DBHMonetaryUnitViewController *monetaryUnitViewController = [[DBHMonetaryUnitViewController alloc] init];
-            [self.navigationController pushViewController:monetaryUnitViewController animated:YES];
-            break;
-        }
-        case 1: {
-            // 网络切换
-            DBHNetworkSwitcherViewController *networkSwitcherViewController = [[DBHNetworkSwitcherViewController alloc] init];
-            [self.navigationController pushViewController:networkSwitcherViewController animated:YES];
-            break;
-        }
-        case 2: {
-            // 语言设置
-            DBHLanguageSetViewController *languageSetViewController = [[DBHLanguageSetViewController alloc] init];
-            [self.navigationController pushViewController:languageSetViewController animated:YES];
-            break;
-        }
-            
-        default:
-            break;
-    }
+    self.currentSelectedRow = indexPath.row;
+    [self.tableView reloadData];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return AUTOLAYOUTSIZE(11.5);
+}
+
+#pragma mark ------ Event Responds ------
+/**
+ 确定
+ */
+- (void)respondsToSureBarButtonItem {
+    [[DBHLanguageTool sharedInstance] setNewLanguage:self.currentSelectedRow ? EN : CNS];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -103,14 +91,14 @@ static NSString *const kDBHSettingUpTableViewCellIdentifier = @"kDBHSettingUpTab
         _tableView.dataSource = self;
         _tableView.delegate = self;
         
-        [_tableView registerClass:[DBHSettingUpTableViewCell class] forCellReuseIdentifier:kDBHSettingUpTableViewCellIdentifier];
+        [_tableView registerClass:[DBHMonetaryUnitTableViewCell class] forCellReuseIdentifier:kDBHMonetaryUnitTableViewCellIdentifier];
     }
     return _tableView;
 }
 
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@"Monetary Unit", @"Network Switcher", @"Language Settings"];
+        _titleArray = @[@"简体中文", @"English(U.S.)"];
     }
     return _titleArray;
 }

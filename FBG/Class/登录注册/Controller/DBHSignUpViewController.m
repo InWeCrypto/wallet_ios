@@ -298,7 +298,7 @@
     if (!_signUpLabel) {
         _signUpLabel = [[UILabel alloc] init];
         _signUpLabel.font = BOLDFONT(25);
-        _signUpLabel.text = NSLocalizedString(@"Sign Up", nil);
+        _signUpLabel.text = DBHGetStringWithKeyFromTable(@"Sign Up", nil);
         _signUpLabel.textColor = COLORFROM16(0xFF841C, 1);
     }
     return _signUpLabel;
@@ -308,7 +308,7 @@
         _accountTextField = [[UITextField alloc] init];
         _accountTextField.font = FONT(14);
         _accountTextField.textColor = COLORFROM16(0x333333, 1);
-        _accountTextField.placeholder = NSLocalizedString(@"Email", nil);
+        _accountTextField.placeholder = DBHGetStringWithKeyFromTable(@"Email", nil);
     }
     return _accountTextField;
 }
@@ -324,7 +324,7 @@
         _verificationCodeTextField = [[UITextField alloc] init];
         _verificationCodeTextField.font = FONT(14);
         _verificationCodeTextField.textColor = COLORFROM16(0x333333, 1);
-        _verificationCodeTextField.placeholder = NSLocalizedString(@"Please input a verification code", nil);
+        _verificationCodeTextField.placeholder = DBHGetStringWithKeyFromTable(@"Please input a verification code", nil);
     }
     return _verificationCodeTextField;
 }
@@ -358,7 +358,7 @@
         _passwordTextField.font = FONT(14);
         _passwordTextField.textColor = COLORFROM16(0x333333, 1);
         _passwordTextField.secureTextEntry = YES;
-        _passwordTextField.placeholder = NSLocalizedString(@"Password", nil);
+        _passwordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Password", nil);
     }
     return _passwordTextField;
 }
@@ -384,7 +384,7 @@
         _surePasswordTextField.font = FONT(14);
         _surePasswordTextField.textColor = COLORFROM16(0x333333, 1);
         _surePasswordTextField.secureTextEntry = YES;
-        _surePasswordTextField.placeholder = NSLocalizedString(@"Confirm input a password", nil);
+        _surePasswordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Confirm input a password", nil);
     }
     return _surePasswordTextField;
 }

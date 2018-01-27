@@ -255,6 +255,25 @@
 "Project Skype" = "项目官网";
 "The project's website" = "实时资讯推送";
 "Project Stick" = "项目置顶";
+"Has Score" = "已评分";
+"Not Score" = "未评分";
+"Explore" = "浏览器";
+"Token Holder" = "令牌持有人";
+"Volume" = "量";
+"Part" = "分";
+"Hot Attention" = "关注热度";
+"User Grade" = "用户评分";
+
+/*
+ 历史资讯
+ */
+"All" = "全部";
+"Technology Tracking" = "技术追踪";
+"Road Map And Completion" = "路线图及完成情况";
+"Team And Consultant" = "团队及顾问";
+"Cooperation And Investors" = "合作及投资人";
+"Media Commentary" = "媒体评论";
+"Community Dynamic" = "社区动态";
 
 /*
  个人设置
@@ -291,5 +310,8 @@
 "CNY" = "人民币";
 "USD" = "美元";
 "Network Switcher" = "网络切换";
+"Language Settings" = "语言设置";
 "Formal Network" = "正式网络";
 "Test Network" = "测试网络";
+"简体中文" = "简体中文";
+"English(U.S.)" = "英文";

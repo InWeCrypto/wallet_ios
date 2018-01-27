@@ -10,6 +10,8 @@
 
 #import "DBHGradeView.h"
 
+#import "DBHProjectDetailInformationDataModels.h"
+
 @interface DBHProjectLookForProjectInfomationTableViewCell ()
 
 @property (nonatomic, strong) UIView *boxView;
@@ -36,6 +38,7 @@
 @property (nonatomic, strong) UILabel *communityProjectLabel;
 
 @property (nonatomic, copy) ClickTypeButtonBlock clickTypeButtonBlock;
+@property (nonatomic, copy) NSArray *menuArray; // 项目状态
 
 @end
 
@@ -46,6 +49,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.clipsToBounds = YES;
+        
         [self setUI];
     }
     return self;
@@ -177,21 +182,14 @@
     }];
     [self.communityProjectBackView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.contentView);
+        make.height.offset(AUTOLAYOUTSIZE(37));
         make.centerX.equalTo(weakSelf.contentView);
         make.top.equalTo(weakSelf.historicalInformationLabel.mas_bottom);
-        make.bottom.equalTo(weakSelf.contentView);
     }];
     [self.communityProjectLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.iconBackView);
         make.centerY.equalTo(weakSelf.communityProjectBackView);
     }];
-    
-    self.nameLabel.text = @"NEO（NEO）";
-    self.contentLabel.text = @"Blockchain";
-    self.gradeView.grade = 4;
-    self.gradeLabel.text = @"4.5分（已评分）";
-    self.stateValueLabel.text = @"Trading";
-    self.projectSkypeValueLabel.text = @"neo.io";
 }
 
 #pragma mark ------ Event Responds ------
@@ -214,6 +212,18 @@
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setProjectDetailModel:(DBHProjectDetailInformationModelDataBase *)projectDetailModel {
+    _projectDetailModel = projectDetailModel;
+    
+    [self.iconImageView sdsetImageWithURL:_projectDetailModel.img placeholderImage:nil];
+    self.nameLabel.text = [NSString stringWithFormat:@"%@（%@）", _projectDetailModel.unit, _projectDetailModel.name];
+    self.contentLabel.text = _projectDetailModel.industry;
+    self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
+    self.gradeLabel.text = [NSString stringWithFormat:@"%.2lf分（%@）", _projectDetailModel.categoryScore.value, NSLocalizedString(_projectDetailModel.categoryUser.score.floatValue ? @"Has Score" : @"Not Score", nil)];
+    self.stateValueLabel.text = self.menuArray[(NSInteger)_projectDetailModel.type];
+    self.projectSkypeValueLabel.text = _projectDetailModel.website;
+}
+
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
@@ -256,7 +266,7 @@
     if (!_projectGradeLabel) {
         _projectGradeLabel = [[UILabel alloc] init];
         _projectGradeLabel.font = FONT(13);
-        _projectGradeLabel.text = NSLocalizedString(@"Project Grade", nil);
+        _projectGradeLabel.text = DBHGetStringWithKeyFromTable(@"Project Grade", nil);
         _projectGradeLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _projectGradeLabel;
@@ -286,7 +296,7 @@
     if (!_stateLabel) {
         _stateLabel = [[UILabel alloc] init];
         _stateLabel.font = FONT(13);
-        _stateLabel.text = NSLocalizedString(@"State", nil);
+        _stateLabel.text = DBHGetStringWithKeyFromTable(@"State", nil);
         _stateLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _stateLabel;
@@ -310,7 +320,7 @@
     if (!_projectSkypeLabel) {
         _projectSkypeLabel = [[UILabel alloc] init];
         _projectSkypeLabel.font = FONT(13);
-        _projectSkypeLabel.text = NSLocalizedString(@"Project Skype", nil);
+        _projectSkypeLabel.text = DBHGetStringWithKeyFromTable(@"Project Skype", nil);
         _projectSkypeLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _projectSkypeLabel;
@@ -347,7 +357,7 @@
     if (!_historicalInformationLabel) {
         _historicalInformationLabel = [[UILabel alloc] init];
         _historicalInformationLabel.font = FONT(13);
-        _historicalInformationLabel.text = NSLocalizedString(@"Historical Information", nil);
+        _historicalInformationLabel.text = DBHGetStringWithKeyFromTable(@"Historical Information", nil);
         _historicalInformationLabel.textColor = COLORFROM16(0x34A21F, 1);
     }
     return _historicalInformationLabel;
@@ -376,10 +386,17 @@
     if (!_communityProjectLabel) {
         _communityProjectLabel = [[UILabel alloc] init];
         _communityProjectLabel.font = FONT(13);
-        _communityProjectLabel.text = NSLocalizedString(@"Project Community", nil);
+        _communityProjectLabel.text = DBHGetStringWithKeyFromTable(@"Project Community", nil);
         _communityProjectLabel.textColor = COLORFROM16(0x838383, 1);
     }
     return _communityProjectLabel;
+}
+
+- (NSArray *)menuArray {
+    if (!_menuArray) {
+        _menuArray = @[@"Trading", @"Active", @"Upcoming", @"Ended"];
+    }
+    return _menuArray;
 }
 
 @end

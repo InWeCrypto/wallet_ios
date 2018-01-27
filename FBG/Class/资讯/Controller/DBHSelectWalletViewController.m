@@ -29,7 +29,7 @@ static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWal
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Wallet Manager", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Wallet Manager", nil);
     
     [self setUI];
     

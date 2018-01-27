@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Add Wallet", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Add Wallet", nil);
     
 //    if ([self.model.category_name isEqualToString:@"ETH"])
 //    {
@@ -38,8 +38,8 @@
 //        //BTC
 //        self.headImage.image = [UIImage imageNamed:@"BTC_pic_sucess"];
 //    }
-    self.sucessLB.text = NSLocalizedString(@"Add Success", nil);
-    self.infoLB.text = NSLocalizedString(@"Please enter the wallet in time and backup the seed to ensure the safety of the wallet. Once the seed is backed up, it will disappear on the APP. It should be kept in mind, otherwise the wallet can not be retrieved", nil);
+    self.sucessLB.text = DBHGetStringWithKeyFromTable(@"Add Success", nil);
+    self.infoLB.text = DBHGetStringWithKeyFromTable(@"Please enter the wallet in time and backup the seed to ensure the safety of the wallet. Once the seed is backed up, it will disappear on the APP. It should be kept in mind, otherwise the wallet can not be retrieved", nil);
     [self.sureButton setTitle:NSLocalizedString(@"Enter The Wallet And Start Backup", nil) forState:UIControlStateNormal];
 }
 

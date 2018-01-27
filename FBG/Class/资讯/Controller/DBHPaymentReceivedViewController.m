@@ -37,7 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Payment Received", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Payment Received", nil);
     
     [self setUI];
 }

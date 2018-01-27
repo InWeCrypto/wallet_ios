@@ -8,6 +8,8 @@
 
 #import "DBHProjectHomeTypeTwoTableViewCell.h"
 
+#import "DBHProjectHomeNewsModelData.h"
+
 @interface DBHProjectHomeTypeTwoTableViewCell ()
 
 @property (nonatomic, strong) UIView *boxView;
@@ -54,12 +56,16 @@
         make.top.equalTo(weakSelf.coverImageView.mas_bottom);
         make.bottom.equalTo(weakSelf.boxView);
     }];
-    
-    [self.coverImageView sdsetImageWithURL:@"" placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
-    self.titleLabel.text = @"对菩提创始人林吓洪的专访";
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setModel:(DBHProjectHomeNewsModelData *)model {
+    _model = model;
+    
+    [self.coverImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
+    self.titleLabel.text = _model.title;
+}
+
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIImageView alloc] init];

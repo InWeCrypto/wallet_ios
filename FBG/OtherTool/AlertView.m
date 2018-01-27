@@ -30,7 +30,7 @@
         [self.maskView addGestureRecognizer:singleRecognizer];
         self.alertContView.layer.cornerRadius = 5;
         self.alertContView.layer.masksToBounds = YES;
-        self.titleLB.text = NSLocalizedString(@"Complete", nil);
+        self.titleLB.text = DBHGetStringWithKeyFromTable(@"Complete", nil);
     }
     return self;
 }

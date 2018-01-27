@@ -8,9 +8,16 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHProjectDetailInformationModelDataBase;
+
 typedef void(^ClickTypeButtonBlock)(NSInteger type);
 
 @interface DBHProjectLookForProjectInfomationTableViewCell : DBHBaseTableViewCell
+
+/**
+ 项目详情信息
+ */
+@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
 
 - (void)clickTypeButtonBlock:(ClickTypeButtonBlock)clickTypeButtonBlock;
 

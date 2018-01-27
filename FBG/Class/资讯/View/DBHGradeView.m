@@ -47,7 +47,7 @@
     
     for (NSInteger i = 0; i < 5; i++) {
         UIImageView *starImageView = [self viewWithTag:200 + i];
-        starImageView.image = [UIImage imageNamed:_grade - 1 <= i ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"];
+        starImageView.image = [UIImage imageNamed:i <= _grade - 1 ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"];
     }
 }
 

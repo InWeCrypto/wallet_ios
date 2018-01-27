@@ -55,7 +55,7 @@
 - (void)setTitle:(NSString *)title {
     _title = title;
     
-    self.titleLabel.text = NSLocalizedString(_title, nil);;
+    self.titleLabel.text = DBHGetStringWithKeyFromTable(_title, nil);;
 }
 - (void)setValue:(NSString *)value {
     _value = value;

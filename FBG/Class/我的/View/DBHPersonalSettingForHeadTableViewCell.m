@@ -56,7 +56,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = FONT(14);
-        _titleLabel.text = NSLocalizedString(@"Head Portrait", nil);
+        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Head Portrait", nil);
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _titleLabel;

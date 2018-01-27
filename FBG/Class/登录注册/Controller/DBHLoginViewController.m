@@ -201,7 +201,7 @@
     if (!_helloLabel) {
         _helloLabel = [[UILabel alloc] init];
         _helloLabel.font = BOLDFONT(25);
-        _helloLabel.text = NSLocalizedString(@"Hello,", nil);
+        _helloLabel.text = DBHGetStringWithKeyFromTable(@"Hello,", nil);
         _helloLabel.textColor = COLORFROM16(0xFF841C, 1);
     }
     return _helloLabel;
@@ -210,7 +210,7 @@
     if (!_welcomeLabel) {
         _welcomeLabel = [[UILabel alloc] init];
         _welcomeLabel.font = BOLDFONT(25);
-        _welcomeLabel.text = NSLocalizedString(@"Welcome Back!", nil);
+        _welcomeLabel.text = DBHGetStringWithKeyFromTable(@"Welcome Back!", nil);
         _welcomeLabel.textColor = COLORFROM16(0xFF841C, 1);
     }
     return _welcomeLabel;
@@ -220,7 +220,7 @@
         _accountTextField = [[UITextField alloc] init];
         _accountTextField.font = FONT(14);
         _accountTextField.textColor = COLORFROM16(0x333333, 1);
-        _accountTextField.placeholder = NSLocalizedString(@"Email", nil);
+        _accountTextField.placeholder = DBHGetStringWithKeyFromTable(@"Email", nil);
     }
     return _accountTextField;
 }
@@ -237,7 +237,7 @@
         _passwordTextField.font = FONT(14);
         _passwordTextField.textColor = COLORFROM16(0x333333, 1);
         _passwordTextField.secureTextEntry = YES;
-        _passwordTextField.placeholder = NSLocalizedString(@"Password", nil);
+        _passwordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Password", nil);
     }
     return _passwordTextField;
 }

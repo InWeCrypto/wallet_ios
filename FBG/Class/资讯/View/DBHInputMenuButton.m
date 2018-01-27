@@ -40,7 +40,7 @@
 - (void)setValue:(NSString *)value {
     _value = value;
     
-    self.valueLabel.text = NSLocalizedString(_value, nil);
+    self.valueLabel.text = DBHGetStringWithKeyFromTable(_value, nil);
 }
 - (void)setIsMore:(BOOL)isMore {
     _isMore = isMore;

@@ -27,7 +27,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Network Switcher", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Network Switcher", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     self.currentSelectedRow = [APP_APIEHEAD isEqualToString:APIEHEAD1] ? 0 : 1;
     

@@ -30,7 +30,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"My Favorite", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"My Favorite", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];
