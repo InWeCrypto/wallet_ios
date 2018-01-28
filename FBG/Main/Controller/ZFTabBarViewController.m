@@ -89,17 +89,17 @@
     // 1.资讯
     DBHInformationViewController *informationViewController = [[DBHInformationViewController alloc] init];
     informationViewController.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:informationViewController title:NSLocalizedString(@"Information", nil) imageName:@"zixun_ico_s" selectedImageName:@"zixun_ico"];
+    [self setupChildViewController:informationViewController title:DBHGetStringWithKeyFromTable(@"Information", nil) imageName:@"zixun_ico_s" selectedImageName:@"zixun_ico"];
     
     // 2.钱包
     DBHHomePageViewController *homePageViewController = [[DBHHomePageViewController alloc] init];
     homePageViewController.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:homePageViewController title:NSLocalizedString(@"Wallet", nil) imageName:@"qianbao_ico_s" selectedImageName:@"qianbao_ico"];
+    [self setupChildViewController:homePageViewController title:DBHGetStringWithKeyFromTable(@"Wallet", nil) imageName:@"qianbao_ico_s" selectedImageName:@"qianbao_ico"];
     
     // 3.我的
     DBHMyViewController * my = [[DBHMyViewController alloc] init];
     my.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:my title:NSLocalizedString(@"My", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
+    [self setupChildViewController:my title:DBHGetStringWithKeyFromTable(@"My", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
 }
 
 /**
@@ -113,7 +113,7 @@
 - (void)setupChildViewController:(UIViewController *)childVc title:(NSString *)title imageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName
 {
     // 1.设置控制器的属性
-    if ([title isEqualToString:NSLocalizedString(@"My", nil)]) {
+    if ([title isEqualToString:DBHGetStringWithKeyFromTable(@"My", nil)]) {
         childVc.title = title;
     } else {
         childVc.tabBarItem.title = title;

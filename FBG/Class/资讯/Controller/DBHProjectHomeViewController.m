@@ -10,6 +10,7 @@
 
 #import "DBHProjectLookViewController.h"
 #import "DBHProjectOverviewViewController.h"
+#import "DBHHistoricalInformationViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHInputView.h"
@@ -122,62 +123,6 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 
 #pragma mark ------ Data ------
 /**
- 项目收藏
- */
-- (void)projectCollet {
-    NSDictionary *paramters = @{@"enable":self.projectModel.categoryUser.categoryId == 0 ? [NSNumber numberWithBool:true] : [NSNumber numberWithBool:false]};
-    
-    WEAKSELF
-    [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/collect", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
-        weakSelf.projectModel.categoryUser.categoryId = weakSelf.projectModel.categoryUser.categoryId == 0 ? 1 : 0;
-        weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectModel.categoryUser.categoryId == 0 ? @"xiangmugaikuang_xing" : @"xiangmuzhuye_xing_cio"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
-        weakSelf.navigationItem.rightBarButtonItems = @[self.personBarButtonItem, self.collectBarButtonItem];
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
-}
-
-#pragma mark ------ Event Responds ------
-/**
- 收藏
- */
-- (void)respondsToCollectBarButtonItem {
-    [self projectCollet];
-}
-/**
- 项目查看
- */
-- (void)respondsToPersonBarButtonItem {
-    DBHProjectLookViewController *projectLookViewController = [[DBHProjectLookViewController alloc] init];
-    projectLookViewController.projectModel = self.projectModel;
-    [self.navigationController pushViewController:projectLookViewController animated:YES];
-}
-
-#pragma mark ------ Data ------
-/**
- 获取代币价格
- */
-- (void)getPrice {
-    WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/rank/%@/cny", self.projectModel.unit] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        NSString *price = [UserSignData share].user.walletUnitType == 1 ? responseCache[@"price_cny"] : responseCache[@"price_usd"];
-        NSString *change = responseCache[@"percent_change_24h"];
-        weakSelf.price = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-        weakSelf.change = [NSString stringWithFormat:@"%@%.2lf", change.floatValue >= 0 ? @"+" : @"", change.floatValue];
-        
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } success:^(id responseObject) {
-        NSString *price = [UserSignData share].user.walletUnitType == 1 ? responseObject[@"price_cny"] : responseObject[@"price_usd"];
-        NSString *change = responseObject[@"percent_change_24h"];
-        weakSelf.price = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-        weakSelf.change = [NSString stringWithFormat:@"%@%.2lf", change.floatValue >= 0 ? @"+" : @"", change.floatValue];
-        
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } failure:^(NSString *error) {
-        //        [LCProgressHUD showFailure:error];
-    }];
-}
-/**
  获取项目资讯
  */
 - (void)getInfomation {
@@ -210,6 +155,37 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         [LCProgressHUD showFailure:error];
     }];
 }
+/**
+ 项目收藏
+ */
+- (void)projectCollet {
+    NSDictionary *paramters = @{@"enable":self.projectModel.categoryUser.categoryId == 0 ? [NSNumber numberWithBool:true] : [NSNumber numberWithBool:false]};
+    
+    WEAKSELF
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/collect", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
+        weakSelf.projectModel.categoryUser.categoryId = weakSelf.projectModel.categoryUser.categoryId == 0 ? 1 : 0;
+        weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectModel.categoryUser.categoryId == 0 ? @"xiangmugaikuang_xing" : @"xiangmuzhuye_xing_cio"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
+        weakSelf.navigationItem.rightBarButtonItems = @[self.personBarButtonItem, self.collectBarButtonItem];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+
+#pragma mark ------ Event Responds ------
+/**
+ 收藏
+ */
+- (void)respondsToCollectBarButtonItem {
+    [self projectCollet];
+}
+/**
+ 项目查看
+ */
+- (void)respondsToPersonBarButtonItem {
+    DBHProjectLookViewController *projectLookViewController = [[DBHProjectLookViewController alloc] init];
+    projectLookViewController.projectModel = self.projectModel;
+    [self.navigationController pushViewController:projectLookViewController animated:YES];
+}
 
 #pragma mark ------ Getters And Setters ------
 - (UIBarButtonItem *)collectBarButtonItem {
@@ -230,6 +206,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         _tableView.backgroundColor = COLORFROM10(235, 235, 235, 1);
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
+        _tableView.sectionHeaderHeight = 0;
         _tableView.sectionFooterHeight = 0;
         _tableView.sectionFooterHeight = 0;
         
@@ -276,6 +253,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                     if (weakSelf.projectHomeMenuView.superview) {
                         [weakSelf.projectHomeMenuView animationHide];
                     }
+                    
+                    DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
+                    [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                     break;
                 }
                 case 3: {

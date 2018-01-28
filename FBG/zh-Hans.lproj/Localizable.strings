@@ -241,6 +241,21 @@
 "Please select a wallet" = "请选择一个钱包";
 
 /*
+ 交易所公告
+ */
+"Your Opinion" = "你的观点";
+"Trader Clock" = "交易提醒";
+"Collection Address" = "收款地址";
+"Transfer Address" = "转账地址";
+"Transfer Wallet" = "转账钱包";
+
+/*
+ 通知
+ */
+"Notification" = "通知";
+"Details" = "详情";
+
+/*
  项目主页
  */
 "Project overview" = "项目全览";

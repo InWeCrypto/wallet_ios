@@ -20,5 +20,6 @@ pod 'Masonry', '~> 1.1.0' #oc自动布局
 pod "SDCycleScrollView", "~> 1.65" #图片轮播
 #pod 'CHKLineChart', '~> 1.6.0' #k线图
 pod 'HyphenateLite' #环信SDK
+pod 'Daysquare', '0.1.0' #日历
 
 end

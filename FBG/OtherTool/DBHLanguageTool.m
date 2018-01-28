@@ -53,7 +53,7 @@ static DBHLanguageTool *sharedModel;
     }
     else
     {
-        tmp = EN;
+        tmp = LANGUAGE;
     }
     
     self.language = tmp;
