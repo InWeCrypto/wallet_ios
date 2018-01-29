@@ -8,12 +8,14 @@
 
 #import "DBHCandyBowlViewController.h"
 
+#import "DBHCandyBowlHeaderView.h"
 #import "DBHCandyBowlTableViewCell.h"
 
 static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTableViewCellIdentifier";
 
 @interface DBHCandyBowlViewController ()<UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, strong) DBHCandyBowlHeaderView *candyBowlHeaderView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *grayLineView;
 @property (nonatomic, strong) UIButton *yourOpinionButton;
@@ -98,11 +100,19 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 }
 
 #pragma mark ------ Getters And Setters ------
+- (DBHCandyBowlHeaderView *)candyBowlHeaderView {
+    if (!_candyBowlHeaderView) {
+        _candyBowlHeaderView = [[DBHCandyBowlHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, AUTOLAYOUTSIZE(396.5))];
+    }
+    return _candyBowlHeaderView;
+}
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.backgroundColor = BACKGROUNDCOLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+        _tableView.tableHeaderView = self.candyBowlHeaderView;
         
         _tableView.sectionHeaderHeight = 0;
         _tableView.sectionFooterHeight = 0;

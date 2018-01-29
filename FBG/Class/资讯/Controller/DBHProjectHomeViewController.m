@@ -8,6 +8,8 @@
 
 #import "DBHProjectHomeViewController.h"
 
+#import "FBG-Swift.h"
+
 #import "DBHProjectLookViewController.h"
 #import "DBHProjectOverviewViewController.h"
 #import "DBHHistoricalInformationViewController.h"
@@ -294,6 +296,10 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                 }
                 case 1: {
                     // 实时行情
+//                    DBHQuotationVCModelData *model = self.dataSource[indexPath.row];
+                    DBHMarketDetailViewController *marketDetailViewController = [[DBHMarketDetailViewController alloc] init];
+//                    marketDetailViewController.title = model.unit;
+                    [self.navigationController pushViewController:marketDetailViewController animated:YES];
                     break;
                 }
                 case 2: {
