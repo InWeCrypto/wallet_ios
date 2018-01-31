@@ -9,6 +9,8 @@
 
 #import "DBHCandyBowlTableViewCell.h"
 
+#import "DBHCandyBowlModelData.h"
+
 @interface DBHCandyBowlTableViewCell ()
 
 @property (nonatomic, strong) UIView *boxView;
@@ -75,12 +77,17 @@
         make.right.equalTo(weakSelf.boxView).offset(- AUTOLAYOUTSIZE(15));
         make.centerY.equalTo(weakSelf.boxView);
     }];
-    
-    self.titleLabel.text = @"Neo（NEO）";
-    self.contentLabel.text = @"进入NEO.io的空投入口按钮进入NEO.io的空投入口按进入NEO.io的空投入口按钮";
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setModel:(DBHCandyBowlModelData *)model {
+    _model = model;
+    
+    [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:nil];
+    self.titleLabel.text = _model.name;
+    self.contentLabel.text = _model.desc;
+}
+
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];

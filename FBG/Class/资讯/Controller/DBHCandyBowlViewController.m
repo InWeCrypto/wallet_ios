@@ -8,8 +8,12 @@
 
 #import "DBHCandyBowlViewController.h"
 
+#import "DBHFunctionalUnitLookViewController.h"
+
 #import "DBHCandyBowlHeaderView.h"
 #import "DBHCandyBowlTableViewCell.h"
+
+#import "DBHCandyBowlDataModels.h"
 
 static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTableViewCellIdentifier";
 
@@ -20,6 +24,10 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 @property (nonatomic, strong) UIView *grayLineView;
 @property (nonatomic, strong) UIButton *yourOpinionButton;
 
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, copy) NSString *year;
+@property (nonatomic, copy) NSString *month;
+@property (nonatomic, copy) NSString *day;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
@@ -31,13 +39,19 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
     [super viewDidLoad];
     
     self.title = @"CandyBowl";
+    [self.dateFormatter setDateFormat:@"yyyy"];
+    self.year = [self.dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]];
+    [self.dateFormatter setDateFormat:@"MM"];
+    self.month = [self.dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]];
+    [self.dateFormatter setDateFormat:@"dd"];
+    self.day = [self.dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]];
     
     [self setUI];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    
+    [self getExchangeNotice];
 }
 
 #pragma mark ------ UI ------
@@ -74,6 +88,7 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHCandyBowlTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHCandyBowlTableViewCellIdentifier forIndexPath:indexPath];
+    cell.model = self.dataSource[indexPath.row];
     
     return cell;
 }
@@ -84,13 +99,50 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 }
 
 #pragma mark ------ Data ------
+/**
+ 获取CandyBowl
+ */
+- (void)getExchangeNotice {
+    WEAKSELF
+    NSDictionary *paramters = @{@"year":@(self.year.integerValue),
+                                @"month":@(self.month.integerValue),
+                                @"day":@(self.day.integerValue)};
+    [PPNetworkHelper GET:@"candy_bow" baseUrlType:3 parameters:paramters hudString:nil responseCache:^(id responseCache) {
+        [weakSelf.dataSource removeAllObjects];
+
+        for (NSDictionary *dic in responseCache[@"data"][@"data"]) {
+            DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
+
+            [weakSelf.dataSource addObject:model];
+        }
+
+        weakSelf.candyBowlHeaderView.isNoData = !weakSelf.dataSource.count;
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf.dataSource removeAllObjects];
+
+        for (NSDictionary *dic in responseObject[@"list"][@"data"]) {
+            DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
+
+            [weakSelf.dataSource addObject:model];
+        }
+
+        weakSelf.candyBowlHeaderView.isNoData = !weakSelf.dataSource.count;
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
 
 #pragma mark ------ Event Responds ------
 /**
  项目查看
  */
 - (void)respondsToPersonBarButtonItem {
-    
+    DBHFunctionalUnitLookViewController *functionalUnitLookViewController = [[DBHFunctionalUnitLookViewController alloc] init];
+    functionalUnitLookViewController.title = self.title;
+    functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
+    [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
 }
 /**
  你的观点
@@ -103,6 +155,18 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 - (DBHCandyBowlHeaderView *)candyBowlHeaderView {
     if (!_candyBowlHeaderView) {
         _candyBowlHeaderView = [[DBHCandyBowlHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, AUTOLAYOUTSIZE(396.5))];
+        
+        WEAKSELF
+        [_candyBowlHeaderView selectedDateBlock:^(NSDate *date) {
+            [weakSelf.dateFormatter setDateFormat:@"yyyy"];
+            weakSelf.year = [self.dateFormatter stringFromDate:date];
+            [weakSelf.dateFormatter setDateFormat:@"MM"];
+            weakSelf.month = [self.dateFormatter stringFromDate:date];
+            [weakSelf.dateFormatter setDateFormat:@"dd"];
+            weakSelf.day = [self.dateFormatter stringFromDate:date];
+            
+            [weakSelf getExchangeNotice];
+        }];
     }
     return _candyBowlHeaderView;
 }
@@ -144,12 +208,15 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
     return _yourOpinionButton;
 }
 
+- (NSDateFormatter *)dateFormatter {
+    if (!_dateFormatter) {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+    }
+    return _dateFormatter;
+}
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
     }
     return _dataSource;
 }

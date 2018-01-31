@@ -134,6 +134,9 @@
         EMError *error = [[EMClient sharedClient] loginWithUsername:[NSString stringWithFormat:@"%@", responseObject[@"id"]] password:weakSelf.passwordTextField.text];
         if (!error) {
             // 环信登录成功
+            // 开启自动登录
+            [[EMClient sharedClient].options setIsAutoLogin:YES];
+            
             [UserSignData share].user.token = responseObject[@"token"];
             [UserSignData share].user.open_id = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
             [UserSignData share].user.email = responseObject[@"email"];

@@ -13,7 +13,6 @@
 #import "DBHProjectOverviewForProjectInfomtaionTableViewCell.h"
 #import "DBHProjectOverviewForRelevantInformationTableViewCell.h"
 
-#import "DBHInformationDataModels.h"
 #import "DBHProjectDetailInformationDataModels.h"
 
 static NSString *const kDBHProjectOverviewForProjectInfomtaionTableViewCellIdentifier = @"kDBHProjectOverviewForProjectInfomtaionTableViewCellIdentifier";
@@ -25,8 +24,6 @@ static NSString *const kDBHProjectOverviewForRelevantInformationTableViewCellIde
 @property (nonatomic, strong) DBHInputView *keyboardView;
 @property (nonatomic, strong) DBHProjectHomeMenuView *projectHomeMenuView;
 
-@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
-
 @end
 
 @implementation DBHProjectOverviewViewController
@@ -35,15 +32,10 @@ static NSString *const kDBHProjectOverviewForRelevantInformationTableViewCellIde
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = self.projectModel.unit;
+    self.title = self.projectDetailModel.unit;
     self.view.backgroundColor = COLORFROM16(0xF6F6F6, 1);
     
     [self setUI];
-}
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self getProjectDetailInfomation];
 }
 
 #pragma mark ------ UI ------
@@ -88,29 +80,6 @@ static NSString *const kDBHProjectOverviewForRelevantInformationTableViewCellIde
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return !indexPath.row ? AUTOLAYOUTSIZE(169) : AUTOLAYOUTSIZE(215.5);
-}
-
-#pragma mark ------ Data ------
-/**
- 获取项目详细信息
- */
-- (void)getProjectDetailInfomation {
-    WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"category/%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        if (weakSelf.projectDetailModel) {
-            return ;
-        }
-        
-        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseCache];
-        
-        [weakSelf.tableView reloadData];
-    } success:^(id responseObject) {
-        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseObject];
-        
-        [weakSelf.tableView reloadData];
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
 }
 
 #pragma mark ------ Getters And Setters ------

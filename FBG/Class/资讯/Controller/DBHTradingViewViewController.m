@@ -8,8 +8,12 @@
 
 #import "DBHTradingViewViewController.h"
 
+#import "DBHFunctionalUnitLookViewController.h"
+
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHProjectHomeTypeTwoTableViewCell.h"
+
+#import "DBHProjectHomeNewsDataModels.h"
 
 static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHProjectHomeTypeTwoTableViewCellIdentifier";
 
@@ -36,7 +40,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    
+    [self getInfomation];
 }
 
 #pragma mark ------ UI ------
@@ -76,6 +80,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
+    cell.model = self.dataSource[indexPath.row];
     
     return cell;
 }
@@ -85,9 +90,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    //    DBHProjectHomeNewsModelData *model = self.dataSource[section - 1];
+    DBHProjectHomeNewsModelData *model = self.dataSource[section];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-    headerView.time = @"2017-11-11 11:11:11";//model.updatedAt;
+    headerView.time = model.updatedAt;
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -95,13 +100,49 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 
 #pragma mark ------ Data ------
+/**
+ 获取TradingView数据
+ */
+- (void)getInfomation {
+    WEAKSELF
+    [PPNetworkHelper GET:@"article?type=4" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.dataSource.count) {
+            return ;
+        }
+        
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseCache[@"data"]) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseObject[@"data"]) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
 
 #pragma mark ------ Event Responds ------
 /**
  项目查看
  */
 - (void)respondsToPersonBarButtonItem {
-    
+    DBHFunctionalUnitLookViewController *functionalUnitLookViewController = [[DBHFunctionalUnitLookViewController alloc] init];
+    functionalUnitLookViewController.title = self.title;
+    functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
+    [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
 }
 /**
  你的观点
@@ -118,7 +159,6 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.sectionHeaderHeight = 0;
-        _tableView.sectionFooterHeight = 0;
         _tableView.sectionFooterHeight = 0;
         
         _tableView.rowHeight = AUTOLAYOUTSIZE(215.5);
@@ -151,9 +191,6 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
     }
     return _dataSource;
 }

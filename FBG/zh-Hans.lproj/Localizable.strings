@@ -263,6 +263,7 @@
 "Trading Market" = "交易市场";
 "Project Overview" = "项目概况";
 "Historical Information" = "历史资讯";
+"Project Information" = "项目资讯";
 "Project Introduction" = "项目介绍";
 "Project Community" = "项目社区";
 "Project Grade" = "项目评分";
@@ -278,6 +279,9 @@
 "Part" = "分";
 "Hot Attention" = "关注热度";
 "User Grade" = "用户评分";
+"ICO Construction" = "ICO 结构";
+"No CandyBowl" = "暂无空投";
+"Related Information" = "相关信息";
 
 /*
  历史资讯

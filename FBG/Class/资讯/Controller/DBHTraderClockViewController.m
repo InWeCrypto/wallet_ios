@@ -8,6 +8,8 @@
 
 #import "DBHTraderClockViewController.h"
 
+#import "DBHFunctionalUnitLookViewController.h"
+
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHTraderClockTableViewCell.h"
 
@@ -84,7 +86,10 @@ static NSString *const kDBHTraderClockTableViewCellIdentifier = @"kDBHTraderCloc
  项目查看
  */
 - (void)respondsToPersonBarButtonItem {
-    
+    DBHFunctionalUnitLookViewController *functionalUnitLookViewController = [[DBHFunctionalUnitLookViewController alloc] init];
+    functionalUnitLookViewController.title = self.title;
+    functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
+    [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
 }
 
 #pragma mark ------ Getters And Setters ------

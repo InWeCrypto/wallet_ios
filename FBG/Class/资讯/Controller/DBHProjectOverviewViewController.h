@@ -8,13 +8,10 @@
 
 #import "DBHBaseViewController.h"
 
-@class DBHInformationModelData;
+@class DBHProjectDetailInformationModelDataBase;
 
 @interface DBHProjectOverviewViewController : DBHBaseViewController
 
-/**
- 项目信息
- */
-@property (nonatomic, strong) DBHInformationModelData *projectModel;
+@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
 
 @end

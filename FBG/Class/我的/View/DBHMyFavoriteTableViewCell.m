@@ -9,6 +9,9 @@
 #import "DBHMyFavoriteTableViewCell.h"
 
 #import "DBHHistoricalInformationModelData.h"
+#import "DBHProjectHomeNewsModelData.h"
+#import "DBHExchangeNoticeModelData.h"
+#import "DBHCandyBowlModelData.h"
 
 @interface DBHMyFavoriteTableViewCell ()
 
@@ -66,9 +69,33 @@
 - (void)setModel:(DBHHistoricalInformationModelData *)model {
     _model = model;
     
+    [self.pictureImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
     self.titleLabel.text = _model.title;
     self.timeLabel.text = _model.updatedAt;
     self.originalLabel.hidden = !_model.isSole;
+}
+- (void)setInfomationModel:(DBHProjectHomeNewsModelData *)infomationModel {
+    _infomationModel = infomationModel;
+    
+    [self.pictureImageView sdsetImageWithURL:_infomationModel.img placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
+    self.titleLabel.text = _infomationModel.title;
+    self.timeLabel.text = _infomationModel.updatedAt;
+    self.originalLabel.hidden = !_infomationModel.isSole;
+}
+- (void)setExchangeNoticeModel:(DBHExchangeNoticeModelData *)exchangeNoticeModel {
+    _exchangeNoticeModel = exchangeNoticeModel;
+    
+    self.titleLabel.text = _exchangeNoticeModel.sourceName;
+    self.timeLabel.text = _exchangeNoticeModel.updatedAt;
+    self.originalLabel.hidden = YES;
+}
+- (void)setCandyBowlModel:(DBHCandyBowlModelData *)candyBowlModel {
+    _candyBowlModel = candyBowlModel;
+    
+    [self.pictureImageView sdsetImageWithURL:_candyBowlModel.img placeholderImage:nil];
+    self.titleLabel.text = _candyBowlModel.name;
+    self.timeLabel.text = [NSString stringWithFormat:@"%.4ld-%.2ld-%.2ld", (NSInteger)_candyBowlModel.year, (NSInteger)_candyBowlModel.month, (NSInteger)_candyBowlModel.day];
+    self.originalLabel.hidden = YES;
 }
 
 - (UIImageView *)pictureImageView {

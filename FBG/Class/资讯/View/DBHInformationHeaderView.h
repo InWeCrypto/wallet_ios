@@ -22,4 +22,9 @@ typedef void(^SelectTypeBlock)();
  */
 - (void)selectTypeBlock:(SelectTypeBlock)selectTypeBlock;
 
+/**
+ 停止动画
+ */
+- (void)stopAnimation;
+
 @end

@@ -52,7 +52,7 @@
     if (self.navigationController) {
         if ([self.navigationController.viewControllers count] > 1)
         {
-            UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack)];
+            UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"返回-3"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack)];
             leftBarButtonItem.width = -30;
             self.navigationItem.leftBarButtonItem = leftBarButtonItem;
             [self.navigationItem.leftBarButtonItem setTintColor:[UIColor lightGrayColor]];

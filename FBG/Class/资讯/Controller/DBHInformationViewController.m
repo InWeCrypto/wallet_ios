@@ -12,6 +12,7 @@
 
 #import "DBHPaymentReceivedViewController.h"
 #import "DBHProjectHomeViewController.h"
+#import "DBHProjectHomeNoTradingViewController.h"
 #import "DBHInWeHotViewController.h"
 #import "DBHTradingViewViewController.h"
 #import "DBHExchangeNoticeViewController.h"
@@ -113,36 +114,48 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
             case 0: {
                 // InWe热点
                 DBHInWeHotViewController *inWeHotViewController = [[DBHInWeHotViewController alloc] init];
+                inWeHotViewController.title = self.functionalUnitArray[indexPath.row];
+                inWeHotViewController.functionalUnitType = 0;
                 [self.navigationController pushViewController:inWeHotViewController animated:YES];
                 break;
             }
             case 1: {
                 // TradingView
                 DBHTradingViewViewController *tradingViewViewController = [[DBHTradingViewViewController alloc] init];
+                tradingViewViewController.title = self.functionalUnitArray[indexPath.row];
+                tradingViewViewController.functionalUnitType = 1;
                 [self.navigationController pushViewController:tradingViewViewController animated:YES];
                 break;
             }
             case 2: {
                 // 交易所公告
                 DBHExchangeNoticeViewController *exchangeNoticeViewController = [[DBHExchangeNoticeViewController alloc] init];
+                exchangeNoticeViewController.title = self.functionalUnitArray[indexPath.row];
+                exchangeNoticeViewController.functionalUnitType = 2;
                 [self.navigationController pushViewController:exchangeNoticeViewController animated:YES];
                 break;
             }
             case 3: {
                 // CandyBowl
                 DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
+                candyBowlViewController.title = self.functionalUnitArray[indexPath.row];
+                candyBowlViewController.functionalUnitType = 3;
                 [self.navigationController pushViewController:candyBowlViewController animated:YES];
                 break;
             }
             case 4: {
                 // 交易提醒
                 DBHTraderClockViewController *traderClockViewController = [[DBHTraderClockViewController alloc] init];
+                traderClockViewController.title = self.functionalUnitArray[indexPath.row];
+                traderClockViewController.functionalUnitType = 4;
                 [self.navigationController pushViewController:traderClockViewController animated:YES];
                 break;
             }
             case 5: {
                 // 通知
                 DBHNotificationViewController *notificationViewController = [[DBHNotificationViewController alloc] init];
+                notificationViewController.title = self.functionalUnitArray[indexPath.row];
+                notificationViewController.functionalUnitType = 5;
                 [self.navigationController pushViewController:notificationViewController animated:YES];
                 break;
             }
@@ -151,9 +164,19 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 break;
         }
     } else {
-        DBHProjectHomeViewController *projectHomeViewController = [[DBHProjectHomeViewController alloc] init];
-        projectHomeViewController.projectModel = self.dataSource[indexPath.row];
-        [self.navigationController pushViewController:projectHomeViewController animated:YES];
+        DBHInformationModelData *projectModel = self.dataSource[indexPath.row];
+        
+        if (projectModel.type == 1) {
+            // 交易中项目
+            DBHProjectHomeViewController *projectHomeViewController = [[DBHProjectHomeViewController alloc] init];
+            projectHomeViewController.projectModel = projectModel;
+            [self.navigationController pushViewController:projectHomeViewController animated:YES];
+        } else {
+            // 其他项目
+            DBHProjectHomeNoTradingViewController *projectHomeNoTradingViewController = [[DBHProjectHomeNoTradingViewController alloc] init];
+            projectHomeNoTradingViewController.projectModel = projectModel;
+            [self.navigationController pushViewController:projectHomeNoTradingViewController animated:YES];
+        }
     }
 }
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -235,9 +258,11 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
             
             [weakSelf.dataSource addObject:model];
         }
-        
+
+        [weakSelf.informationHeaderView stopAnimation];
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
+        [weakSelf.informationHeaderView stopAnimation];
         [LCProgressHUD showFailure:error];
     }];
 }

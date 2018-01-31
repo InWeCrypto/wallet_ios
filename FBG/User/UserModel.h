@@ -31,6 +31,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) BOOL isHideAsset; // 是否隐藏资产
 @property (nonatomic, assign) BOOL isOpenTouchId; // 是否开启TouchID
 @property (nonatomic, assign) BOOL isOpenFaceId; // 是否开启FaceID
+@property (nonatomic, assign) BOOL isOpenNoDisturbing; // 是否开启免打扰
 @property (nonatomic, assign) DBHCanUseUnlockType canUseUnlockType; // 可以使用的第三方解锁方式
 @property (nonatomic, strong) NSMutableArray *functionalUnitArray; // 功能组件是否删除数组 0:未删除 1:删除
 

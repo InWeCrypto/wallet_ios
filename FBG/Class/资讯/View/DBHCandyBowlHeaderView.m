@@ -16,6 +16,9 @@
 @property (nonatomic, strong) UIImageView *boxImageView;
 @property (nonatomic, strong) DAYCalendarView *calendarView;
 @property (nonatomic, strong) UILabel* dateLabel;
+@property (nonatomic, strong) UILabel *noCandyBowlLabel;
+
+@property (nonatomic, copy) SelectedDateBlock selectedDateBlock;
 
 @end
 
@@ -37,6 +40,7 @@
     [self addSubview:self.boxImageView];
     [self addSubview:self.calendarView];
     [self addSubview:self.dateLabel];
+    [self addSubview:self.noCandyBowlLabel];
     
     WEAKSELF
     [self.backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -60,6 +64,10 @@
         make.centerX.equalTo(weakSelf.boxImageView);
         make.bottom.offset(- AUTOLAYOUTSIZE(12));
     }];
+    [self.noCandyBowlLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(weakSelf);
+        make.top.equalTo(weakSelf.dateLabel.mas_bottom).offset(AUTOLAYOUTSIZE(7));
+    }];
 }
 
 #pragma mark ------ Event Responds ------
@@ -70,9 +78,21 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/dd"];
     self.dateLabel.text = [dateFormatter stringFromDate:calendarView.selectedDate];
+    self.selectedDateBlock(calendarView.selectedDate);
+}
+
+#pragma mark ------ Public Methods ------
+- (void)selectedDateBlock:(SelectedDateBlock)selectedDateBlock {
+    self.selectedDateBlock = selectedDateBlock;
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setIsNoData:(BOOL)isNoData {
+    _isNoData = isNoData;
+    
+    self.noCandyBowlLabel.hidden = !_isNoData;
+}
+
 - (UIImageView *)backImageView {
     if (!_backImageView) {
         _backImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"candyzhuye_beijing"]];
@@ -109,6 +129,16 @@
         _dateLabel.text = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]];
     }
     return _dateLabel;
+}
+- (UILabel *)noCandyBowlLabel {
+    if (!_noCandyBowlLabel) {
+        _noCandyBowlLabel = [ [UILabel alloc] init];
+        _noCandyBowlLabel.font = FONT(13);
+        _noCandyBowlLabel.text = DBHGetStringWithKeyFromTable(@"No CandyBowl", nil);
+        _noCandyBowlLabel.textColor = COLORFROM16(0x939393, 1);
+        _noCandyBowlLabel.hidden = YES;
+    }
+    return _noCandyBowlLabel;
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import "DBHPersonalSettingForSwitchTableViewCell.h"
 
+#import <HyphenateLite/HyphenateLite.h>
+
 @interface DBHPersonalSettingForSwitchTableViewCell ()
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -43,6 +45,14 @@
     }];
 }
 
+#pragma mark ------ Event Responds ------
+- (void)respondsToOnSwitch {
+    [UserSignData share].user.isOpenNoDisturbing = !self.onSwitch.isOn;
+    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
+    options.noDisturbStatus = [UserSignData share].user.isOpenNoDisturbing ? EMPushNoDisturbStatusDay : EMPushNoDisturbStatusClose;
+    EMError *error = [[EMClient sharedClient] updatePushOptionsToServer];
+}
+
 #pragma mark ------ Getters And Setters ------
 - (void)setTitle:(NSString *)title {
     _title = title;
@@ -61,10 +71,12 @@
 - (UISwitch *)onSwitch {
     if (!_onSwitch) {
         _onSwitch = [[UISwitch alloc] init];
+        _onSwitch.on = ![UserSignData share].user.isOpenNoDisturbing;
         _onSwitch.onTintColor = COLORFROM16(0xF46A00, 1);
         _onSwitch.backgroundColor = COLORFROM16(0xBFBFBF, 1);
         _onSwitch.layer.cornerRadius = AUTOLAYOUTSIZE(16);
         _onSwitch.clipsToBounds = YES;
+        [_onSwitch addTarget:self action:@selector(respondsToOnSwitch) forControlEvents:UIControlEventValueChanged];
     }
     return _onSwitch;
 }

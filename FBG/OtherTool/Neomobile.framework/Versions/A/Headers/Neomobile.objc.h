@@ -14,7 +14,7 @@
 @class NeomobileWallet;
 
 /**
- * Tx neo rawtx wrapper
+ 
  */
 @interface NeomobileTx : NSObject <goSeqRefInterface> {
 }

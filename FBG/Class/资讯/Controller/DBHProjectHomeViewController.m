@@ -12,6 +12,7 @@
 
 #import "DBHProjectLookViewController.h"
 #import "DBHProjectOverviewViewController.h"
+#import "DBHTradingMarketViewController.h"
 #import "DBHHistoricalInformationViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
@@ -21,6 +22,7 @@
 #import "DBHProjectHomeTypeTwoTableViewCell.h"
 
 #import "DBHInformationDataModels.h"
+#import "DBHProjectDetailInformationDataModels.h"
 #import "DBHProjectHomeNewsDataModels.h"
 
 static NSString *const kDBHProjectHomeTypeOneTableViewCellIdentifier = @"kDBHProjectHomeTypeOneTableViewCellIdentifier";
@@ -34,8 +36,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 @property (nonatomic, strong) DBHInputView *keyboardView;
 @property (nonatomic, strong) DBHProjectHomeMenuView *projectHomeMenuView;
 
-@property (nonatomic, copy) NSString *price; // 价格
-@property (nonatomic, copy) NSString *change; // 涨幅
+@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
@@ -53,7 +54,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self getInfomation];
+    [self getProjectDetailInfomation];
 }
 
 #pragma mark ------ UI ------
@@ -79,7 +80,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 
 #pragma mark ------ UITableViewDataSource ------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.dataSource.count + 1;
+    return 1 + (self.projectDetailModel.lastArticle ? 1 : 0);
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
@@ -92,7 +93,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         return cell;
     } else {
         DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
-        cell.model = self.dataSource[indexPath.section - 1];
+        cell.lastModel = self.projectDetailModel.lastArticle;
         
         return cell;
     }
@@ -110,9 +111,8 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         headerView.backgroundColor = COLORFROM10(235, 235, 235, 1);
         return headerView;
     } else {
-        DBHProjectHomeNewsModelData *model = self.dataSource[section - 1];
         DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-        headerView.time = model.updatedAt;
+        headerView.time = self.projectDetailModel.lastArticle.createdAt;
         return headerView;
     }
 }
@@ -124,33 +124,54 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 
 #pragma mark ------ Data ------
+///**
+// 获取项目资讯
+// */
+//- (void)getInfomation {
+//    WEAKSELF
+//    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+//        if (weakSelf.dataSource.count) {
+//            return ;
+//        }
+//        
+//        [weakSelf.dataSource removeAllObjects];
+//        
+//        for (NSDictionary *dic in responseCache[@"data"]) {
+//            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+//            
+//            [weakSelf.dataSource addObject:model];
+//        }
+//        
+//        [weakSelf.tableView reloadData];
+//    } success:^(id responseObject) {
+//        [weakSelf.dataSource removeAllObjects];
+//        
+//        for (NSDictionary *dic in responseObject[@"data"]) {
+//            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+//            
+//            [weakSelf.dataSource addObject:model];
+//        }
+//        
+//        [weakSelf.tableView reloadData];
+//    } failure:^(NSString *error) {
+//        [LCProgressHUD showFailure:error];
+//    }];
+//}
 /**
- 获取项目资讯
+ 获取项目详细信息
  */
-- (void)getInfomation {
+- (void)getProjectDetailInfomation {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        if (weakSelf.dataSource.count) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"category/%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.projectDetailModel) {
             return ;
         }
         
-        [weakSelf.dataSource removeAllObjects];
-        
-        for (NSDictionary *dic in responseCache[@"data"]) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-            
-            [weakSelf.dataSource addObject:model];
-        }
+        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseCache];
         
         [weakSelf.tableView reloadData];
     } success:^(id responseObject) {
-        [weakSelf.dataSource removeAllObjects];
-        
-        for (NSDictionary *dic in responseObject[@"data"]) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-            
-            [weakSelf.dataSource addObject:model];
-        }
+        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseObject];
         
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
@@ -290,7 +311,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                 case 0: {
                     // 项目全览
                     DBHProjectOverviewViewController *projectOverviewViewController = [[DBHProjectOverviewViewController alloc] init];
-                    projectOverviewViewController.projectModel = self.projectModel;
+                    projectOverviewViewController.projectDetailModel = self.projectDetailModel;
                     [weakSelf.navigationController pushViewController:projectOverviewViewController animated:YES];
                     break;
                 }
@@ -298,12 +319,15 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                     // 实时行情
 //                    DBHQuotationVCModelData *model = self.dataSource[indexPath.row];
                     DBHMarketDetailViewController *marketDetailViewController = [[DBHMarketDetailViewController alloc] init];
+                    marketDetailViewController.yourOpinion = DBHGetStringWithKeyFromTable(@"Your Opinion", nil);
 //                    marketDetailViewController.title = model.unit;
                     [self.navigationController pushViewController:marketDetailViewController animated:YES];
                     break;
                 }
                 case 2: {
                     // 交易市场
+                    DBHTradingMarketViewController *tradingMarketViewController = [[DBHTradingMarketViewController alloc] init];
+                    [self.navigationController pushViewController:tradingMarketViewController animated:YES];
                     break;
                 }
                     

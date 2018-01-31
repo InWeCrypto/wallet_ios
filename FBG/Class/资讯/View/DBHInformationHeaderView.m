@@ -121,12 +121,25 @@
  刷新
  */
 - (void)respondsToRefreshButton {
-    
+    self.selectTypeBlock();
+    [self startAnimation];
 }
 
 #pragma mark ------ Public Methods ------
 - (void)selectTypeBlock:(SelectTypeBlock)selectTypeBlock {
     self.selectTypeBlock = selectTypeBlock;
+}
+- (void)stopAnimation {
+    [self.refreshButton.layer removeAnimationForKey:@"rotateAnimation"];
+}
+
+#pragma mark ------ Private Methods ------
+- (void)startAnimation {
+    CABasicAnimation *rotateAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotateAnimation.toValue = [NSNumber numberWithFloat:M_PI];
+    rotateAnimation.duration = 1;
+    rotateAnimation.repeatCount = CGFLOAT_MAX;
+    [self.refreshButton.layer addAnimation:rotateAnimation forKey:@"rotateAnimation"];
 }
 
 #pragma mark ------ Getters And Setters ------

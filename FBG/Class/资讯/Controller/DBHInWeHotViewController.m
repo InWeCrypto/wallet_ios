@@ -8,8 +8,14 @@
 
 #import "DBHInWeHotViewController.h"
 
+#import <HyphenateLite/HyphenateLite.h>
+
+#import "DBHFunctionalUnitLookViewController.h"
+
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHProjectHomeTypeTwoTableViewCell.h"
+
+#import "DBHProjectHomeNewsDataModels.h"
 
 static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHProjectHomeTypeTwoTableViewCellIdentifier";
 
@@ -36,7 +42,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    
+    [self getInfomation];
 }
 
 #pragma mark ------ UI ------
@@ -76,6 +82,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
+    cell.model = self.dataSource[indexPath.row];
     
     return cell;
 }
@@ -85,9 +92,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    //    DBHProjectHomeNewsModelData *model = self.dataSource[section - 1];
+    DBHProjectHomeNewsModelData *model = self.dataSource[section];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-    headerView.time = @"2017-11-11 11:11:11";//model.updatedAt;
+    headerView.time = model.updatedAt;
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -95,13 +102,26 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 
 #pragma mark ------ Data ------
+/**
+ 获取Inwe热点数据
+ */
+- (void)getInfomation {
+    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
+    for (EMConversation *conversation in conversations) {
+//        EaseConversationModel *conversationModel = [EaseConversationModel alloc] init
+        NSLog(@"%@", conversation.ext);
+    }
+}
 
 #pragma mark ------ Event Responds ------
 /**
  项目查看
  */
 - (void)respondsToPersonBarButtonItem {
-    
+    DBHFunctionalUnitLookViewController *functionalUnitLookViewController = [[DBHFunctionalUnitLookViewController alloc] init];
+    functionalUnitLookViewController.title = self.title;
+    functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
+    [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
 }
 /**
  你的观点
@@ -151,9 +171,6 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
     }
     return _dataSource;
 }

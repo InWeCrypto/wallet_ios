@@ -8,6 +8,8 @@
 
 #import "DBHIotificationTableViewCell.h"
 
+#import "DBHExchangeNoticeModelData.h"
+
 @interface DBHIotificationTableViewCell ()
 
 @property (nonatomic, strong) UIView *boxView;
@@ -82,18 +84,35 @@
         make.right.equalTo(weakSelf.grayLineView);
         make.centerY.equalTo(weakSelf.detailLabel);
     }];
-    
-    self.titleLabel.text = @"行情提醒";
-    self.timeLabel.text = @"2017-11-11";
-    
-    NSString *content = @"“NEO”价格已低于/高于“$70.00”，请密切关注相关行情 动态。";
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:AUTOLAYOUTSIZE(5)];
-    NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:content attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
-    self.contentLabel.attributedText = contentAttributedString;
+}
+
+#pragma mark ------ Private Methods ------
+-(NSString *)filterHTML:(NSString *)html
+{
+    NSScanner * scanner = [NSScanner scannerWithString:html];
+    NSString * text = nil;
+    while([scanner isAtEnd]==NO)
+    {
+        [scanner scanUpToString:@"<" intoString:nil];
+        [scanner scanUpToString:@">" intoString:&text];
+        html = [html stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@>",text] withString:@""];
+    }
+    return html;
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setModel:(DBHExchangeNoticeModelData *)model {
+    _model = model;
+    
+    self.titleLabel.text = _model.sourceName;
+    self.timeLabel.text = _model.updatedAt;
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:AUTOLAYOUTSIZE(5)];
+    NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:[self filterHTML:_model.content] attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
+    self.contentLabel.attributedText = contentAttributedString;
+}
+
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIImageView alloc] init];

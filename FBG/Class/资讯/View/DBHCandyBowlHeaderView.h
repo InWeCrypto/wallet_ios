@@ -8,6 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^SelectedDateBlock)(NSDate *date);
+
 @interface DBHCandyBowlHeaderView : UIView
+
+/**
+ 是否没有数据
+ */
+@property (nonatomic, assign) BOOL isNoData;
+
+/**
+ 选择日期回调
+ */
+- (void)selectedDateBlock:(SelectedDateBlock)selectedDateBlock;
 
 @end

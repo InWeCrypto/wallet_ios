@@ -72,5 +72,9 @@
 //人民币单位换算
 + (NSString *)getDealNumwithstring:(NSString *)string;
 
+/**
+ 字典转NSString
+ */
++ (NSString *)dataTOjsonString:(id)object;
 
 @end

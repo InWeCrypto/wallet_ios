@@ -8,8 +8,13 @@
 
 #import "DBHExchangeNoticeViewController.h"
 
+#import "DBHFunctionalUnitLookViewController.h"
+#import "DBHWebViewController.h"
+
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHIotificationTableViewCell.h"
+
+#import "DBHExchangeNoticeDataModels.h"
 
 static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificationTableViewCellIdentifier";
 
@@ -36,7 +41,7 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    
+    [self getExchangeNotice];
 }
 
 #pragma mark ------ UI ------
@@ -76,18 +81,23 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHIotificationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHIotificationTableViewCellIdentifier forIndexPath:indexPath];
+    cell.model = self.dataSource[indexPath.row];
     
     return cell;
 }
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHExchangeNoticeModelData *model = self.dataSource[indexPath.section];
+    DBHWebViewController *webViewController = [[DBHWebViewController alloc] init];
+    webViewController.title = @"公告";
+    webViewController.htmlString = model.content;
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    //    DBHProjectHomeNewsModelData *model = self.dataSource[section - 1];
+    DBHExchangeNoticeModelData *model = self.dataSource[section];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-    headerView.time = @"2017-11-11 11:11:11";//model.updatedAt;
+    headerView.time = model.updatedAt;
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -95,13 +105,49 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 }
 
 #pragma mark ------ Data ------
+/**
+ 获取交易所公告
+ */
+- (void)getExchangeNotice {
+    WEAKSELF
+    [PPNetworkHelper GET:@"exchange_notice" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.dataSource.count) {
+            return ;
+        }
+        
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseCache[@"data"]) {
+            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseObject[@"data"]) {
+            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
 
 #pragma mark ------ Event Responds ------
 /**
  项目查看
  */
 - (void)respondsToPersonBarButtonItem {
-    
+    DBHFunctionalUnitLookViewController *functionalUnitLookViewController = [[DBHFunctionalUnitLookViewController alloc] init];
+    functionalUnitLookViewController.title = self.title;
+    functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
+    [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
 }
 /**
  你的观点
@@ -151,9 +197,6 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
     }
     return _dataSource;
 }

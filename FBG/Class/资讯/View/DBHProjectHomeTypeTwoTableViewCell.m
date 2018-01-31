@@ -9,6 +9,8 @@
 #import "DBHProjectHomeTypeTwoTableViewCell.h"
 
 #import "DBHProjectHomeNewsModelData.h"
+#import "DBHInformationDataModels.h"
+#import "DBHProjectDetailInformationModelLastArticle.h"
 
 @interface DBHProjectHomeTypeTwoTableViewCell ()
 
@@ -64,6 +66,18 @@
     
     [self.coverImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
     self.titleLabel.text = _model.title;
+}
+- (void)setProjectModel:(DBHInformationModelData *)projectModel {
+    _projectModel = projectModel;
+    
+    [self.coverImageView sdsetImageWithURL:_projectModel.coverImg placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
+    self.titleLabel.text = _projectModel.desc;
+}
+- (void)setLastModel:(DBHProjectDetailInformationModelLastArticle *)lastModel {
+    _lastModel = lastModel;
+    
+    [self.coverImageView sdsetImageWithURL:_lastModel.img placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
+    self.titleLabel.text = _lastModel.title;
 }
 
 - (UIView *)boxView {

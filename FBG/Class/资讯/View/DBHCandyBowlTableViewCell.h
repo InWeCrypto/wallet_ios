@@ -8,6 +8,13 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHCandyBowlModelData;
+
 @interface DBHCandyBowlTableViewCell : DBHBaseTableViewCell
+
+/**
+ 空投信息
+ */
+@property (nonatomic, strong) DBHCandyBowlModelData *model;
 
 @end

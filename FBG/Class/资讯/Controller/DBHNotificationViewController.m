@@ -9,6 +9,8 @@
 
 #import "DBHNotificationViewController.h"
 
+#import "DBHFunctionalUnitLookViewController.h"
+
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHIotificationTableViewCell.h"
 
@@ -85,7 +87,10 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
  项目查看
  */
 - (void)respondsToPersonBarButtonItem {
-    
+    DBHFunctionalUnitLookViewController *functionalUnitLookViewController = [[DBHFunctionalUnitLookViewController alloc] init];
+    functionalUnitLookViewController.title = self.title;
+    functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
+    [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
 }
 
 #pragma mark ------ Getters And Setters ------
