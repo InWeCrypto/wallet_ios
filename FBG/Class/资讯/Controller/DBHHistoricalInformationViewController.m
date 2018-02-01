@@ -124,7 +124,7 @@ static const CGFloat scale = 1.3; // 选中形变倍数
     DBHHistoricalInformationForTagModelData *model = self.titleArray[self.currentSelectedTitleLabel.tag - 200];
     
     WEAKSELF
-    [PPNetworkHelper GET:self.currentSelectedTitleLabel.tag == 200 ? @"article" : [NSString stringWithFormat:@"article?%ld", (NSInteger)model.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%@%@", self.projevtId, self.currentSelectedTitleLabel.tag == 200 ? @"" : [NSString stringWithFormat:@"%d", (NSInteger)model.dataIdentifier]] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         NSMutableArray *array = weakSelf.dataSource[weakSelf.currentSelectedTitleLabel.tag - 200];
         [array removeAllObjects];
         

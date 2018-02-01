@@ -13,6 +13,7 @@
 @interface DBHInformationTableViewCell ()
 
 @property (nonatomic, strong) UIImageView *iconBackImageView;
+@property (nonatomic, strong) UILabel *noReadLabel;
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *contentLabel;
@@ -37,6 +38,7 @@
 #pragma mark ------ UI ------
 - (void)setUI {
     [self.contentView addSubview:self.iconBackImageView];
+    [self.contentView addSubview:self.noReadLabel];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.contentLabel];
@@ -49,6 +51,11 @@
         make.width.height.offset(AUTOLAYOUTSIZE(45));
         make.left.offset(AUTOLAYOUTSIZE(15));
         make.centerY.equalTo(weakSelf.contentView);
+    }];
+    [self.noReadLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.offset(AUTOLAYOUTSIZE(14));
+        make.centerX.equalTo(weakSelf.iconBackImageView.mas_right);
+        make.centerY.equalTo(weakSelf.iconBackImageView.mas_top);
     }];
     [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.offset(AUTOLAYOUTSIZE(30));
@@ -106,6 +113,22 @@
     self.priceLabel.hidden = YES;
     self.changeLabel.hidden = YES;
 }
+- (void)setContent:(NSString *)content {
+    _content = content;
+    
+    self.contentLabel.text = _content;
+}
+- (void)setTime:(NSString *)time {
+    _time = time;
+    
+    self.timeLabel.text = _time;
+}
+- (void)setNoReadNumber:(NSString *)noReadNumber {
+    _noReadNumber = noReadNumber;
+    
+    self.noReadLabel.hidden = !_noReadNumber.integerValue;
+    self.noReadLabel.text = _noReadNumber;
+}
 
 - (UIImageView *)iconBackImageView {
     if (!_iconBackImageView) {
@@ -114,6 +137,19 @@
         _iconBackImageView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
     }
     return _iconBackImageView;
+}
+- (UILabel *)noReadLabel {
+    if (!_noReadLabel) {
+        _noReadLabel = [[UILabel alloc] init];
+        _noReadLabel.hidden = YES;
+        _noReadLabel.backgroundColor = [UIColor redColor];
+        _noReadLabel.layer.cornerRadius = AUTOLAYOUTSIZE(7);
+        _noReadLabel.clipsToBounds = YES;
+        _noReadLabel.font = FONT(10);
+        _noReadLabel.textColor = [UIColor whiteColor];
+        _noReadLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _noReadLabel;
 }
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {

@@ -6,7 +6,7 @@
 #ifndef __Neomobile_H__
 #define __Neomobile_H__
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 #include "Universe.objc.h"
 
 

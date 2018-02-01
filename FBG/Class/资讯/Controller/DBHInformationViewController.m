@@ -19,11 +19,16 @@
 #import "DBHCandyBowlViewController.h"
 #import "DBHTraderClockViewController.h"
 #import "DBHNotificationViewController.h"
+#import "DBHCreateWalletViewController.h"
+#import "DBHImportWalletViewController.h"
 
 #import "DBHInformationTitleView.h"
 #import "DBHMenuView.h"
 #import "DBHInformationTopView.h"
 #import "DBHInformationHeaderView.h"
+#import "DBHAddWalletPromptView.h"
+#import "DBHSelectWalletTypeOnePromptView.h"
+#import "DBHSelectWalletTypeTwoPromptView.h"
 #import "DBHInformationTableViewCell.h"
 
 #import "DBHInformationDataModels.h"
@@ -37,10 +42,18 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 @property (nonatomic, strong) DBHInformationTopView *informationTopView;
 @property (nonatomic, strong) DBHInformationHeaderView *informationHeaderView;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) DBHAddWalletPromptView *addWalletPromptView;
+@property (nonatomic, strong) DBHSelectWalletTypeOnePromptView *selectWalletTypeOnePromptView;
+@property (nonatomic, strong) DBHSelectWalletTypeTwoPromptView *selectWalletTypeTwoPromptView;
 
 @property (nonatomic, assign) BOOL isShowTopView; // 是否显示功能组件
 @property (nonatomic, strong) NSArray *menuArray; // 菜单选项
 @property (nonatomic, copy) NSArray *titleArray; // 功能组件标题
+@property (nonatomic, strong) NSMutableArray *conversationArray; // 功能组件会话列表
+@property (nonatomic, strong) NSMutableArray *contentArray; // 功能组件最新消息
+@property (nonatomic, strong) NSMutableArray *timeArray; // 功能组件最新消息时间
+@property (nonatomic, strong) NSMutableArray *noReadArray; // 未读消息数量
+@property (nonatomic, copy) NSArray *titleGroupNameArray; // 功能组件对应环信的组名
 @property (nonatomic, strong) NSMutableArray *functionalUnitArray; // 功能组件
 @property (nonatomic, strong) NSMutableArray *dataSource; // 项目
 
@@ -60,6 +73,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self getFunctionalUnit];
     [self getProjectList];
 }
 - (void)viewDidDisappear:(BOOL)animated {
@@ -100,6 +114,9 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     DBHInformationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationTableViewCellIdentifier forIndexPath:indexPath];
     if (!indexPath.section && !self.informationHeaderView.currentSelectedIndex) {
         cell.functionalUnitTitle = self.functionalUnitArray[indexPath.row];
+        cell.content = self.contentArray[indexPath.row];
+        cell.time = self.timeArray[indexPath.row];
+        cell.noReadNumber = self.noReadArray[indexPath.row];
     } else {
         cell.model = self.dataSource[indexPath.row];
     }
@@ -109,6 +126,13 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!indexPath.section) {
+        // 标识为已读
+        if (![self.conversationArray[indexPath.row] isKindOfClass:[NSString class]]) {
+            EMConversation *conversation = self.conversationArray[indexPath.row];
+            [conversation markAllMessagesAsRead:nil];
+        }
+    }
     if (!indexPath.section && !self.informationHeaderView.currentSelectedIndex) {
         switch ([self.titleArray indexOfObject:self.functionalUnitArray[indexPath.row]]) {
             case 0: {
@@ -224,12 +248,12 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 //}
 
 #pragma mark ------ EMChatManagerDelegate ------
+/**
+ 收到消息
+ */
 - (void)messagesDidReceive:(NSArray *)aMessages {
-    NSLog(@"count:%ld", aMessages.count);
-    EMMessage *message = aMessages.firstObject;
-    EMTextMessageBody *message1 = message.body;
-    NSLog(@"message:%@", message1.text);
-    NSLog(@"extend:%@", message.ext);
+    [self getFunctionalUnit];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark ------ Data ------
@@ -237,8 +261,6 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
  获取项目列表
  */
 - (void)getProjectList {
-    [self getFunctionalUnit];
-    
     WEAKSELF
     [PPNetworkHelper GET:!self.informationHeaderView.currentSelectedIndex ? @"category?user_favorite" : [NSString stringWithFormat:@"category?type=%ld", self.informationHeaderView.currentSelectedIndex] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         [weakSelf.dataSource removeAllObjects];
@@ -288,10 +310,53 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
  */
 - (void)getFunctionalUnit {
     [self.functionalUnitArray removeAllObjects];
+    [self.conversationArray removeAllObjects];
+    [self.contentArray removeAllObjects];
+    [self.timeArray removeAllObjects];
+    [self.noReadArray removeAllObjects];
+    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
     for (NSInteger i = 0; i < [UserSignData share].user.functionalUnitArray.count; i++) {
         NSString *tag = [UserSignData share].user.functionalUnitArray[i];
         if ([tag isEqualToString:@"0"]) {
             [self.functionalUnitArray addObject:self.titleArray[i]];
+            
+            [self.conversationArray addObject:@""];
+            [self.contentArray addObject:@""];
+            [self.timeArray addObject:@""];
+            [self.noReadArray addObject:@"0"];
+            if (i < 4) {
+                // 群组
+                for (EMConversation *conversation in conversations) {
+                    if (conversation.type != EMConversationTypeGroupChat) {
+                        continue;
+                    }
+                    
+                    EMError *error = nil;
+                    EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:conversation.conversationId error:&error];
+                    if (!error) {
+                        if ([group.subject containsString:self.titleGroupNameArray[i]]) {
+                            if (conversation.latestMessage) {
+                                NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)conversation.latestMessage.timestamp];
+                                EMTextMessageBody *messageContent = (EMTextMessageBody *)conversation.latestMessage.body;
+                                self.conversationArray[self.functionalUnitArray.count - 1] = conversation;
+                                self.contentArray[self.functionalUnitArray.count - 1] = messageContent.text;
+                                self.timeArray[self.functionalUnitArray.count - 1] = [messageDate formattedTime];
+                                self.noReadArray[self.functionalUnitArray.count - 1] = [NSString stringWithFormat:@"%d", conversation.unreadMessagesCount];
+                            }
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // 单聊
+                for (EMConversation *conversation in conversations) {
+                    if (conversation.type != EMConversationTypeChat) {
+                        continue;
+                    }
+                    
+                    
+                }
+            }
         }
     }
 }
@@ -358,6 +423,11 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 }
                 case 1: {
                     // 添加钱包
+                    [[UIApplication sharedApplication].keyWindow addSubview:self.addWalletPromptView];
+                    
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [weakSelf.addWalletPromptView animationShow];
+                    });
                     break;
                 }
                 case 2: {
@@ -411,6 +481,84 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     }
     return _tableView;
 }
+- (DBHAddWalletPromptView *)addWalletPromptView {
+    if (!_addWalletPromptView) {
+        _addWalletPromptView = [[DBHAddWalletPromptView alloc] init];
+        
+        WEAKSELF
+        [_addWalletPromptView selectedBlock:^(NSInteger index) {
+            if (!index) {
+                // 添加新钱包
+                [[UIApplication sharedApplication].keyWindow addSubview:self.selectWalletTypeOnePromptView];
+                
+                WEAKSELF
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.selectWalletTypeOnePromptView animationShow];
+                });
+            } else {
+                // 导入钱包
+                DBHImportWalletViewController *importWalletViewController = [[DBHImportWalletViewController alloc] init];
+                [weakSelf.navigationController pushViewController:importWalletViewController animated:YES];
+            }
+        }];
+    }
+    return _addWalletPromptView;
+}
+- (DBHSelectWalletTypeOnePromptView *)selectWalletTypeOnePromptView {
+    if (!_selectWalletTypeOnePromptView) {
+        _selectWalletTypeOnePromptView = [[DBHSelectWalletTypeOnePromptView alloc] init];
+        
+        WEAKSELF
+        [_selectWalletTypeOnePromptView selectedBlock:^(NSInteger index) {
+            if (index == - 1) {
+                // 返回
+                [[UIApplication sharedApplication].keyWindow addSubview:self.addWalletPromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.addWalletPromptView animationShow];
+                });
+            } else if (!index) {
+                // 添加NEO
+                [[UIApplication sharedApplication].keyWindow addSubview:self.selectWalletTypeTwoPromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.selectWalletTypeTwoPromptView animationShow];
+                });
+            } else {
+                // 添加ETH
+                [LCProgressHUD showInfoMsg:NSLocalizedString(@"Coming Soon", nil)];
+            }
+        }];
+    }
+    return _selectWalletTypeOnePromptView;
+}
+- (DBHSelectWalletTypeTwoPromptView *)selectWalletTypeTwoPromptView {
+    if (!_selectWalletTypeTwoPromptView) {
+        _selectWalletTypeTwoPromptView = [[DBHSelectWalletTypeTwoPromptView alloc] init];
+        
+        WEAKSELF
+        [_selectWalletTypeTwoPromptView selectedBlock:^(NSInteger index) {
+            if (index == - 1) {
+                // 返回
+                [[UIApplication sharedApplication].keyWindow addSubview:self.selectWalletTypeOnePromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.selectWalletTypeOnePromptView animationShow];
+                });
+            } else {
+                if (!index) {
+                    // 热钱包
+                    DBHCreateWalletViewController *createWalletViewController = [[DBHCreateWalletViewController alloc] init];
+                    [weakSelf.navigationController pushViewController:createWalletViewController animated:YES];
+                } else {
+                    // 冷钱包
+                    [LCProgressHUD showInfoMsg:NSLocalizedString(@"Coming Soon", nil)];
+                }
+            }
+        }];
+    }
+    return _selectWalletTypeTwoPromptView;
+}
 
 - (NSArray *)menuArray {
     if (!_menuArray) {
@@ -423,6 +571,36 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         _titleArray = @[@"InWe热点", @"TradingView", @"交易所公告", @"CandyBowl", @"交易提醒", @"通知"];
     }
     return _titleArray;
+}
+- (NSMutableArray *)conversationArray {
+    if (!_conversationArray) {
+        _conversationArray = [NSMutableArray array];
+    }
+    return _conversationArray;
+}
+- (NSMutableArray *)contentArray {
+    if (!_contentArray) {
+        _contentArray = [NSMutableArray array];
+    }
+    return _contentArray;
+}
+- (NSMutableArray *)timeArray {
+    if (!_timeArray) {
+        _timeArray = [NSMutableArray array];
+    }
+    return _timeArray;
+}
+- (NSMutableArray *)noReadArray {
+    if (!_noReadArray) {
+        _noReadArray = [NSMutableArray array];
+    }
+    return _noReadArray;
+}
+- (NSArray *)titleGroupNameArray {
+    if (!_titleGroupNameArray) {
+        _titleGroupNameArray = @[@"SYS_MSG_INWEHOT", @"SYS_MSG_TRADING", @"SYS_MSG_EXCHANGENOTICE", @"SYS_MSG_CANDYBOW", @"SYS_MSG_ORDER", @"SYS_MSG"];
+    }
+    return _titleGroupNameArray;
 }
 - (NSMutableArray *)functionalUnitArray {
     if (!_functionalUnitArray) {

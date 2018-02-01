@@ -239,7 +239,14 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
             switch (buttonType) {
                 case 0: {
                     // 聊天室
-                    
+                    if (!weakSelf.projectModel.roomId) {
+                        // 聊天室不存在
+                        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The project has no chat room", nil)];
+                        return ;
+                    }
+                    EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:[NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectModel.roomId] conversationType:EMConversationTypeChatRoom];
+                    chatViewController.title = weakSelf.projectModel.unit;
+                    [weakSelf.navigationController pushViewController:chatViewController animated:YES];
                     break;
                 }
                 case 1: {
@@ -252,6 +259,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                 case 2: {
                     // 项目资讯
                     DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
+                    historicalInformationViewController.projevtId = [NSString stringWithFormat:@"%ld", (NSInteger) weakSelf.projectModel.dataIdentifier];
                     [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                     break;
                 }

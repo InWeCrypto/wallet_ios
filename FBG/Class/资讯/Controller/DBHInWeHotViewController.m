@@ -8,8 +8,6 @@
 
 #import "DBHInWeHotViewController.h"
 
-#import <HyphenateLite/HyphenateLite.h>
-
 #import "DBHFunctionalUnitLookViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
@@ -106,11 +104,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
  获取Inwe热点数据
  */
 - (void)getInfomation {
-    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
-    for (EMConversation *conversation in conversations) {
-//        EaseConversationModel *conversationModel = [EaseConversationModel alloc] init
-        NSLog(@"%@", conversation.ext);
-    }
+    
 }
 
 #pragma mark ------ Event Responds ------

@@ -200,7 +200,8 @@ static NetworkStatus _status;
         }
         else
         {
-            if ([[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]] containsString:@"token无效"])
+            NSString *code = responseObject[@"code"];
+            if (code.integerValue == 4001)
             {
                 [[AppDelegate delegate] showLoginController];
             }

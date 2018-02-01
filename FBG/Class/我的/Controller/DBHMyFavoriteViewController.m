@@ -149,10 +149,10 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
  结束刷新
  */
 - (void)endRefresh {
-    if (self.tableView.mj_header.refreshing) {
+    if (self.tableView.mj_header.isRefreshing) {
         [self.tableView.mj_header endRefreshing];
     }
-    if (self.tableView.mj_footer.refreshing) {
+    if (self.tableView.mj_footer.isRefreshing) {
         [self.tableView.mj_footer endRefreshing];
     }
 }

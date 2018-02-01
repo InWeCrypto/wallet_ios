@@ -252,17 +252,26 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         [_keyboardView clickButtonBlock:^(NSInteger buttonType) {
             switch (buttonType) {
                 case 0: {
-                    // 聊天室
                     if (weakSelf.projectHomeMenuView.superview) {
                         [weakSelf.projectHomeMenuView animationHide];
+                    } else {
+                        // 聊天室
+                        if (!weakSelf.projectModel.roomId) {
+                            // 聊天室不存在
+                            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The project has no chat room", nil)];
+                            return ;
+                        }
+                        EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:[NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectModel.roomId] conversationType:EMConversationTypeChatRoom];
+                        chatViewController.title = weakSelf.projectModel.unit;
+                        [weakSelf.navigationController pushViewController:chatViewController animated:YES];
                     }
                     break;
                 }
                 case 1: {
-                    // 项目概况
                     if (weakSelf.projectHomeMenuView.superview) {
                         [weakSelf.projectHomeMenuView animationHide];
                     } else {
+                        // 项目概况
                         [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.projectHomeMenuView];
                         
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -272,19 +281,22 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                     break;
                 }
                 case 2: {
-                    // 历史资讯
                     if (weakSelf.projectHomeMenuView.superview) {
                         [weakSelf.projectHomeMenuView animationHide];
+                    } else {
+                        // 历史资讯
+                        DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
+                        historicalInformationViewController.projevtId = [NSString stringWithFormat:@"%ld", (NSInteger) weakSelf.projectModel.dataIdentifier];
+                        [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                     }
-                    
-                    DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
-                    [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                     break;
                 }
                 case 3: {
-                    // 项目介绍
                     if (weakSelf.projectHomeMenuView.superview) {
                         [weakSelf.projectHomeMenuView animationHide];
+                    } else {
+                        // 项目介绍
+                        
                     }
                     break;
                 }

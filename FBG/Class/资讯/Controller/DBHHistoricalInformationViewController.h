@@ -10,4 +10,9 @@
 
 @interface DBHHistoricalInformationViewController : DBHBaseViewController
 
+/**
+ 项目id
+ */
+@property (nonatomic, copy) NSString *projevtId;
+
 @end

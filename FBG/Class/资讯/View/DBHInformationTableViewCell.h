@@ -22,4 +22,19 @@
  */
 @property (nonatomic, copy) NSString *functionalUnitTitle;
 
+/**
+ 内容
+ */
+@property (nonatomic, copy) NSString *content;
+
+/**
+ 时间
+ */
+@property (nonatomic, copy) NSString *time;
+
+/**
+ 未读消息数量
+ */
+@property (nonatomic, copy) NSString *noReadNumber;
+
 @end

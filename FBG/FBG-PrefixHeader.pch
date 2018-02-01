@@ -6,8 +6,15 @@
 //  Copyright © 2017年 ButtonRoot. All rights reserved.
 //
 
+#ifdef __OBJC__
+
 #ifndef FBG_PrefixHeader_pch
 #define FBG_PrefixHeader_pch
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+#endif
 
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
@@ -93,6 +100,7 @@
 #import "Masonry.h"
 #import "MJRefresh.h"
 #import "NSString+Null.h"
+#import "EaseUI.h"
 
 /**
  *  语言工具类
