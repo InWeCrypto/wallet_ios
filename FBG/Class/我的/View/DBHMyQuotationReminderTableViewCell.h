@@ -8,6 +8,13 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHInformationModelData;
+
 @interface DBHMyQuotationReminderTableViewCell : DBHBaseTableViewCell
+
+/**
+ 行情提醒
+ */
+@property (nonatomic, strong) DBHInformationModelData *model;
 
 @end

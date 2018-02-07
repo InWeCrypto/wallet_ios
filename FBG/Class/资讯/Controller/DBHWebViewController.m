@@ -62,6 +62,22 @@
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setIsHiddenYourOpinion:(BOOL)isHiddenYourOpinion {
+    _isHiddenYourOpinion = isHiddenYourOpinion;
+    
+    self.grayLineView.hidden = _isHiddenYourOpinion;
+    self.yourOpinionButton.hidden = _isHiddenYourOpinion;
+    
+    WEAKSELF
+    if (_isHiddenYourOpinion) {
+        [self.webView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(weakSelf.view);
+            make.centerX.equalTo(weakSelf.view);
+            make.top.equalTo(weakSelf.view);
+            make.bottom.equalTo(weakSelf.view);
+        }];
+    }
+}
 - (void)setHtmlString:(NSString *)htmlString {
     _htmlString = htmlString;
     

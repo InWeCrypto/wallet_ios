@@ -12,6 +12,7 @@
 @class DBHProjectHomeNewsModelData;
 @class DBHExchangeNoticeModelData;
 @class DBHCandyBowlModelData;
+@class DBHInfomationModelData;
 
 @interface DBHMyFavoriteTableViewCell : DBHBaseTableViewCell
 
@@ -34,5 +35,10 @@
  CandyBowl
  */
 @property (nonatomic, strong) DBHCandyBowlModelData *candyBowlModel;
+
+/**
+ 文章信息
+ */
+@property (nonatomic, strong) DBHInfomationModelData *articleModel;
 
 @end

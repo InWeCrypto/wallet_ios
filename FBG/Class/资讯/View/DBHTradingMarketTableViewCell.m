@@ -8,6 +8,8 @@
 
 #import "DBHTradingMarketTableViewCell.h"
 
+#import "DBHTradingMarketModelData.h"
+
 @interface DBHTradingMarketTableViewCell ()
 
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -47,15 +49,18 @@
         make.left.equalTo(weakSelf.nameLabel);
         make.top.equalTo(weakSelf.nameLabel.mas_bottom).offset(AUTOLAYOUTSIZE(5));
     }];
-    
-    NSMutableAttributedString *nameAttributedString = [[NSMutableAttributedString alloc] initWithString:@"Bithumb (NEO/BTC)"];
-    [nameAttributedString addAttribute:NSFontAttributeName value:FONT(13) range:NSMakeRange(0, [@"Bithumb" length])];
-    self.nameLabel.attributedText = nameAttributedString;
-    self.priceLabel.text = @"$79.00";
-    self.volumeLabel.text = @"Volume (24h)：$59,907,000";
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setModel:(DBHTradingMarketModelData *)model {
+    _model = model;
+    NSMutableAttributedString *nameAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)", _model.source, _model.pair]];
+    [nameAttributedString addAttribute:NSFontAttributeName value:FONT(13) range:NSMakeRange(0, [_model.source length])];
+    self.nameLabel.attributedText = nameAttributedString;
+    self.priceLabel.text = _model.pairce;
+    self.volumeLabel.text = [NSString stringWithFormat:@"Volume (24h)：%@", _model.volum24];
+}
+
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];

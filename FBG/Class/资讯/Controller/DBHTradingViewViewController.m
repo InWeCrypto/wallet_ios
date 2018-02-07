@@ -111,20 +111,20 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         }
         
         [weakSelf.dataSource removeAllObjects];
+        NSArray *dataArray = responseCache[@"data"];
         
-        for (NSDictionary *dic in responseCache[@"data"]) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-            
+        if (dataArray.count) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray.lastObject];
             [weakSelf.dataSource addObject:model];
         }
         
         [weakSelf.tableView reloadData];
     } success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
+        NSArray *dataArray = responseObject[@"data"];
         
-        for (NSDictionary *dic in responseObject[@"data"]) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-            
+        if (dataArray.count) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray.lastObject];
             [weakSelf.dataSource addObject:model];
         }
         

@@ -12,6 +12,7 @@
 #import "DBHProjectHomeNewsModelData.h"
 #import "DBHExchangeNoticeModelData.h"
 #import "DBHCandyBowlModelData.h"
+#import "DBHInfomationModelData.h"
 
 @interface DBHMyFavoriteTableViewCell ()
 
@@ -96,6 +97,14 @@
     self.titleLabel.text = _candyBowlModel.name;
     self.timeLabel.text = [NSString stringWithFormat:@"%.4ld-%.2ld-%.2ld", (NSInteger)_candyBowlModel.year, (NSInteger)_candyBowlModel.month, (NSInteger)_candyBowlModel.day];
     self.originalLabel.hidden = YES;
+}
+- (void)setArticleModel:(DBHInfomationModelData *)articleModel {
+    _articleModel = articleModel;
+    
+    [self.pictureImageView sdsetImageWithURL:_articleModel.img placeholderImage:nil];
+    self.titleLabel.text = _articleModel.title;
+    self.timeLabel.text = _articleModel.createdAt;
+    self.originalLabel.hidden = !_articleModel.isSole;
 }
 
 - (UIImageView *)pictureImageView {

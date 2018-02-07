@@ -10,4 +10,9 @@
 
 @interface DBHTradingMarketViewController : DBHBaseViewController
 
+/**
+ 聊天室id
+ */
+@property (nonatomic, copy) NSString *chatRoomId;
+
 @end

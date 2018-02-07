@@ -11,6 +11,7 @@
 #import "DBHProjectLookViewController.h"
 #import "DBHProjectOverviewNoTradingViewController.h"
 #import "DBHHistoricalInformationViewController.h"
+#import "DBHWebViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHInputView.h"
@@ -73,7 +74,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 
 #pragma mark ------ UITableViewDataSource ------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1 + (self.projectDetailModel.lastArticle ? 1 : 0);
+    return 1 + (self.projectDetailModel.lastArticle.categoryId != 0 ? 1 : 0);
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
@@ -200,7 +201,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 #pragma mark ------ Getters And Setters ------
 - (UIBarButtonItem *)collectBarButtonItem {
     if (!_collectBarButtonItem) {
-        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectModel.categoryUser.categoryId == 0 ? @"xiangmugaikuang_xing" : @"xiangmuzhuye_xing_cio"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
+        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectModel.categoryUser.isFavorite ? @"xiangmuzhuye_xing_cio" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
     }
     return _collectBarButtonItem;
 }
@@ -265,6 +266,11 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                 }
                 case 3: {
                     // 项目介绍
+                    DBHWebViewController *webViewController = [[DBHWebViewController alloc] init];
+                    webViewController.isHiddenYourOpinion = YES;
+                    webViewController.title = self.projectDetailModel.unit;
+                    webViewController.htmlString = self.projectDetailModel.categoryPresentation.content;
+                    [weakSelf.navigationController pushViewController:webViewController animated:YES];
                     break;
                 }
                     

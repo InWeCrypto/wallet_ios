@@ -93,6 +93,7 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
             switch (indexPath.row) {
                 case 0: {
                     // 资产账本
+                    [LCProgressHUD showMessage:NSLocalizedString(@"Coming Soon", nil)];
                     break;
                 }
                 case 1: {

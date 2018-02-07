@@ -11,6 +11,11 @@
 @interface DBHWebViewController : DBHBaseViewController
 
 /**
+ 是否隐藏你的观点
+ */
+@property (nonatomic, assign) BOOL isHiddenYourOpinion;
+
+/**
  html字符串
  */
 @property (nonatomic, copy) NSString *htmlString;

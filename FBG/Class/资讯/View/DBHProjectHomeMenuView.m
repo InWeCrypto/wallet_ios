@@ -33,8 +33,6 @@ static NSString *const kDBHProjectHomeMenuTableViewCellIdentifier = @"kDBHProjec
     if (self) {
         self.clipsToBounds = YES;
         self.frame = CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT - AUTOLAYOUTSIZE(47));
-        
-        [self setUI];
     }
     return self;
 }
@@ -55,7 +53,7 @@ static NSString *const kDBHProjectHomeMenuTableViewCellIdentifier = @"kDBHProjec
     
     WEAKSELF
     [self.boxImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset((SCREENWIDTH - AUTOLAYOUTSIZE(43.5) - AUTOLAYOUTSIZE(0.5) * 3) / 3);
+        make.width.offset((SCREENWIDTH - AUTOLAYOUTSIZE(43.5) - AUTOLAYOUTSIZE(0.5) * 3) / self.maxLine);
         make.height.offset(AUTOLAYOUTSIZE(35) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
         make.left.offset(AUTOLAYOUTSIZE(43.5) + AUTOLAYOUTSIZE(0.5) * self.line + (self.maxLine == 3 ? MENU_WIDTH(3) * (self.line - 1) : MENU_WIDTH(2) * (self.line - 1) + MENU_WIDTH(2) - MENU_WIDTH(3)));
         make.bottom.offset(AUTOLAYOUTSIZE(35) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
@@ -91,9 +89,9 @@ static NSString *const kDBHProjectHomeMenuTableViewCellIdentifier = @"kDBHProjec
 - (void)respondsToQuitButton {
     WEAKSELF
     [self.boxImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset((SCREENWIDTH - AUTOLAYOUTSIZE(43.5) - AUTOLAYOUTSIZE(0.5) * 3) / 3);
+        make.width.offset((SCREENWIDTH - AUTOLAYOUTSIZE(43.5) - AUTOLAYOUTSIZE(0.5) * 3) / self.maxLine);
         make.height.offset(AUTOLAYOUTSIZE(35) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
-        make.left.offset(AUTOLAYOUTSIZE(43.5) + AUTOLAYOUTSIZE(0.5) * self.line + (self.maxLine == 3 ? MENU_WIDTH(3) * (self.line - 1) : MENU_WIDTH(2) * (self.line - 1) + MENU_WIDTH(2) - MENU_WIDTH(3)));
+        make.left.offset(AUTOLAYOUTSIZE(43.5) + AUTOLAYOUTSIZE(0.5) * self.line + (self.maxLine == 3 ? MENU_WIDTH(3) * (self.line - 1) : MENU_WIDTH(2) * (self.line - 1)));
         make.bottom.offset(AUTOLAYOUTSIZE(35) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
     }];
     
@@ -113,7 +111,7 @@ static NSString *const kDBHProjectHomeMenuTableViewCellIdentifier = @"kDBHProjec
     [self.boxImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.offset(MENU_WIDTH(weakSelf.maxLine));
         make.height.offset(AUTOLAYOUTSIZE(35) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
-        make.left.offset(AUTOLAYOUTSIZE(43.5) + AUTOLAYOUTSIZE(0.5) * self.line + (self.maxLine == 3 ? MENU_WIDTH(3) * (self.line - 1) : MENU_WIDTH(2) * (self.line - 1) + MENU_WIDTH(2) - MENU_WIDTH(3)));
+        make.left.offset(AUTOLAYOUTSIZE(43.5) + AUTOLAYOUTSIZE(0.5) * self.line + (self.maxLine == 3 ? MENU_WIDTH(3) * (self.line - 1) : MENU_WIDTH(2) * (self.line - 1)));
         make.bottom.offset(0);
     }];
     
@@ -136,12 +134,7 @@ static NSString *const kDBHProjectHomeMenuTableViewCellIdentifier = @"kDBHProjec
     _maxLine = maxLine;
     
     WEAKSELF
-    [self.boxImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset((SCREENWIDTH - AUTOLAYOUTSIZE(43.5) - AUTOLAYOUTSIZE(0.5) * 3) / 3);
-        make.height.offset(AUTOLAYOUTSIZE(35) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
-        make.left.offset(AUTOLAYOUTSIZE(43.5) + AUTOLAYOUTSIZE(0.5) * self.line + (self.maxLine == 3 ? MENU_WIDTH(3) * (self.line - 1) : MENU_WIDTH(2) * (self.line - 1) + MENU_WIDTH(2) - MENU_WIDTH(3)));
-        make.bottom.offset(AUTOLAYOUTSIZE(35) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
-    }];
+    [self setUI];
 }
 
 - (UIImageView *)boxImageView {

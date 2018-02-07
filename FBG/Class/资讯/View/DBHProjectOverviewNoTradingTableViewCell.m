@@ -10,6 +10,8 @@
 
 #import <Charts/Charts-Swift.h>
 
+#import "DBHProjectDetailInformationDataModels.h"
+
 @interface DBHProjectOverviewNoTradingTableViewCell ()<ChartViewDelegate>
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -82,19 +84,32 @@
 //    }];
     [self.pieChartView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.contentView);
-        make.height.offset(AUTOLAYOUTSIZE(124));
         make.centerX.bottom.equalTo(weakSelf.contentView);
+        make.top.equalTo(weakSelf.titleLabel.mas_bottom);
+        make.bottom.equalTo(weakSelf.contentView);
     }];
     
     self.firstLabel.text = @"25%用于团队建设";
     self.secondLabel.text = @"50%用于产品开发";
     self.thirdLabel.text = @"25%用于社区运营";
+}
+
+#pragma mark ------ ChartViewDelegate ------
+
+#pragma mark ------ Getters And Setters ------
+- (void)setProjectDetailModel:(DBHProjectDetailInformationModelDataBase *)projectDetailModel {
+    _projectDetailModel = projectDetailModel;
     
-    NSMutableArray *values = [[NSMutableArray alloc] init];
+    NSMutableArray *values = [NSMutableArray array];
+    NSMutableArray *pointColors = [NSMutableArray array];
     PieChartDataSet *dataSet;
-    [values addObject:[[PieChartDataEntry alloc] initWithValue:762140.00 label:@"xixi" data:@"0"]];
-    [values addObject:[[PieChartDataEntry alloc] initWithValue:786600.00 label:@"hh" data:@"1"]];
-    [values addObject:[[PieChartDataEntry alloc] initWithValue:160000.00 label:@"ss" data:@"2"]];
+    for (NSInteger i = 0; i < _projectDetailModel.categoryStructure.count; i++) {
+        DBHProjectDetailInformationModelCategoryStructure *model = _projectDetailModel.categoryStructure[i];
+        PieChartDataEntry *pieChartDataEntry = [[PieChartDataEntry alloc] initWithValue:model.percentage label:model.desc data:[NSString stringWithFormat:@"%ld", i]];
+        
+        [values addObject:pieChartDataEntry];
+        [pointColors addObject:[UIColor colorWithHexString:[model.colorValue substringFromIndex:1]]];
+    }
     
     dataSet = [[PieChartDataSet alloc] initWithValues:values label:nil];
     dataSet.selectionShift = 0;
@@ -103,16 +118,8 @@
     dataSet.iconsOffset = CGPointMake(0, 100);
     // add a lot of colors
     
-    NSArray *pointColors = @[COLORFROM16(0xFF713D, 1),
-                             COLORFROM16(0x0A9234, 1),
-                             COLORFROM16(0x005031, 1)];
-    
     dataSet.colors = pointColors;
-    
-    
-    
-    
-    
+ 
     PieChartData *data = [[PieChartData alloc] initWithDataSet:dataSet];
     
     NSNumberFormatter *pFormatter = [[NSNumberFormatter alloc] init];
@@ -127,9 +134,6 @@
     self.pieChartView.data = data;
 }
 
-#pragma mark ------ ChartViewDelegate ------
-
-#pragma mark ------ Getters And Setters ------
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
@@ -192,14 +196,24 @@
         _pieChartView.drawSliceTextEnabled = NO; // 是否显示区块文本
         _pieChartView.delegate = self;
         _pieChartView.descriptionText = @""; // 饼状图描述
-        _pieChartView.legend.maxSizePercent = 1; // 图例在饼状图中的大小占比, 这会影响图例的宽高
+        _pieChartView.userInteractionEnabled = NO;
+        
+        _pieChartView.legend.horizontalAlignment = ChartLegendHorizontalAlignmentLeft; // 文本的位置
+        _pieChartView.legend.verticalAlignment = ChartLegendVerticalAlignmentTop;
+        _pieChartView.legend.orientation = ChartLegendOrientationVertical;
+        _pieChartView.legend.drawInside = NO;
+        _pieChartView.legend.xEntrySpace = AUTOLAYOUTSIZE(10);
+        _pieChartView.legend.yEntrySpace = AUTOLAYOUTSIZE(16.5);
+        _pieChartView.legend.yOffset = AUTOLAYOUTSIZE(20);
+        _pieChartView.legend.xOffset = AUTOLAYOUTSIZE(15);
+//        _pieChartView.legend.maxSizePercent = 1; // 图例在饼状图中的大小占比, 这会影响图例的宽高
         _pieChartView.legend.formToTextSpace = AUTOLAYOUTSIZE(4.5); // 文本间隔
         _pieChartView.legend.font = FONT(13); // 字体大小
         _pieChartView.legend.textColor = COLORFROM16(0x333333, 1); // 字体颜色
-        _pieChartView.legend.position = ChartLegendPositionBelowChartLeft; // 图例在饼状图中的位置
-        _pieChartView.legend.form = ChartLegendFormSquare; // 图示样式: 方形、线条、圆形
+//        _pieChartView.legend.position = ChartLegendPositionBelowChartRight; // 图例在饼状图中的位置
+//        _pieChartView.legend.form = ChartLegendFormSquare; // 图示样式: 方形、线条、圆形
         _pieChartView.legend.formSize = AUTOLAYOUTSIZE(12.5); // 图示大小
-        _pieChartView.legend.orientation = ChartLegendOrientationHorizontal;
+//        _pieChartView.legend.orientation = ChartLegendOrientationHorizontal;
 //        _pieChartView.legend.horizontalAlignment = ChartLegendHorizontalAlignmentLeft;
 //        _pieChartView.legend.verticalAlignment = ChartLegendVerticalAlignmentCenter;
         _pieChartView.drawCenterTextEnabled = YES; // 是否显示中间文字
@@ -208,7 +222,7 @@
                                     NSForegroundColorAttributeName:COLORFROM16(0x333333, 1)}
                             range:NSMakeRange(0, centerText.length)];
         _pieChartView.centerAttributedText = centerText;
-        [self.pieChartView setExtraOffsetsWithLeft:50 top:0 right:-50 bottom:0]; // 饼状图距离边缘的间隙
+        [self.pieChartView setExtraOffsetsWithLeft:AUTOLAYOUTSIZE(130) top:0 right:-AUTOLAYOUTSIZE(130) bottom:0]; // 饼状图距离边缘的间隙
     }
     return _pieChartView;
 }

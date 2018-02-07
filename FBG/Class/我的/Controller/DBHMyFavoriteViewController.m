@@ -11,7 +11,7 @@
 
 #import "DBHMyFavoriteTableViewCell.h"
 
-#import "DBHProjectDataModels.h"
+#import "DBHInfomationDataModels.h"
 
 static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteTableViewCellIdentifier";
 
@@ -59,6 +59,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHMyFavoriteTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyFavoriteTableViewCellIdentifier forIndexPath:indexPath];
+    cell.model = self.dataSource[indexPath.row];
     
     return cell;
 }
@@ -94,14 +95,14 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     }
     
     WEAKSELF
-    [PPNetworkHelper GET:@"category?user_favorite" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:@"article?user_favorite" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         if (weakSelf.dataSource.count) {
             return ;
         }
         
         NSArray *data = responseCache[@"data"];
         for (NSDictionary *dic in data) {
-            DBHProjectModelData *model = [DBHProjectModelData modelObjectWithDictionary:dic];
+            DBHInfomationModelData *model = [DBHInfomationModelData modelObjectWithDictionary:dic];
             
             [weakSelf.dataSource addObject:model];
         }
@@ -120,7 +121,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
         }
         
         for (NSDictionary *dic in data) {
-            DBHProjectModelData *model = [DBHProjectModelData modelObjectWithDictionary:dic];
+            DBHInfomationModelData *model = [DBHInfomationModelData modelObjectWithDictionary:dic];
             
             [weakSelf.dataSource addObject:model];
         }

@@ -10,6 +10,8 @@
 
 #import "DBHTradingMarketTableViewCell.h"
 
+#import "DBHTradingMarketDataModels.h"
+
 static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingMarketTableViewCellIdentifier";
 
 @interface DBHTradingMarketViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -63,14 +65,12 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
 }
 
 #pragma mark ------ UITableViewDataSource ------
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.dataSource.count;
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return self.dataSource.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHTradingMarketTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHTradingMarketTableViewCellIdentifier forIndexPath:indexPath];
+    cell.model = self.dataSource[indexPath.row];
     
     return cell;
 }
@@ -86,33 +86,33 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
  */
 - (void)getInfomation {
     WEAKSELF
-//    [PPNetworkHelper GET:@"article?type=4" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-//        if (weakSelf.dataSource.count) {
-//            return ;
-//        }
-//
-//        [weakSelf.dataSource removeAllObjects];
-//
-//        for (NSDictionary *dic in responseCache[@"data"]) {
-//            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-//
-//            [weakSelf.dataSource addObject:model];
-//        }
-//
-//        [weakSelf.tableView reloadData];
-//    } success:^(id responseObject) {
-//        [weakSelf.dataSource removeAllObjects];
-//
-//        for (NSDictionary *dic in responseObject[@"data"]) {
-//            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-//
-//            [weakSelf.dataSource addObject:model];
-//        }
-//
-//        [weakSelf.tableView reloadData];
-//    } failure:^(NSString *error) {
-//        [LCProgressHUD showFailure:error];
-//    }];
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/markets/%@/all", self.title] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.dataSource.count) {
+            return ;
+        }
+        
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseCache) {
+            DBHTradingMarketModelData *model = [DBHTradingMarketModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseObject) {
+            DBHTradingMarketModelData *model = [DBHTradingMarketModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
 }
 
 #pragma mark ------ Event Responds ------
@@ -120,7 +120,15 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
  你的观点
  */
 - (void)respondsToYourOpinionButton {
-    
+    // 聊天室
+    if (!self.chatRoomId.length) {
+        // 聊天室不存在
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The project has no chat room", nil)];
+        return ;
+    }
+    EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:self.chatRoomId conversationType:EMConversationTypeChatRoom];
+    chatViewController.title = self.title;
+    [self.navigationController pushViewController:chatViewController animated:YES];
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -129,6 +137,8 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.backgroundColor = BACKGROUNDCOLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+        _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.001)];
         
         _tableView.sectionHeaderHeight = 0;
         _tableView.sectionFooterHeight = 0;
@@ -163,9 +173,6 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
     }
     return _dataSource;
 }

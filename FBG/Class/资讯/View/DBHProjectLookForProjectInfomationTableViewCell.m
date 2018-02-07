@@ -220,7 +220,7 @@
     self.contentLabel.text = _projectDetailModel.industry;
     self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
     self.gradeLabel.text = [NSString stringWithFormat:@"%.2lf分（%@）", _projectDetailModel.categoryScore.value, NSLocalizedString(_projectDetailModel.categoryUser.score.floatValue ? @"Has Score" : @"Not Score", nil)];
-    self.stateValueLabel.text = self.menuArray[(NSInteger)_projectDetailModel.type];
+    self.stateValueLabel.text = self.menuArray[(NSInteger)_projectDetailModel.type - 1];
     self.projectSkypeValueLabel.text = _projectDetailModel.website;
 }
 

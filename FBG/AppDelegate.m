@@ -33,11 +33,13 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 #import "DBHLoginViewController.h"
 //#import "MessageVC.h"
 
-@interface AppDelegate () <UNUserNotificationCenterDelegate>
+@interface AppDelegate () <UNUserNotificationCenterDelegate, EMChatManagerDelegate, EMClientDelegate>
 {
     // iOS 10通知中心
     UNUserNotificationCenter *_notificationCenter;
 }
+
+@property (nonatomic, copy) NSArray *titleGroupNameArray; // 功能组件对应环信的组名
 
 @end
 
@@ -49,8 +51,6 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    NSLog(@"%@",[UserSignData share].user);
     if (!APP_APIEHEAD)
     {
         [[NSUserDefaults standardUserDefaults] setObject:TESTAPIEHEAD1 forKey:@"appNetWorkApi"];
@@ -69,6 +69,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     EMOptions *options = [EMOptions optionsWithAppkey:@"1109180116115999#test"];
     options.apnsCertName = @"aps_development";
     [[EMClient sharedClient] initializeSDKWithOptions:options];
+    // 注册消息回调
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
     
     //添加网络状态提醒
     [self netNotification];
@@ -107,22 +110,24 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     UMConfigInstance.channelId = @"App Store";
     [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！
     
+    [self registerEMAPNs];
+    
     //推送
     // APNs注册，获取deviceToken并上报
-    [self registerAPNS:application];
+//    [self registerAPNS:application];
     // 初始化SDK
     [self initCloudPush];
     // 监听推送通道打开动作
 //    [self listenerOnChannelOpened];
     // 监听推送消息到达
-    [self registerMessageReceive];
+//    [self registerMessageReceive];
     // 点击通知将App从关闭状态启动时，将通知打开回执上报
     // [CloudPushSDK handleLaunching:launchOptions];(Deprecated from v1.8.1)
-    [CloudPushSDK sendNotificationAck:launchOptions];
+//    [CloudPushSDK sendNotificationAck:launchOptions];
     
     // 点击通知将App从关闭状态启动时，将通知打开回执上报
     // [CloudPushSDK handleLaunching:launchOptions];(Deprecated from v1.8.1)
-    [CloudPushSDK sendNotificationAck:launchOptions];
+//    [CloudPushSDK sendNotificationAck:launchOptions];
     
     //获取钱包类型
 //    [PPNetworkHelper GET:@"wallet-category" parameters:nil hudString:nil responseCache:^(id responseCache)
@@ -197,6 +202,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
  *  APNs注册成功回调，将返回的deviceToken上传到CloudPush服务器
  */
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [[EMClient sharedClient] bindDeviceToken:deviceToken];
     NSLog(@"Upload deviceToken to CloudPush server.");
     [CloudPushSDK registerDevice:deviceToken withCallback:^(CloudPushCallbackResult *res) {
         if (res.success) {
@@ -516,5 +522,127 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     manager.enableAutoToolbar = NO;
 }
 
+/**
+ 注册环信离线推送
+ */
+- (void)registerEMAPNs {
+    UIApplication *application = [UIApplication sharedApplication];
+    
+    //iOS10 注册APNs
+    if (NSClassFromString(@"UNUserNotificationCenter")) {
+        [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert completionHandler:^(BOOL granted, NSError *error) {
+            if (granted) {
+#if !TARGET_IPHONE_SIMULATOR
+                [application registerForRemoteNotifications];
+#endif
+            }
+        }];
+        return;
+    }
+    
+    if([application respondsToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationType notificationTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
+    
+#if !TARGET_IPHONE_SIMULATOR
+    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
+        [application registerForRemoteNotifications];
+    }else{
+        UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
+        UIRemoteNotificationTypeSound |
+        UIRemoteNotificationTypeAlert;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    }
+#endif
+}
+
+#pragma mark ------ EMChatManagerDelegate ------
+/**
+ 收到消息
+ */
+- (void)messagesDidReceive:(NSArray *)aMessages {
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    // App在前台
+    if (state != UIApplicationStateBackground) {
+        return;
+    }
+    
+    for (EMMessage *msg in aMessages) {
+        switch (msg.chatType) {
+            case EMChatTypeChat: {
+                // 单聊
+//                EMConversation *conversation =
+                NSLog(@"ssss:%@", msg.conversationId);
+                break;
+            }
+            case EMChatTypeGroupChat: {
+                // 群聊
+                EMError *error = nil;
+                EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:msg.conversationId error:&error];
+                if (!error) {
+                    NSInteger index = [self.titleGroupNameArray indexOfObject:[group.subject substringToIndex:group.subject.length - 3]];
+                    if (index < 0 || index > 5) {
+                        return;
+                    }
+                    if ([[UserSignData share].user.realTimeDeliveryArray[index] isEqualToString:@"0"]) {
+                        return;
+                    }
+                }
+                break;
+            }
+            case EMChatTypeChatRoom: {
+                // 聊天室
+                return;
+                break;
+            }
+                
+            default:
+                break;
+        }
+        
+        EMTextMessageBody *message = (EMTextMessageBody *)msg.body;
+        //发送本地推送
+        if (NSClassFromString(@"UNUserNotificationCenter")) { // ios 10
+            // 设置触发时间
+            UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
+            UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+            content.sound = [UNNotificationSound defaultSound];
+            // 提醒，可以根据需要进行弹出，比如显示消息详情，或者是显示“您有一条新消息”
+            content.body = message.text;
+            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:msg.messageId content:content trigger:trigger];
+            [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+        } else {
+            UILocalNotification *notification = [[UILocalNotification alloc] init];
+            notification.fireDate = [NSDate date]; //触发通知的时间
+            notification.alertBody = message.text;
+            notification.alertAction = @"Open";
+            notification.timeZone = [NSTimeZone defaultTimeZone];
+            notification.soundName = UILocalNotificationDefaultSoundName;
+            [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+        }
+    }
+}
+
+#pragma mark ------ EMClientDelegate ------
+/**
+ 其他设备上登录
+ */
+- (void)userAccountDidLoginFromOtherDevice {
+    EMError *error = [[EMClient sharedClient] logout:YES];
+    if (!error) {
+        NSLog(@"退出成功");
+    }
+}
+
+#pragma mark ------ Getters And Setters ------
+- (NSArray *)titleGroupNameArray {
+    if (!_titleGroupNameArray) {
+        _titleGroupNameArray = @[@"SYS_MSG_INWEHOT", @"SYS_MSG_TRADING", @"SYS_MSG_EXCHANGENOTICE", @"SYS_MSG_CANDYBOW", @"SYS_MSG_ORDER", @"SYS_MSG"];
+    }
+    return _titleGroupNameArray;
+}
 
 @end

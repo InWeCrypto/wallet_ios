@@ -8,6 +8,13 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHTradingMarketModelData;
+
 @interface DBHTradingMarketTableViewCell : DBHBaseTableViewCell
+
+/**
+ 交易市场数据
+ */
+@property (nonatomic, strong) DBHTradingMarketModelData *model;
 
 @end

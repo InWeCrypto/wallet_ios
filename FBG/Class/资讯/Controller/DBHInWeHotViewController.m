@@ -104,7 +104,36 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
  获取Inwe热点数据
  */
 - (void)getInfomation {
-    
+    WEAKSELF
+    [PPNetworkHelper GET:@"article?is_hot" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.dataSource.count) {
+            return ;
+        }
+        
+        [weakSelf.dataSource removeAllObjects];
+        NSArray *dataArray = responseCache[@"data"];
+        
+        if (dataArray.count) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray.lastObject];
+            
+            [weakSelf.dataSource addObject:model];            
+        }
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf.dataSource removeAllObjects];
+        NSArray *dataArray = responseObject[@"data"];
+        
+        if (dataArray.count) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray.lastObject];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
 }
 
 #pragma mark ------ Event Responds ------

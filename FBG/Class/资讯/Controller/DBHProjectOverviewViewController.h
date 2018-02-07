@@ -12,6 +12,9 @@
 
 @interface DBHProjectOverviewViewController : DBHBaseViewController
 
+/**
+ 项目详细信息
+ */
 @property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
 
 @end

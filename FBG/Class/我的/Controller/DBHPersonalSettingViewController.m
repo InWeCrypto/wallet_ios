@@ -84,6 +84,10 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         DBHPersonalSettingForSwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier forIndexPath:indexPath];
         cell.title = @"Touch ID";
         
+        [cell changeSwitchBlock:^(BOOL isOpen) {
+            
+        }];
+        
         return cell;
     }
 }
@@ -127,7 +131,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
  */
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto {
     //获取到图片
-    NSString *endpoint = @"http://oss-cn-hongkong.aliyuncs.com";
+    NSString *endpoint = @"http://oss-cn-shanghai.aliyuncs.com";
     
     WEAKSELF
     id<OSSCredentialProvider> credential2 = [[OSSFederationCredentialProvider alloc] initWithFederationTokenGetter:^OSSFederationToken *
@@ -182,7 +186,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     NSTimeInterval a=[dat timeIntervalSince1970];
     NSString*timeString = [NSString stringWithFormat:@"%0.f", a];//转为字符型
     OSSPutObjectRequest * request = [OSSPutObjectRequest new];
-    request.bucketName = @"whalewallet";
+    request.bucketName = @"inwecrypto-china";
     request.objectKey = [NSString stringWithFormat:@"ios_header_%@.jpeg",timeString];
     request.uploadingData = UIImageJPEGRepresentation(photos.firstObject, 0.5); // 直接上传NSData
     
@@ -202,7 +206,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
             
             // sign public url
             NSString * publicURL = nil;
-            OSSTask * task1 = [client presignPublicURLWithBucketName:@"whalewallet"
+            OSSTask * task1 = [client presignPublicURLWithBucketName:request.bucketName
                                                        withObjectKey:[NSString stringWithFormat:@"ios_header_%@.jpeg",timeString]];
             
             if (!task1.error)

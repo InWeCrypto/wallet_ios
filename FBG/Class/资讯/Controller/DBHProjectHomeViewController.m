@@ -14,6 +14,7 @@
 #import "DBHProjectOverviewViewController.h"
 #import "DBHTradingMarketViewController.h"
 #import "DBHHistoricalInformationViewController.h"
+#import "DBHWebViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHInputView.h"
@@ -80,7 +81,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 
 #pragma mark ------ UITableViewDataSource ------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1 + (self.projectDetailModel.lastArticle ? 1 : 0);
+    return 1 + (self.projectDetailModel.lastArticle.categoryId != 0 ? 1 : 0);
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
@@ -89,6 +90,39 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     if (!indexPath.section) {
         DBHProjectHomeTypeOneTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeOneTableViewCellIdentifier forIndexPath:indexPath];
         cell.projectModel = self.projectModel;
+        
+        WEAKSELF
+        [cell clickButtonBlock:^(NSInteger type) {
+            switch (type) {
+                case 0: {
+                    // 项目全览
+                    DBHProjectOverviewViewController *projectOverviewViewController = [[DBHProjectOverviewViewController alloc] init];
+                    projectOverviewViewController.projectDetailModel = weakSelf.projectDetailModel;
+                    [weakSelf.navigationController pushViewController:projectOverviewViewController animated:YES];
+                    break;
+                }
+                case 1: {
+                    // 实时行情
+                    DBHMarketDetailViewController *marketDetailViewController = [[DBHMarketDetailViewController alloc] init];
+                    marketDetailViewController.yourOpinion = DBHGetStringWithKeyFromTable(@"Your Opinion", nil);
+                    marketDetailViewController.chatRoomId = [NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectDetailModel.roomId];
+                    marketDetailViewController.title = weakSelf.projectDetailModel.unit;
+                    [weakSelf.navigationController pushViewController:marketDetailViewController animated:YES];
+                    break;
+                }
+                case 2: {
+                    // 交易市场
+                    DBHTradingMarketViewController *tradingMarketViewController = [[DBHTradingMarketViewController alloc] init];
+                    tradingMarketViewController.title = weakSelf.projectDetailModel.unit;
+                    tradingMarketViewController.chatRoomId = [NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectDetailModel.roomId];
+                    [weakSelf.navigationController pushViewController:tradingMarketViewController animated:YES];
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+        }];
         
         return cell;
     } else {
@@ -124,39 +158,39 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 
 #pragma mark ------ Data ------
-///**
-// 获取项目资讯
-// */
-//- (void)getInfomation {
-//    WEAKSELF
-//    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-//        if (weakSelf.dataSource.count) {
-//            return ;
-//        }
-//        
-//        [weakSelf.dataSource removeAllObjects];
-//        
-//        for (NSDictionary *dic in responseCache[@"data"]) {
-//            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-//            
-//            [weakSelf.dataSource addObject:model];
-//        }
-//        
-//        [weakSelf.tableView reloadData];
-//    } success:^(id responseObject) {
-//        [weakSelf.dataSource removeAllObjects];
-//        
-//        for (NSDictionary *dic in responseObject[@"data"]) {
-//            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-//            
-//            [weakSelf.dataSource addObject:model];
-//        }
-//        
-//        [weakSelf.tableView reloadData];
-//    } failure:^(NSString *error) {
-//        [LCProgressHUD showFailure:error];
-//    }];
-//}
+/**
+ 获取项目资讯
+ */
+- (void)getInfomation {
+    WEAKSELF
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.dataSource.count) {
+            return ;
+        }
+        
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseCache[@"data"]) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseObject[@"data"]) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
 /**
  获取项目详细信息
  */
@@ -213,7 +247,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 #pragma mark ------ Getters And Setters ------
 - (UIBarButtonItem *)collectBarButtonItem {
     if (!_collectBarButtonItem) {
-        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectModel.categoryUser.categoryId == 0 ? @"xiangmugaikuang_xing" : @"xiangmuzhuye_xing_cio"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
+        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectModel.categoryUser.isFavorite ? @"xiangmuzhuye_xing_cio" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
     }
     return _collectBarButtonItem;
 }
@@ -254,17 +288,16 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                 case 0: {
                     if (weakSelf.projectHomeMenuView.superview) {
                         [weakSelf.projectHomeMenuView animationHide];
-                    } else {
-                        // 聊天室
-                        if (!weakSelf.projectModel.roomId) {
-                            // 聊天室不存在
-                            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The project has no chat room", nil)];
-                            return ;
-                        }
-                        EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:[NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectModel.roomId] conversationType:EMConversationTypeChatRoom];
-                        chatViewController.title = weakSelf.projectModel.unit;
-                        [weakSelf.navigationController pushViewController:chatViewController animated:YES];
                     }
+                    // 聊天室
+                    if (!weakSelf.projectModel.roomId) {
+                        // 聊天室不存在
+                        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The project has no chat room", nil)];
+                        return ;
+                    }
+                    EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:[NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectModel.roomId] conversationType:EMConversationTypeChatRoom];
+                    chatViewController.title = weakSelf.projectModel.unit;
+                    [weakSelf.navigationController pushViewController:chatViewController animated:YES];
                     break;
                 }
                 case 1: {
@@ -283,21 +316,23 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                 case 2: {
                     if (weakSelf.projectHomeMenuView.superview) {
                         [weakSelf.projectHomeMenuView animationHide];
-                    } else {
-                        // 历史资讯
-                        DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
-                        historicalInformationViewController.projevtId = [NSString stringWithFormat:@"%ld", (NSInteger) weakSelf.projectModel.dataIdentifier];
-                        [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                     }
+                    // 历史资讯
+                    DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
+                    historicalInformationViewController.projevtId = [NSString stringWithFormat:@"%ld", (NSInteger) weakSelf.projectModel.dataIdentifier];
+                    [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                     break;
                 }
                 case 3: {
                     if (weakSelf.projectHomeMenuView.superview) {
                         [weakSelf.projectHomeMenuView animationHide];
-                    } else {
-                        // 项目介绍
-                        
                     }
+                    // 项目介绍
+                    DBHWebViewController *webViewController = [[DBHWebViewController alloc] init];
+                    webViewController.isHiddenYourOpinion = YES;
+                    webViewController.title = self.projectDetailModel.unit;
+                    webViewController.htmlString = self.projectDetailModel.categoryPresentation.content;
+                    [weakSelf.navigationController pushViewController:webViewController animated:YES];
                     break;
                 }
                     
@@ -323,23 +358,25 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                 case 0: {
                     // 项目全览
                     DBHProjectOverviewViewController *projectOverviewViewController = [[DBHProjectOverviewViewController alloc] init];
-                    projectOverviewViewController.projectDetailModel = self.projectDetailModel;
+                    projectOverviewViewController.projectDetailModel = weakSelf.projectDetailModel;
                     [weakSelf.navigationController pushViewController:projectOverviewViewController animated:YES];
                     break;
                 }
                 case 1: {
                     // 实时行情
-//                    DBHQuotationVCModelData *model = self.dataSource[indexPath.row];
                     DBHMarketDetailViewController *marketDetailViewController = [[DBHMarketDetailViewController alloc] init];
                     marketDetailViewController.yourOpinion = DBHGetStringWithKeyFromTable(@"Your Opinion", nil);
-//                    marketDetailViewController.title = model.unit;
-                    [self.navigationController pushViewController:marketDetailViewController animated:YES];
+                    marketDetailViewController.chatRoomId = [NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectDetailModel.roomId];
+                    marketDetailViewController.title = weakSelf.projectDetailModel.unit;
+                    [weakSelf.navigationController pushViewController:marketDetailViewController animated:YES];
                     break;
                 }
                 case 2: {
                     // 交易市场
                     DBHTradingMarketViewController *tradingMarketViewController = [[DBHTradingMarketViewController alloc] init];
-                    [self.navigationController pushViewController:tradingMarketViewController animated:YES];
+                    tradingMarketViewController.title = weakSelf.projectDetailModel.unit;
+                    tradingMarketViewController.chatRoomId = [NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectDetailModel.roomId];
+                    [weakSelf.navigationController pushViewController:tradingMarketViewController animated:YES];
                     break;
                 }
                     

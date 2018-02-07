@@ -8,6 +8,13 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHProjectDetailInformationModelDataBase;
+
 @interface DBHProjectOverviewNoTradingTableViewCell : DBHBaseTableViewCell
+
+/**
+ 项目信息
+ */
+@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
 
 @end

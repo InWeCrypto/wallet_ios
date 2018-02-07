@@ -134,8 +134,10 @@ static NetworkStatus _status;
         }
         else
         {
-            if ([[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]] containsString:@"token无效"])
+            NSString *code = responseObject[@"code"];
+            if (code.integerValue == 4001)
             {
+                [UserSignData share].user.token = nil;
                 [[AppDelegate delegate] showLoginController];
             }
             failure([responseObject objectForKey:@"msg"]);
@@ -203,6 +205,7 @@ static NetworkStatus _status;
             NSString *code = responseObject[@"code"];
             if (code.integerValue == 4001)
             {
+                [UserSignData share].user.token = nil;
                 [[AppDelegate delegate] showLoginController];
             }
             failure([responseObject objectForKey:@"msg"]);
@@ -269,8 +272,10 @@ static NetworkStatus _status;
         }
         else
         {
-            if ([[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]] containsString:@"token无效"])
+            NSString *code = responseObject[@"code"];
+            if (code.integerValue == 4001)
             {
+                [UserSignData share].user.token = nil;
                 [[AppDelegate delegate] showLoginController];
             }
             failure([responseObject objectForKey:@"msg"]);
@@ -335,8 +340,10 @@ static NetworkStatus _status;
                 }
                 else
                 {
-                    if ([[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]] containsString:@"token无效"])
+                    NSString *code = responseObject[@"code"];
+                    if (code.integerValue == 4001)
                     {
+                        [UserSignData share].user.token = nil;
                         [[AppDelegate delegate] showLoginController];
                     }
                     failure([responseObject objectForKey:@"msg"]);
@@ -394,8 +401,10 @@ static NetworkStatus _status;
         }
         else
         {
-            if ([[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]] containsString:@"token无效"])
+            NSString *code = responseObject[@"code"];
+            if (code.integerValue == 4001)
             {
+                [UserSignData share].user.token = nil;
                 [[AppDelegate delegate] showLoginController];
             }
             failure([responseObject objectForKey:@"msg"]);

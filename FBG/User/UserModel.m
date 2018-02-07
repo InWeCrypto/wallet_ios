@@ -22,5 +22,17 @@
     }
     return _functionalUnitArray;
 }
+- (NSMutableArray *)realTimeDeliveryArray {
+    if (!_realTimeDeliveryArray) {
+        _realTimeDeliveryArray = [NSMutableArray array];
+        [_realTimeDeliveryArray addObject:@"1"];
+        [_realTimeDeliveryArray addObject:@"1"];
+        [_realTimeDeliveryArray addObject:@"1"];
+        [_realTimeDeliveryArray addObject:@"1"];
+        [_realTimeDeliveryArray addObject:@"1"];
+        [_realTimeDeliveryArray addObject:@"1"];
+    }
+    return _realTimeDeliveryArray;
+}
 
 @end

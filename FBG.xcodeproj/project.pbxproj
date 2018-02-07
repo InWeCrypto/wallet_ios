@@ -267,9 +267,6 @@
 		D565E91620182F1400930274 /* DBHMonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91520182F1400930274 /* DBHMonetaryUnitViewController.m */; };
 		D565E91920182F6E00930274 /* DBHMonetaryUnitTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91820182F6E00930274 /* DBHMonetaryUnitTableViewCell.m */; };
 		D565E91C201831F900930274 /* DBHNetworkSwitcherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91B201831F900930274 /* DBHNetworkSwitcherViewController.m */; };
-		D565E9242018750500930274 /* DBHProjectModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91D2018750400930274 /* DBHProjectModelDataBase.m */; };
-		D565E9252018750500930274 /* DBHProjectModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E91F2018750400930274 /* DBHProjectModelData.m */; };
-		D565E9262018750500930274 /* DBHProjectModelCategoryUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E9202018750500930274 /* DBHProjectModelCategoryUser.m */; };
 		D565E9292018854E00930274 /* DBHInformationTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E9282018854E00930274 /* DBHInformationTitleView.m */; };
 		D565E92C2018961D00930274 /* DBHPaymentReceivedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E92B2018961D00930274 /* DBHPaymentReceivedViewController.m */; };
 		D565E92F2018B49800930274 /* DBHInformationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E92E2018B49800930274 /* DBHInformationTableViewCell.m */; };
@@ -441,6 +438,13 @@
 		D5B20DB9201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DB8201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m */; };
 		D5B20DBF201EB61D00E2B935 /* DBHCandyBowlHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DBE201EB61C00E2B935 /* DBHCandyBowlHeaderView.m */; };
 		D5B20DC4201EEA3E00E2B935 /* DBHMarketDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DC2201EEA3E00E2B935 /* DBHMarketDetailViewController.swift */; };
+		D5B788C120298660005ACFC8 /* DBHAddressBookModelWallet.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B788B62029865E005ACFC8 /* DBHAddressBookModelWallet.m */; };
+		D5B788C220298660005ACFC8 /* DBHAddressBookModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B788B92029865F005ACFC8 /* DBHAddressBookModelData.m */; };
+		D5B788C320298660005ACFC8 /* DBHAddressBookModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B788BE20298660005ACFC8 /* DBHAddressBookModelDataBase.m */; };
+		D5B788C420298660005ACFC8 /* DBHAddressBookModelList.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B788BF20298660005ACFC8 /* DBHAddressBookModelList.m */; };
+		D5B788C520298660005ACFC8 /* DBHAddressBookModelUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B788C020298660005ACFC8 /* DBHAddressBookModelUser.m */; };
+		D5B788CB202997C6005ACFC8 /* DBHTradingMarketModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B788C7202997C3005ACFC8 /* DBHTradingMarketModelDataBase.m */; };
+		D5B788CC202997C6005ACFC8 /* DBHTradingMarketModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B788C9202997C5005ACFC8 /* DBHTradingMarketModelData.m */; };
 		D5C36BAF201F4E8500A82FCB /* DBHMarketDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C36BAC201F4E8400A82FCB /* DBHMarketDetailView.m */; };
 		D5C36BB0201F4E8500A82FCB /* DBHTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C36BAE201F4E8500A82FCB /* DBHTimeSelectView.m */; };
 		D5C36BBB201F90A300A82FCB /* DBHMarketDetailKLineViewModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C36BB1201F90A100A82FCB /* DBHMarketDetailKLineViewModelDataBase.m */; };
@@ -450,6 +454,11 @@
 		D5C36BC2201F921F00A82FCB /* DBHMarketDetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C36BC1201F921F00A82FCB /* DBHMarketDetailViewModel.m */; };
 		D5C36BC520207F8400A82FCB /* DBHProjectOverviewNoTradingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C36BC420207F8400A82FCB /* DBHProjectOverviewNoTradingViewController.m */; };
 		D5C36BC82020950700A82FCB /* DBHProjectOverviewNoTradingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C36BC72020950700A82FCB /* DBHProjectOverviewNoTradingTableViewCell.m */; };
+		D5EA6F14202AEF3E00181346 /* DBHInfomationModelArticleUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D5EA6F0E202AEF3C00181346 /* DBHInfomationModelArticleUser.m */; };
+		D5EA6F15202AEF3E00181346 /* DBHInfomationModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D5EA6F0F202AEF3D00181346 /* DBHInfomationModelData.m */; };
+		D5EA6F16202AEF3E00181346 /* DBHInfomationModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5EA6F10202AEF3D00181346 /* DBHInfomationModelDataBase.m */; };
+		D5EA6F17202AEF3E00181346 /* DBHInfomationModelCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = D5EA6F11202AEF3D00181346 /* DBHInfomationModelCategory.m */; };
+		D5EA6F1B202B0EC500181346 /* DBHQuotationReminderPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5EA6F1A202B0EC500181346 /* DBHQuotationReminderPromptView.m */; };
 		D5F03E4020216A1200A4F051 /* DBHExchangeNoticeModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F03E3B20216A1200A4F051 /* DBHExchangeNoticeModelData.m */; };
 		D5F03E4120216A1200A4F051 /* DBHExchangeNoticeModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F03E3F20216A1200A4F051 /* DBHExchangeNoticeModelDataBase.m */; };
 		D5F03E4420216D6300A4F051 /* DBHWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F03E4320216D6300A4F051 /* DBHWebViewController.m */; };
@@ -967,13 +976,7 @@
 		D565E91820182F6E00930274 /* DBHMonetaryUnitTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMonetaryUnitTableViewCell.m; sourceTree = "<group>"; };
 		D565E91A201831F900930274 /* DBHNetworkSwitcherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHNetworkSwitcherViewController.h; sourceTree = "<group>"; };
 		D565E91B201831F900930274 /* DBHNetworkSwitcherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHNetworkSwitcherViewController.m; sourceTree = "<group>"; };
-		D565E91D2018750400930274 /* DBHProjectModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectModelDataBase.m; sourceTree = "<group>"; };
 		D565E91E2018750400930274 /* DBHProjectDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectDataModels.h; sourceTree = "<group>"; };
-		D565E91F2018750400930274 /* DBHProjectModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectModelData.m; sourceTree = "<group>"; };
-		D565E9202018750500930274 /* DBHProjectModelCategoryUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHProjectModelCategoryUser.m; sourceTree = "<group>"; };
-		D565E9212018750500930274 /* DBHProjectModelCategoryUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectModelCategoryUser.h; sourceTree = "<group>"; };
-		D565E9222018750500930274 /* DBHProjectModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectModelData.h; sourceTree = "<group>"; };
-		D565E9232018750500930274 /* DBHProjectModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHProjectModelDataBase.h; sourceTree = "<group>"; };
 		D565E9272018854E00930274 /* DBHInformationTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHInformationTitleView.h; sourceTree = "<group>"; };
 		D565E9282018854E00930274 /* DBHInformationTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationTitleView.m; sourceTree = "<group>"; };
 		D565E92A2018961D00930274 /* DBHPaymentReceivedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHPaymentReceivedViewController.h; sourceTree = "<group>"; };
@@ -1336,6 +1339,22 @@
 		D5B20DBE201EB61C00E2B935 /* DBHCandyBowlHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHCandyBowlHeaderView.m; sourceTree = "<group>"; };
 		D5B20DC1201EEA3E00E2B935 /* FBG-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FBG-Bridging-Header.h"; sourceTree = "<group>"; };
 		D5B20DC2201EEA3E00E2B935 /* DBHMarketDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBHMarketDetailViewController.swift; sourceTree = "<group>"; };
+		D5B788B62029865E005ACFC8 /* DBHAddressBookModelWallet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddressBookModelWallet.m; sourceTree = "<group>"; };
+		D5B788B72029865E005ACFC8 /* DBHAddressBookDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddressBookDataModels.h; sourceTree = "<group>"; };
+		D5B788B82029865E005ACFC8 /* DBHAddressBookModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddressBookModelDataBase.h; sourceTree = "<group>"; };
+		D5B788B92029865F005ACFC8 /* DBHAddressBookModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddressBookModelData.m; sourceTree = "<group>"; };
+		D5B788BA2029865F005ACFC8 /* DBHAddressBookModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddressBookModelData.h; sourceTree = "<group>"; };
+		D5B788BB2029865F005ACFC8 /* DBHAddressBookModelList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddressBookModelList.h; sourceTree = "<group>"; };
+		D5B788BC2029865F005ACFC8 /* DBHAddressBookModelUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddressBookModelUser.h; sourceTree = "<group>"; };
+		D5B788BD20298660005ACFC8 /* DBHAddressBookModelWallet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHAddressBookModelWallet.h; sourceTree = "<group>"; };
+		D5B788BE20298660005ACFC8 /* DBHAddressBookModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddressBookModelDataBase.m; sourceTree = "<group>"; };
+		D5B788BF20298660005ACFC8 /* DBHAddressBookModelList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddressBookModelList.m; sourceTree = "<group>"; };
+		D5B788C020298660005ACFC8 /* DBHAddressBookModelUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddressBookModelUser.m; sourceTree = "<group>"; };
+		D5B788C6202997C3005ACFC8 /* DBHTradingMarketModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTradingMarketModelDataBase.h; sourceTree = "<group>"; };
+		D5B788C7202997C3005ACFC8 /* DBHTradingMarketModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHTradingMarketModelDataBase.m; sourceTree = "<group>"; };
+		D5B788C8202997C4005ACFC8 /* DBHTradingMarketModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTradingMarketModelData.h; sourceTree = "<group>"; };
+		D5B788C9202997C5005ACFC8 /* DBHTradingMarketModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHTradingMarketModelData.m; sourceTree = "<group>"; };
+		D5B788CA202997C5005ACFC8 /* DBHTradingMarketDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTradingMarketDataModels.h; sourceTree = "<group>"; };
 		D5C36BAB201F4E8400A82FCB /* DBHMarketDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailView.h; sourceTree = "<group>"; };
 		D5C36BAC201F4E8400A82FCB /* DBHMarketDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailView.m; sourceTree = "<group>"; };
 		D5C36BAD201F4E8500A82FCB /* DBHTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTimeSelectView.h; sourceTree = "<group>"; };
@@ -1356,6 +1375,17 @@
 		D5C36BC420207F8400A82FCB /* DBHProjectOverviewNoTradingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectOverviewNoTradingViewController.m; sourceTree = "<group>"; };
 		D5C36BC62020950700A82FCB /* DBHProjectOverviewNoTradingTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHProjectOverviewNoTradingTableViewCell.h; sourceTree = "<group>"; };
 		D5C36BC72020950700A82FCB /* DBHProjectOverviewNoTradingTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectOverviewNoTradingTableViewCell.m; sourceTree = "<group>"; };
+		D5EA6F0B202AEF3B00181346 /* DBHInfomationDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInfomationDataModels.h; sourceTree = "<group>"; };
+		D5EA6F0C202AEF3C00181346 /* DBHInfomationModelArticleUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInfomationModelArticleUser.h; sourceTree = "<group>"; };
+		D5EA6F0D202AEF3C00181346 /* DBHInfomationModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInfomationModelData.h; sourceTree = "<group>"; };
+		D5EA6F0E202AEF3C00181346 /* DBHInfomationModelArticleUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInfomationModelArticleUser.m; sourceTree = "<group>"; };
+		D5EA6F0F202AEF3D00181346 /* DBHInfomationModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInfomationModelData.m; sourceTree = "<group>"; };
+		D5EA6F10202AEF3D00181346 /* DBHInfomationModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInfomationModelDataBase.m; sourceTree = "<group>"; };
+		D5EA6F11202AEF3D00181346 /* DBHInfomationModelCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHInfomationModelCategory.m; sourceTree = "<group>"; };
+		D5EA6F12202AEF3D00181346 /* DBHInfomationModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInfomationModelDataBase.h; sourceTree = "<group>"; };
+		D5EA6F13202AEF3D00181346 /* DBHInfomationModelCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHInfomationModelCategory.h; sourceTree = "<group>"; };
+		D5EA6F19202B0EC500181346 /* DBHQuotationReminderPromptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHQuotationReminderPromptView.h; sourceTree = "<group>"; };
+		D5EA6F1A202B0EC500181346 /* DBHQuotationReminderPromptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHQuotationReminderPromptView.m; sourceTree = "<group>"; };
 		D5F03E3B20216A1200A4F051 /* DBHExchangeNoticeModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHExchangeNoticeModelData.m; sourceTree = "<group>"; };
 		D5F03E3C20216A1200A4F051 /* DBHExchangeNoticeModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHExchangeNoticeModelDataBase.h; sourceTree = "<group>"; };
 		D5F03E3D20216A1200A4F051 /* DBHExchangeNoticeDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHExchangeNoticeDataModels.h; sourceTree = "<group>"; };
@@ -2197,6 +2227,11 @@
 		D51E66912011F4B90025B502 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D5B788CA202997C5005ACFC8 /* DBHTradingMarketDataModels.h */,
+				D5B788C8202997C4005ACFC8 /* DBHTradingMarketModelData.h */,
+				D5B788C9202997C5005ACFC8 /* DBHTradingMarketModelData.m */,
+				D5B788C6202997C3005ACFC8 /* DBHTradingMarketModelDataBase.h */,
+				D5B788C7202997C3005ACFC8 /* DBHTradingMarketModelDataBase.m */,
 				D5F03E47202175D500A4F051 /* DBHCandyBowlDataModels.h */,
 				D5F03E45202175D400A4F051 /* DBHCandyBowlModelData.h */,
 				D5F03E46202175D500A4F051 /* DBHCandyBowlModelData.m */,
@@ -2337,6 +2372,8 @@
 				D572D5852021CDD1002C8EFD /* DBHTradingMarketTableViewCell.m */,
 				D572D5872021FE37002C8EFD /* DBHProjectOverviewNoTradingForRelevantInformationTableViewCell.h */,
 				D572D5882021FE37002C8EFD /* DBHProjectOverviewNoTradingForRelevantInformationTableViewCell.m */,
+				D5EA6F19202B0EC500181346 /* DBHQuotationReminderPromptView.h */,
+				D5EA6F1A202B0EC500181346 /* DBHQuotationReminderPromptView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2385,13 +2422,27 @@
 		D51E66952011F4BA0025B502 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D5EA6F0B202AEF3B00181346 /* DBHInfomationDataModels.h */,
+				D5EA6F0C202AEF3C00181346 /* DBHInfomationModelArticleUser.h */,
+				D5EA6F0E202AEF3C00181346 /* DBHInfomationModelArticleUser.m */,
+				D5EA6F13202AEF3D00181346 /* DBHInfomationModelCategory.h */,
+				D5EA6F11202AEF3D00181346 /* DBHInfomationModelCategory.m */,
+				D5EA6F0D202AEF3C00181346 /* DBHInfomationModelData.h */,
+				D5EA6F0F202AEF3D00181346 /* DBHInfomationModelData.m */,
+				D5EA6F12202AEF3D00181346 /* DBHInfomationModelDataBase.h */,
+				D5EA6F10202AEF3D00181346 /* DBHInfomationModelDataBase.m */,
+				D5B788B72029865E005ACFC8 /* DBHAddressBookDataModels.h */,
+				D5B788BA2029865F005ACFC8 /* DBHAddressBookModelData.h */,
+				D5B788B92029865F005ACFC8 /* DBHAddressBookModelData.m */,
+				D5B788B82029865E005ACFC8 /* DBHAddressBookModelDataBase.h */,
+				D5B788BE20298660005ACFC8 /* DBHAddressBookModelDataBase.m */,
+				D5B788BB2029865F005ACFC8 /* DBHAddressBookModelList.h */,
+				D5B788BF20298660005ACFC8 /* DBHAddressBookModelList.m */,
+				D5B788BC2029865F005ACFC8 /* DBHAddressBookModelUser.h */,
+				D5B788C020298660005ACFC8 /* DBHAddressBookModelUser.m */,
+				D5B788BD20298660005ACFC8 /* DBHAddressBookModelWallet.h */,
+				D5B788B62029865E005ACFC8 /* DBHAddressBookModelWallet.m */,
 				D565E91E2018750400930274 /* DBHProjectDataModels.h */,
-				D565E9212018750500930274 /* DBHProjectModelCategoryUser.h */,
-				D565E9202018750500930274 /* DBHProjectModelCategoryUser.m */,
-				D565E9222018750500930274 /* DBHProjectModelData.h */,
-				D565E91F2018750400930274 /* DBHProjectModelData.m */,
-				D565E9232018750500930274 /* DBHProjectModelDataBase.h */,
-				D565E91D2018750400930274 /* DBHProjectModelDataBase.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3284,8 +3335,8 @@
 				0FAC290D1F2F7C4A009B3EC9 /* AABar.m in Sources */,
 				D5F679E71FB9A30400EB773D /* NSTimer+Extension.m in Sources */,
 				D56CEE78201B18280081DE05 /* DBHProjectHomeMenuView.m in Sources */,
+				D5EA6F16202AEF3E00181346 /* DBHInfomationModelDataBase.m in Sources */,
 				D50254572019AFCE00B82A7B /* DBHSelectWalletTableViewCell.m in Sources */,
-				D565E9242018750500930274 /* DBHProjectModelDataBase.m in Sources */,
 				D51E66612011F01B0025B502 /* DBHTransferListTableViewCell.m in Sources */,
 				D5C36BB0201F4E8500A82FCB /* DBHTimeSelectView.m in Sources */,
 				D565E8D72016E3F200930274 /* DBHPersonalSettingForHeadTableViewCell.m in Sources */,
@@ -3311,6 +3362,7 @@
 				A88A787E1F6954DF0058094C /* NSDecimalNumber+Addtion.m in Sources */,
 				A807132A1F5558B900C5B862 /* SectionModel.m in Sources */,
 				A80713591F5563CE00C5B862 /* NSDictionary+ValueNoNull.m in Sources */,
+				D5B788CC202997C6005ACFC8 /* DBHTradingMarketModelData.m in Sources */,
 				D565E8E62017162800930274 /* DBHChangePasswordViewController.m in Sources */,
 				D56CEEB5201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryPresentation.m in Sources */,
 				D51E665A2011F01B0025B502 /* DBHTransferListModelData.m in Sources */,
@@ -3417,6 +3469,7 @@
 				D56CEE65201AD6300081DE05 /* DBHInputMenuButton.m in Sources */,
 				D51E66DB2015E20C0025B502 /* DBHCreateWalletWithNameViewController.m in Sources */,
 				D56CEE62201AD4C80081DE05 /* DBHInputView.m in Sources */,
+				D5EA6F14202AEF3E00181346 /* DBHInfomationModelArticleUser.m in Sources */,
 				D572EC602022F77E002C8EFD /* EaseChatBarMoreView.m in Sources */,
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
 				A83303751F346F24000C08B4 /* UIScrollView+EmptyDataSet.m in Sources */,
@@ -3454,7 +3507,6 @@
 				D56CEEDC201C830E0081DE05 /* DBHProjectDetailInformationModelIco.m in Sources */,
 				D56CEE97201C1AE50081DE05 /* DBHProjectHomeNewsModelDataBase.m in Sources */,
 				0F0CFDEA1F15E54100476A86 /* AppDelegate.m in Sources */,
-				D565E9262018750500930274 /* DBHProjectModelCategoryUser.m in Sources */,
 				D565E8CE2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.m in Sources */,
 				0FAC29121F2F7C4A009B3EC9 /* AALabels.m in Sources */,
 				0FDD5F391F2DD6E800228CE0 /* YCXMenu.m in Sources */,
@@ -3482,6 +3534,7 @@
 				D572EC2E2022F77E002C8EFD /* MWTapDetectingImageView.m in Sources */,
 				D565E8EF2017202A00930274 /* DBHAddressBookViewController.m in Sources */,
 				D51E66732011F01B0025B502 /* DBHHomePageView.m in Sources */,
+				D5B788C320298660005ACFC8 /* DBHAddressBookModelDataBase.m in Sources */,
 				D51E66E02015E20C0025B502 /* DBHHomePageViewController.m in Sources */,
 				A80713531F5563CE00C5B862 /* MASConstraint.m in Sources */,
 				A88A788F1F6992E90058094C /* UIImage+ImageSize.m in Sources */,
@@ -3515,6 +3568,7 @@
 				D572EC282022F77E002C8EFD /* EMAudioRecorderUtil.m in Sources */,
 				D51E669F201200B40025B502 /* DBHLoginViewController.m in Sources */,
 				D565E907201738C100930274 /* DBHMyFavoriteTableViewCell.m in Sources */,
+				D5B788C220298660005ACFC8 /* DBHAddressBookModelData.m in Sources */,
 				D56CEEEE201E1CC70081DE05 /* DBHTraderClockViewController.m in Sources */,
 				D572EC482022F77E002C8EFD /* EMSDWebImageDecoder.m in Sources */,
 				D572EC3B2022F77E002C8EFD /* PSTGridLayoutSection.m in Sources */,
@@ -3524,6 +3578,7 @@
 				D5F03E4B202175D500A4F051 /* DBHCandyBowlModelDataBase.m in Sources */,
 				D572EC442022F77E002C8EFD /* EMSDWebImagePrefetcher.m in Sources */,
 				D572D2412021A68A002C8EFD /* DBHCandyBowlHistoricalInformationViewController.m in Sources */,
+				D5B788C120298660005ACFC8 /* DBHAddressBookModelWallet.m in Sources */,
 				D572EC062022F77E002C8EFD /* EaseEmotionEscape.m in Sources */,
 				D56CEE7E201B27650081DE05 /* DBHProjectHomeNoTradingViewController.m in Sources */,
 				D5B20DBF201EB61D00E2B935 /* DBHCandyBowlHeaderView.m in Sources */,
@@ -3537,6 +3592,7 @@
 				D572EC322022F77E002C8EFD /* MWGridCell.m in Sources */,
 				A80713551F5563CE00C5B862 /* MASLayoutConstraint.m in Sources */,
 				D56CEE5F201AC95B0081DE05 /* DBHProjectHomeHeaderView.m in Sources */,
+				D5EA6F17202AEF3E00181346 /* DBHInfomationModelCategory.m in Sources */,
 				D51E66682011F01B0025B502 /* DBHWalletDetailHeaderView.m in Sources */,
 				A8DC9B451F58428D006984D4 /* CommitOrderVC.m in Sources */,
 				D51E66DD2015E20C0025B502 /* DBHExtractGasViewController.m in Sources */,
@@ -3560,6 +3616,7 @@
 				D51E66602011F01B0025B502 /* DBHAddWalletPromptView.m in Sources */,
 				D572EC0B2022F77E002C8EFD /* EaseUserModel.m in Sources */,
 				D572EC342022F77E002C8EFD /* PSTCollectionViewController.m in Sources */,
+				D5EA6F1B202B0EC500181346 /* DBHQuotationReminderPromptView.m in Sources */,
 				0FDCAC921F20CF460090D12A /* ObjcRuntime.m in Sources */,
 				D565E9042017383600930274 /* DBHMyFavoriteViewController.m in Sources */,
 				A8016B501F418D4E003848CD /* ChoseWalletView.m in Sources */,
@@ -3572,6 +3629,7 @@
 				D5F03E4120216A1200A4F051 /* DBHExchangeNoticeModelDataBase.m in Sources */,
 				A8CD778A1F32457D00005027 /* TAAbstractDotView.m in Sources */,
 				D572EC052022F77E002C8EFD /* EaseEmoji.m in Sources */,
+				D5EA6F15202AEF3E00181346 /* DBHInfomationModelData.m in Sources */,
 				A80713541F5563CE00C5B862 /* MASConstraintMaker.m in Sources */,
 				D55558021FC975C100F0963B /* CHKLineChart.swift in Sources */,
 				D56CEE95201C1AE50081DE05 /* DBHProjectHomeNewsModelData.m in Sources */,
@@ -3583,6 +3641,7 @@
 				D572EC592022F77E002C8EFD /* EaseViewController.m in Sources */,
 				D565E8E32017132100930274 /* DBHSetNicknameTableViewCell.m in Sources */,
 				D572EC312022F77E002C8EFD /* MWGridViewController.m in Sources */,
+				D5B788C420298660005ACFC8 /* DBHAddressBookModelList.m in Sources */,
 				A80713291F5558B900C5B862 /* CCTagSelectSectionHeaderView.m in Sources */,
 				0FDD5F3D1F2DE0C400228CE0 /* AlertView.m in Sources */,
 				D56CEE87201B32BE0081DE05 /* DBHProjectLookForProjectCommunityTableViewCell.m in Sources */,
@@ -3604,11 +3663,12 @@
 				D56CEEB6201C20F10081DE05 /* DBHProjectDetailInformationModelCategoryWallet.m in Sources */,
 				D5F03E4420216D6300A4F051 /* DBHWebViewController.m in Sources */,
 				D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */,
+				D5B788C520298660005ACFC8 /* DBHAddressBookModelUser.m in Sources */,
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,
 				D5C36BBD201F90A300A82FCB /* DBHMarketDetailMoneyRealTimePriceModelData.m in Sources */,
+				D5B788CB202997C6005ACFC8 /* DBHTradingMarketModelDataBase.m in Sources */,
 				0FAC291B1F2F7C4A009B3EC9 /* AASeries.m in Sources */,
 				D572EC692022F77E002C8EFD /* EaseBubbleView+Location.m in Sources */,
-				D565E9252018750500930274 /* DBHProjectModelData.m in Sources */,
 				0F0CFE2F1F15FB3F00476A86 /* NSArray+Tool.m in Sources */,
 				0FFEA9D71F17382A009F6151 /* BaseModel.m in Sources */,
 				A8A8184F1F44849B00FFF088 /* ChoseCell.m in Sources */,
@@ -3875,7 +3935,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "08692a88-c272-4e94-8fe8-583a94d99965";
 				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
-				SWIFT_OBJC_BRIDGING_HEADER = "FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
@@ -3940,7 +4000,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "08692a88-c272-4e94-8fe8-583a94d99965";
 				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
-				SWIFT_OBJC_BRIDGING_HEADER = "FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 			};

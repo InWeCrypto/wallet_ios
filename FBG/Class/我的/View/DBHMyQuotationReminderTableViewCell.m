@@ -9,6 +9,8 @@
 
 #import "DBHMyQuotationReminderTableViewCell.h"
 
+#import "DBHInformationDataModels.h"
+
 @interface DBHMyQuotationReminderTableViewCell ()
 
 @property (nonatomic, strong) UIImageView *iconImageView;
@@ -75,17 +77,21 @@
         make.right.equalTo(weakSelf.aboceLabel);
         make.centerY.equalTo(weakSelf.changeLabel);
     }];
+}
+
+#pragma mark ------ Getters And Setters ------
+- (void)setModel:(DBHInformationModelData *)model {
+    _model = model;
     
-    self.iconImageView.image = [UIImage imageNamed:@"NEO_add"];
-    self.nameLabel.text = @"NEO";
-    self.abbreviationLabel.text = @"(NEO)";
-    self.priceLabel.text = @"$100.00";
-    self.changeLabel.text = @"(-12.00%)";
+    [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@"NEO_add"]];
+    self.nameLabel.text = _model.longName;
+    self.abbreviationLabel.text = [NSString stringWithFormat:@"(%@)", _model.unit];
+    self.priceLabel.text = [UserSignData share].user.walletUnitType == 1 ? [NSString stringWithFormat:@"¥%.2lf", _model.ico.priceCny.floatValue] : [NSString stringWithFormat:@"$%.2lf", _model.ico.priceUsd.floatValue];
+    self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", _model.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _model.ico.percentChange24h.floatValue];
     self.aboceLabel.text = @"Above $101.00";
     self.belowLabel.text = @"Below $101.00";
 }
 
-#pragma mark ------ Getters And Setters ------
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
         _iconImageView = [[UIImageView alloc] init];

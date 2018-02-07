@@ -283,6 +283,13 @@
 "No CandyBowl" = "暂无空投";
 "Related Information" = "相关信息";
 "The project has no chat room" = "该项目暂无聊天室";
+"No Data" = "暂无数据";
+"Remind Set" = "提醒设置";
+"After setting the reminder, the system will push notifications at the highest/lowest value of the quotation" = "设置提醒后，系统将于行情价格的最高值/最低值进行推送提醒";
+"Highest Value" = "最高值";
+"Lowest Value" = "最低值";
+"Current Price" = "当前价格";
+
 
 /*
  历史资讯

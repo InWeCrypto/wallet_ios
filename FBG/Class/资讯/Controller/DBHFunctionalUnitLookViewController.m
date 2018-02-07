@@ -148,7 +148,12 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         }
         case 2: {
             DBHPersonalSettingForSwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier forIndexPath:indexPath];
+            cell.functionalUnitType = self.functionalUnitType;
             cell.title = @"The project's website";
+            
+            [cell changeSwitchBlock:^(BOOL isOpen) {
+                
+            }];
             
             return cell;
             break;

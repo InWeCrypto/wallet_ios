@@ -10,6 +10,8 @@
 
 #import "DBHMyQuotationReminderTableViewCell.h"
 
+#import "DBHInformationDataModels.h"
+
 static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMyQuotationReminderTableViewCellIdentifier";
 
 @interface DBHMyQuotationReminderViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -31,6 +33,11 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
     
     [self setUI];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self getQuotationReminderList];
+}
 
 #pragma mark ------ UI ------
 - (void)setUI {
@@ -49,6 +56,7 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHMyQuotationReminderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyQuotationReminderTableViewCellIdentifier forIndexPath:indexPath];
+    cell.model = self.dataSource[indexPath.row];
     
     return cell;
 }
@@ -77,6 +85,40 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
     return @[deleteColletAction, editColletAction];
 }
 
+#pragma mark ------ Data ------
+/**
+ 获取行情提醒列表
+ */
+- (void)getQuotationReminderList {
+    WEAKSELF
+    [PPNetworkHelper GET:@"category?user_follow" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.dataSource.count) {
+            return ;
+        }
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseCache[@"data"]) {
+            DBHInformationModelData *model = [DBHInformationModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf.dataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseObject[@"data"]) {
+            DBHInformationModelData *model = [DBHInformationModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+
 #pragma mark ------ Getters And Setters ------
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -101,10 +143,6 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
     }
     return _dataSource;
 }

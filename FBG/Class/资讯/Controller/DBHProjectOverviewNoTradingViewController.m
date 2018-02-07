@@ -9,6 +9,8 @@
 
 #import "DBHProjectOverviewNoTradingViewController.h"
 
+#import "KKWebView.h"
+
 #import "DBHInputView.h"
 #import "DBHProjectHomeMenuView.h"
 #import "DBHProjectOverviewForProjectInfomtaionTableViewCell.h"
@@ -25,7 +27,8 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) DBHInputView *keyboardView;
-@property (nonatomic, strong) DBHProjectHomeMenuView *projectHomeMenuView;
+@property (nonatomic, strong) DBHProjectHomeMenuView *browserMenuView;
+@property (nonatomic, strong) DBHProjectHomeMenuView *walletMenuView;
 
 @end
 
@@ -82,6 +85,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
         }
         case 2: {
             DBHProjectOverviewNoTradingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectOverviewNoTradingTableViewCellIdentifier forIndexPath:indexPath];
+            cell.projectDetailModel = self.projectDetailModel;
             
             return cell;
             break;
@@ -106,7 +110,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
             return AUTOLAYOUTSIZE(215.5);
             break;
         case 2:
-            return AUTOLAYOUTSIZE(180);
+            return self.projectDetailModel.categoryStructure.count >= 4 ? AUTOLAYOUTSIZE(56) + AUTOLAYOUTSIZE(30) * self.projectDetailModel.categoryStructure.count : AUTOLAYOUTSIZE(180);
             break;
             
         default:
@@ -145,35 +149,87 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
             switch (buttonType) {
                 case 0: {
                     // 聊天室
-                    if (weakSelf.projectHomeMenuView.superview) {
-                        [weakSelf.projectHomeMenuView animationHide];
+                    if (weakSelf.browserMenuView.superview) {
+                        [weakSelf.browserMenuView animationHide];
                     }
+                    if (weakSelf.walletMenuView.superview) {
+                        [weakSelf.walletMenuView animationHide];
+                    }
+                    if (!weakSelf.projectDetailModel.roomId) {
+                        // 聊天室不存在
+                        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The project has no chat room", nil)];
+                        return ;
+                    }
+                    EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:[NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectDetailModel.roomId] conversationType:EMConversationTypeChatRoom];
+                    chatViewController.title = weakSelf.projectDetailModel.unit;
+                    [weakSelf.navigationController pushViewController:chatViewController animated:YES];
                     break;
                 }
                 case 1: {
                     // 浏览器
-                    if (weakSelf.projectHomeMenuView.superview) {
-                        [weakSelf.projectHomeMenuView animationHide];
+                    if (weakSelf.walletMenuView.superview) {
+                        [weakSelf.walletMenuView animationHide];
+                    }
+                    if (weakSelf.browserMenuView.superview) {
+                        [weakSelf.browserMenuView animationHide];
                     } else {
-                        [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.projectHomeMenuView];
+                        NSMutableArray *browserArray = [NSMutableArray array];
+                        for (DBHProjectDetailInformationModelCategoryExplorer *model in weakSelf.projectDetailModel.categoryExplorer) {
+                            [browserArray addObject:model.name];
+                        }
+                        
+                        // 数据为空
+                        if (!browserArray.count) {
+                            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"No Data", nil)];
+                            
+                            return;
+                        }
+                        
+                        weakSelf.browserMenuView.dataSource = [browserArray copy];
+                        [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.browserMenuView];
                         
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                            [weakSelf.projectHomeMenuView animationShow];
+                            [weakSelf.browserMenuView animationShow];
                         });
                     }
                     break;
                 }
                 case 2: {
                     // 钱包
-                    if (weakSelf.projectHomeMenuView.superview) {
-                        [weakSelf.projectHomeMenuView animationHide];
+                    if (weakSelf.browserMenuView.superview) {
+                        [weakSelf.browserMenuView animationHide];
+                    }
+                    if (weakSelf.walletMenuView.superview) {
+                        [weakSelf.walletMenuView animationHide];
+                    } else {
+                        NSMutableArray *walletArray = [NSMutableArray array];
+                        for (DBHProjectDetailInformationModelCategoryWallet *model in weakSelf.projectDetailModel.categoryWallet) {
+                            [walletArray addObject:model.name];
+                        }
+                        
+                        // 数据为空
+                        if (!walletArray.count) {
+                            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"No Data", nil)];
+                            
+                            return;
+                        }
+                        
+                        weakSelf.walletMenuView.dataSource = [walletArray copy];
+                        [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.walletMenuView];
+                        
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [weakSelf.walletMenuView animationShow];
+                        });
                     }
                     break;
                 }
                 case 3: {
                     // 令牌持有人
-                    if (weakSelf.projectHomeMenuView.superview) {
-                        [weakSelf.projectHomeMenuView animationHide];
+                    if (weakSelf.browserMenuView.superview) {
+                        [weakSelf.browserMenuView animationHide];
+                    }
+                    if (weakSelf.walletMenuView.superview) {
+                        [weakSelf.walletMenuView animationHide];
                     }
                     break;
                 }
@@ -185,16 +241,37 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
     }
     return _keyboardView;
 }
-- (DBHProjectHomeMenuView *)projectHomeMenuView {
-    if (!_projectHomeMenuView) {
-        _projectHomeMenuView = [[DBHProjectHomeMenuView alloc] init];
-        _projectHomeMenuView.line = 1;
-        _projectHomeMenuView.maxLine = 3;
-        _projectHomeMenuView.dataSource = @[@"Project overview",
-                                            @"Real-Time Quotes",
-                                            @"Trading Market"];
+- (DBHProjectHomeMenuView *)browserMenuView {
+    if (!_browserMenuView) {
+        _browserMenuView = [[DBHProjectHomeMenuView alloc] init];
+        _browserMenuView.line = 1;
+        _browserMenuView.maxLine = 2;
+        
+        WEAKSELF
+        [_browserMenuView selectedBlock:^(NSInteger index) {
+            DBHProjectDetailInformationModelCategoryExplorer *model = weakSelf.projectDetailModel.categoryExplorer[index];
+            KKWebView *webView = [[KKWebView alloc] initWithUrl:model.url];
+            webView.title = model.name;
+            [weakSelf.navigationController pushViewController:webView animated:YES];
+        }];
     }
-    return _projectHomeMenuView;
+    return _browserMenuView;
+}
+- (DBHProjectHomeMenuView *)walletMenuView {
+    if (!_walletMenuView) {
+        _walletMenuView = [[DBHProjectHomeMenuView alloc] init];
+        _walletMenuView.line = 2;
+        _walletMenuView.maxLine = 2;
+        
+        WEAKSELF
+        [_walletMenuView selectedBlock:^(NSInteger index) {
+            DBHProjectDetailInformationModelCategoryWallet *model = weakSelf.projectDetailModel.categoryWallet[index];
+            KKWebView *webView = [[KKWebView alloc] initWithUrl:model.url];
+            webView.title = model.name;
+            [weakSelf.navigationController pushViewController:webView animated:YES];
+        }];
+    }
+    return _walletMenuView;
 }
 
 @end

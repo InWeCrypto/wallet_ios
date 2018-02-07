@@ -8,6 +8,8 @@
 
 #import "DBHBaseTableViewCell.h"
 
+typedef void(^ClickButtonBlock)(NSInteger type);
+
 @class DBHInformationModelData;
 
 @interface DBHProjectHomeTypeOneTableViewCell : DBHBaseTableViewCell
@@ -16,5 +18,10 @@
  项目信息
  */
 @property (nonatomic, strong) DBHInformationModelData *projectModel;
+
+/**
+ 点击按钮回调
+ */
+- (void)clickButtonBlock:(ClickButtonBlock)clickButtonBlock;
 
 @end

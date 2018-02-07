@@ -67,7 +67,7 @@
         // 设置返回按钮
         
         UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-        UIBarButtonItem *otherBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"   " style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        UIBarButtonItem *otherBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"     " style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         
         viewController.navigationItem.leftBarButtonItems = @[backBarButtonItem, otherBarButtonItem];
     }

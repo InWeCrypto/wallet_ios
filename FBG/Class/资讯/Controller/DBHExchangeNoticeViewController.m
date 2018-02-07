@@ -117,8 +117,10 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
         
         [weakSelf.dataSource removeAllObjects];
         
-        for (NSDictionary *dic in responseCache[@"data"]) {
-            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:dic];
+        NSArray *dataArray = responseCache[@"data"];
+        
+        if (dataArray.count) {
+            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:dataArray.lastObject];
             
             [weakSelf.dataSource addObject:model];
         }
@@ -127,8 +129,10 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
     } success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
         
-        for (NSDictionary *dic in responseObject[@"data"]) {
-            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:dic];
+        NSArray *dataArray = responseObject[@"data"];
+        
+        if (dataArray.count) {
+            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:dataArray.lastObject];
             
             [weakSelf.dataSource addObject:model];
         }

@@ -75,7 +75,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
             return self.projectDetailModel.categoryMedia.count;
             break;
         case 2:
-            return self.projectModel.categoryUser.categoryId == 0 ? 1 : 2;
+            return self.projectModel.categoryUser.categoryId == 0 ? 0 : 1;
             break;
             
         default:
@@ -114,7 +114,13 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         }
         case 2: {
             DBHPersonalSettingForSwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier forIndexPath:indexPath];
-            cell.title = !indexPath.row ? @"The project's website" : @"Project Stick";
+            cell.title = @"Project Stick";
+            cell.isStick = self.projectDetailModel.categoryUser.isTop;
+            
+            WEAKSELF
+            [cell changeSwitchBlock:^(BOOL isOpen) {
+                [weakSelf projectStickWithIsStick:isOpen];
+            }];
             
             return cell;
             break;
@@ -129,7 +135,13 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.section == 1) {
+        DBHProjectDetailInformationModelCategoryMedia *model = self.projectDetailModel.categoryMedia[indexPath.row];
+        
+        KKWebView *webView = [[KKWebView alloc] initWithUrl:model.url];
+        webView.title = model.name;
+        [self.navigationController pushViewController:webView animated:YES];
+    }
 }
 //- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 //
@@ -178,6 +190,21 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         [LCProgressHUD showFailure:error];
     }];
 }
+/**
+ 项目置顶
+ */
+- (void)projectStickWithIsStick:(BOOL)isStick {
+    NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:isStick]};
+    
+    WEAKSELF
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/set_top", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
+        NSString *isTop = responseObject[@"is_top"];
+        weakSelf.projectDetailModel.categoryUser.isTop = isTop.integerValue == 1 ? YES : NO;
+        [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
 
 #pragma mark ------ Event Responds ------
 /**
@@ -187,7 +214,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     [self projectCollet];
 }
 /**
- 项目查看
+ 项目分享
  */
 - (void)respondsToPersonBarButtonItem {
     

@@ -18,9 +18,13 @@
 @property (nonatomic, strong) UILabel *realTimeQuotesLabel;
 @property (nonatomic, strong) UILabel *priceLabel;
 @property (nonatomic, strong) UILabel *changeLabel;
+@property (nonatomic, strong) UIButton *realTimeQuotesButton;
 @property (nonatomic, strong) UIView *secondLineView;
 @property (nonatomic, strong) UILabel *tradingMarketLabel;
 @property (nonatomic, strong) UIImageView *tradingMarketImageView;
+@property (nonatomic, strong) UIButton *tradingMarketButton;
+
+@property (nonatomic, copy) ClickButtonBlock clickButtonBlock;
 
 @end
 
@@ -47,9 +51,11 @@
     [self.contentView addSubview:self.realTimeQuotesLabel];
     [self.contentView addSubview:self.priceLabel];
     [self.contentView addSubview:self.changeLabel];
+    [self.contentView addSubview:self.realTimeQuotesButton];
     [self.contentView addSubview:self.secondLineView];
     [self.contentView addSubview:self.tradingMarketLabel];
     [self.contentView addSubview:self.tradingMarketImageView];
+    [self.contentView addSubview:self.tradingMarketButton];
     
     WEAKSELF
     [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -81,6 +87,12 @@
         make.right.equalTo(weakSelf.priceLabel);
         make.top.equalTo(weakSelf.priceLabel.mas_bottom);
     }];
+    [self.realTimeQuotesButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.boxView);
+        make.centerX.equalTo(weakSelf.boxView);
+        make.top.equalTo(weakSelf.firstLineView.mas_bottom);
+        make.bottom.equalTo(weakSelf.secondLineView.mas_top);
+    }];
     [self.secondLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.boxView).offset(- AUTOLAYOUTSIZE(36));
         make.height.offset(AUTOLAYOUTSIZE(1));
@@ -97,6 +109,37 @@
         make.right.equalTo(weakSelf.boxView).offset(- AUTOLAYOUTSIZE(17));
         make.centerY.equalTo(weakSelf.tradingMarketLabel);
     }];
+    [self.tradingMarketButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.boxView);
+        make.centerX.equalTo(weakSelf.boxView);
+        make.top.equalTo(weakSelf.secondLineView.mas_bottom);
+        make.bottom.equalTo(weakSelf.boxView);
+    }];
+}
+
+#pragma mark ------ Event Responds ------
+/**
+ 项目全览
+ */
+- (void)respondsToProjectOverview {
+    self.clickButtonBlock(0);
+}
+/**
+ 实时行情
+ */
+- (void)respondsToRealTimeQuotesButton {
+    self.clickButtonBlock(1);
+}
+/**
+ 交易市场
+ */
+- (void)respondsToTradingMarketButton {
+    self.clickButtonBlock(2);
+}
+
+#pragma mark ------ Public Methods ------
+- (void)clickButtonBlock:(ClickButtonBlock)clickButtonBlock {
+    self.clickButtonBlock = clickButtonBlock;
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -115,6 +158,7 @@
         _boxView.backgroundColor = [UIColor whiteColor];
         _boxView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
         _boxView.clipsToBounds = YES;
+        _boxView.userInteractionEnabled = YES;
     }
     return _boxView;
 }
@@ -123,6 +167,10 @@
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
         _coverImageView.clipsToBounds = YES;
+        _coverImageView.userInteractionEnabled = YES;
+        
+        UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToProjectOverview)];
+        [_coverImageView addGestureRecognizer:tapGR];
     }
     return _coverImageView;
 }
@@ -158,6 +206,13 @@
     }
     return _changeLabel;
 }
+- (UIButton *)realTimeQuotesButton {
+    if (!_realTimeQuotesButton) {
+        _realTimeQuotesButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_realTimeQuotesButton addTarget:self action:@selector(respondsToRealTimeQuotesButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _realTimeQuotesButton;
+}
 - (UIView *)secondLineView {
     if (!_secondLineView) {
         _secondLineView = [[UIView alloc] init];
@@ -179,6 +234,13 @@
         _tradingMarketImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"xiangmuzhuye_jiaoyishichang"]];
     }
     return _tradingMarketImageView;
+}
+- (UIButton *)tradingMarketButton {
+    if (!_tradingMarketButton) {
+        _tradingMarketButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_tradingMarketButton addTarget:self action:@selector(respondsToTradingMarketButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _tradingMarketButton;
 }
 
 @end

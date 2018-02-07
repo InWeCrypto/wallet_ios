@@ -36,6 +36,7 @@
     if (!_nicknameTextField) {
         _nicknameTextField = [[UITextField alloc] init];
         _nicknameTextField.font = FONT(15);
+        _nicknameTextField.text = [UserSignData share].user.nickname;
         _nicknameTextField.textColor = COLORFROM16(0x333333, 1);
         _nicknameTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, AUTOLAYOUTSIZE(15), 0)];
         _nicknameTextField.leftViewMode = UITextFieldViewModeAlways;

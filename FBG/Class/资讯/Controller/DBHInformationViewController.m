@@ -67,14 +67,16 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     
     [self setUI];
     
-    //注册消息回调
+    // 注册消息回调
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self getFunctionalUnit];
-    [self getProjectList];
+    WEAKSELF
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [weakSelf getFunctionalUnit];
+    });
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -88,19 +90,21 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     self.navigationItem.titleView = self.informationTitleView;
     
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.informationTopView];
+//    [self.view addSubview:self.informationTopView];
     
     WEAKSELF
-    [self.informationTopView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(125));
-        make.centerX.equalTo(weakSelf.view);
-        make.top.offset(- AUTOLAYOUTSIZE(125));
-    }];
+//    [self.informationTopView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(125));
+//        make.centerX.equalTo(weakSelf.view);
+//        make.top.offset(- AUTOLAYOUTSIZE(125));
+//    }];
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(weakSelf.view);
         make.center.equalTo(weakSelf.view);
     }];
+    
+    self.tableView.contentOffset = CGPointMake(0, 100);
 }
 
 #pragma mark ------ UITableViewDataSource ------
@@ -119,6 +123,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         cell.noReadNumber = self.noReadArray[indexPath.row];
     } else {
         cell.model = self.dataSource[indexPath.row];
+        cell.noReadNumber = 0;
     }
     
     return cell;
@@ -126,14 +131,13 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!indexPath.section) {
+    if (!indexPath.section && !self.informationHeaderView.currentSelectedIndex) {
         // 标识为已读
         if (![self.conversationArray[indexPath.row] isKindOfClass:[NSString class]]) {
             EMConversation *conversation = self.conversationArray[indexPath.row];
             [conversation markAllMessagesAsRead:nil];
         }
-    }
-    if (!indexPath.section && !self.informationHeaderView.currentSelectedIndex) {
+        
         switch ([self.titleArray indexOfObject:self.functionalUnitArray[indexPath.row]]) {
             case 0: {
                 // InWe热点
@@ -203,17 +207,19 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         }
     }
 }
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.informationHeaderView.currentSelectedIndex ? NO : YES;
+}
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.informationHeaderView.currentSelectedIndex) {
-        return @[];
-    }
     // 取消收藏
     WEAKSELF
     UITableViewRowAction *cancelColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(!indexPath.section ? @"Delete" : @"Cancel Collection", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         if (!indexPath.section) {
             // 删除功能组件
             [UserSignData share].user.functionalUnitArray[indexPath.row] = @"1";
+            [[UserSignData share] storageData:[UserSignData share].user];
             [weakSelf.functionalUnitArray removeObjectAtIndex:indexPath.row];
             [weakSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         } else {
@@ -252,6 +258,36 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
  收到消息
  */
 - (void)messagesDidReceive:(NSArray *)aMessages {
+    for (EMMessage *msg in aMessages) {
+        switch (msg.chatType) {
+            case EMChatTypeChat: {
+                // 单聊
+                //                EMConversation *conversation =
+                NSLog(@"ssss:%@", msg.conversationId);
+                break;
+            }
+            case EMChatTypeGroupChat: {
+                // 群聊
+                EMError *error = nil;
+                EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:msg.conversationId error:&error];
+                if (!error) {
+                    NSInteger index = [self.titleGroupNameArray indexOfObject:[group.subject substringToIndex:group.subject.length - 3]];
+                    if (index >= 0 && index < 4) {
+                        [UserSignData share].user.functionalUnitArray[index] = @"0";
+                        [[UserSignData share] storageData:[UserSignData share].user];
+                    }
+                }
+                break;
+            }
+            case EMChatTypeChatRoom: {
+                // 聊天室
+                break;
+            }
+                
+            default:
+                break;
+        }
+    }
     [self getFunctionalUnit];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -309,56 +345,63 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
  获取功能组件
  */
 - (void)getFunctionalUnit {
-    [self.functionalUnitArray removeAllObjects];
-    [self.conversationArray removeAllObjects];
-    [self.contentArray removeAllObjects];
-    [self.timeArray removeAllObjects];
-    [self.noReadArray removeAllObjects];
+    self.conversationArray = [@[@"", @"", @"", @"", @"", @""] mutableCopy];
+    self.contentArray = [@[@"", @"", @"", @"", @"", @""] mutableCopy];
+    self.timeArray = [@[@"", @"", @"", @"", @"", @""] mutableCopy];
+    self.noReadArray = [@[@"0", @"0", @"0", @"0", @"0", @"0"] mutableCopy];
+    
     NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
-    for (NSInteger i = 0; i < [UserSignData share].user.functionalUnitArray.count; i++) {
-        NSString *tag = [UserSignData share].user.functionalUnitArray[i];
-        if ([tag isEqualToString:@"0"]) {
-            [self.functionalUnitArray addObject:self.titleArray[i]];
-            
-            [self.conversationArray addObject:@""];
-            [self.contentArray addObject:@""];
-            [self.timeArray addObject:@""];
-            [self.noReadArray addObject:@"0"];
-            if (i < 4) {
-                // 群组
-                for (EMConversation *conversation in conversations) {
-                    if (conversation.type != EMConversationTypeGroupChat) {
-                        continue;
-                    }
-                    
-                    EMError *error = nil;
-                    EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:conversation.conversationId error:&error];
-                    if (!error) {
-                        if ([group.subject containsString:self.titleGroupNameArray[i]]) {
-                            if (conversation.latestMessage) {
-                                NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)conversation.latestMessage.timestamp];
-                                EMTextMessageBody *messageContent = (EMTextMessageBody *)conversation.latestMessage.body;
-                                self.conversationArray[self.functionalUnitArray.count - 1] = conversation;
-                                self.contentArray[self.functionalUnitArray.count - 1] = messageContent.text;
-                                self.timeArray[self.functionalUnitArray.count - 1] = [messageDate formattedTime];
-                                self.noReadArray[self.functionalUnitArray.count - 1] = [NSString stringWithFormat:@"%d", conversation.unreadMessagesCount];
-                            }
-                            break;
-                        }
+    
+    for (EMConversation *conversation in conversations) {
+        if (conversation.type == EMConversationTypeGroupChat) {
+            // 群组
+            EMError *error = nil;
+            EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:conversation.conversationId error:&error];
+            if (!error) {
+                NSInteger index = [self.titleGroupNameArray indexOfObject:[group.subject substringToIndex:group.subject.length - 3]];
+                if (index >= 0 && index < 6) {
+                    // 找到
+                    if (conversation.latestMessage) {
+                        NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)conversation.latestMessage.timestamp];
+                        EMTextMessageBody *messageContent = (EMTextMessageBody *)conversation.latestMessage.body;
+                        self.conversationArray[index] = conversation;
+                        self.contentArray[index] = messageContent.text;
+                        self.timeArray[index] = [messageDate formattedTime];
+                        self.noReadArray[index] = [NSString stringWithFormat:@"%d", conversation.unreadMessagesCount];
                     }
                 }
-            } else {
-                // 单聊
-                for (EMConversation *conversation in conversations) {
-                    if (conversation.type != EMConversationTypeChat) {
-                        continue;
-                    }
-                    
-                    
+            }
+        }
+        
+        if (conversation.type == EMConversationTypeChat) {
+            // 单聊
+            if ([conversation.conversationId isEqualToString:@"sys_msg_order"] || [conversation.conversationId isEqualToString:@"sys_msg"]) {
+                if (conversation.latestMessage) {
+                    NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)conversation.latestMessage.timestamp];
+                    EMTextMessageBody *messageContent = (EMTextMessageBody *)conversation.latestMessage.body;
+                    self.conversationArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = conversation;
+                    self.contentArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = messageContent.text;
+                    self.timeArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = [messageDate formattedTime];
+                    self.noReadArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = [NSString stringWithFormat:@"%d", conversation.unreadMessagesCount];
                 }
             }
         }
     }
+    
+    [self.functionalUnitArray removeAllObjects];
+    for (NSInteger i = 0; i < [UserSignData share].user.functionalUnitArray.count; i++) {
+        NSString *tag = [UserSignData share].user.functionalUnitArray[i];
+        if ([tag isEqualToString:@"0"]) {
+            [self.functionalUnitArray addObject:self.titleArray[i]];
+        } else {
+            [self.conversationArray removeObjectAtIndex:i];
+            [self.contentArray removeObjectAtIndex:i];
+            [self.timeArray removeObjectAtIndex:i];
+            [self.noReadArray removeObjectAtIndex:i];
+        }
+    }
+
+    [self getProjectList];
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -457,6 +500,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         
         WEAKSELF
         [_informationHeaderView selectTypeBlock:^{
+            [weakSelf.dataSource removeAllObjects];
             [weakSelf getProjectList];
         }];
     }
@@ -575,6 +619,12 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 - (NSMutableArray *)conversationArray {
     if (!_conversationArray) {
         _conversationArray = [NSMutableArray array];
+        [_conversationArray addObject:@""];
+        [_conversationArray addObject:@""];
+        [_conversationArray addObject:@""];
+        [_conversationArray addObject:@""];
+        [_conversationArray addObject:@""];
+        [_conversationArray addObject:@""];
     }
     return _conversationArray;
 }
@@ -587,12 +637,24 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 - (NSMutableArray *)timeArray {
     if (!_timeArray) {
         _timeArray = [NSMutableArray array];
+        [_timeArray addObject:@""];
+        [_timeArray addObject:@""];
+        [_timeArray addObject:@""];
+        [_timeArray addObject:@""];
+        [_timeArray addObject:@""];
+        [_timeArray addObject:@""];
     }
     return _timeArray;
 }
 - (NSMutableArray *)noReadArray {
     if (!_noReadArray) {
         _noReadArray = [NSMutableArray array];
+        [_noReadArray addObject:@"0"];
+        [_noReadArray addObject:@"0"];
+        [_noReadArray addObject:@"0"];
+        [_noReadArray addObject:@"0"];
+        [_noReadArray addObject:@"0"];
+        [_noReadArray addObject:@"0"];
     }
     return _noReadArray;
 }
