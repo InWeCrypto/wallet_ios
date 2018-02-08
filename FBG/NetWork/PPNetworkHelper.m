@@ -138,6 +138,7 @@ static NetworkStatus _status;
             if (code.integerValue == 4001)
             {
                 [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
             }
             failure([responseObject objectForKey:@"msg"]);
@@ -206,6 +207,7 @@ static NetworkStatus _status;
             if (code.integerValue == 4001)
             {
                 [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
             }
             failure([responseObject objectForKey:@"msg"]);
@@ -276,6 +278,7 @@ static NetworkStatus _status;
             if (code.integerValue == 4001)
             {
                 [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
             }
             failure([responseObject objectForKey:@"msg"]);
@@ -344,6 +347,7 @@ static NetworkStatus _status;
                     if (code.integerValue == 4001)
                     {
                         [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
                         [[AppDelegate delegate] showLoginController];
                     }
                     failure([responseObject objectForKey:@"msg"]);
@@ -405,6 +409,7 @@ static NetworkStatus _status;
             if (code.integerValue == 4001)
             {
                 [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
             }
             failure([responseObject objectForKey:@"msg"]);

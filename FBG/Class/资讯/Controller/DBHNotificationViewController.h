@@ -10,6 +10,14 @@
 
 @interface DBHNotificationViewController : DBHBaseViewController
 
-@property (nonatomic, assign) NSInteger functionalUnitType; // 功能组件类型
+/**
+ 功能组件类型
+ */
+@property (nonatomic, assign) NSInteger functionalUnitType;
+
+/**
+ 聊天会话
+ */
+@property (nonatomic, strong) EMConversation *conversation;
 
 @end

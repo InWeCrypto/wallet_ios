@@ -23,6 +23,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 @property (nonatomic, strong) UIView *grayLineView;
 @property (nonatomic, strong) UIButton *yourOpinionButton;
 
+@property (nonatomic, assign) NSInteger currentPage; // 当前页
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
@@ -33,13 +34,10 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"TradingView";
-    
     [self setUI];
-}
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    [self addRefresh];
     
+    self.currentPage = 1;
     [self getInfomation];
 }
 
@@ -105,31 +103,47 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
  */
 - (void)getInfomation {
     WEAKSELF
-    [PPNetworkHelper GET:@"article?type=4" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?type=4&per_page=5&page=%ld", self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         if (weakSelf.dataSource.count) {
             return ;
         }
         
         [weakSelf.dataSource removeAllObjects];
-        NSArray *dataArray = responseCache[@"data"];
-        
-        if (dataArray.count) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray.lastObject];
+        for (NSDictionary *dic in responseCache[@"data"]) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
             [weakSelf.dataSource addObject:model];
         }
         
         [weakSelf.tableView reloadData];
+        [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     } success:^(id responseObject) {
-        [weakSelf.dataSource removeAllObjects];
-        NSArray *dataArray = responseObject[@"data"];
+        [weakSelf endRefresh];
         
-        if (dataArray.count) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray.lastObject];
-            [weakSelf.dataSource addObject:model];
+        if (weakSelf.currentPage == 1) {
+            [weakSelf.dataSource removeAllObjects];
+        }
+        
+        NSMutableArray *dataArray = [NSMutableArray array];
+        for (NSDictionary *dic in responseObject[@"data"]) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+            
+            [dataArray addObject:model];
+        }
+        
+        if (weakSelf.currentPage == 1) {
+            [weakSelf.dataSource addObjectsFromArray:dataArray];
+        } else if (dataArray.count) {
+            [weakSelf.dataSource insertObjects:dataArray atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataArray.count)]];
         }
         
         [weakSelf.tableView reloadData];
+        if (weakSelf.currentPage == 1) {
+            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        } else if (dataArray.count) {
+            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
     } failure:^(NSString *error) {
+        [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
     }];
 }
@@ -148,7 +162,54 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
  你的观点
  */
 - (void)respondsToYourOpinionButton {
-    
+    if ([self.conversation isKindOfClass:[EMConversation class]]) {
+        // 内存中有会话
+        EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:self.conversation.conversationId conversationType:self.conversation.type];
+        chatViewController.title = self.title;
+        [self.navigationController pushViewController:chatViewController animated:YES];
+    } else {
+        // 内存中没有会话
+        EMError *error = nil;
+        NSArray *myGroups = [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:1 pageSize:50 error:&error];
+        if (!error) {
+            for (EMGroup *group in myGroups) {
+                if ([group.subject containsString:@"SYS_MSG_TRADING"]) {
+                    EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
+                    chatViewController.title = self.title;
+                    [self.navigationController pushViewController:chatViewController animated:YES];
+                }
+            }
+        }
+    }
+}
+
+#pragma mark ------ Private Methods ------
+/**
+ 添加刷新
+ */
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (weakSelf.dataSource.count < weakSelf.currentPage * 5) {
+            [weakSelf endRefresh];
+            
+            return ;
+        }
+        
+        weakSelf.currentPage += 1;
+        [weakSelf getInfomation];
+    }];
+}
+/**
+ 结束刷新
+ */
+- (void)endRefresh {
+    if ([self.tableView.mj_header isRefreshing]) {
+        [self.tableView.mj_header endRefreshing];
+    }
+    if ([self.tableView.mj_footer isRefreshing]) {
+        [self.tableView.mj_footer endRefreshing];
+    }
 }
 
 #pragma mark ------ Getters And Setters ------

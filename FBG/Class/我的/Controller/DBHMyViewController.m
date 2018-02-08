@@ -13,6 +13,7 @@
 #import "DBHMyFavoriteViewController.h"
 #import "DBHMyQuotationReminderViewController.h"
 #import "DBHSettingUpViewController.h"
+#import "AboutVC.h"
 
 #import "DBHMyForUserInfomationTableViewCell.h"
 #import "DBHMyTableViewCell.h"
@@ -128,6 +129,8 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
         }
         case 3: {
             // 关于我们
+            AboutVC *aboutVC = [[AboutVC alloc] init];
+            [self.navigationController pushViewController:aboutVC animated:YES];
             break;
         }
             

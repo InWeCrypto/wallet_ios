@@ -26,7 +26,6 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 @interface DBHProjectLookViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *collectBarButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
@@ -51,7 +50,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    self.navigationItem.rightBarButtonItems = @[self.shareBarButtonItem, self.collectBarButtonItem];
+    self.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
     
     [self.view addSubview:self.tableView];
     
@@ -164,11 +163,14 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
             return ;
         }
         
-        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseCache];
+        weakSelf.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseCache];
         
         [weakSelf.tableView reloadData];
     } success:^(id responseObject) {
-        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseObject];
+        weakSelf.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseObject];
+        
+        weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:weakSelf.projectDetailModel.categoryUser.isFavorite ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
+        weakSelf.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
         
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
@@ -179,13 +181,14 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
  项目收藏
  */
 - (void)projectCollet {
-    NSDictionary *paramters = @{@"enable":self.projectModel.categoryUser.categoryId == 0 ? [NSNumber numberWithBool:true] : [NSNumber numberWithBool:false]};
+    NSDictionary *paramters = @{@"enable":self.projectDetailModel.categoryUser.isFavorite ? [NSNumber numberWithBool:false] : [NSNumber numberWithBool:true]};
     
     WEAKSELF
     [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/collect", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
-        weakSelf.projectModel.categoryUser.categoryId = weakSelf.projectModel.categoryUser.categoryId == 0 ? 1 : 0;
-        weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectModel.categoryUser.categoryId == 0 ? @"xiangmugaikuang_xing" : @"xiangmuzhuye_xing_cio"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
-        weakSelf.navigationItem.rightBarButtonItems = @[self.shareBarButtonItem, self.collectBarButtonItem];
+        NSString *is_favorite = responseObject[@"is_favorite"];
+        weakSelf.projectDetailModel.categoryUser.isFavorite = is_favorite.integerValue == 1;
+        weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:weakSelf.projectDetailModel.categoryUser.isFavorite ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
+        weakSelf.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
@@ -213,25 +216,13 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 - (void)respondsToCollectBarButtonItem {
     [self projectCollet];
 }
-/**
- 项目分享
- */
-- (void)respondsToPersonBarButtonItem {
-    
-}
 
 #pragma mark ------ Getters And Setters ------
 - (UIBarButtonItem *)collectBarButtonItem {
     if (!_collectBarButtonItem) {
-        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectModel.categoryUser.categoryId == 0 ? @"xiangmugaikuang_xing" : @"xiangmuzhuye_xing_cio"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
+        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:self.projectDetailModel.categoryUser.isFavorite ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
     }
     return _collectBarButtonItem;
-}
-- (UIBarButtonItem *)shareBarButtonItem {
-    if (!_shareBarButtonItem) {
-        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"xiangmuchakan_fenxiang"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToPersonBarButtonItem)];
-    }
-    return _shareBarButtonItem;
 }
 - (UITableView *)tableView {
     if (!_tableView) {

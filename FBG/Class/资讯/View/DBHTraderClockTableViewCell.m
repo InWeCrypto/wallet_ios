@@ -128,28 +128,47 @@
         make.right.equalTo(weakSelf.firstGrayLineView);
         make.centerY.equalTo(weakSelf.detailLabel);
     }];
-    
-    self.titleLabel.text = @"行情提醒";
-    self.timeLabel.text = @"2017-11-11";
-    self.numberLabel.text = DBHGetStringWithKeyFromTable(@"Transfer Number", nil);
-    self.numberValueLabel.text = @"-1.00098765";
-    self.unitLabel.text = @"(ETH)";
-    
-    NSString *content = @"Alxln4p9in21pi4nxlknfgrutalnf";
-    NSMutableAttributedString *contentAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Collection Address", nil), content]];
-    [contentAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xBBBBBB, 1) range:NSMakeRange(0, DBHGetStringWithKeyFromTable(@"Collection Address", nil).length + 1)];
-    self.toAddressLabel.attributedText = contentAttributedString;
-    
-    NSMutableAttributedString *transferAddressAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Transfer Address", nil), content]];
-    [transferAddressAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xBBBBBB, 1) range:NSMakeRange(0, DBHGetStringWithKeyFromTable(@"Transfer Address", nil).length + 1)];
-    self.fromAddressLabel.attributedText = transferAddressAttributedString;
-    
-    NSMutableAttributedString *transferWalletAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Transfer Wallet", nil), @"钱包1"]];
-    [transferWalletAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xBBBBBB, 1) range:NSMakeRange(0, DBHGetStringWithKeyFromTable(@"Transfer Wallet", nil).length + 1)];
-    self.walletLabel.attributedText = transferWalletAttributedString;
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setMessage:(EMMessage *)message {
+    _message = message;
+    
+    if (![_message isKindOfClass:[EMMessage class]]) {
+        return;
+    }
+    
+    self.titleLabel.text = _message.ext[@"title"];
+    
+    NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)_message.timestamp];
+    self.timeLabel.text = [messageDate formattedTime];
+    
+    self.numberLabel.text = DBHGetStringWithKeyFromTable(@"Transfer Number", nil);
+    self.numberValueLabel.text = _message.ext[@"money"];
+    self.unitLabel.text = [NSString stringWithFormat:@"(%@)", _message.ext[@"flag"]];
+    
+    NSString *toAddress = _message.ext[@"to"];
+    if (toAddress.length) {
+        NSMutableAttributedString *contentAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Collection Address", nil), toAddress]];
+        [contentAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xBBBBBB, 1) range:NSMakeRange(0, DBHGetStringWithKeyFromTable(@"Collection Address", nil).length + 1)];
+        self.toAddressLabel.attributedText = contentAttributedString;
+    }
+    
+    NSString *fromAddress = _message.ext[@"from"];
+    if (fromAddress.length) {
+        NSMutableAttributedString *transferAddressAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Transfer Address", nil), fromAddress]];
+        [transferAddressAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xBBBBBB, 1) range:NSMakeRange(0, DBHGetStringWithKeyFromTable(@"Transfer Address", nil).length + 1)];
+        self.fromAddressLabel.attributedText = transferAddressAttributedString;
+    }
+    
+    NSString *walletName = _message.ext[@"wallet_name"];
+    if (walletName.length) {
+        NSMutableAttributedString *transferWalletAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Transfer Wallet", nil), walletName]];
+        [transferWalletAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xBBBBBB, 1) range:NSMakeRange(0, DBHGetStringWithKeyFromTable(@"Transfer Wallet", nil).length + 1)];
+        self.walletLabel.attributedText = transferWalletAttributedString;   
+    }
+}
+
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIImageView alloc] init];

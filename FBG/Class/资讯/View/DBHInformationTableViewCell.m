@@ -133,7 +133,7 @@
     
     self.iconImageView.hidden = YES;
     self.iconBackImageView.image = [UIImage imageNamed:_functionalUnitTitle];
-    self.titleLabel.text = _functionalUnitTitle;
+    self.titleLabel.text = DBHGetStringWithKeyFromTable(_functionalUnitTitle, nil);
     self.priceLabel.hidden = YES;
     self.changeLabel.hidden = YES;
 }

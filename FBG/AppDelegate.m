@@ -31,6 +31,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 #import "DBHBaseNavigationController.h"
 #import "DBHHomePageViewController.h"
 #import "DBHLoginViewController.h"
+#import "DBHCheckFaceOrTouchViewController.h"
 //#import "MessageVC.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, EMChatManagerDelegate, EMClientDelegate>
@@ -465,6 +466,12 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     [self.window makeKeyAndVisible];
 }
 
+- (void)showThirdLogin {
+    DBHCheckFaceOrTouchViewController *checkFaceOrTouchViewController = [[DBHCheckFaceOrTouchViewController alloc] init];
+    self.window.rootViewController = checkFaceOrTouchViewController;
+    [self.window makeKeyAndVisible];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -504,6 +511,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    if ([UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone) {
+        [self showThirdLogin];
+    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
@@ -633,6 +643,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 - (void)userAccountDidLoginFromOtherDevice {
     EMError *error = [[EMClient sharedClient] logout:YES];
     if (!error) {
+        [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
+        [self showLoginController];
         NSLog(@"退出成功");
     }
 }

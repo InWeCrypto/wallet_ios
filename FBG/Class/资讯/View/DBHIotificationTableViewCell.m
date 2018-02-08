@@ -112,6 +112,22 @@
     NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:[self filterHTML:_model.content] attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
     self.contentLabel.attributedText = contentAttributedString;
 }
+- (void)setMessage:(EMMessage *)message {
+    _message = message;
+    
+    EMTextMessageBody *content = (EMTextMessageBody *)_message.body;
+    
+    NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)_message.timestamp];
+    self.timeLabel.text = [messageDate formattedTime];
+    
+    self.titleLabel.text = _message.ext[@"title"];
+    if (content.text.length) {
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:AUTOLAYOUTSIZE(5)];
+        NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:content.text attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
+        self.contentLabel.attributedText = contentAttributedString;
+    }
+}
 
 - (UIView *)boxView {
     if (!_boxView) {

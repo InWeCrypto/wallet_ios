@@ -104,7 +104,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
         case 0:
-            return AUTOLAYOUTSIZE(169);
+            return AUTOLAYOUTSIZE(159);
             break;
         case 1:
             return AUTOLAYOUTSIZE(215.5);

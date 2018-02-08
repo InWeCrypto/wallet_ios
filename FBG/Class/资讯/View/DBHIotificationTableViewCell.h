@@ -17,4 +17,9 @@
  */
 @property (nonatomic, strong) DBHExchangeNoticeModelData *model;
 
+/**
+ 聊天消息
+ */
+@property (nonatomic, strong) EMMessage *message;
+
 @end

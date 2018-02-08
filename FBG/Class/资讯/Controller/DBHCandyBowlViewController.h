@@ -12,4 +12,9 @@
 
 @property (nonatomic, assign) NSInteger functionalUnitType; // 功能组件类型
 
+/**
+ 聊天会话
+ */
+@property (nonatomic, strong) EMConversation *conversation;
+
 @end

@@ -38,7 +38,6 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"CandyBowl";
     [self.dateFormatter setDateFormat:@"yyyy"];
     self.year = [self.dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]];
     [self.dateFormatter setDateFormat:@"MM"];
@@ -148,7 +147,25 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
  你的观点
  */
 - (void)respondsToYourOpinionButton {
-    
+    if ([self.conversation isKindOfClass:[EMConversation class]]) {
+        // 内存中有会话
+        EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:self.conversation.conversationId conversationType:self.conversation.type];
+        chatViewController.title = self.title;
+        [self.navigationController pushViewController:chatViewController animated:YES];
+    } else {
+        // 内存中没有会话
+        EMError *error = nil;
+        NSArray *myGroups = [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:1 pageSize:50 error:&error];
+        if (!error) {
+            for (EMGroup *group in myGroups) {
+                if ([group.subject containsString:@"SYS_MSG_CANDYBOW"]) {
+                    EaseMessageViewController *chatViewController = [[EaseMessageViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
+                    chatViewController.title = self.title;
+                    [self.navigationController pushViewController:chatViewController animated:YES];
+                }
+            }
+        }
+    }
 }
 
 #pragma mark ------ Getters And Setters ------

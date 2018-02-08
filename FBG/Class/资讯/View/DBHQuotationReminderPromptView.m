@@ -38,7 +38,8 @@
         [self setUI];
         
         // 注册观察键盘的变化
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transformView:) name:UIKeyboardWillChangeFrameNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
     }
     return self;
 }
@@ -55,25 +56,27 @@
     }
 }
 
-//移动UIView
--(void)transformView:(NSNotification *)aNSNotification
-{
-    //获取键盘弹出前的Rect
-    NSValue *keyBoardBeginBounds=[[aNSNotification userInfo]objectForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect beginRect=[keyBoardBeginBounds CGRectValue];
-    
-    //获取键盘弹出后的Rect
-    NSValue *keyBoardEndBounds=[[aNSNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect  endRect=[keyBoardEndBounds CGRectValue];
-    
-    //获取键盘位置变化前后纵坐标Y的变化值
-    CGFloat deltaY=endRect.origin.y-beginRect.origin.y;
-    NSLog(@"看看这个变化的Y值:%f",deltaY);
-    
-    //在0.25s内完成self.view的Frame的变化，等于是给self.view添加一个向上移动deltaY的动画
+#pragma mark ------ NSNotificationCenter ------
+/**
+ 键盘将要显示
+ */
+- (void)keyboardWillShow {
     WEAKSELF
     [self.boxView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(weakSelf).offset(deltaY < 0 ? - AUTOLAYOUTSIZE(150) : 0);
+        make.bottom.equalTo(weakSelf).offset(- AUTOLAYOUTSIZE(150));
+    }];
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        [weakSelf layoutIfNeeded];
+    }];
+}
+/**
+ 键盘将要隐藏
+ */
+- (void)keyboardWillHide {
+    WEAKSELF
+    [self.boxView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(weakSelf).offset(0);
     }];
     
     [UIView animateWithDuration:0.25 animations:^{
@@ -151,6 +154,8 @@
  退出
  */
 - (void)respondsToQuitButton {
+    self.maxPriceTextField.text = @"";
+    self.minPriceTextField.text = @"";
     WEAKSELF
     [self endEditing:YES];
     [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -172,6 +177,11 @@
  确定
  */
 - (void)respondsToCommitButton {
+    if (self.maxPriceTextField.text.floatValue < self.minPriceTextField.text.floatValue) {
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The highest value should be greater than the minimum", nil)];
+        
+        return;
+    }
     self.commitBlock(self.maxPriceTextField.text, self.minPriceTextField.text);
     [self respondsToQuitButton];
 }
@@ -204,6 +214,16 @@
     NSMutableAttributedString *priceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Current Price", nil), _price]];
     [priceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0x262626, 1) range:NSMakeRange(0, DBHGetStringWithKeyFromTable(@"Current Price", nil).length + 1)];
     self.priceLabel.attributedText = priceAttributedString;
+}
+- (void)setMaxPrice:(NSString *)maxPrice {
+    _maxPrice = maxPrice;
+    
+    self.maxPriceTextField.text = _maxPrice;
+}
+- (void)setMinPrice:(NSString *)minPrice {
+    _minPrice = minPrice;
+    
+    self.minPriceTextField.text = _minPrice;
 }
 
 - (UIView *)boxView {

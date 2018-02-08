@@ -142,48 +142,54 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
             case 0: {
                 // InWe热点
                 DBHInWeHotViewController *inWeHotViewController = [[DBHInWeHotViewController alloc] init];
-                inWeHotViewController.title = self.functionalUnitArray[indexPath.row];
+                inWeHotViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
                 inWeHotViewController.functionalUnitType = 0;
+                inWeHotViewController.conversation = self.conversationArray[indexPath.row];
                 [self.navigationController pushViewController:inWeHotViewController animated:YES];
                 break;
             }
             case 1: {
                 // TradingView
                 DBHTradingViewViewController *tradingViewViewController = [[DBHTradingViewViewController alloc] init];
-                tradingViewViewController.title = self.functionalUnitArray[indexPath.row];
+                tradingViewViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
                 tradingViewViewController.functionalUnitType = 1;
+                tradingViewViewController.conversation = self.conversationArray[indexPath.row];
                 [self.navigationController pushViewController:tradingViewViewController animated:YES];
                 break;
             }
             case 2: {
                 // 交易所公告
                 DBHExchangeNoticeViewController *exchangeNoticeViewController = [[DBHExchangeNoticeViewController alloc] init];
-                exchangeNoticeViewController.title = self.functionalUnitArray[indexPath.row];
+                exchangeNoticeViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
                 exchangeNoticeViewController.functionalUnitType = 2;
+                exchangeNoticeViewController.conversation = self.conversationArray[indexPath.row];
                 [self.navigationController pushViewController:exchangeNoticeViewController animated:YES];
                 break;
             }
             case 3: {
                 // CandyBowl
                 DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
-                candyBowlViewController.title = self.functionalUnitArray[indexPath.row];
+                candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
                 candyBowlViewController.functionalUnitType = 3;
+                candyBowlViewController.conversation = self.conversationArray[indexPath.row];
                 [self.navigationController pushViewController:candyBowlViewController animated:YES];
                 break;
             }
             case 4: {
                 // 交易提醒
                 DBHTraderClockViewController *traderClockViewController = [[DBHTraderClockViewController alloc] init];
-                traderClockViewController.title = self.functionalUnitArray[indexPath.row];
+                traderClockViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
                 traderClockViewController.functionalUnitType = 4;
+                traderClockViewController.conversation = self.conversationArray[indexPath.row];
                 [self.navigationController pushViewController:traderClockViewController animated:YES];
                 break;
             }
             case 5: {
                 // 通知
                 DBHNotificationViewController *notificationViewController = [[DBHNotificationViewController alloc] init];
-                notificationViewController.title = self.functionalUnitArray[indexPath.row];
+                notificationViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
                 notificationViewController.functionalUnitType = 5;
+                notificationViewController.conversation = self.conversationArray[indexPath.row];
                 [self.navigationController pushViewController:notificationViewController animated:YES];
                 break;
             }
@@ -606,13 +612,20 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 
 - (NSArray *)menuArray {
     if (!_menuArray) {
-        _menuArray = @[@"Scan", @"Add Wallet", @"Payment Received"];
+        _menuArray = @[@"Scan",
+                       @"Add Wallet",
+                       @"Payment Received"];
     }
     return _menuArray;
 }
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@"InWe热点", @"TradingView", @"交易所公告", @"CandyBowl", @"交易提醒", @"通知"];
+        _titleArray = @[@"InWe Hotspot",
+                        @"Trading View",
+                        @"Exchange Announcement",
+                        @"Candybowl",
+                        @"Trading Reminder",
+                        @"Notice"];
     }
     return _titleArray;
 }

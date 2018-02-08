@@ -11,6 +11,7 @@
 @interface DBHChangePasswordTableViewCell ()
 
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIButton *showPasswordButton;
 
 @property (nonatomic, copy) GetVerificationCodeBlock getVerificationCodeBlock;
 
@@ -32,7 +33,7 @@
 - (void)setUI {
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.valueTextField];
-    [self.contentView addSubview:self.emailVerificationCodeButton];
+    [self.contentView addSubview:self.showPasswordButton];
     
     WEAKSELF
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -45,20 +46,21 @@
         make.height.equalTo(weakSelf.contentView);
         make.centerY.equalTo(weakSelf.contentView);
     }];
-    [self.emailVerificationCodeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(70.5));
-        make.height.offset(AUTOLAYOUTSIZE(27.5));
-        make.right.offset(- AUTOLAYOUTSIZE(15));
-        make.centerY.equalTo(weakSelf.contentView);
+    [self.showPasswordButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(AUTOLAYOUTSIZE(34.5));
+        make.height.equalTo(weakSelf.valueTextField);
+        make.right.offset(- AUTOLAYOUTSIZE(25));
+        make.centerY.equalTo(weakSelf.valueTextField);
     }];
 }
 
 #pragma mark ------ Event Responds ------
 /**
- 邮箱验证码
+ 显示/隐藏密码
  */
-- (void)respondsToEmailVerificationCodeButton {
-    self.getVerificationCodeBlock();
+- (void)respondsToShowPasswordButton:(UIButton *)button {
+    button.selected = !button.selected;
+    self.getVerificationCodeBlock(button.isSelected);
 }
 
 #pragma mark ------ Public Methods ------
@@ -70,12 +72,11 @@
 - (void)setTitle:(NSString *)title {
     _title = title;
     
-    self.emailVerificationCodeButton.hidden = ![_title isEqualToString:@"Verification code"];
-    self.valueTextField.keyboardType = [_title isEqualToString:@"Verification code"] ? UIKeyboardTypeNumberPad : UIKeyboardTypeASCIICapable;
-    self.valueTextField.secureTextEntry = ![_title isEqualToString:@"Verification code"];
+    self.titleLabel.text = DBHGetStringWithKeyFromTable(_title, nil);
+    self.showPasswordButton.hidden = ![_title isEqualToString:@"New Password"];
     
     WEAKSELF
-    if (self.emailVerificationCodeButton.hidden) {
+    if (self.showPasswordButton.hidden) {
         [self.valueTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(AUTOLAYOUTSIZE(96));
             make.right.offset(- AUTOLAYOUTSIZE(15));
@@ -85,13 +86,11 @@
     } else {
         [self.valueTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(AUTOLAYOUTSIZE(96));
-            make.right.equalTo(weakSelf.emailVerificationCodeButton.mas_left);
+            make.right.equalTo(weakSelf.showPasswordButton.mas_left);
             make.height.equalTo(weakSelf.contentView);
             make.centerY.equalTo(weakSelf.contentView);
         }];
     }
-    
-    self.titleLabel.text = DBHGetStringWithKeyFromTable(_title, nil);
 }
 
 - (UILabel *)titleLabel {
@@ -107,19 +106,19 @@
         _valueTextField = [[UITextField alloc] init];
         _valueTextField.font = FONT(13);
         _valueTextField.textColor = COLORFROM16(0x333333, 1);
+        _valueTextField.keyboardType = UIKeyboardTypeASCIICapable;
+        _valueTextField.secureTextEntry = YES;
     }
     return _valueTextField;
 }
-- (UIButton *)emailVerificationCodeButton {
-    if (!_emailVerificationCodeButton) {
-        _emailVerificationCodeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _emailVerificationCodeButton.backgroundColor = COLORFROM16(0xFF841C, 1);
-        _emailVerificationCodeButton.titleLabel.font = FONT(10);
-        _emailVerificationCodeButton.layer.cornerRadius = AUTOLAYOUTSIZE(5);
-        [_emailVerificationCodeButton setTitle:NSLocalizedString(@"Email verification code", nil) forState:UIControlStateNormal];
-        [_emailVerificationCodeButton addTarget:self action:@selector(respondsToEmailVerificationCodeButton) forControlEvents:UIControlEventTouchUpInside];
+- (UIButton *)showPasswordButton {
+    if (!_showPasswordButton) {
+        _showPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_close"] forState:UIControlStateNormal];
+        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_open"] forState:UIControlStateSelected];
+        [_showPasswordButton addTarget:self action:@selector(respondsToShowPasswordButton:) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _emailVerificationCodeButton;
+    return _showPasswordButton;
 }
 
 @end

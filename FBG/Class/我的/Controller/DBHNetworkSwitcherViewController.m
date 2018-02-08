@@ -77,6 +77,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
         [[NSUserDefaults standardUserDefaults] setObject:!self.currentSelectedRow ? APIEHEAD1 : TESTAPIEHEAD1 forKey:@"appNetWorkApi"];
         [[AppDelegate delegate] showLoginController];
     }

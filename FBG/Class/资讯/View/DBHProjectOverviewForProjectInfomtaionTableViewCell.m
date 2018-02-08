@@ -61,37 +61,37 @@
     WEAKSELF
     [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.offset(AUTOLAYOUTSIZE(24));
-        make.left.offset(AUTOLAYOUTSIZE(15));
-        make.top.offset(AUTOLAYOUTSIZE(28.5));
+        make.left.offset(AUTOLAYOUTSIZE(17));
+        make.top.offset(AUTOLAYOUTSIZE(24));
     }];
     [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.iconImageView.mas_right).offset(AUTOLAYOUTSIZE(8));
-        make.top.offset(AUTOLAYOUTSIZE(22.5));
+        make.top.offset(AUTOLAYOUTSIZE(18));
     }];
     [self.tagLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.nameLabel);
         make.top.equalTo(weakSelf.nameLabel.mas_bottom);
     }];
     [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf.nameLabel);
-        make.right.offset(- AUTOLAYOUTSIZE(15));
+        make.centerY.equalTo(weakSelf.nameLabel);
+        make.right.offset(- AUTOLAYOUTSIZE(21));
     }];
     [self.changeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf.priceLabel.mas_bottom).offset(AUTOLAYOUTSIZE(3));
+        make.top.equalTo(weakSelf.priceLabel.mas_bottom).offset(AUTOLAYOUTSIZE(1.5));
         make.right.equalTo(weakSelf.priceLabel);
     }];
     [self.volumeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf.changeLabel.mas_bottom).offset(AUTOLAYOUTSIZE(3));
+        make.top.equalTo(weakSelf.changeLabel.mas_bottom).offset(AUTOLAYOUTSIZE(4.5));
         make.right.equalTo(weakSelf.priceLabel);
     }];
     [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(30));
+        make.width.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(44));
         make.height.offset(AUTOLAYOUTSIZE(1));
         make.centerX.equalTo(weakSelf.contentView);
-        make.bottom.offset(- AUTOLAYOUTSIZE(60));
+        make.bottom.offset(- AUTOLAYOUTSIZE(59));
     }];
     [self.rankLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf.grayLineView.mas_bottom).offset(AUTOLAYOUTSIZE(11));
+        make.top.equalTo(weakSelf.grayLineView.mas_bottom).offset(AUTOLAYOUTSIZE(8));
         make.centerX.equalTo(weakSelf.hotAttentionLabel);
     }];
     [self.hotAttentionLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -148,7 +148,6 @@
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
         _iconImageView = [[UIImageView alloc] init];
-        _iconImageView.backgroundColor = COLORFROM16(0xD8D8D8, 1);
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _iconImageView;

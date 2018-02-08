@@ -10,4 +10,6 @@
 
 @interface DBHTraderClockTableViewCell : DBHBaseTableViewCell
 
+@property (nonatomic, strong) EMMessage *message;
+
 @end

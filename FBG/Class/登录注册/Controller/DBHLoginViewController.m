@@ -8,10 +8,12 @@
 
 #import "DBHLoginViewController.h"
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import <HyphenateLite/HyphenateLite.h>
 
 #import "DBHForgetPasswordViewController.h"
 #import "DBHSignUpViewController.h"
+#import "DBHSelectFaceOrTouchViewController.h"
 
 @interface DBHLoginViewController ()
 
@@ -26,6 +28,7 @@
 @property (nonatomic, strong) UIButton *forgetPasswordButton;
 @property (nonatomic, strong) UIButton *enterWalletButton;
 @property (nonatomic, strong) UIButton *registerButton;
+@property (nonatomic, strong) LAContext *context;
 
 @end
 
@@ -145,9 +148,8 @@
             [UserSignData share].user.walletUnitType = 1;
             [[UserSignData share] storageData:[UserSignData share].user];
             
-            [[AppDelegate delegate] goToTabbar];
+            [weakSelf goHome];
         } else {
-            
             [LCProgressHUD showFailure:NSLocalizedString(@"Login Failed", nil)];
         }
     } failure:^(NSString *error) {
@@ -192,6 +194,33 @@
 - (void)respondsToregisterButton {
     DBHSignUpViewController *signUpViewController = [[DBHSignUpViewController alloc] init];
     [self.navigationController pushViewController:signUpViewController animated:YES];
+}
+
+#pragma mark ------ Private Methods ------
+/**
+ 去主页或开启FaceID/TouchID
+ */
+- (void)goHome {
+    if ([[NSString deviceType] isEqualToString:@"iPhone X"]) {
+        // Face ID
+        [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeFaceID;
+        DBHSelectFaceOrTouchViewController *selectFaceOrTouchViewController = [[DBHSelectFaceOrTouchViewController alloc] init];
+        selectFaceOrTouchViewController.faceOrTouchViewControllerType = DBHFaceViewControllerType;
+        [self.navigationController pushViewController:selectFaceOrTouchViewController animated:YES];
+    } else {
+        NSError *error = nil;
+        if ([self.context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+            // Touch ID
+            [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeTouchID;
+            DBHSelectFaceOrTouchViewController *selectFaceOrTouchViewController = [[DBHSelectFaceOrTouchViewController alloc] init];
+            selectFaceOrTouchViewController.faceOrTouchViewControllerType = DBHTouchViewControllerType;
+            [self.navigationController pushViewController:selectFaceOrTouchViewController animated:YES];
+        } else {
+            // 不支持Touch ID
+            [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeNone;
+            [[AppDelegate delegate] goToTabbar];
+        }
+    }
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -248,8 +277,8 @@
 - (UIButton *)showPasswordButton {
     if (!_showPasswordButton) {
         _showPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_open"] forState:UIControlStateNormal];
-        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_close"] forState:UIControlStateSelected];
+        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_close"] forState:UIControlStateNormal];
+        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_open"] forState:UIControlStateSelected];
         [_showPasswordButton addTarget:self action:@selector(respondsToShowPasswordButton:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _showPasswordButton;
@@ -293,6 +322,12 @@
         [_registerButton addTarget:self action:@selector(respondsToregisterButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _registerButton;
+}
+- (LAContext *)context {
+    if (!_context) {
+        _context = [[LAContext alloc] init];
+    }
+    return _context;
 }
 
 @end

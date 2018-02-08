@@ -33,6 +33,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
+@property (nonatomic, copy) NSArray *titleArray; // 功能组件标题
 
 @end
 
@@ -88,7 +89,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     switch (indexPath.section) {
         case 0: {
             DBHFunctionalUnitLookTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHFunctionalUnitLookTableViewCellIdentifier forIndexPath:indexPath];
-            cell.title = self.title;
+            cell.title = self.titleArray[self.functionalUnitType];
             
             WEAKSELF
             [cell clickTypeButtonBlock:^() {
@@ -223,6 +224,18 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         [_tableView registerClass:[DBHPersonalSettingForSwitchTableViewCell class] forCellReuseIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier];
     }
     return _tableView;
+}
+
+- (NSArray *)titleArray {
+    if (!_titleArray) {
+        _titleArray = @[@"InWe Hotspot",
+                        @"Trading View",
+                        @"Exchange Announcement",
+                        @"Candybowl",
+                        @"Trading Reminder",
+                        @"Notice"];
+    }
+    return _titleArray;
 }
 
 @end

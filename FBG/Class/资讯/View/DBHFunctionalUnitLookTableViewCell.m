@@ -110,7 +110,7 @@
     _title = title;
     
     self.iconImageView.image = [UIImage imageNamed:_title];
-    self.nameLabel.text = _title;
+    self.nameLabel.text = DBHGetStringWithKeyFromTable(_title, nil);
 }
 
 - (UIView *)boxView {

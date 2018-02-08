@@ -26,6 +26,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 @interface DBHPersonalSettingViewController ()<UITableViewDataSource, UITableViewDelegate, TZImagePickerControllerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIButton *quitLoginButton;
 
 @property (nonatomic, copy) NSArray *titleArray;
 
@@ -51,11 +52,20 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 #pragma mark ------ UI ------
 - (void)setUI {
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.quitLoginButton];
     
     WEAKSELF
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(weakSelf.view);
-        make.center.equalTo(weakSelf.view);
+        make.width.equalTo(weakSelf.view);
+        make.centerX.equalTo(weakSelf.view);
+        make.top.equalTo(weakSelf.view);
+        make.bottom.equalTo(weakSelf.quitLoginButton.mas_top);
+    }];
+    [self.quitLoginButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(108));
+        make.height.offset(AUTOLAYOUTSIZE(40.5));
+        make.centerX.equalTo(weakSelf.view);
+        make.bottom.offset(- AUTOLAYOUTSIZE(47.5));
     }];
 }
 
@@ -64,7 +74,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     return 2;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return !section ? 3 : 2;
+    return !section ? 3 : 2 + ([UserSignData share].user.canUseUnlockType == DBHCanUseUnlockTypeNone ? - 1 : 0);
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!indexPath.section && !indexPath.row) {
@@ -82,10 +92,15 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         return cell;
     } else {
         DBHPersonalSettingForSwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier forIndexPath:indexPath];
-        cell.title = @"Touch ID";
+        cell.title = [UserSignData share].user.canUseUnlockType == DBHCanUseUnlockTypeTouchID ? @"Touch ID" : @"Face ID";
+        cell.isStick = [UserSignData share].user.canUseUnlockType == DBHCanUseUnlockTypeTouchID ? [UserSignData share].user.isOpenTouchId : [UserSignData share].user.isOpenFaceId;
         
         [cell changeSwitchBlock:^(BOOL isOpen) {
-            
+            if ([UserSignData share].user.canUseUnlockType == DBHCanUseUnlockTypeTouchID) {
+                [UserSignData share].user.isOpenTouchId = isOpen;
+            } else {
+                [UserSignData share].user.isOpenFaceId = isOpen;
+            }
         }];
         
         return cell;
@@ -246,10 +261,27 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     }];
 }
 
+#pragma mark ------ Event Responds ------
+/**
+ 退出登录
+ */
+- (void)respondsToQuitLoginButton {
+    EMError *error = [[EMClient sharedClient] logout:YES];
+    if (!error) {
+        [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
+        [[AppDelegate delegate] showLoginController];
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Log Out Success", nil)];
+    } else {
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Log Out Failed", nil)];
+    }
+}
+
 #pragma mark ------ Getters And Setters ------
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableView.backgroundColor = COLORFROM16(0xF8F8F8, 1);
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
@@ -264,6 +296,16 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         [_tableView registerClass:[DBHPersonalSettingForSwitchTableViewCell class] forCellReuseIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier];
     }
     return _tableView;
+}
+- (UIButton *)quitLoginButton {
+    if (!_quitLoginButton) {
+        _quitLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _quitLoginButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _quitLoginButton.titleLabel.font = FONT(14);
+        [_quitLoginButton setTitle:NSLocalizedString(@"Log Out", nil) forState:UIControlStateNormal];
+        [_quitLoginButton addTarget:self action:@selector(respondsToQuitLoginButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _quitLoginButton;
 }
 
 - (NSArray *)titleArray {

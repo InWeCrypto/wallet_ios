@@ -10,6 +10,7 @@
 #import "DBHNotificationViewController.h"
 
 #import "DBHFunctionalUnitLookViewController.h"
+#import "DBHNotificationDetailViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHIotificationTableViewCell.h"
@@ -20,6 +21,7 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 
 @property (nonatomic, strong) UITableView *tableView;
 
+@property (nonatomic, assign) NSInteger currentPage; // 当前页数
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
@@ -30,14 +32,12 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Notification", nil);
-    
     [self setUI];
-}
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    [self addRefresh];
     
-    
+    if ([self.conversation isKindOfClass:[EMConversation class]]) {
+        [self getLastMessage];
+    }
 }
 
 #pragma mark ------ UI ------
@@ -62,18 +62,22 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHIotificationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHIotificationTableViewCellIdentifier forIndexPath:indexPath];
+    cell.message = self.dataSource[indexPath.section];
     
     return cell;
 }
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHNotificationDetailViewController *notificationDetailViewController = [[DBHNotificationDetailViewController alloc] init];
+    notificationDetailViewController.message = self.dataSource[indexPath.section];
+    [self.navigationController pushViewController:notificationDetailViewController animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    DBHProjectHomeNewsModelData *model = self.dataSource[section - 1];
+    EMMessage *message = self.dataSource[section];
+    NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)message.timestamp];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-    headerView.time = @"2017-11-11 11:11:11";//model.updatedAt;
+    headerView.time = [messageDate formattedTime];
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -81,6 +85,30 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 }
 
 #pragma mark ------ Data ------
+/**
+ 获取最后1页信息
+ */
+- (void)getLastMessage {
+    WEAKSELF
+    weakSelf.currentPage = 1;
+    [self.conversation loadMessagesStartFromId:nil count:5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        [weakSelf.dataSource addObjectsFromArray:aMessages];
+        [weakSelf.tableView reloadData];
+        [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }];
+}
+/**
+ 获取前1页信息
+ */
+- (void)getMessage {
+    EMMessage *message = self.dataSource.firstObject;
+    
+    WEAKSELF
+    [self.conversation loadMessagesStartFromId:message.messageId count:self.currentPage * 5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        [weakSelf.dataSource insertObjects:aMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, aMessages.count)]];
+        [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:aMessages.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }];
+}
 
 #pragma mark ------ Event Responds ------
 /**
@@ -91,6 +119,35 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
     functionalUnitLookViewController.title = self.title;
     functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
     [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
+}
+
+#pragma mark ------ Private Methods ------
+/**
+ 添加刷新
+ */
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (weakSelf.dataSource.count < weakSelf.currentPage * 5 || ![self.conversation isKindOfClass:[EMConversation class]]) {
+            [weakSelf endRefresh];
+            
+            return ;
+        }
+        
+        weakSelf.currentPage += 1;
+        [weakSelf getMessage];
+    }];
+}
+/**
+ 结束刷新
+ */
+- (void)endRefresh {
+    if ([self.tableView.mj_header isRefreshing]) {
+        [self.tableView.mj_header endRefreshing];
+    }
+    if ([self.tableView.mj_footer isRefreshing]) {
+        [self.tableView.mj_footer endRefreshing];
+    }
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -117,9 +174,6 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
-        [_dataSource addObject:@""];
     }
     return _dataSource;
 }

@@ -206,7 +206,10 @@
 "Enter InWeCrypto" = "进入InWeCrypto";
 "Register" = "注册";
 "Please input a email" = "请输入邮箱";
+"Password Update Success" = "密码修改成功";
 "Please input a verification code" = "请输入验证码";
+"Please input your old password" = "请输入旧密码";
+"Old Password" = "旧密码";
 "Get Verification Code" = "获取验证码";
 "Confirm input a password" = "确认输入密码";
 "Please enter your password again" = "请再次输入密码";
@@ -220,6 +223,13 @@
 "New Password" = "新密码";
 "Password reset successful" = "密码重置成功";
 "Forget Password" = "忘记密码";
+"Open" = "开启";
+"Fast Login" = "进行快捷登录";
+"Now Open" = "现在开启";
+"No Open" = "暂不开启";
+"Login with password" = "使用密码登录";
+"check" = "检查";
+"Check Failed" = "验证失败";
 
 /*
  我的
@@ -232,11 +242,17 @@
 "About Us" = "关于我们";
 "Originality" = "原创";
 "Cancel Collection" = "取消收藏";
-"Login Account" = "登陆账户";
+"Login Account" = "登录账户";
 
 /*
  资讯
  */
+"InWe Hotspot" = "InWe热点";
+"Trading View" = "交易观点";
+"Exchange Announcement" = "交易所公告";
+"Candybowl" = "糖果盒";
+"Trading Reminder" = "交易提醒";
+"Notice" = "通知";
 "Payment Received" = "收付款";
 "Please select a wallet" = "请选择一个钱包";
 
@@ -244,7 +260,6 @@
  交易所公告
  */
 "Your Opinion" = "你的观点";
-"Trader Clock" = "交易提醒";
 "Collection Address" = "收款地址";
 "Transfer Address" = "转账地址";
 "Transfer Wallet" = "转账钱包";
@@ -252,7 +267,6 @@
 /*
  通知
  */
-"Notification" = "通知";
 "Details" = "详情";
 
 /*
@@ -289,7 +303,8 @@
 "Highest Value" = "最高值";
 "Lowest Value" = "最低值";
 "Current Price" = "当前价格";
-
+"The highest value should be greater than the minimum" = "最高值应大于最低值";
+"Set Success" = "设置成功";
 
 /*
  历史资讯
@@ -315,6 +330,9 @@
 "Change Success" = "修改成功";
 "Set a Nickname" = "设置昵称";
 "Save" = "保存";
+"Log Out" = "退出登录";
+"Log Out Success" = "退出登录成功";
+"Log Out Failed" = "退出登录失败";
 
 /*
  修改密码

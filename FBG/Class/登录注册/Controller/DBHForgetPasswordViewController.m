@@ -341,8 +341,8 @@
 - (UIButton *)showPasswordButton {
     if (!_showPasswordButton) {
         _showPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_open"] forState:UIControlStateNormal];
-        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_close"] forState:UIControlStateSelected];
+        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_close"] forState:UIControlStateNormal];
+        [_showPasswordButton setImage:[UIImage imageNamed:@"denglu_eyes_open"] forState:UIControlStateSelected];
         [_showPasswordButton addTarget:self action:@selector(respondsToShowPasswordButton:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _showPasswordButton;

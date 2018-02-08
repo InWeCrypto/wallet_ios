@@ -77,4 +77,9 @@
  */
 + (NSString *)dataTOjsonString:(id)object;
 
+/**
+ 手机型号
+ */
++ (NSString *)deviceType;
+
 @end

@@ -435,6 +435,11 @@
 		D572EC712022F77E002C8EFD /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D572EBFA2022F77D002C8EFD /* EaseUIResource.bundle */; };
 		D572EC722022F77E002C8EFD /* EaseUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D572EBFB2022F77D002C8EFD /* EaseUI.m */; };
 		D572EC752022FF1A002C8EFD /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D572EC742022FF1A002C8EFD /* UIViewController+HUD.m */; };
+		D577EED5202C2E9800E96DA0 /* DBHNotificationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EED4202C2E9800E96DA0 /* DBHNotificationDetailViewController.m */; };
+		D577EED9202C5EC500E96DA0 /* AboutVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = D577EED6202C5EC400E96DA0 /* AboutVC.xib */; };
+		D577EEDA202C5EC500E96DA0 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EED7202C5EC400E96DA0 /* AboutVC.m */; };
+		D577EEDD202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EEDC202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.m */; };
+		D577EEE0202CA8EE00E96DA0 /* DBHCheckFaceOrTouchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EEDF202CA8ED00E96DA0 /* DBHCheckFaceOrTouchViewController.m */; };
 		D5B20DB9201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DB8201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m */; };
 		D5B20DBF201EB61D00E2B935 /* DBHCandyBowlHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DBE201EB61C00E2B935 /* DBHCandyBowlHeaderView.m */; };
 		D5B20DC4201EEA3E00E2B935 /* DBHMarketDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DC2201EEA3E00E2B935 /* DBHMarketDetailViewController.swift */; };
@@ -1333,6 +1338,15 @@
 		D572EBFB2022F77D002C8EFD /* EaseUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseUI.m; sourceTree = "<group>"; };
 		D572EC732022FF1A002C8EFD /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		D572EC742022FF1A002C8EFD /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
+		D577EED3202C2E9800E96DA0 /* DBHNotificationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHNotificationDetailViewController.h; sourceTree = "<group>"; };
+		D577EED4202C2E9800E96DA0 /* DBHNotificationDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHNotificationDetailViewController.m; sourceTree = "<group>"; };
+		D577EED6202C5EC400E96DA0 /* AboutVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutVC.xib; sourceTree = "<group>"; };
+		D577EED7202C5EC400E96DA0 /* AboutVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutVC.m; sourceTree = "<group>"; };
+		D577EED8202C5EC500E96DA0 /* AboutVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutVC.h; sourceTree = "<group>"; };
+		D577EEDB202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHSelectFaceOrTouchViewController.h; sourceTree = "<group>"; };
+		D577EEDC202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSelectFaceOrTouchViewController.m; sourceTree = "<group>"; };
+		D577EEDE202CA8EC00E96DA0 /* DBHCheckFaceOrTouchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHCheckFaceOrTouchViewController.h; sourceTree = "<group>"; };
+		D577EEDF202CA8ED00E96DA0 /* DBHCheckFaceOrTouchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHCheckFaceOrTouchViewController.m; sourceTree = "<group>"; };
 		D5B20DB7201E3D6500E2B935 /* DBHCandyBowlTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHCandyBowlTableViewCell.h; sourceTree = "<group>"; };
 		D5B20DB8201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHCandyBowlTableViewCell.m; sourceTree = "<group>"; };
 		D5B20DBD201EB61C00E2B935 /* DBHCandyBowlHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHCandyBowlHeaderView.h; sourceTree = "<group>"; };
@@ -2139,6 +2153,10 @@
 				D51E66A1201594710025B502 /* DBHSignUpViewController.m */,
 				D51E66A32015D4300025B502 /* DBHForgetPasswordViewController.h */,
 				D51E66A42015D4300025B502 /* DBHForgetPasswordViewController.m */,
+				D577EEDB202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.h */,
+				D577EEDC202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.m */,
+				D577EEDE202CA8EC00E96DA0 /* DBHCheckFaceOrTouchViewController.h */,
+				D577EEDF202CA8ED00E96DA0 /* DBHCheckFaceOrTouchViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2212,6 +2230,8 @@
 				D572D2432021A6AE002C8EFD /* DBHTraderClockHistoricalInformationViewController.m */,
 				D572D2452021A6C1002C8EFD /* DBHNotificationHistoricalInformationViewController.h */,
 				D572D2462021A6C1002C8EFD /* DBHNotificationHistoricalInformationViewController.m */,
+				D577EED3202C2E9800E96DA0 /* DBHNotificationDetailViewController.h */,
+				D577EED4202C2E9800E96DA0 /* DBHNotificationDetailViewController.m */,
 				D56CEEF8201E3CA40081DE05 /* DBHCandyBowlViewController.h */,
 				D56CEEF9201E3CA40081DE05 /* DBHCandyBowlViewController.m */,
 				D572D230202198C9002C8EFD /* DBHFunctionalUnitLookViewController.h */,
@@ -2391,6 +2411,9 @@
 		D51E66942011F4BA0025B502 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				D577EED8202C5EC500E96DA0 /* AboutVC.h */,
+				D577EED7202C5EC400E96DA0 /* AboutVC.m */,
+				D577EED6202C5EC400E96DA0 /* AboutVC.xib */,
 				D51E669A2011F5A60025B502 /* DBHMyViewController.h */,
 				D51E669B2011F5A60025B502 /* DBHMyViewController.m */,
 				D565E8D22016E13D00930274 /* DBHPersonalSettingViewController.h */,
@@ -3165,6 +3188,7 @@
 				0FAC29091F2F7C4A009B3EC9 /* AAJQueryLibrary.js in Resources */,
 				A855ADBD1F3C62EE00E10B03 /* C-_Users_U.gif in Resources */,
 				A8A818551F4488A700FFF088 /* CommitOrderView.xib in Resources */,
+				D577EED9202C5EC500E96DA0 /* AboutVC.xib in Resources */,
 				A81A5ADA1F3A07950015CC0D /* TowButtonAlertView.xib in Resources */,
 				D51E66DE2015E20C0025B502 /* AddWalletSucessVC.xib in Resources */,
 				0FAC29041F2F7C4A009B3EC9 /* AAChartView.html in Resources */,
@@ -3510,6 +3534,7 @@
 				D565E8CE2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.m in Sources */,
 				0FAC29121F2F7C4A009B3EC9 /* AALabels.m in Sources */,
 				0FDD5F391F2DD6E800228CE0 /* YCXMenu.m in Sources */,
+				D577EEDA202C5EC500E96DA0 /* AboutVC.m in Sources */,
 				D565E92C2018961D00930274 /* DBHPaymentReceivedViewController.m in Sources */,
 				D56CEEE8201DD0820081DE05 /* DBHIotificationTableViewCell.m in Sources */,
 				A8A818531F44889D00FFF088 /* CommitOrderView.m in Sources */,
@@ -3675,6 +3700,7 @@
 				0F0CFE351F15FB3F00476A86 /* UIImage+Tool.m in Sources */,
 				D51E66702011F01B0025B502 /* DBHSelectWalletTypeTwoPromptView.m in Sources */,
 				D56CEEF7201E379C0081DE05 /* DBHInWeHotViewController.m in Sources */,
+				D577EEE0202CA8EE00E96DA0 /* DBHCheckFaceOrTouchViewController.m in Sources */,
 				D51E66582011F01B0025B502 /* DBHWalletDetailTokenInfomationModelData.m in Sources */,
 				0F0CFE3E1F15FC2A00476A86 /* UIImageView+SDSetImage.m in Sources */,
 				0F0CFDE71F15E54100476A86 /* main.m in Sources */,
@@ -3688,6 +3714,7 @@
 				D572D23E2021A66C002C8EFD /* DBHExchangeNoticeHistoricalInformationViewController.m in Sources */,
 				D572EC2A2022F77E002C8EFD /* EMCDDeviceManagerBase.m in Sources */,
 				0F0CFE341F15FB3F00476A86 /* UIColor+Tool.m in Sources */,
+				D577EEDD202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.m in Sources */,
 				D56CEEF4201E36330081DE05 /* DBHTradingViewViewController.m in Sources */,
 				D572EC212022F77E002C8EFD /* wav.mm in Sources */,
 				A80713271F5558B900C5B862 /* CCTagCollectionLayout.m in Sources */,
@@ -3700,6 +3727,7 @@
 				D572EC4D2022F77E002C8EFD /* EMSDWebImageDownloaderOperation.m in Sources */,
 				A88A78951F6992E90058094C /* SGQRCodeScanningView.m in Sources */,
 				D56CEE5C201AC0780081DE05 /* DBHProjectHomeTypeTwoTableViewCell.m in Sources */,
+				D577EED5202C2E9800E96DA0 /* DBHNotificationDetailViewController.m in Sources */,
 				D55557FF1FC975C100F0963B /* CHExtension.swift in Sources */,
 				D572EC5D2022F77E002C8EFD /* EaseCustomMessageCell.m in Sources */,
 				D56CEEEB201E0AB40081DE05 /* DBHExchangeNoticeViewController.m in Sources */,

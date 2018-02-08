@@ -82,7 +82,7 @@ static NSString *const kDBHProjectOverviewForRelevantInformationTableViewCellIde
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return !indexPath.row ? AUTOLAYOUTSIZE(169) : AUTOLAYOUTSIZE(215.5);
+    return !indexPath.row ? AUTOLAYOUTSIZE(159) : AUTOLAYOUTSIZE(215.5);
 }
 
 #pragma mark ------ Getters And Setters ------
