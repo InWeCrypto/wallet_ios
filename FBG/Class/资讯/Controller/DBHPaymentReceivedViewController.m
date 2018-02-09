@@ -303,7 +303,7 @@
 }
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
-        _iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"卡片logo"]];
+        _iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NEO"]];
     }
     return _iconImageView;
 }

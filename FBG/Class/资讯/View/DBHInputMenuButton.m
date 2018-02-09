@@ -48,19 +48,22 @@
     WEAKSELF
     self.leftImageView.hidden = !_isMore;
     
+    self.valueLabel.textAlignment = _isMore ? NSTextAlignmentLeft : NSTextAlignmentCenter;
     if (_isMore) {
         [self.leftImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.width.offset(AUTOLAYOUTSIZE(13.5));
             make.height.offset(AUTOLAYOUTSIZE(10));
             make.centerY.equalTo(weakSelf);
-            make.right.equalTo(weakSelf.valueLabel.mas_left).offset(- AUTOLAYOUTSIZE(4));
+            make.left.offset(AUTOLAYOUTSIZE(14));
         }];
         [self.valueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(weakSelf).offset(AUTOLAYOUTSIZE(6));
+            make.left.equalTo(weakSelf.leftImageView.mas_right).offset(AUTOLAYOUTSIZE(5));
+            make.right.offset(- AUTOLAYOUTSIZE(5));
             make.centerY.equalTo(weakSelf);
         }];
     } else {
         [self.valueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(weakSelf).offset(- AUTOLAYOUTSIZE(10));
             make.center.equalTo(weakSelf);
         }];
     }
@@ -77,6 +80,7 @@
         _valueLabel = [[UILabel alloc] init];
         _valueLabel.font = FONT(14);
         _valueLabel.textColor = COLORFROM16(0x626262, 1);
+        _valueLabel.numberOfLines = 2;
     }
     return _valueLabel;
 }

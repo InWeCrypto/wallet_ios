@@ -13,7 +13,10 @@
 @interface DBHProjectHomeTypeOneTableViewCell ()
 
 @property (nonatomic, strong) UIView *boxView;
-@property (nonatomic, strong) UIImageView *coverImageView;
+@property (nonatomic, strong) UIImageView *iconImageView;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UILabel *contentLabel;
+@property (nonatomic, strong) UIButton *projectOverviewButton;
 @property (nonatomic, strong) UIView *firstLineView;
 @property (nonatomic, strong) UILabel *realTimeQuotesLabel;
 @property (nonatomic, strong) UILabel *priceLabel;
@@ -46,7 +49,10 @@
 #pragma mark ------ UI ------
 - (void)setUI {
     [self.contentView addSubview:self.boxView];
-    [self.boxView addSubview:self.coverImageView];
+    [self.contentView addSubview:self.iconImageView];
+    [self.contentView addSubview:self.nameLabel];
+    [self.contentView addSubview:self.contentLabel];
+    [self.contentView addSubview:self.projectOverviewButton];
     [self.contentView addSubview:self.firstLineView];
     [self.contentView addSubview:self.realTimeQuotesLabel];
     [self.contentView addSubview:self.priceLabel];
@@ -63,16 +69,29 @@
         make.height.equalTo(weakSelf.contentView);
         make.center.equalTo(weakSelf.contentView);
     }];
-    [self.coverImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+    [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.offset(AUTOLAYOUTSIZE(24));
+        make.left.equalTo(weakSelf.firstLineView);
+        make.centerY.equalTo(weakSelf.nameLabel);
+    }];
+    [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.iconImageView.mas_right).offset(AUTOLAYOUTSIZE(8));
+        make.bottom.equalTo(weakSelf.contentLabel.mas_top).offset(- AUTOLAYOUTSIZE(4.5));
+    }];
+    [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.nameLabel);
+        make.bottom.equalTo(weakSelf.projectOverviewButton).offset(- AUTOLAYOUTSIZE(7.5));
+    }];
+    [self.projectOverviewButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.boxView);
-        make.height.offset(AUTOLAYOUTSIZE(155));
+        make.height.offset(AUTOLAYOUTSIZE(65));
         make.centerX.top.equalTo(weakSelf.boxView);
     }];
     [self.firstLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.boxView);
+        make.width.equalTo(weakSelf.secondLineView);
         make.height.offset(AUTOLAYOUTSIZE(1));
         make.centerX.equalTo(weakSelf.boxView);
-        make.top.equalTo(weakSelf.coverImageView.mas_bottom);
+        make.top.equalTo(weakSelf.projectOverviewButton.mas_bottom);
     }];
     [self.realTimeQuotesLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(18));
@@ -121,7 +140,7 @@
 /**
  项目全览
  */
-- (void)respondsToProjectOverview {
+- (void)respondsToProjectOverviewButton {
     self.clickButtonBlock(0);
 }
 /**
@@ -146,7 +165,13 @@
 - (void)setProjectModel:(DBHInformationModelData *)projectModel {
     _projectModel = projectModel;
     
-    [self.coverImageView sdsetImageWithURL:_projectModel.coverImg placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
+    [self.iconImageView sdsetImageWithURL:_projectModel.img placeholderImage:nil];
+    
+    NSMutableAttributedString *nameAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@（%@）", _projectModel.unit, _projectModel.name]];
+    [nameAttributedString addAttribute:NSFontAttributeName value:BOLDFONT(16) range:NSMakeRange(0, _projectModel.unit.length)];
+    self.nameLabel.attributedText = nameAttributedString;
+    
+    self.contentLabel.text = _projectModel.industry;
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _projectModel.ico.priceCny : _projectModel.ico.priceUsd;
     self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
     self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", _projectModel.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _projectModel.ico.percentChange24h.floatValue];
@@ -162,17 +187,35 @@
     }
     return _boxView;
 }
-- (UIImageView *)coverImageView {
-    if (!_coverImageView) {
-        _coverImageView = [[UIImageView alloc] init];
-        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _coverImageView.clipsToBounds = YES;
-        _coverImageView.userInteractionEnabled = YES;
-        
-        UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToProjectOverview)];
-        [_coverImageView addGestureRecognizer:tapGR];
+- (UIImageView *)iconImageView {
+    if (!_iconImageView) {
+        _iconImageView = [[UIImageView alloc] init];
+        _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
-    return _coverImageView;
+    return _iconImageView;
+}
+- (UILabel *)nameLabel {
+    if (!_nameLabel) {
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.font = FONT(13);
+        _nameLabel.textColor = COLORFROM16(0x262626, 1);
+    }
+    return _nameLabel;
+}
+- (UILabel *)contentLabel {
+    if (!_contentLabel) {
+        _contentLabel = [[UILabel alloc] init];
+        _contentLabel.font = FONT(11);
+        _contentLabel.textColor = COLORFROM16(0x333333, 1);
+    }
+    return _contentLabel;
+}
+- (UIButton *)projectOverviewButton {
+    if (!_projectOverviewButton) {
+        _projectOverviewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_projectOverviewButton addTarget:self action:@selector(respondsToProjectOverviewButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _projectOverviewButton;
 }
 - (UIView *)firstLineView {
     if (!_firstLineView) {

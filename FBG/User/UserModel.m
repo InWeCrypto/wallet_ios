@@ -10,6 +10,33 @@
 
 @implementation UserModel
 
+#pragma mark ------ Private Methods ------
+- (void)saveData {
+    [[UserSignData share] storageData:self];
+}
+
+#pragma mark ------ Getters And Setters ------
+- (void)setWalletUnitType:(int)walletUnitType {
+    _walletUnitType = walletUnitType;
+    
+    [self saveData];
+}
+- (void)setIsOpenTouchId:(BOOL)isOpenTouchId {
+    _isOpenTouchId = isOpenTouchId;
+    
+    [self saveData];
+}
+- (void)setIsOpenFaceId:(BOOL)isOpenFaceId {
+    _isOpenFaceId = isOpenFaceId;
+    
+    [self saveData];
+}
+- (void)setCanUseUnlockType:(DBHCanUseUnlockType)canUseUnlockType {
+    _canUseUnlockType = canUseUnlockType;
+    
+    [self saveData];
+}
+
 - (NSMutableArray *)functionalUnitArray {
     if (!_functionalUnitArray) {
         _functionalUnitArray = [NSMutableArray array];

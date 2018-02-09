@@ -253,6 +253,7 @@
         _accountTextField = [[UITextField alloc] init];
         _accountTextField.font = FONT(14);
         _accountTextField.textColor = COLORFROM16(0x333333, 1);
+        _accountTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
         _accountTextField.placeholder = DBHGetStringWithKeyFromTable(@"Email", nil);
     }
     return _accountTextField;
@@ -270,6 +271,7 @@
         _passwordTextField.font = FONT(14);
         _passwordTextField.textColor = COLORFROM16(0x333333, 1);
         _passwordTextField.secureTextEntry = YES;
+        _passwordTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
         _passwordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Password", nil);
     }
     return _passwordTextField;

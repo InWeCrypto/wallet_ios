@@ -169,11 +169,7 @@ static NetworkStatus _status;
     PPLog(@"❤️GET URL❤️ = %@",URL);
     PPLog(@"⚽️GET 数据⚽️ = %@",parameters);
     //读取缓存
-    if ([URL isEqualToString:@"wallet-order"]) {
-        responseCache([PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@/%@", URL, parameters[@"asset_id"] , parameters[@"wallet_id"]]]);
-    } else {
-        responseCache([PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]]);
-    }
+    responseCache([PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]]);
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:baseUrlType];
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -190,11 +186,7 @@ static NetworkStatus _status;
         if ([[responseObject objectForKey:@"code"] intValue] == 4000)
         {
             success([responseObject objectForKey:@"data"]);
-            if ([URL isEqualToString:@"wallet-order"]) {
-                [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:[NSString stringWithFormat:@"%@/%@/%@", URL, parameters[@"asset_id"] , parameters[@"wallet_id"]]];
-            } else {
-                [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]];
-            }
+            [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]];
             PPLog(@"responseObject = %@",responseObject);
         }
         else if ([[responseObject objectForKey:@"code"] intValue] == 4007)

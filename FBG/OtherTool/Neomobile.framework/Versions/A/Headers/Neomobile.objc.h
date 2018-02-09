@@ -6,15 +6,16 @@
 #ifndef __Neomobile_H__
 #define __Neomobile_H__
 
-#import <Foundation/Foundation.h>
+//@import Foundation;
 #include "Universe.objc.h"
+#include "ref.h"
 
 
 @class NeomobileTx;
 @class NeomobileWallet;
 
 /**
- 
+ * Tx neo rawtx wrapper
  */
 @interface NeomobileTx : NSObject <goSeqRefInterface> {
 }

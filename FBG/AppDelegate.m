@@ -505,15 +505,15 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    if ([UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone) {
+        [self showThirdLogin];
+    }
     [[EMClient sharedClient] applicationWillEnterForeground:application];
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    if ([UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone) {
-        [self showThirdLogin];
-    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

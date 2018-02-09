@@ -58,7 +58,7 @@
     _title = title;
     
     self.nameLabel.text = _title;
-    self.iconImageView.image = [UIImage imageNamed:@"卡片logo"];
+    self.iconImageView.image = [UIImage imageNamed:@"NEO"];
 }
 - (void)setIsSelected:(BOOL)isSelected {
     _isSelected = isSelected;

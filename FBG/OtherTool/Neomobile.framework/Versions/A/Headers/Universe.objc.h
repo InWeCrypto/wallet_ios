@@ -6,8 +6,8 @@
 #ifndef __Universe_H__
 #define __Universe_H__
 
-#import <Foundation/Foundation.h>
-#import "ref.h"
+//@import Foundation;
+#include "ref.h"
 
 @protocol Universeerror;
 @class Universeerror;

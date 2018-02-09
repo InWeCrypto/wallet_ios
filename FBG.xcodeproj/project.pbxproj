@@ -163,7 +163,6 @@
 		D50254572019AFCE00B82A7B /* DBHSelectWalletTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D50254562019AFCE00B82A7B /* DBHSelectWalletTableViewCell.m */; };
 		D502545A2019C40800B82A7B /* DBHInformationTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = D50254592019C40800B82A7B /* DBHInformationTopView.m */; };
 		D5099F631FD4F3880065F0AA /* MXNavigationBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D5099F621FD4F3880065F0AA /* MXNavigationBarManager.m */; };
-		D51E65DB2011C2E70025B502 /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51E65DA2011C2E70025B502 /* Neomobile.framework */; };
 		D51E66542011F01B0025B502 /* DBHWalletManagerForNeoModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = D51E66002011F01B0025B502 /* DBHWalletManagerForNeoModelData.m */; };
 		D51E66552011F01B0025B502 /* DBHAddPropertyModelList.m in Sources */ = {isa = PBXBuildFile; fileRef = D51E66012011F01B0025B502 /* DBHAddPropertyModelList.m */; };
 		D51E66562011F01B0025B502 /* DBHWalletManagerForNeoModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D51E66022011F01B0025B502 /* DBHWalletManagerForNeoModelDataBase.m */; };
@@ -241,6 +240,9 @@
 		D55558041FC975C100F0963B /* CHChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FC1FC975C100F0963B /* CHChartModel.swift */; };
 		D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FD1FC975C100F0963B /* CHKLineChartStyle.swift */; };
 		D55558061FC975C100F0963B /* CHChartAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */; };
+		D55B5264202D89EE004D65F7 /* Neomobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D55B5263202D89EE004D65F7 /* Neomobile.framework */; };
+		D55B5267202D8F35004D65F7 /* DBHImportWalletWithETHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55B5266202D8F35004D65F7 /* DBHImportWalletWithETHViewController.m */; };
+		D55B526A202D982E004D65F7 /* DBHWalletDetailWithETHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55B5269202D982E004D65F7 /* DBHWalletDetailWithETHViewController.m */; };
 		D565E8CE2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E8CD2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.m */; };
 		D565E8D12016D55700930274 /* DBHMyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E8D02016D55700930274 /* DBHMyTableViewCell.m */; };
 		D565E8D42016E13D00930274 /* DBHPersonalSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D565E8D32016E13D00930274 /* DBHPersonalSettingViewController.m */; };
@@ -440,6 +442,8 @@
 		D577EEDA202C5EC500E96DA0 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EED7202C5EC400E96DA0 /* AboutVC.m */; };
 		D577EEDD202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EEDC202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.m */; };
 		D577EEE0202CA8EE00E96DA0 /* DBHCheckFaceOrTouchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EEDF202CA8ED00E96DA0 /* DBHCheckFaceOrTouchViewController.m */; };
+		D577EEE6202D74CE00E96DA0 /* DBHProjectHomeNoTradingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EEE5202D74CE00E96DA0 /* DBHProjectHomeNoTradingTableViewCell.m */; };
+		D577EEE9202D7E3100E96DA0 /* DBHCreateWalletWithETHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D577EEE8202D7E3100E96DA0 /* DBHCreateWalletWithETHViewController.m */; };
 		D5B20DB9201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DB8201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m */; };
 		D5B20DBF201EB61D00E2B935 /* DBHCandyBowlHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DBE201EB61C00E2B935 /* DBHCandyBowlHeaderView.m */; };
 		D5B20DC4201EEA3E00E2B935 /* DBHMarketDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B20DC2201EEA3E00E2B935 /* DBHMarketDetailViewController.swift */; };
@@ -781,7 +785,6 @@
 		D50254592019C40800B82A7B /* DBHInformationTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHInformationTopView.m; sourceTree = "<group>"; };
 		D5099F611FD4F3880065F0AA /* MXNavigationBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXNavigationBarManager.h; sourceTree = "<group>"; };
 		D5099F621FD4F3880065F0AA /* MXNavigationBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXNavigationBarManager.m; sourceTree = "<group>"; };
-		D51E65DA2011C2E70025B502 /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
 		D51E65FF2011F01B0025B502 /* DBHWalletDetailTokenInfomationDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailTokenInfomationDataModels.h; sourceTree = "<group>"; };
 		D51E66002011F01B0025B502 /* DBHWalletManagerForNeoModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHWalletManagerForNeoModelData.m; sourceTree = "<group>"; };
 		D51E66012011F01B0025B502 /* DBHAddPropertyModelList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHAddPropertyModelList.m; sourceTree = "<group>"; };
@@ -929,6 +932,11 @@
 		D55557FC1FC975C100F0963B /* CHChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHChartModel.swift; sourceTree = "<group>"; };
 		D55557FD1FC975C100F0963B /* CHKLineChartStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHKLineChartStyle.swift; sourceTree = "<group>"; };
 		D55557FE1FC975C100F0963B /* CHChartAlgorithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHChartAlgorithm.swift; sourceTree = "<group>"; };
+		D55B5263202D89EE004D65F7 /* Neomobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Neomobile.framework; sourceTree = "<group>"; };
+		D55B5265202D8F35004D65F7 /* DBHImportWalletWithETHViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHImportWalletWithETHViewController.h; sourceTree = "<group>"; };
+		D55B5266202D8F35004D65F7 /* DBHImportWalletWithETHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHImportWalletWithETHViewController.m; sourceTree = "<group>"; };
+		D55B5268202D982E004D65F7 /* DBHWalletDetailWithETHViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHWalletDetailWithETHViewController.h; sourceTree = "<group>"; };
+		D55B5269202D982E004D65F7 /* DBHWalletDetailWithETHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletDetailWithETHViewController.m; sourceTree = "<group>"; };
 		D565E8CC2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMyForUserInfomationTableViewCell.h; sourceTree = "<group>"; };
 		D565E8CD2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHMyForUserInfomationTableViewCell.m; sourceTree = "<group>"; };
 		D565E8CF2016D55700930274 /* DBHMyTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHMyTableViewCell.h; sourceTree = "<group>"; };
@@ -1347,6 +1355,10 @@
 		D577EEDC202C805100E96DA0 /* DBHSelectFaceOrTouchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHSelectFaceOrTouchViewController.m; sourceTree = "<group>"; };
 		D577EEDE202CA8EC00E96DA0 /* DBHCheckFaceOrTouchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHCheckFaceOrTouchViewController.h; sourceTree = "<group>"; };
 		D577EEDF202CA8ED00E96DA0 /* DBHCheckFaceOrTouchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHCheckFaceOrTouchViewController.m; sourceTree = "<group>"; };
+		D577EEE4202D74CE00E96DA0 /* DBHProjectHomeNoTradingTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHProjectHomeNoTradingTableViewCell.h; sourceTree = "<group>"; };
+		D577EEE5202D74CE00E96DA0 /* DBHProjectHomeNoTradingTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectHomeNoTradingTableViewCell.m; sourceTree = "<group>"; };
+		D577EEE7202D7E3100E96DA0 /* DBHCreateWalletWithETHViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHCreateWalletWithETHViewController.h; sourceTree = "<group>"; };
+		D577EEE8202D7E3100E96DA0 /* DBHCreateWalletWithETHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHCreateWalletWithETHViewController.m; sourceTree = "<group>"; };
 		D5B20DB7201E3D6500E2B935 /* DBHCandyBowlTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHCandyBowlTableViewCell.h; sourceTree = "<group>"; };
 		D5B20DB8201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHCandyBowlTableViewCell.m; sourceTree = "<group>"; };
 		D5B20DBD201EB61C00E2B935 /* DBHCandyBowlHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHCandyBowlHeaderView.h; sourceTree = "<group>"; };
@@ -1426,9 +1438,9 @@
 			files = (
 				A8016B561F4197B7003848CD /* libresolv.tbd in Frameworks */,
 				A85A01C71F36EE44002F0141 /* Security.framework in Frameworks */,
-				D51E65DB2011C2E70025B502 /* Neomobile.framework in Frameworks */,
 				A8FEACB41F56553000C2F9AF /* CloudPushSDK.framework in Frameworks */,
 				A84475A41F32E50A003C7BDB /* libc++.tbd in Frameworks */,
+				D55B5264202D89EE004D65F7 /* Neomobile.framework in Frameworks */,
 				A84475A21F32E502003C7BDB /* libz.tbd in Frameworks */,
 				A8FEACB51F56553100C2F9AF /* UTDID.framework in Frameworks */,
 				A84475A01F32E4F6003C7BDB /* libsqlite3.0.tbd in Frameworks */,
@@ -1605,9 +1617,9 @@
 		0F0CFE1B1F15F92300476A86 /* OtherTool */ = {
 			isa = PBXGroup;
 			children = (
+				D55B5263202D89EE004D65F7 /* Neomobile.framework */,
 				D572EAD52022F77D002C8EFD /* EaseUI */,
 				D572EACF2022F5A3002C8EFD /* LCProgressHUD */,
-				D51E65DA2011C2E70025B502 /* Neomobile.framework */,
 				D5099F601FD4F3880065F0AA /* MXNavigationBarManager */,
 				D55557F61FC975C100F0963B /* CHKLineChart */,
 				A88A787F1F6992E90058094C /* SGQRCode */,
@@ -2358,6 +2370,8 @@
 				D56CEE58201AC06F0081DE05 /* DBHProjectHomeTypeOneTableViewCell.m */,
 				D56CEE5A201AC0780081DE05 /* DBHProjectHomeTypeTwoTableViewCell.h */,
 				D56CEE5B201AC0780081DE05 /* DBHProjectHomeTypeTwoTableViewCell.m */,
+				D577EEE4202D74CE00E96DA0 /* DBHProjectHomeNoTradingTableViewCell.h */,
+				D577EEE5202D74CE00E96DA0 /* DBHProjectHomeNoTradingTableViewCell.m */,
 				D56CEE5D201AC95B0081DE05 /* DBHProjectHomeHeaderView.h */,
 				D56CEE5E201AC95B0081DE05 /* DBHProjectHomeHeaderView.m */,
 				D56CEE60201AD4C80081DE05 /* DBHInputView.h */,
@@ -2519,6 +2533,8 @@
 				D51E66CF2015E20C0025B502 /* DBHAddPropertyViewController.m */,
 				D51E66D02015E20C0025B502 /* DBHCreateWalletViewController.h */,
 				D51E66B62015E20C0025B502 /* DBHCreateWalletViewController.m */,
+				D577EEE7202D7E3100E96DA0 /* DBHCreateWalletWithETHViewController.h */,
+				D577EEE8202D7E3100E96DA0 /* DBHCreateWalletWithETHViewController.m */,
 				D51E66CB2015E20C0025B502 /* DBHCreateWalletWithNameViewController.h */,
 				D51E66B52015E20C0025B502 /* DBHCreateWalletWithNameViewController.m */,
 				D51E66D22015E20C0025B502 /* DBHExtractGasViewController.h */,
@@ -2527,6 +2543,8 @@
 				D51E66C12015E20C0025B502 /* DBHHomePageViewController.m */,
 				D51E66C52015E20C0025B502 /* DBHImportWalletViewController.h */,
 				D51E66B32015E20C0025B502 /* DBHImportWalletViewController.m */,
+				D55B5265202D8F35004D65F7 /* DBHImportWalletWithETHViewController.h */,
+				D55B5266202D8F35004D65F7 /* DBHImportWalletWithETHViewController.m */,
 				D51E66BD2015E20C0025B502 /* DBHQrCodeViewController.h */,
 				D51E66AE2015E20C0025B502 /* DBHQrCodeViewController.m */,
 				D51E66C42015E20C0025B502 /* DBHTncTransferViewController.h */,
@@ -2545,6 +2563,8 @@
 				D51E66C72015E20C0025B502 /* DBHTransferViewController.m */,
 				D51E66BF2015E20C0025B502 /* DBHWalletDetailViewController.h */,
 				D51E66AC2015E20C0025B502 /* DBHWalletDetailViewController.m */,
+				D55B5268202D982E004D65F7 /* DBHWalletDetailWithETHViewController.h */,
+				D55B5269202D982E004D65F7 /* DBHWalletDetailWithETHViewController.m */,
 				D51E66BE2015E20C0025B502 /* DBHWalletManagerViewController.h */,
 				D51E66AD2015E20C0025B502 /* DBHWalletManagerViewController.m */,
 				D51E66AF2015E20C0025B502 /* PackupsWordsVC.h */,
@@ -3418,6 +3438,7 @@
 				D502545A2019C40800B82A7B /* DBHInformationTopView.m in Sources */,
 				D565E8F82017212000930274 /* DBHAddOrEditAddressTableViewCell.m in Sources */,
 				D572EC722022F77E002C8EFD /* EaseUI.m in Sources */,
+				D577EEE9202D7E3100E96DA0 /* DBHCreateWalletWithETHViewController.m in Sources */,
 				D572EC5C2022F77E002C8EFD /* EaseMessageTimeCell.m in Sources */,
 				D56CEE8A201B478A0081DE05 /* DBHGradeView.m in Sources */,
 				D56CEE84201B328A0081DE05 /* DBHProjectLookForProjectInfomationTableViewCell.m in Sources */,
@@ -3430,6 +3451,7 @@
 				0FAC29011F2F7C4A009B3EC9 /* AAJsonConverter.m in Sources */,
 				D572EC4A2022F77E002C8EFD /* EMSDWebImageManager.m in Sources */,
 				D51E66662011F01B0025B502 /* DBHAddPropertyTableViewCell.m in Sources */,
+				D55B526A202D982E004D65F7 /* DBHWalletDetailWithETHViewController.m in Sources */,
 				D572EC6D2022F77E002C8EFD /* EaseBubbleView+Voice.m in Sources */,
 				0FAC29111F2F7C4A009B3EC9 /* AAItemStyle.m in Sources */,
 				0F0CFDED1F15E54100476A86 /* ViewController.m in Sources */,
@@ -3596,6 +3618,7 @@
 				D5B788C220298660005ACFC8 /* DBHAddressBookModelData.m in Sources */,
 				D56CEEEE201E1CC70081DE05 /* DBHTraderClockViewController.m in Sources */,
 				D572EC482022F77E002C8EFD /* EMSDWebImageDecoder.m in Sources */,
+				D577EEE6202D74CE00E96DA0 /* DBHProjectHomeNoTradingTableViewCell.m in Sources */,
 				D572EC3B2022F77E002C8EFD /* PSTGridLayoutSection.m in Sources */,
 				D572D23520219A7E002C8EFD /* DBHFunctionalUnitLookTableViewCell.m in Sources */,
 				D572EC662022F77E002C8EFD /* EaseRecordView.m in Sources */,
@@ -3738,6 +3761,7 @@
 				D51E66D92015E20C0025B502 /* DBHImportWalletViewController.m in Sources */,
 				D572EC022022F77E002C8EFD /* EaseMessageReadManager.m in Sources */,
 				A88A78941F6992E90058094C /* SGQRCodeScanManager.m in Sources */,
+				D55B5267202D8F35004D65F7 /* DBHImportWalletWithETHViewController.m in Sources */,
 				0F0CFE361F15FB3F00476A86 /* UIView+Tool.m in Sources */,
 				D572EC222022F77E002C8EFD /* amrFileCodec.mm in Sources */,
 			);

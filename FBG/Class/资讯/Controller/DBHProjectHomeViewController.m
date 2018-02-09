@@ -155,7 +155,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     return !section ? AUTOLAYOUTSIZE(25) : AUTOLAYOUTSIZE(42);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return !indexPath.section ? AUTOLAYOUTSIZE(277.5) : AUTOLAYOUTSIZE(215.5);
+    return !indexPath.section ? AUTOLAYOUTSIZE(198) : AUTOLAYOUTSIZE(215.5);
 }
 
 #pragma mark ------ Data ------

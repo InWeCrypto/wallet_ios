@@ -15,12 +15,14 @@
 
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHInputView.h"
+#import "DBHProjectHomeNoTradingTableViewCell.h"
 #import "DBHProjectHomeTypeTwoTableViewCell.h"
 
 #import "DBHInformationDataModels.h"
 #import "DBHProjectHomeNewsDataModels.h"
 #import "DBHProjectDetailInformationDataModels.h"
 
+static NSString *const kDBHProjectHomeNoTradingTableViewCellIdentifier = @"kDBHProjectHomeNoTradingTableViewCellIdentifier";
 static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHProjectHomeTypeTwoTableViewCellIdentifier";
 
 @interface DBHProjectHomeNoTradingViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -80,14 +82,17 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
     if (!indexPath.section) {
+        DBHProjectHomeNoTradingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeNoTradingTableViewCellIdentifier forIndexPath:indexPath];
         cell.projectModel = self.projectModel;
+        
+        return cell;
     } else {
+        DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
         cell.lastModel = self.projectDetailModel.lastArticle;
+        
+        return cell;
     }
-    
-    return cell;
 }
 
 #pragma mark ------ UITableViewDelegate ------
@@ -109,6 +114,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return !section ? AUTOLAYOUTSIZE(25) : AUTOLAYOUTSIZE(42);
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return !indexPath.section ? AUTOLAYOUTSIZE(113) : AUTOLAYOUTSIZE(215.5);
 }
 
 #pragma mark ------ Data ------
@@ -223,11 +231,11 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         
         _tableView.sectionHeaderHeight = 0;
         _tableView.sectionFooterHeight = 0;
-        _tableView.rowHeight = AUTOLAYOUTSIZE(215.5);
         
         _tableView.dataSource = self;
         _tableView.delegate = self;
         
+        [_tableView registerClass:[DBHProjectHomeNoTradingTableViewCell class] forCellReuseIdentifier:kDBHProjectHomeNoTradingTableViewCellIdentifier];
         [_tableView registerClass:[DBHProjectHomeTypeTwoTableViewCell class] forCellReuseIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier];
     }
     return _tableView;

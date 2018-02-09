@@ -85,10 +85,12 @@ static NSString *const kDBHChangePasswordTableViewCellIdentifier = @"kDBHChangeP
                                 @"password":newPasswordCell.valueTextField.text,
                                 @"password_confirmation":surePasswordCell.valueTextField.text};
     
-    WEAKSELF
     [PPNetworkHelper PUT:@"user/reset_password" baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
+        [[EMClient sharedClient] logout:YES];
+        [UserSignData share].user.token = nil;
+        [[UserSignData share] storageData:[UserSignData share].user];
+        [[AppDelegate delegate] showLoginController];
         [LCProgressHUD showSuccess:NSLocalizedString(@"Password Update Success", nil)];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];

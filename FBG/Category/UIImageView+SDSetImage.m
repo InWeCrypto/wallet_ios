@@ -25,6 +25,9 @@
 
 - (void)sdsetImageWithURL:(NSString *)url placeholderImage:(UIImage *)placeholder
 {
+    if (![url isKindOfClass:[NSString class]]) {
+        return;
+    }
     if ([url containsString:@"http"])
     {
         [self sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:placeholder];

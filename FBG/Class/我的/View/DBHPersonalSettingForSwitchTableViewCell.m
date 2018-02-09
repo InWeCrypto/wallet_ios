@@ -50,8 +50,10 @@
 #pragma mark ------ Event Responds ------
 - (void)respondsToOnSwitch {
     // 功能组件推送配置
-    [UserSignData share].user.realTimeDeliveryArray[_functionalUnitType] = self.onSwitch.isOn ? @"1" : @"0";
-    [[UserSignData share] storageData:[UserSignData share].user];
+    if (_functionalUnitType >= 0) {
+        [UserSignData share].user.realTimeDeliveryArray[_functionalUnitType] = self.onSwitch.isOn ? @"1" : @"0";
+        [[UserSignData share] storageData:[UserSignData share].user];        
+    }
     
     self.changeSwitchBlock(self.onSwitch.isOn);
 }
@@ -65,6 +67,9 @@
 - (void)setFunctionalUnitType:(NSInteger)functionalUnitType {
     _functionalUnitType = functionalUnitType;
     
+    if (_functionalUnitType < 0) {
+        return;
+    }
     self.onSwitch.on = [[UserSignData share].user.realTimeDeliveryArray[_functionalUnitType] isEqualToString:@"1"];
 }
 - (void)setTitle:(NSString *)title {

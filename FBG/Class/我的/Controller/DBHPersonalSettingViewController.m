@@ -93,6 +93,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     } else {
         DBHPersonalSettingForSwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier forIndexPath:indexPath];
         cell.title = [UserSignData share].user.canUseUnlockType == DBHCanUseUnlockTypeTouchID ? @"Touch ID" : @"Face ID";
+        cell.functionalUnitType = -1;
         cell.isStick = [UserSignData share].user.canUseUnlockType == DBHCanUseUnlockTypeTouchID ? [UserSignData share].user.isOpenTouchId : [UserSignData share].user.isOpenFaceId;
         
         [cell changeSwitchBlock:^(BOOL isOpen) {
