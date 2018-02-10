@@ -32,6 +32,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) DBHInputView *keyboardView;
 
+@property (nonatomic, assign) NSInteger currentPage; // 当前页
 @property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
@@ -46,6 +47,10 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     self.title = self.projectModel.unit;
     
     [self setUI];
+    [self addRefresh];
+    
+    self.currentPage = 1;
+    [self getInfomation];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -76,83 +81,93 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 
 #pragma mark ------ UITableViewDataSource ------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1 + (self.projectDetailModel.lastArticle.categoryId != 0 ? 1 : 0);
+    return self.dataSource.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!indexPath.section) {
-        DBHProjectHomeNoTradingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeNoTradingTableViewCellIdentifier forIndexPath:indexPath];
-        cell.projectModel = self.projectModel;
-        
-        return cell;
-    } else {
-        DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
-        cell.lastModel = self.projectDetailModel.lastArticle;
-        
-        return cell;
-    }
+    DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
+    cell.model = self.dataSource[indexPath.section];
+    
+    return cell;
 }
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!indexPath.section) {
-        
-    }
+    
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (!section) {
-        UIView *headerView = [[UIView alloc] init];
-        headerView.backgroundColor = COLORFROM10(235, 235, 235, 1);
-        return headerView;
-    } else {
-        DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-        headerView.time = self.projectDetailModel.lastArticle.createdAt;
-        return headerView;
-    }
+    DBHProjectHomeNewsModelData *model = self.dataSource[section];
+    DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
+    headerView.time = model.updatedAt;
+    return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return !section ? AUTOLAYOUTSIZE(25) : AUTOLAYOUTSIZE(42);
+    return AUTOLAYOUTSIZE(42);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return !indexPath.section ? AUTOLAYOUTSIZE(113) : AUTOLAYOUTSIZE(215.5);
+    return AUTOLAYOUTSIZE(215.5);
 }
 
 #pragma mark ------ Data ------
-///**
-// 获取项目资讯
-// */
-//- (void)getInfomation {
-//    WEAKSELF
-//    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-//        if (weakSelf.dataSource.count) {
-//            return ;
-//        }
-//
-//        [weakSelf.dataSource removeAllObjects];
-//
-//        for (NSDictionary *dic in responseCache[@"data"]) {
-//            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-//
-//            [weakSelf.dataSource addObject:model];
-//        }
-//
-//        [weakSelf.tableView reloadData];
-//    } success:^(id responseObject) {
-//        [weakSelf.dataSource removeAllObjects];
-//
-//        for (NSDictionary *dic in responseObject[@"data"]) {
-//            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
-//
-//            [weakSelf.dataSource addObject:model];
-//        }
-//
-//        [weakSelf.tableView reloadData];
-//    } failure:^(NSString *error) {
-//        [LCProgressHUD showFailure:error];
-//    }];
-//}
+/**
+ 获取项目资讯
+ */
+- (void)getInfomation {
+    WEAKSELF
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%ld&per_page=5&page=%ld", (NSInteger)self.projectModel.dataIdentifier, self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        if (weakSelf.dataSource.count) {
+            return ;
+        }
+        
+        [weakSelf.dataSource removeAllObjects];
+        NSArray *dataArray = responseCache[@"data"];
+        for (NSInteger i = dataArray.count - 1; i >= 0; i--) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray[i]];
+            
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        [weakSelf.tableView reloadData];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf scrollViewToBottom:NO];
+        });
+    } success:^(id responseObject) {
+        [weakSelf endRefresh];
+        
+        if (weakSelf.currentPage == 1) {
+            [weakSelf.dataSource removeAllObjects];
+        }
+        
+        NSMutableArray *dataArray = [NSMutableArray array];
+        NSArray *array = responseObject[@"data"];
+        for (NSInteger i = array.count - 1; i >= 0; i--) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:array[i]];
+            
+            [dataArray addObject:model];
+        }
+        
+        if (weakSelf.currentPage == 1) {
+            [weakSelf.dataSource addObjectsFromArray:dataArray];
+        } else if (dataArray.count) {
+            [weakSelf.dataSource insertObjects:dataArray atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataArray.count)]];
+        }
+        
+        [weakSelf.tableView reloadData];
+        if (weakSelf.currentPage == 1) {
+            if (weakSelf.dataSource.count > 2) {
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
+        } else if (dataArray.count) {
+            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
+    } failure:^(NSString *error) {
+        [weakSelf endRefresh];
+        [LCProgressHUD showFailure:error];
+    }];
+}
 /**
  获取项目详细信息
  */
@@ -208,6 +223,46 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     DBHProjectLookViewController *projectLookViewController = [[DBHProjectLookViewController alloc] init];
     projectLookViewController.projectModel = self.projectModel;
     [self.navigationController pushViewController:projectLookViewController animated:YES];
+}
+
+#pragma mark ------ Private Methods ------
+/**
+ 滑动到底部
+ */
+- (void)scrollViewToBottom:(BOOL)animated
+{
+    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+    {
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        [self.tableView setContentOffset:offset animated:animated];
+    }
+}
+/**
+ 添加刷新
+ */
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (weakSelf.dataSource.count < weakSelf.currentPage * 5) {
+            [weakSelf endRefresh];
+            
+            return ;
+        }
+        
+        weakSelf.currentPage += 1;
+        [weakSelf getInfomation];
+    }];
+}
+/**
+ 结束刷新
+ */
+- (void)endRefresh {
+    if ([self.tableView.mj_header isRefreshing]) {
+        [self.tableView.mj_header endRefreshing];
+    }
+    if ([self.tableView.mj_footer isRefreshing]) {
+        [self.tableView.mj_footer endRefreshing];
+    }
 }
 
 #pragma mark ------ Getters And Setters ------

@@ -10,6 +10,7 @@
 
 #import <HyphenateLite/HyphenateLite.h>
 
+#import "DBHSearchViewController.h"
 #import "DBHPaymentReceivedViewController.h"
 #import "DBHProjectHomeViewController.h"
 #import "DBHProjectHomeNoTradingViewController.h"
@@ -24,7 +25,6 @@
 
 #import "DBHInformationTitleView.h"
 #import "DBHMenuView.h"
-#import "DBHInformationTopView.h"
 #import "DBHInformationHeaderView.h"
 #import "DBHAddWalletPromptView.h"
 #import "DBHSelectWalletTypeOnePromptView.h"
@@ -35,18 +35,17 @@
 
 static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformationTableViewCellIdentifier";
 
-@interface DBHInformationViewController ()<UITableViewDataSource, UITableViewDelegate, EMChatManagerDelegate>
+@interface DBHInformationViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, EMChatManagerDelegate>
 
 @property (nonatomic, strong) DBHInformationTitleView *informationTitleView;
 @property (nonatomic, strong) DBHMenuView *menuView;
-@property (nonatomic, strong) DBHInformationTopView *informationTopView;
 @property (nonatomic, strong) DBHInformationHeaderView *informationHeaderView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) DBHAddWalletPromptView *addWalletPromptView;
 @property (nonatomic, strong) DBHSelectWalletTypeOnePromptView *selectWalletTypeOnePromptView;
 @property (nonatomic, strong) DBHSelectWalletTypeTwoPromptView *selectWalletTypeTwoPromptView;
 
-@property (nonatomic, assign) BOOL isShowTopView; // 是否显示功能组件
+@property (nonatomic, assign) BOOL isShowFunctionalUnit;
 @property (nonatomic, strong) NSArray *menuArray; // 菜单选项
 @property (nonatomic, copy) NSArray *titleArray; // 功能组件标题
 @property (nonatomic, strong) NSMutableArray *conversationArray; // 功能组件会话列表
@@ -90,21 +89,12 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     self.navigationItem.titleView = self.informationTitleView;
     
     [self.view addSubview:self.tableView];
-//    [self.view addSubview:self.informationTopView];
     
     WEAKSELF
-//    [self.informationTopView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//        make.width.equalTo(weakSelf.view);
-//        make.height.offset(AUTOLAYOUTSIZE(125));
-//        make.centerX.equalTo(weakSelf.view);
-//        make.top.offset(- AUTOLAYOUTSIZE(125));
-//    }];
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(weakSelf.view);
         make.center.equalTo(weakSelf.view);
     }];
-    
-    self.tableView.contentOffset = CGPointMake(0, 100);
 }
 
 #pragma mark ------ UITableViewDataSource ------
@@ -240,24 +230,31 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     return @[cancelColletAction];
 }
 
-//#pragma mark ------ UIScrollViewDelegate ------
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    [self.informationTopView mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.top.offset(- AUTOLAYOUTSIZE(125) - scrollView.contentOffset.y);
-//    }];
-//}
-//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-//    CGFloat offsetY = scrollView.contentOffset.y;
-//    if (self.isShowTopView) {
-//        if (offsetY > AUTOLAYOUTSIZE(62.5)) {
-//            self.isShowTopView = NO;
-//        }
-//    } else {
-//        if (offsetY > AUTOLAYOUTSIZE(62.5)) {
-//            self.isShowTopView = YES;
-//        }
-//    }
-//}
+#pragma mark ------ UIScrollViewDelegate ------
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    CGFloat offsetY = scrollView.contentOffset.y;
+    WEAKSELF
+    if (self.isShowFunctionalUnit) {
+        // 现在是显示
+        if (offsetY > AUTOLAYOUTSIZE(45)) {
+            self.tableView.contentInset = UIEdgeInsetsMake(-AUTOLAYOUTSIZE(125), 0, 0, 0);
+            self.isShowFunctionalUnit = NO;
+        } else {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf.tableView setContentOffset:CGPointMake(0,0) animated:YES];
+            });
+        }
+    } else {
+        // 现在是隐藏
+        if (offsetY < AUTOLAYOUTSIZE(80)) {
+            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+            self.isShowFunctionalUnit = YES;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf.tableView setContentOffset:CGPointMake(0,0) animated:YES];
+            });
+        }
+    }
+}
 
 #pragma mark ------ EMChatManagerDelegate ------
 /**
@@ -411,32 +408,6 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setIsShowTopView:(BOOL)isShowTopView {
-    _isShowTopView = isShowTopView;
-    
-    WEAKSELF
-    [self.informationTopView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(_isShowTopView ? 0 : - AUTOLAYOUTSIZE(125));
-    }];
-    if (_isShowTopView) {
-        [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.width.equalTo(weakSelf.view);
-            make.centerX.equalTo(weakSelf.view);
-            make.top.offset(AUTOLAYOUTSIZE(125));
-            make.bottom.equalTo(weakSelf.view);
-        }];
-    } else {
-        [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.size.equalTo(weakSelf.view);
-            make.center.equalTo(weakSelf.view);
-        }];
-    }
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        [weakSelf.view layoutIfNeeded];
-    }];
-}
-
 - (DBHInformationTitleView *)informationTitleView {
     if (!_informationTitleView) {
         _informationTitleView = [[DBHInformationTitleView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 44)];
@@ -445,6 +416,8 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         [_informationTitleView clickButtonBlock:^(NSInteger type) {
             if (!type) {
                 // 搜索
+                DBHSearchViewController *searchViewController = [[DBHSearchViewController alloc] init];
+                [weakSelf.navigationController pushViewController:searchViewController animated:YES];
             } else {
                 // +号按钮
                 [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.menuView];
@@ -493,21 +466,70 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     }
     return _menuView;
 }
-- (DBHInformationTopView *)informationTopView {
-    if (!_informationTopView) {
-        _informationTopView = [[DBHInformationTopView alloc] init];
-        _informationTopView.backgroundColor = [UIColor redColor];
-    }
-    return _informationTopView;
-}
 - (DBHInformationHeaderView *)informationHeaderView {
     if (!_informationHeaderView) {
-        _informationHeaderView = [[DBHInformationHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, AUTOLAYOUTSIZE(41.5))];
+        _informationHeaderView = [[DBHInformationHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, AUTOLAYOUTSIZE(166.5))];
         
         WEAKSELF
         [_informationHeaderView selectTypeBlock:^{
             [weakSelf.dataSource removeAllObjects];
             [weakSelf getProjectList];
+        }];
+        [_informationHeaderView clickFunctionalUnitBlock:^(NSInteger functionalUnitType) {
+            // 点击功能组件
+            switch (functionalUnitType) {
+                case 0: {
+                    // InWe热点
+                    DBHInWeHotViewController *inWeHotViewController = [[DBHInWeHotViewController alloc] init];
+                    inWeHotViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
+                    inWeHotViewController.functionalUnitType = 0;
+                    [weakSelf.navigationController pushViewController:inWeHotViewController animated:YES];
+                    break;
+                }
+                case 1: {
+                    // TradingView
+                    DBHTradingViewViewController *tradingViewViewController = [[DBHTradingViewViewController alloc] init];
+                    tradingViewViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
+                    tradingViewViewController.functionalUnitType = 1;
+                    [weakSelf.navigationController pushViewController:tradingViewViewController animated:YES];
+                    break;
+                }
+                case 2: {
+                    // 交易所公告
+                    DBHExchangeNoticeViewController *exchangeNoticeViewController = [[DBHExchangeNoticeViewController alloc] init];
+                    exchangeNoticeViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
+                    exchangeNoticeViewController.functionalUnitType = 2;
+                    [weakSelf.navigationController pushViewController:exchangeNoticeViewController animated:YES];
+                    break;
+                }
+                case 3: {
+                    // CandyBowl
+                    DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
+                    candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
+                    candyBowlViewController.functionalUnitType = 3;
+                    [weakSelf.navigationController pushViewController:candyBowlViewController animated:YES];
+                    break;
+                }
+                case 4: {
+                    // 交易提醒
+                    DBHTraderClockViewController *traderClockViewController = [[DBHTraderClockViewController alloc] init];
+                    traderClockViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
+                    traderClockViewController.functionalUnitType = 4;
+                    [weakSelf.navigationController pushViewController:traderClockViewController animated:YES];
+                    break;
+                }
+                case 5: {
+                    // 通知
+                    DBHNotificationViewController *notificationViewController = [[DBHNotificationViewController alloc] init];
+                    notificationViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
+                    notificationViewController.functionalUnitType = 5;
+                    [weakSelf.navigationController pushViewController:notificationViewController animated:YES];
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
         }];
     }
     return _informationHeaderView;
@@ -518,6 +540,8 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+        _tableView.contentInset = UIEdgeInsetsMake(-AUTOLAYOUTSIZE(125), 0, 0, 0);
         
         _tableView.tableHeaderView = self.informationHeaderView;
         _tableView.sectionHeaderHeight = 0;

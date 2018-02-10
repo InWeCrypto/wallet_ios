@@ -176,13 +176,13 @@
                                                       [LCProgressHUD hide];
                                                       
                                                       //                                                      //创建成功
-                                                      if (self.neoWalletModel)
+                                                      if (self.ethWalletModel)
                                                       {
                                                           //观察钱包升级 助记词
-                                                          if ([[self.ethWallet address] isEqualToString:self.neoWalletModel.address])
+                                                          if ([[self.ethWallet address] isEqualToString:self.ethWalletModel.address])
                                                           {
                                                               DBHCreateWalletWithETHViewController *createWalletWithETHViewController = [[DBHCreateWalletWithETHViewController alloc] init];
-//                                                              createWalletWithETHViewController.neoWalletModel = self.neoWalletModel;
+//                                                              createWalletWithETHViewController.ethWalletModel = self.ethWalletModel;
                                                               createWalletWithETHViewController.ethWallet = self.ethWallet;
                                                               [self.navigationController pushViewController:createWalletWithETHViewController animated:YES];
                                                           }
@@ -227,13 +227,13 @@
                                                   {
                                                       [LCProgressHUD hide];
                                                       //创建成功
-                                                      if (self.neoWalletModel)
+                                                      if (self.ethWalletModel)
                                                       {
                                                           //观察钱包升级 私匙
-                                                          if ([[self.ethWallet address] isEqualToString:self.neoWalletModel.address])
+                                                          if ([[self.ethWallet address] isEqualToString:self.ethWalletModel.address])
                                                           {
                                                               DBHCreateWalletWithETHViewController *createWalletWithETHViewController = [[DBHCreateWalletWithETHViewController alloc] init];
-//                                                              createWalletWithETHViewController.neoWalletModel = self.neoWalletModel;
+//                                                              createWalletWithETHViewController.ethWalletModel = self.ethWalletModel;
                                                               createWalletWithETHViewController.ethWallet = self.ethWallet;
                                                               [self.navigationController pushViewController:createWalletWithETHViewController animated:YES];
                                                           }
@@ -267,7 +267,8 @@
                 //创建成功
                 DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
                 createWalletWithNameViewController.walletType = 1;
-                createWalletWithNameViewController.address = [self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                createWalletWithNameViewController.address = [self.contentTextView.text
+                                                              stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 [self.navigationController pushViewController:createWalletWithNameViewController animated:YES];
             }
             else
@@ -290,7 +291,7 @@
         return;
     }
     
-    if (self.neoWalletModel && sender.tag - 200 == 3) {
+    if (self.ethWalletModel && sender.tag - 200 == 3) {
         [LCProgressHUD showMessage:@"已经是观察钱包了"];
         return;
     }
@@ -387,16 +388,16 @@
                                                   {
                                                       [LCProgressHUD hide];
                                                       //创建成功
-                                                      if (self.neoWalletModel)
+                                                      if (self.ethWalletModel)
                                                       {
                                                           //观察钱包升级 keyStore
-                                                          if ([[self.ethWallet address] isEqualToString:self.neoWalletModel.address])
+                                                          if ([[self.ethWallet address] isEqualToString:self.ethWalletModel.address])
                                                           {
                                                               [LCProgressHUD showMessage:@"转化成功"];
                                                               [PDKeyChain save:[self.ethWallet address] data:data];
                                                               DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
-                                                              self.neoWalletModel.isLookWallet = NO;
-                                                              walletDetailViewController.neoWalletModel = self.neoWalletModel;
+                                                              self.ethWalletModel.isLookWallet = NO;
+                                                              walletDetailViewController.neoWalletModel = self.ethWalletModel;
                                                               walletDetailViewController.backIndex = 2;
                                                               [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
                                                           }
@@ -410,6 +411,7 @@
                                                           DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
                                                           createWalletWithNameViewController.walletType = 1;
                                                           createWalletWithNameViewController.address = self.ethWallet.address;
+                                                          [PDKeyChain save:[self.ethWallet address] data:data];
                                                           [self.navigationController pushViewController:createWalletWithNameViewController animated:YES];
                                                       }
                                                   }

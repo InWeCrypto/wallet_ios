@@ -13,8 +13,8 @@
 @interface DBHImportWalletWithETHViewController : DBHBaseViewController
 
 /**
- Neo钱包Model
+ ETH钱包Model
  */
-@property (nonatomic, strong) DBHWalletManagerForNeoModelList *neoWalletModel;
+@property (nonatomic, strong) DBHWalletManagerForNeoModelList *ethWalletModel;
 
 @end

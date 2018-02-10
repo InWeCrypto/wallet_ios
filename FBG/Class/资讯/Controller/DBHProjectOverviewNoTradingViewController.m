@@ -13,6 +13,7 @@
 
 #import "DBHInputView.h"
 #import "DBHProjectHomeMenuView.h"
+#import "DBHGradePromptView.h"
 #import "DBHProjectOverviewForProjectInfomtaionTableViewCell.h"
 #import "DBHProjectOverviewNoTradingForRelevantInformationTableViewCell.h"
 #import "DBHProjectOverviewNoTradingTableViewCell.h"
@@ -29,6 +30,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 @property (nonatomic, strong) DBHInputView *keyboardView;
 @property (nonatomic, strong) DBHProjectHomeMenuView *browserMenuView;
 @property (nonatomic, strong) DBHProjectHomeMenuView *walletMenuView;
+@property (nonatomic, strong) DBHGradePromptView *gradePromptView;
 
 @end
 
@@ -46,6 +48,8 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 
 #pragma mark ------ UI ------
 - (void)setUI {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Grade", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToGradeButton)];
+    
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.keyboardView];
     
@@ -117,6 +121,35 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
             return 0;
             break;
     }
+}
+
+#pragma mark ------ Data ------
+/**
+ 项目评分
+ 
+ @param grade 分数
+ */
+- (void)projectGradeWithGrade:(NSInteger)grade {
+    NSDictionary *paramters = @{@"score":@(grade)};
+    
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/score", (NSInteger)self.projectDetailModel.internalBaseClassIdentifier] baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Submit", nil)] success:^(id responseObject) {
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Submit Success", nil)];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+
+#pragma mark ------ Event Responds ------
+/**
+ 评分
+ */
+- (void)respondsToGradeButton {
+    [[UIApplication sharedApplication].keyWindow addSubview:self.gradePromptView];
+    
+    WEAKSELF
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weakSelf.gradePromptView animationShow];
+    });
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -272,6 +305,17 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
         }];
     }
     return _walletMenuView;
+}
+- (DBHGradePromptView *)gradePromptView {
+    if (!_gradePromptView) {
+        _gradePromptView = [[DBHGradePromptView alloc] init];
+        
+        WEAKSELF
+        [_gradePromptView gradeBlock:^(NSInteger grade) {
+            [weakSelf projectGradeWithGrade:grade];
+        }];
+    }
+    return _gradePromptView;
 }
 
 @end

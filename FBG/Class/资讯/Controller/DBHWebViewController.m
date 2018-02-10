@@ -30,27 +30,28 @@
 #pragma mark ------ UI ------
 - (void)setUI {
     [self.view addSubview:self.webView];
-    [self.view addSubview:self.grayLineView];
-    [self.view addSubview:self.yourOpinionButton];
+//    [self.view addSubview:self.grayLineView];
+    //[self.view addSubview:self.yourOpinionButton];
     
     WEAKSELF
     [self.webView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
         make.centerX.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+//        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+        make.bottom.equalTo(weakSelf.view);
     }];
-    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(1));
-        make.centerX.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
-    }];
-    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(47));
-        make.centerX.bottom.equalTo(weakSelf.view);
-    }];
+//    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(1));
+//        make.centerX.equalTo(weakSelf.view);
+//        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
+//    }];
+    //    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(47));
+//        make.centerX.bottom.equalTo(weakSelf.view);
+//    }];
 }
 
 #pragma mark ------ Event Responds ------

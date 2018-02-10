@@ -27,22 +27,22 @@
     if (self) {
         self.backgroundColor = COLORFROM16(0xDEDEDE, 1);
         
-        [self setUI];
+//        [self setUI];
     }
     return self;
 }
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    [self addSubview:self.keyboardButton];
-    
-    WEAKSELF
-    [self.keyboardButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(43.5));
-        make.height.equalTo(weakSelf).offset(- AUTOLAYOUTSIZE(0.5));
-        make.left.equalTo(weakSelf);
-        make.top.offset(AUTOLAYOUTSIZE(0.5));
-    }];
+//    [self addSubview:self.keyboardButton];
+//
+//    WEAKSELF
+//    [self.keyboardButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.offset(AUTOLAYOUTSIZE(43.5));
+//        make.height.equalTo(weakSelf).offset(- AUTOLAYOUTSIZE(0.5));
+//        make.left.equalTo(weakSelf);
+//        make.top.offset(AUTOLAYOUTSIZE(0.5));
+//    }];
 }
 
 #pragma mark ------ Event Responds ------
@@ -73,10 +73,16 @@
         
         WEAKSELF
         [menuButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.width.offset((SCREENWIDTH - AUTOLAYOUTSIZE(43.5) - AUTOLAYOUTSIZE(0.5) * _dataSource.count) / _dataSource.count);
+            make.width.offset((SCREENWIDTH /*- AUTOLAYOUTSIZE(43.5)*/ - AUTOLAYOUTSIZE(0.5) * _dataSource.count) / _dataSource.count);
             make.height.equalTo(weakSelf).offset(- AUTOLAYOUTSIZE(0.5));
-            make.left.equalTo(!i ? weakSelf.keyboardButton.mas_right : [self viewWithTag:200 + i].mas_right).offset(AUTOLAYOUTSIZE(0.5));
-            make.centerY.equalTo(weakSelf.keyboardButton);
+//            make.left.equalTo(!i ? weakSelf.keyboardButton.mas_right : [self viewWithTag:200 + i].mas_right).offset(AUTOLAYOUTSIZE(0.5));
+            if (!i) {
+                make.left.equalTo(weakSelf);
+            } else {
+                make.left.equalTo([self viewWithTag:200 + i].mas_right).offset(AUTOLAYOUTSIZE(0.5));
+            }
+//            make.centerY.equalTo(weakSelf.keyboardButton);
+            make.top.offset(AUTOLAYOUTSIZE(0.5));
         }];
     }
 }

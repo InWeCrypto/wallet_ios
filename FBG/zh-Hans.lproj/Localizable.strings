@@ -102,7 +102,7 @@
 "Transfer wallet address" = "转账钱包地址";
 "Please enter a transfer address" = "请输入转账地址";
 "Transfer amount" = "转账金额";
-"GASCost" = "GAS费用";
+"GAS Cost" = "GAS费用";
 "Slow" = "慢";
 "Fast" = "快";
 "Remarks" = "备注";
@@ -280,6 +280,7 @@
 "Project Information" = "项目资讯";
 "Project Introduction" = "项目介绍";
 "Project Community" = "项目社区";
+"Grade" = "评分";
 "Project Grade" = "项目评分";
 "State" = "状态";
 "Project Skype" = "项目官网";
@@ -305,6 +306,13 @@
 "Current Price" = "当前价格";
 "The highest value should be greater than the minimum" = "最高值应大于最低值";
 "Set Success" = "设置成功";
+"Market Ranking" = "市值排名";
+"Market" = "市值";
+"Turnover" = "流通量";
+"Gross" = "总量";
+"ICO Price" = "ICO价格";
+"Part" = "分";
+"Please Grade" = "请评分";
 
 /*
  历史资讯
@@ -347,6 +355,7 @@
 "Edit Contact" = "编辑联系人";
 "Address" = "地址";
 "Submit" = "提交";
+"Submit Success" = "提交成功";
 
 /*
  设置

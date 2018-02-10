@@ -505,7 +505,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    if ([UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone) {
+    if ([UserSignData share].user && [UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone) {
         [self showThirdLogin];
     }
     [[EMClient sharedClient] applicationWillEnterForeground:application];
@@ -643,8 +643,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 - (void)userAccountDidLoginFromOtherDevice {
     EMError *error = [[EMClient sharedClient] logout:YES];
     if (!error) {
-        [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
+        [[UserSignData share] storageData:nil];
         [self showLoginController];
         NSLog(@"退出成功");
     }

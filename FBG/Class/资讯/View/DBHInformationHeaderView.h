@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^SelectTypeBlock)();
+typedef void(^ClickFunctionalUnitBlock)(NSInteger functionalUnitType);
 
 @interface DBHInformationHeaderView : UIView
 
@@ -21,6 +22,11 @@ typedef void(^SelectTypeBlock)();
  选择类型回调
  */
 - (void)selectTypeBlock:(SelectTypeBlock)selectTypeBlock;
+
+/**
+ 点击功能组件回调
+ */
+- (void)clickFunctionalUnitBlock:(ClickFunctionalUnitBlock)clickFunctionalUnitBlock;
 
 /**
  停止动画

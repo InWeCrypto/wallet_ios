@@ -57,8 +57,12 @@
             self.navigationItem.leftBarButtonItem = leftBarButtonItem;
             [self.navigationItem.leftBarButtonItem setTintColor:[UIColor lightGrayColor]];
             
-            UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_刷新"] style:UIBarButtonItemStyleDone target:self action:@selector(rightButton)];
-            self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+            if (self.isHaveShare) {
+                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gonggaoxiangqing_gengduo"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToShareBarButtonItem)];
+            } else {
+                UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_刷新"] style:UIBarButtonItemStyleDone target:self action:@selector(rightButton)];
+                self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+            }
         }
     }
     if (self.isLogin)
@@ -450,5 +454,40 @@
     }
     return _commitOrderView;
 }
+
+/**
+ 分享
+ */
+- (void)respondsToShareBarButtonItem {
+    NSArray* activityItems = [[NSArray alloc] initWithObjects:self.urlStr, nil];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    //applicationActivities可以指定分享的应用，不指定为系统默认支持的
+    
+    kWeakSelf(activityVC)
+    activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError)
+    {
+        if(completed)
+        {
+            NSLog(@"Share success");
+        }
+        else
+        {
+            NSLog(@"Cancel the share");
+        }
+        [weakactivityVC dismissViewControllerAnimated:YES completion:nil];
+    };
+    [self presentViewController:activityVC animated:YES completion:nil];
+}
+
+//- (void)setIsHaveShare:(BOOL)isHaveShare {
+//    _isHaveShare = isHaveShare;
+//
+//    if (!_isHaveShare) {
+//        return;
+//    }
+//
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gonggaoxiangqing_gengduo"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToShareBarButtonItem)];
+//}
 
 @end

@@ -58,27 +58,28 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"xiangmuzhuye_ren_ico"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToPersonBarButtonItem)];
     
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.grayLineView];
-    [self.view addSubview:self.yourOpinionButton];
+//    [self.view addSubview:self.grayLineView];
+    //[self.view addSubview:self.yourOpinionButton];
     
     WEAKSELF
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
         make.centerX.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+//        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+        make.bottom.equalTo(weakSelf.view);
     }];
-    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(1));
-        make.centerX.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
-    }];
-    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(47));
-        make.centerX.bottom.equalTo(weakSelf.view);
-    }];
+//    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(1));
+//        make.centerX.equalTo(weakSelf.view);
+//        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
+//    }];
+    //    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(47));
+//        make.centerX.bottom.equalTo(weakSelf.view);
+//    }];
 }
 
 #pragma mark ------ UITableViewDataSource ------

@@ -189,7 +189,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             }
             model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
             model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
-            
+            model.address = dic[@"address"];
         }
         weakSelf.titleView.totalAsset = [NSString DecimalFuncWithOperatorType:0 first:[UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd secend:weakSelf.titleView.totalAsset value:5];
         weakSelf.headerView.asset = [NSString DecimalFuncWithOperatorType:0 first:[UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd secend:weakSelf.headerView.asset value:5];
@@ -215,7 +215,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             }
             model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
             model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
-            
+            model.address = dic[@"address"];
         }
 //        weakSelf.titleView.totalAsset = [NSString DecimalFuncWithOperatorType:0 first:[UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd secend:weakSelf.titleView.totalAsset value:5];
 //        weakSelf.headerView.asset = [NSString DecimalFuncWithOperatorType:0 first:[UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd secend:weakSelf.headerView.asset value:5];
@@ -243,6 +243,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             model.address = dic[@"gnt_category"][@"address"];
             model.name = dic[@"gnt_category"][@"name"];
             model.icon = dic[@"gnt_category"][@"icon"];
+            model.gas = dic[@"gnt_category"][@"gas"];
             
             if (![NSString isNulllWithObject:dic[@"balance"]])
             {
@@ -282,6 +283,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             model.address = dic[@"gnt_category"][@"address"];
             model.name = dic[@"gnt_category"][@"name"];
             model.icon = dic[@"gnt_category"][@"icon"];
+            model.gas = dic[@"gnt_category"][@"gas"];
             
             if (![NSString isNulllWithObject:dic[@"balance"]])
             {

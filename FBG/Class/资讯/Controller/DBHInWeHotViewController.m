@@ -8,6 +8,7 @@
 
 #import "DBHInWeHotViewController.h"
 
+#import "KKWebView.h"
 #import "DBHFunctionalUnitLookViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
@@ -46,27 +47,28 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"xiangmuzhuye_ren_ico"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToPersonBarButtonItem)];
     
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.grayLineView];
-    [self.view addSubview:self.yourOpinionButton];
+//    [self.view addSubview:self.grayLineView];
+    //[self.view addSubview:self.yourOpinionButton];
     
     WEAKSELF
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
         make.centerX.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+//        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+        make.bottom.equalTo(weakSelf.view);
     }];
-    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(1));
-        make.centerX.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
-    }];
-    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(47));
-        make.centerX.bottom.equalTo(weakSelf.view);
-    }];
+//    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(1));
+//        make.centerX.equalTo(weakSelf.view);
+//        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
+//    }];
+//    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(47));
+//        make.centerX.bottom.equalTo(weakSelf.view);
+//    }];
 }
 
 #pragma mark ------ UITableViewDataSource ------
@@ -85,7 +87,11 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
+    KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"http://inwecrypto.com/newsdetail2?art_id=%ld", (NSInteger)model.dataIdentifier]];
+    webView.title = model.title;
+    webView.isHaveShare = YES;
+    [self.navigationController pushViewController:webView animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     DBHProjectHomeNewsModelData *model = self.dataSource[section];
@@ -110,15 +116,16 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         
         [weakSelf.dataSource removeAllObjects];
         NSArray *dataArray = responseCache[@"data"];
-        
-        for (NSDictionary *dic in dataArray) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+        for (NSInteger i = dataArray.count - 1; i >= 0; i--) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray[i]];
             
             [weakSelf.dataSource addObject:model];
         }
         
         [weakSelf.tableView reloadData];
-        [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf scrollViewToBottom:NO];
+        });
     } success:^(id responseObject) {
         [weakSelf endRefresh];
         
@@ -127,8 +134,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         }
         
         NSMutableArray *dataArray = [NSMutableArray array];
-        for (NSDictionary *dic in responseObject[@"data"]) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dic];
+        NSArray *array = responseObject[@"data"];
+        for (NSInteger i = array.count - 1; i >= 0; i--) {
+            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:array[i]];
             
             [dataArray addObject:model];
         }
@@ -141,7 +149,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         
         [weakSelf.tableView reloadData];
         if (weakSelf.currentPage == 1) {
-            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            if (weakSelf.dataSource.count > 2) {
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
         } else if (dataArray.count) {
             [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
@@ -187,6 +197,17 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 
 #pragma mark ------ Private Methods ------
+/**
+ 滑动到底部
+ */
+- (void)scrollViewToBottom:(BOOL)animated
+{
+    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+    {
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        [self.tableView setContentOffset:offset animated:animated];
+    }
+}
 /**
  添加刷新
  */

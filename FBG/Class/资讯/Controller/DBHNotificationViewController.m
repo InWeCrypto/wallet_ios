@@ -94,7 +94,9 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
     [self.conversation loadMessagesStartFromId:nil count:5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
         [weakSelf.dataSource addObjectsFromArray:aMessages];
         [weakSelf.tableView reloadData];
-        [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf scrollViewToBottom:NO];
+        });
     }];
 }
 /**
@@ -105,7 +107,9 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
     
     WEAKSELF
     [self.conversation loadMessagesStartFromId:message.messageId count:self.currentPage * 5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        [weakSelf endRefresh];
         [weakSelf.dataSource insertObjects:aMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, aMessages.count)]];
+        [weakSelf.tableView reloadData];
         [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:aMessages.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }];
 }
@@ -122,6 +126,17 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 }
 
 #pragma mark ------ Private Methods ------
+/**
+ 滑动到底部
+ */
+- (void)scrollViewToBottom:(BOOL)animated
+{
+    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+    {
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        [self.tableView setContentOffset:offset animated:animated];
+    }
+}
 /**
  添加刷新
  */

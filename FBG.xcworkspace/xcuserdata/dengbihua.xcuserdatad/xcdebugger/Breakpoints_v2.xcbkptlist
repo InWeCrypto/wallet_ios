@@ -65,13 +65,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/DBHTransferConfirmationViewController.m"
-            timestampString = "539887302.994148"
+            filePath = "FBG/OtherTool/KKWebView.m"
+            timestampString = "539958545.854057"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "-transferAccountsForNEOWithPassword:unspent:"
+            startingLineNumber = "434"
+            endingLineNumber = "434"
+            landmarkName = "-setIsHiddenRefresh:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -269,8 +269,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 - (void)respondsToQuitLoginButton {
     EMError *error = [[EMClient sharedClient] logout:YES];
     if (!error) {
-        [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
+        [[UserSignData share] storageData:nil];
         [[AppDelegate delegate] showLoginController];
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Log Out Success", nil)];
     } else {

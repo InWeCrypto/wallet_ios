@@ -47,27 +47,28 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"xiangmuzhuye_ren_ico"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToPersonBarButtonItem)];
     
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.grayLineView];
-    [self.view addSubview:self.yourOpinionButton];
+//    [self.view addSubview:self.grayLineView];
+    //[self.view addSubview:self.yourOpinionButton];
     
     WEAKSELF
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
         make.centerX.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+//        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+        make.bottom.equalTo(weakSelf.view);
     }];
-    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(1));
-        make.centerX.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
-    }];
-    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view);
-        make.height.offset(AUTOLAYOUTSIZE(47));
-        make.centerX.bottom.equalTo(weakSelf.view);
-    }];
+//    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(1));
+//        make.centerX.equalTo(weakSelf.view);
+//        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
+//    }];
+    //    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(weakSelf.view);
+//        make.height.offset(AUTOLAYOUTSIZE(47));
+//        make.centerX.bottom.equalTo(weakSelf.view);
+//    }];
 }
 
 #pragma mark ------ UITableViewDataSource ------
@@ -122,7 +123,9 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
         }
         
         [weakSelf.tableView reloadData];
-        [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf scrollViewToBottom:NO];
+        });
     } success:^(id responseObject) {
         [weakSelf endRefresh];
         
@@ -130,9 +133,11 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
             [weakSelf.dataSource removeAllObjects];
         }
         
+        
         NSMutableArray *dataArray = [NSMutableArray array];
-        for (NSDictionary *dic in responseObject[@"data"]) {
-            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:dic];
+        NSArray *array = responseObject[@"data"];
+        for (NSInteger i = array.count - 1; i >= 0; i--) {
+            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:array[i]];
             
             [dataArray addObject:model];
         }
@@ -146,7 +151,9 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
         [weakSelf.tableView reloadData];
         
         if (weakSelf.currentPage == 1) {
-            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            if (weakSelf.dataSource.count > 2) {
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
         } else if (dataArray.count) {
             [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
@@ -191,6 +198,17 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 }
 
 #pragma mark ------ Private Methods ------
+/**
+ 滑动到底部
+ */
+- (void)scrollViewToBottom:(BOOL)animated
+{
+    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+    {
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        [self.tableView setContentOffset:offset animated:animated];
+    }
+}
 /**
  添加刷新
  */

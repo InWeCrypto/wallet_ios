@@ -8,14 +8,22 @@
 
 #import "DBHInformationHeaderView.h"
 
-@interface DBHInformationHeaderView ()
+#import "DBHFunctionalUnitCollectionViewCell.h"
 
+static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFunctionalUnitCollectionViewCellIdentifier";
+
+@interface DBHInformationHeaderView ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+
+@property (nonatomic, strong) UICollectionViewFlowLayout *layout;
+@property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UIView *topLineView;
 @property (nonatomic, strong) UIView *bottomLineView;
 @property (nonatomic, strong) UIButton *refreshButton;
 
 @property (nonatomic, copy) SelectTypeBlock selectTypeBlock;
+@property (nonatomic, copy) ClickFunctionalUnitBlock clickFunctionalUnitBlock;
 @property (nonatomic, copy) NSArray *menuArray;
+@property (nonatomic, copy) NSArray *titleArray; // 功能组件标题
 
 @end
 
@@ -33,11 +41,17 @@
 
 #pragma mark ------ UI ------
 - (void)setUI {
+    [self addSubview:self.collectionView];
     [self addSubview:self.topLineView];
     [self addSubview:self.bottomLineView];
     [self addSubview:self.refreshButton];
     
     WEAKSELF
+    [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(125));
+        make.top.centerX.equalTo(weakSelf);
+    }];
     [self.topLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf);
         make.height.offset(AUTOLAYOUTSIZE(1));
@@ -88,6 +102,22 @@
     }
 }
 
+#pragma mark ------ UICollectionViewDataSource ------
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.titleArray.count;
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    DBHFunctionalUnitCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kDBHFunctionalUnitCollectionViewCellIdentifier forIndexPath:indexPath];
+    cell.title = self.titleArray[indexPath.row];
+
+    return cell;
+}
+
+#pragma mark ------ UICollectionViewDelegate ------
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.clickFunctionalUnitBlock(indexPath.row);
+}
+
 #pragma mark ------ Event Responds ------
 /**
  选择菜单
@@ -129,6 +159,9 @@
 - (void)selectTypeBlock:(SelectTypeBlock)selectTypeBlock {
     self.selectTypeBlock = selectTypeBlock;
 }
+- (void)clickFunctionalUnitBlock:(ClickFunctionalUnitBlock)clickFunctionalUnitBlock {
+    self.clickFunctionalUnitBlock = clickFunctionalUnitBlock;
+}
 - (void)stopAnimation {
     [self.refreshButton.layer removeAnimationForKey:@"rotateAnimation"];
 }
@@ -143,6 +176,31 @@
 }
 
 #pragma mark ------ Getters And Setters ------
+- (UICollectionViewFlowLayout *)layout {
+    if (!_layout) {
+        _layout = [[UICollectionViewFlowLayout alloc] init];
+        _layout.itemSize = CGSizeMake(SCREENWIDTH * 0.25, AUTOLAYOUTSIZE(125));
+        _layout.minimumLineSpacing = 0;
+        _layout.minimumInteritemSpacing = 0;
+        _layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        _layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+    return _layout;
+}
+- (UICollectionView *)collectionView {
+    if (!_collectionView) {
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
+        _collectionView.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+        _collectionView.showsVerticalScrollIndicator = NO;
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
+        
+        [_collectionView registerClass:[DBHFunctionalUnitCollectionViewCell class] forCellWithReuseIdentifier:kDBHFunctionalUnitCollectionViewCellIdentifier];
+    }
+    return _collectionView;
+}
 - (UIView *)topLineView {
     if (!_topLineView) {
         _topLineView = [[UIView alloc] init];
@@ -171,6 +229,17 @@
         _menuArray = @[@"Trading", @"Active", @"Upcoming", @"Ended"];
     }
     return _menuArray;
+}
+- (NSArray *)titleArray {
+    if (!_titleArray) {
+        _titleArray = @[@"InWe Hotspot",
+                        @"Trading View",
+                        @"Exchange Announcement",
+                        @"Candybowl",
+                        @"Trading Reminder",
+                        @"Notice"];
+    }
+    return _titleArray;
 }
 
 @end
