@@ -63,13 +63,13 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         [[NSUserDefaults standardUserDefaults] setObject:@"HOT" forKey:@"appWalletStatus"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    
     // 环信sdk注册
     //AppKey:注册的AppKey，详细见下面注释。
     //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
-    EMOptions *options = [EMOptions optionsWithAppkey:@"1109180116115999#test"];
+    EMOptions *options = [EMOptions optionsWithAppkey:[APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"1109180116115999#online" : @"1109180116115999#test"];
     options.apnsCertName = @"aps_development";
     [[EMClient sharedClient] initializeSDKWithOptions:options];
+    
     // 注册消息回调
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
@@ -138,6 +138,10 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 //     } failure:^(NSString *error)
 //     {
 //     }];
+    
+    if ([UserSignData share].user && [UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone) {
+        [self showThirdLogin];
+    }
 
     return YES;
 }
@@ -472,6 +476,12 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     [self.window makeKeyAndVisible];
 }
 
+- (void)emregister {
+    //AppKey:注册的AppKey，详细见下面注释。
+    //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
+    [[EMClient sharedClient] changeAppkey:[APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"1109180116115999#online" : @"1109180116115999#test"];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -505,9 +515,6 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    if ([UserSignData share].user && [UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone) {
-        [self showThirdLogin];
-    }
     [[EMClient sharedClient] applicationWillEnterForeground:application];
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }

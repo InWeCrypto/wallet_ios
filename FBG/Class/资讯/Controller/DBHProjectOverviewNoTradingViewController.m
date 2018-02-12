@@ -132,7 +132,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 - (void)projectGradeWithGrade:(NSInteger)grade {
     NSDictionary *paramters = @{@"score":@(grade)};
     
-    [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/score", (NSInteger)self.projectDetailModel.internalBaseClassIdentifier] baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Submit", nil)] success:^(id responseObject) {
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/score", (NSInteger)self.projectDetailModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Submit", nil)] success:^(id responseObject) {
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Submit Success", nil)];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];

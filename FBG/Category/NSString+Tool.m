@@ -11,6 +11,7 @@
 #import <CoreText/CoreText.h>
 #import "NSDecimalNumber+Addtion.h"
 #import <sys/utsname.h>
+#import "NSDateFormatter+Category.h"
 
 @implementation NSString (Tool)
 
@@ -63,15 +64,27 @@
  
 yy-MM-dd HH:mm:ss
  */
-+ (NSString *)timeExchangeWithType:(NSString *)type timeString:(NSString *)timeString
++ (NSString *)timeExchangeWithType:(NSString *)type timestamp:(long long)timestamp
 {
-    //实例化一个NSDateFormatter对象
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //设定时间格式,这里可以设置成自己需要的格式
-    [dateFormatter setDateFormat:type];
-    //用[NSDate date]可以获取系统当前时间
-    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:[timeString doubleValue]]];
-    return currentDateStr;
+    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    NSString * dateNow = [formatter stringFromDate:[NSDate date]];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setDay:[[dateNow substringWithRange:NSMakeRange(8,2)] intValue]];
+    [components setMonth:[[dateNow substringWithRange:NSMakeRange(5,2)] intValue]];
+    [components setYear:[[dateNow substringWithRange:NSMakeRange(0,4)] intValue]];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateFormatter *dateFormatter = [NSDateFormatter dateFormatterWithFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)timestamp];
+    return [dateFormatter stringFromDate:messageDate];
+//    return ret;
+//    //实例化一个NSDateFormatter对象
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    //设定时间格式,这里可以设置成自己需要的格式
+//    [dateFormatter setDateFormat:type];
+//    //用[NSDate date]可以获取系统当前时间
+//    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)timestamp]];
+//    return currentDateStr;
 }
 
 

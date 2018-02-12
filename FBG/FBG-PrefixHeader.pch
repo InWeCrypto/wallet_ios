@@ -61,8 +61,8 @@
 #define TESTAPIEHEAD3 @"https://dev.inwecrypto.com:4431/v2/"  //网络请求头
 #define IMAGEHEAD @"https://china.inwecrypto.com:4431/"  //图片头
 //正式环境
-#define APIEHEAD1 @"https://china.inwecrypto.com:4430/api/"  //网络请求头
-#define APIEHEAD2 @"https://china.inwecrypto.com:4431/"  //网络请求头
+#define APIEHEAD1 @"https://china.inwecrypto.com:4431/v2/api/"  //网络请求头
+#define APIEHEAD2 @"https://china.inwecrypto.com:4431/v1/"  //网络请求头
 #define APIEHEAD3 @"https://china.inwecrypto.com:4431/v2/"  //网络请求头
 #define IMAGEHEAD1 @"https://china.inwecrypto.com:4431/"  //图片头
 
@@ -101,6 +101,7 @@
 #import "MJRefresh.h"
 #import "NSString+Null.h"
 #import "EaseUI.h"
+#import "KKWebView.h"
 
 /**
  *  语言工具类

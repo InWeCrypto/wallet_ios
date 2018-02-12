@@ -38,9 +38,9 @@
     
     WEAKSELF
     [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOLAYOUTSIZE(37));
+        make.width.height.offset(AUTOLAYOUTSIZE(14));
         make.centerY.equalTo(weakSelf.contentView);
-        make.left.offset(AUTOLAYOUTSIZE(15));
+        make.left.offset(AUTOLAYOUTSIZE(27));
     }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.iconImageView.mas_right).offset(AUTOLAYOUTSIZE(24.5));

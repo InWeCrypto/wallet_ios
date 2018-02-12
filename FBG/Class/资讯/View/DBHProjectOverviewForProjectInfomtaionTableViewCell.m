@@ -123,7 +123,7 @@
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setProjectDetailModel:(DBHProjectDetailInformationModelDataBase *)projectDetailModel {
+- (void)setProjectDetailModel:(DBHProjectDetailInformationModelData *)projectDetailModel {
     _projectDetailModel = projectDetailModel;
     
     [self.iconImageView sdsetImageWithURL:_projectDetailModel.img placeholderImage:nil];
@@ -131,18 +131,19 @@
     NSMutableAttributedString *nameAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@（%@）", _projectDetailModel.unit, _projectDetailModel.name]];
     [nameAttributedString addAttributes:@{NSFontAttributeName:BOLDFONT(16)} range:NSMakeRange(0, _projectDetailModel.unit.length)];
     self.nameLabel.attributedText = nameAttributedString;
+    self.tagLabel.text = _projectDetailModel.industry;
     
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.priceCny : _projectDetailModel.ico.priceUsd;
     self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
     self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", _projectDetailModel.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _projectDetailModel.ico.percentChange24h.floatValue];
-    self.volumeLabel.text = [NSString stringWithFormat:@"%@ (24h)：%@%@%@", NSLocalizedString(@"Volume", nil), [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.volumeCny24h : _projectDetailModel.ico.volumeUsd24h, [UserSignData share].user.walletUnitType == 1 ? @"CNY" : @"USD"];
+    self.volumeLabel.text = [NSString stringWithFormat:@"%@ (24h)：%@%@%@", DBHGetStringWithKeyFromTable(@"Volume", nil), [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.volumeCny24h : _projectDetailModel.ico.volumeUsd24h, [UserSignData share].user.walletUnitType == 1 ? @"CNY" : @"USD"];
     if ([[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"]) {
         self.rankLabel.text = [NSString stringWithFormat:@"第%ld名", (NSInteger)_projectDetailModel.categoryScore.sort];
     } else {
         self.rankLabel.text = [NSString stringWithFormat:@"%ld", (NSInteger)_projectDetailModel.categoryScore.sort];
     }
     self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
-    self.gradeLabel.text = [NSString stringWithFormat:@"%.2lf%@", _projectDetailModel.categoryScore.value, NSLocalizedString(@"Part", nil)];
+    self.gradeLabel.text = [NSString stringWithFormat:@"%.2lf%@", _projectDetailModel.categoryScore.value, DBHGetStringWithKeyFromTable(@"Part", nil)];
 }
 
 - (UIImageView *)iconImageView {

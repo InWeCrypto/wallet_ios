@@ -9,6 +9,7 @@
 #import "DBHInformationTableViewCell.h"
 
 #import "DBHInformationDataModels.h"
+#import "DBHInformationForICODataModels.h"
 
 @interface DBHInformationTableViewCell ()
 
@@ -75,7 +76,7 @@
         make.right.equalTo(weakSelf.changeLabel.mas_left).offset(- AUTOLAYOUTSIZE(10));
     }];
     [self.changeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset([NSString getWidthtWithString:@"+11.09" fontSize:AUTOLAYOUTSIZE(11)] + AUTOLAYOUTSIZE(4));
+        make.width.offset([NSString getWidthtWithString:@"+11.09%" fontSize:AUTOLAYOUTSIZE(11)] + AUTOLAYOUTSIZE(4));
         make.height.offset(AUTOLAYOUTSIZE(15));
         make.centerY.equalTo(weakSelf.titleLabel);
         make.right.offset(- AUTOLAYOUTSIZE(15));
@@ -122,11 +123,13 @@
     self.timeLabel.text = _model.lastArticle.createdAt;
     self.priceLabel.hidden = _model.type != 1;
     self.changeLabel.hidden = _model.type != 1;
-    if (_model.type == 1) {
-        NSString *price = [UserSignData share].user.walletUnitType == 1 ? _model.ico.priceCny : _model.ico.priceUsd;
-        self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-        self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf", _model.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _model.ico.percentChange24h.floatValue];
-    }
+}
+- (void)setIcoModel:(DBHInformationModelIco *)icoModel {
+    _icoModel = icoModel;
+    
+    NSString *price = [UserSignData share].user.walletUnitType == 1 ? _icoModel.priceCny : _icoModel.priceUsd;
+    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
+    self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", _icoModel.percentChange24h.floatValue >= 0 ? @"+" : @"", _icoModel.percentChange24h.floatValue];
 }
 - (void)setFunctionalUnitTitle:(NSString *)functionalUnitTitle {
     _functionalUnitTitle = functionalUnitTitle;
@@ -211,6 +214,7 @@
         _changeLabel = [[UILabel alloc] init];
         _changeLabel.backgroundColor = COLORFROM16(0x008C55, 1);
         _changeLabel.font = FONT(11);
+        _changeLabel.text = @"0.00";
         _changeLabel.textColor = COLORFROM16(0xFFFFFF, 1);
         _changeLabel.textAlignment = NSTextAlignmentCenter;
         _changeLabel.layer.cornerRadius = AUTOLAYOUTSIZE(2);

@@ -10,6 +10,8 @@
 
 #import "FBG-Swift.h"
 
+#import "KKWebView.h"
+
 #import "DBHProjectLookViewController.h"
 #import "DBHProjectOverviewViewController.h"
 #import "DBHTradingMarketViewController.h"
@@ -38,7 +40,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 @property (nonatomic, strong) DBHProjectHomeMenuView *projectHomeMenuView;
 
 @property (nonatomic, assign) NSInteger currentPage; // 当前页
-@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
+@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
@@ -100,7 +102,11 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
+    KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"http://inwecrypto.com/newsdetail2?art_id=%ld", (NSInteger)model.dataIdentifier]];
+    webView.title = model.title;
+    webView.isHaveShare = YES;
+    [self.navigationController pushViewController:webView animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     DBHProjectHomeNewsModelData *model = self.dataSource[section];
@@ -183,11 +189,11 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
             return ;
         }
         
-        self.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseCache];
+        self.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseCache];
         
         [weakSelf.tableView reloadData];
     } success:^(id responseObject) {
-        weakSelf.projectDetailModel = [DBHProjectDetailInformationModelDataBase modelObjectWithDictionary:responseObject];
+        weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseObject];
         
         weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:weakSelf.projectDetailModel.categoryUser.isFavorite ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
         weakSelf.navigationItem.rightBarButtonItems = @[self.personBarButtonItem, self.collectBarButtonItem];

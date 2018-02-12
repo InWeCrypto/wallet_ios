@@ -112,14 +112,14 @@
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setProjectDetailModel:(DBHProjectDetailInformationModelDataBase *)projectDetailModel {
+- (void)setProjectDetailModel:(DBHProjectDetailInformationModelData *)projectDetailModel {
     _projectDetailModel = projectDetailModel;
     
     self.marketRankingValueLabel.text = _projectDetailModel.ico.rank;
     self.marketValueLabel.text = [NSString stringWithFormat:@"$%@", _projectDetailModel.ico.marketCapUsd];
     self.turnoverValueLabel.text = _projectDetailModel.ico.availableSupply;
     self.grossValueLabel.text = _projectDetailModel.ico.totalSupply;
-    self.icoPriceValueLabel.text = [NSString stringWithFormat:@"$%@", _projectDetailModel.ico.priceUsd];
+    self.icoPriceValueLabel.text = [NSString stringWithFormat:@"$%@", _projectDetailModel.icoPrice];
 }
 
 - (UILabel *)titleLabel {

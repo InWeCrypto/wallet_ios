@@ -59,7 +59,7 @@
         make.bottom.offset(- AUTOLAYOUTSIZE(22.5));
     }];
     [self.originalLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset([NSString getWidthtWithString:NSLocalizedString(@"Originality", nil) fontSize:AUTOLAYOUTSIZE(6)] + AUTOLAYOUTSIZE(5));
+        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Originality", nil) fontSize:AUTOLAYOUTSIZE(6)] + AUTOLAYOUTSIZE(5));
         make.height.offset(AUTOLAYOUTSIZE(10));
         make.left.equalTo(weakSelf.timeLabel.mas_right).offset(AUTOLAYOUTSIZE(7));
         make.centerY.equalTo(weakSelf.timeLabel);

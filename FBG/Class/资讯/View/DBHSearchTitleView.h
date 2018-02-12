@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^SearchBlock)(NSInteger type, NSString *searchString);
+
 @interface DBHSearchTitleView : UIView
+
+/**
+ 搜索类型
+ */
+@property (nonatomic, assign) NSInteger searchType;
+
+- (void)searchBlock:(SearchBlock)searchBlock;
 
 @end

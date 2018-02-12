@@ -140,11 +140,14 @@
     
     self.titleLabel.text = _message.ext[@"title"];
     
-    NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)_message.timestamp];
-    self.timeLabel.text = [messageDate formattedTime];
+    self.timeLabel.text = [NSString timeExchangeWithType:@"yyyy-MM-dd hh:mm" timestamp:_message.timestamp];
     
     self.numberLabel.text = DBHGetStringWithKeyFromTable(@"Transfer Number", nil);
-    self.numberValueLabel.text = _message.ext[@"money"];
+    if ([_message.ext[@"flag"] isEqualToString:@"ETH"]) {
+        self.numberValueLabel.text = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[_message.ext[@"money"] substringFromIndex:3]] secend:@"1000000000000000000" value:4];
+    } else {
+        self.numberValueLabel.text = _message.ext[@"money"];
+    }
     self.unitLabel.text = [NSString stringWithFormat:@"(%@)", _message.ext[@"flag"]];
     
     NSString *toAddress = _message.ext[@"to"];

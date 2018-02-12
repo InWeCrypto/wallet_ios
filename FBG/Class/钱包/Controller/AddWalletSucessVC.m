@@ -9,6 +9,7 @@
 #import "AddWalletSucessVC.h"
 
 #import "DBHWalletDetailViewController.h"
+#import "DBHWalletDetailWithETHViewController.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
 
@@ -40,15 +41,22 @@
 //    }
     self.sucessLB.text = DBHGetStringWithKeyFromTable(@"Add Success", nil);
     self.infoLB.text = DBHGetStringWithKeyFromTable(@"Please enter the wallet in time and backup the seed to ensure the safety of the wallet. Once the seed is backed up, it will disappear on the APP. It should be kept in mind, otherwise the wallet can not be retrieved", nil);
-    [self.sureButton setTitle:NSLocalizedString(@"Enter The Wallet And Start Backup", nil) forState:UIControlStateNormal];
+    [self.sureButton setTitle:DBHGetStringWithKeyFromTable(@"Enter The Wallet And Start Backup", nil) forState:UIControlStateNormal];
 }
 
 - (IBAction)sureButtonCilick:(id)sender
 {
-    DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
-    walletDetailViewController.neoWalletModel = self.neoWalletModel;
-    walletDetailViewController.backIndex = 2;
-    [self.navigationController pushViewController:walletDetailViewController animated:YES];
+    if (self.neoWalletModel.categoryId == 1) {
+        DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
+        walletDetailWithETHViewController.ethWalletModel = self.neoWalletModel;
+        walletDetailWithETHViewController.backIndex = 2;
+        [self.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
+    } else {
+        DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+        walletDetailViewController.neoWalletModel = self.neoWalletModel;
+        walletDetailViewController.backIndex = 2;
+        [self.navigationController pushViewController:walletDetailViewController animated:YES];
+    }
 //    //完成创建跳转回钱包详情
 //    [self.navigationController popToRootViewControllerAnimated:NO];
 //    //发送消息

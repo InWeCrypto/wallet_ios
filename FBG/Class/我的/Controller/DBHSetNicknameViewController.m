@@ -32,7 +32,7 @@ static NSString *const kDBHSetNicknameTableViewCellIdentifier = @"kDBHSetNicknam
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToSaveBarButtonItem)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToSaveBarButtonItem)];
     
     [self.view addSubview:self.tableView];
     
@@ -67,9 +67,9 @@ static NSString *const kDBHSetNicknameTableViewCellIdentifier = @"kDBHSetNicknam
     NSDictionary *paramters = @{@"img":[UserSignData share].user.img,
                                 @"name":cell.nicknameTextField.text};
     WEAKSELF
-    [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", NSLocalizedString(@"Commit", nil)] success:^(id responseObject) {
+    [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Commit", nil)] success:^(id responseObject) {
         [UserSignData share].user.nickname = responseObject[@"name"];
-        [LCProgressHUD showSuccess:NSLocalizedString(@"Change Success", nil)];
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Change Success", nil)];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -83,12 +83,12 @@ static NSString *const kDBHSetNicknameTableViewCellIdentifier = @"kDBHSetNicknam
 - (void)respondsToSaveBarButtonItem {
     DBHSetNicknameTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if (!cell.nicknameTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please enter your nickname", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please enter your nickname", nil)];
         
         return;
     }
     if (![NSString isNickName:cell.nicknameTextField.text]){
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please enter a nickname of 2~12 non-special characters", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please enter a nickname of 2~12 non-special characters", nil)];
         return;
     }
     

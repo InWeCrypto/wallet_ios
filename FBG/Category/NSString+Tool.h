@@ -19,7 +19,7 @@
 + (NSString *)nextDate;
 
 //时间格式转换
-+ (NSString *)timeExchangeWithType:(NSString *)type timeString:(NSString *)timeString;
++ (NSString *)timeExchangeWithType:(NSString *)type timestamp:(long long)timestamp;
 
 // 将UTC日期字符串转为本地时间字符串
 + (NSString *)getLocalDateFormateUTCDate:(NSString *)utcDate;

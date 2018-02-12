@@ -62,7 +62,11 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
+    KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"http://inwecrypto.com/newsdetail2?art_id=%ld", (NSInteger)model.dataIdentifier]];
+    webView.title = model.title;
+    webView.isHaveShare = YES;
+    [self.navigationController pushViewController:webView animated:YES];
 }
 
 #pragma mark ------ Data ------

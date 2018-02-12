@@ -72,7 +72,7 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
 {
     WEAKSELF
     // 编辑
-    UITableViewRowAction *editColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(@"Edit", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    UITableViewRowAction *editColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:DBHGetStringWithKeyFromTable(@"Edit", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         DBHInformationModelData *model = self.dataSource[indexPath.row];
         weakSelf.selectedRow = indexPath.row;
         weakSelf.quotationReminderPromptView.maxPrice = model.categoryUser.marketHige;
@@ -86,7 +86,7 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
     editColletAction.backgroundColor = COLORFROM16(0x008C55, 1);
     
     // 删除
-    UITableViewRowAction *deleteColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(@"Cancel Collection", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    UITableViewRowAction *deleteColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:DBHGetStringWithKeyFromTable(@"Cancel Collection", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         weakSelf.selectedRow = indexPath.row;
         [weakSelf remindSetWithMaxPrice:@"0" minPrice:@"0"];
     }];

@@ -135,7 +135,7 @@ static NetworkStatus _status;
         else
         {
             NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4001)
+            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011)
             {
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
@@ -196,7 +196,7 @@ static NetworkStatus _status;
         else
         {
             NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4001)
+            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011)
             {
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
@@ -267,7 +267,7 @@ static NetworkStatus _status;
         else
         {
             NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4001)
+            if (code.integerValue == 4009 || code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011 || code.integerValue == 4011)
             {
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
@@ -336,7 +336,7 @@ static NetworkStatus _status;
                 else
                 {
                     NSString *code = responseObject[@"code"];
-                    if (code.integerValue == 4001)
+                    if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011)
                     {
                         [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
@@ -360,7 +360,7 @@ static NetworkStatus _status;
 }
 
 #pragma mark - POST请求自动缓存
-+ (PPURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
 {
     if (![NSString isNulllWithObject:hudString])
     {
@@ -373,7 +373,7 @@ static NetworkStatus _status;
     PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
     //读取缓存
     responseCache([PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]]);
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:1];
+    AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:baseUrlType];
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
@@ -398,7 +398,7 @@ static NetworkStatus _status;
         else
         {
             NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4001)
+            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011)
             {
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
@@ -653,7 +653,7 @@ static NetworkStatus _status;
 {
     /*
      4000    请求执行成功
-     4001    未登陆
+     4010    未登陆
      4002    无权限
      4003    路由不存在
      4004    验证不通过
@@ -665,7 +665,7 @@ static NetworkStatus _status;
      */
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     [dic setObject:@"请求执行成功" forKey:@"4000"];
-    [dic setObject:@"未登陆" forKey:@"4001"];
+    [dic setObject:@"未登陆" forKey:@"4010"];
     [dic setObject:@"无权限" forKey:@"4002"];
     [dic setObject:@"路由不存在" forKey:@"4003"];
     [dic setObject:@"验证不通过" forKey:@"4004"];

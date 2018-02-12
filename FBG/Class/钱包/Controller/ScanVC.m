@@ -64,9 +64,9 @@
     if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
         
         
-        UIAlertController *alert=[UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Camera Privileges", nil) message:NSLocalizedString(@"Please go to settings - Privacy - camera for sweeping authorization", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert=[UIAlertController alertControllerWithTitle:DBHGetStringWithKeyFromTable(@"No Camera Privileges", nil) message:DBHGetStringWithKeyFromTable(@"Please go to settings - Privacy - camera for sweeping authorization", nil) preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *action2=[UIAlertAction actionWithTitle:NSLocalizedString(@"Well", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action2){
+        UIAlertAction *action2=[UIAlertAction actionWithTitle:DBHGetStringWithKeyFromTable(@"Well", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action2){
             
             [self.navigationController popViewControllerAnimated:YES];
             
@@ -90,11 +90,11 @@
     introudctionLB.textColor=[UIColor whiteColor];
     introudctionLB.font = [UIFont systemFontOfSize:13];
     introudctionLB.textAlignment = NSTextAlignmentCenter;
-    introudctionLB.text=NSLocalizedString(@"The viewfinder frame is aligned with the two-dimensional code and automatically scans", nil);
+    introudctionLB.text=DBHGetStringWithKeyFromTable(@"The viewfinder frame is aligned with the two-dimensional code and automatically scans", nil);
     [self.view addSubview:introudctionLB];
     
     self.flashlightBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 20, introudctionLB.bottom + 20, 40, 40)];
-    [self.flashlightBtn setTitle:NSLocalizedString(@"Flashlight", nil) forState:UIControlStateNormal];
+    [self.flashlightBtn setTitle:DBHGetStringWithKeyFromTable(@"Flashlight", nil) forState:UIControlStateNormal];
     [self.flashlightBtn addTarget:self action:@selector(flashlightBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.flashlightBtn];
     
@@ -266,9 +266,9 @@
         }
         else
         {
-            UIAlertController *alert=[UIAlertController alertControllerWithTitle:NSLocalizedString(@"Scan Result", nil) message:NSLocalizedString(@"Only FBG related information can be scanned", nil) preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alert=[UIAlertController alertControllerWithTitle:DBHGetStringWithKeyFromTable(@"Scan Result", nil) message:DBHGetStringWithKeyFromTable(@"Only FBG related information can be scanned", nil) preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *action2=[UIAlertAction actionWithTitle:NSLocalizedString(@"Determine", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action2){
+            UIAlertAction *action2=[UIAlertAction actionWithTitle:DBHGetStringWithKeyFromTable(@"Determine", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action2){
                 
                 [self.navigationController popViewControllerAnimated:YES];
             }];

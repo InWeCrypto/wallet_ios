@@ -8,7 +8,7 @@
 
 #import "DBHBaseTableViewCell.h"
 
-@class DBHProjectDetailInformationModelDataBase;
+@class DBHProjectDetailInformationModelData;
 
 typedef void(^ClickTypeButtonBlock)(NSInteger type);
 
@@ -17,7 +17,7 @@ typedef void(^ClickTypeButtonBlock)(NSInteger type);
 /**
  项目详情信息
  */
-@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
+@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;;
 
 - (void)clickTypeButtonBlock:(ClickTypeButtonBlock)clickTypeButtonBlock;
 

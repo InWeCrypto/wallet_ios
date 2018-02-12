@@ -97,7 +97,7 @@
 #pragma mark ------ ChartViewDelegate ------
 
 #pragma mark ------ Getters And Setters ------
-- (void)setProjectDetailModel:(DBHProjectDetailInformationModelDataBase *)projectDetailModel {
+- (void)setProjectDetailModel:(DBHProjectDetailInformationModelData *)projectDetailModel {
     _projectDetailModel = projectDetailModel;
     
     NSMutableArray *values = [NSMutableArray array];

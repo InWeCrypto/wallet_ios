@@ -69,7 +69,7 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
         DBHMyForUserInfomationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyForUserInfomationTableViewCellIdentifier forIndexPath:indexPath];
         [cell.headImageView sdsetImageWithURL:[UserSignData share].user.img placeholderImage:[UIImage imageNamed:@"touxiang"]];
         cell.nameLabel.text = [UserSignData share].user.nickname;
-        cell.accountLabel.text = [NSString stringWithFormat:@"%@：%@", NSLocalizedString(@"Login Account", nil), [UserSignData share].user.email];
+        cell.accountLabel.text = [NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Login Account", nil), [UserSignData share].user.email];
         
         return cell;
     } else {
@@ -94,7 +94,7 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
             switch (indexPath.row) {
                 case 0: {
                     // 资产账本
-                    [LCProgressHUD showMessage:NSLocalizedString(@"Coming Soon", nil)];
+                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
                     break;
                 }
                 case 1: {

@@ -117,8 +117,7 @@
     
     EMTextMessageBody *content = (EMTextMessageBody *)_message.body;
     
-    NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)_message.timestamp];
-    self.timeLabel.text = [messageDate formattedTime];
+    self.timeLabel.text = [NSString timeExchangeWithType:@"yyyy-MM-dd hh:mm" timestamp:_message.timestamp];
     
     self.titleLabel.text = _message.ext[@"title"];
     if (content.text.length) {

@@ -11,7 +11,7 @@
 #import "AddWalletSucessVC.h"
 #import "DBHWalletDetailViewController.h"
 
-#import "DBHWalletManagerForNeoModelList.h"
+#import "DBHWalletManagerForNeoDataModels.h"
 
 @interface DBHCreateWalletWithETHViewController ()
 
@@ -110,6 +110,8 @@
     WEAKSELF
     [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:@"创建中..." success:^(id responseObject) {
         DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:[responseObject objectForKey:@"record"]];
+        model.category.categoryIdentifier = 1;
+        model.category.name = @"ETH";
         AddWalletSucessVC *addWalletSucessVC = [[AddWalletSucessVC alloc] init];
         addWalletSucessVC.neoWalletModel = model;
         addWalletSucessVC.backIndex = 2;
@@ -268,7 +270,7 @@
         _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _commitButton.titleLabel.font = BOLDFONT(14);
         _commitButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
-        [_commitButton setTitle:NSLocalizedString(@"Commit", nil) forState:UIControlStateNormal];
+        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Commit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;

@@ -15,7 +15,7 @@
 #import "DBHTokenSaleViewController.h"
 #import "DBHTransferListViewController.h"
 #import "DBHExtractGasViewController.h"
-#import "DBHImportWalletViewController.h"
+#import "DBHImportWalletWithETHViewController.h"
 
 #import "DBHWalletDetailTitleView.h"
 #import "DBHInputPasswordPromptView.h"
@@ -126,15 +126,15 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
     transferListViewController.tokenModel = model;
     [self.navigationController pushViewController:transferListViewController animated:YES];
 }
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return indexPath.row > 0;
+}
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < 2) {
-        return @[];
-    }
-    
     //添加一个删除按钮
     WEAKSELF
-    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(@"Delete", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:DBHGetStringWithKeyFromTable(@"Delete", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         [weakSelf deleteTokenWithIndex:indexPath.row];
         tableView.editing = NO;
     }];
@@ -240,6 +240,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         NSString *sum = @"0";
         for (NSDictionary *dic in responseCache[@"list"]) {
             DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
+            model.dataIdentifier = [NSString stringWithFormat:@"%@", dic[@"id"]];
             model.address = dic[@"gnt_category"][@"address"];
             model.name = dic[@"gnt_category"][@"name"];
             model.icon = dic[@"gnt_category"][@"icon"];
@@ -280,6 +281,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         NSString *sum = @"0";
         for (NSDictionary *dic in responseObject[@"list"]) {
             DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
+            model.dataIdentifier = [NSString stringWithFormat:@"%@", dic[@"id"]];
             model.address = dic[@"gnt_category"][@"address"];
             model.name = dic[@"gnt_category"][@"name"];
             model.icon = dic[@"gnt_category"][@"icon"];
@@ -340,6 +342,10 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
  菜单
  */
 - (void)respondsToMenuBarButtonItem {
+    if (!self.ethWalletModel.isLookWallet && self.menuArray.count > 2 && [[UserSignData share].user.walletZhujiciIdsArray containsObject:@(self.ethWalletModel.listIdentifier)]) {
+        [self.menuArray removeObjectAtIndex:0];
+    }
+    self.menuView.dataSource = [self.menuArray copy];
     [[UIApplication sharedApplication].keyWindow addSubview:self.menuView];
     
     WEAKSELF
@@ -384,6 +390,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         WEAKSELF
         [_titleView clickShowPriceBlock:^{
             [weakSelf.tableView reloadData];
+            [weakSelf.headerView refreshAsset];
         }];
     }
     return _titleView;
@@ -421,19 +428,27 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 }
                 case 2: {
                     // 加入
-                    [LCProgressHUD showInfoMsg:NSLocalizedString(@"Coming Soon", nil)];
+                    [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
                     
                     //                    DBHTokenSaleViewController *tokenSaleViewController = [[DBHTokenSaleViewController alloc] init];
                     //                    [weakSelf.navigationController pushViewController:tokenSaleViewController animated:YES];
                     break;
                 }
-                    
-                default: {
+                case 3: {
                     // 查看
-                    [LCProgressHUD showInfoMsg:NSLocalizedString(@"Coming Soon", nil)];
+                    [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
                     
                     break;
                 }
+                case 4: {
+                    // 查看
+                    [weakSelf.titleView refreshAsset];
+                    
+                    break;
+                }
+                    
+                default:
+                    break;
             }
         }];
     }
@@ -466,9 +481,9 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             if (weakSelf.ethWalletModel.isLookWallet) {
                 if (!index) {
                     // 转化钱包
-                    DBHImportWalletViewController *importWalletViewController = [[DBHImportWalletViewController alloc] init];
-//                    importWalletViewController.ethWalletModel = weakSelf.ethWalletModel;
-                    [self.navigationController pushViewController:importWalletViewController animated:YES];
+                    DBHImportWalletWithETHViewController *importWalletWithETHViewController = [[DBHImportWalletWithETHViewController alloc] init];
+                    importWalletWithETHViewController.ethWalletModel = weakSelf.ethWalletModel;
+                    [self.navigationController pushViewController:importWalletWithETHViewController animated:YES];
                 } else {
                     // 删除钱包
                     [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%ld", (NSInteger)self.ethWalletModel.listIdentifier] baseUrlType:1 parameters:nil hudString:@"删除中..." success:^(id responseObject)
@@ -546,7 +561,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                                                                                      [self.navigationController pushViewController:vc animated:YES];
                                                                                      //                                                                             _isMnemonic = YES;
                                                                                      //                                                                             self.alertView.alertContInfoLB.text = DBHGetStringWithKeyFromTable(@"Please keep in mind the following account security code, which is the effective way to retrieve the wallet, the wallet is once forgot to be able to retrieve account failure, please remember the security code and copied down, no longer appear this operation is not reversible and backup", nil);
-                                                                                     //                                                                             [self.alertView.alertSureButton setTitle:NSLocalizedString(@"I remember", nil) forState:UIControlStateNormal];
+                                                                                     //                                                                             [self.alertView.alertSureButton setTitle:DBHGetStringWithKeyFromTable(@"I remember", nil) forState:UIControlStateNormal];
                                                                                      //                                                                             self.alertView.alertTextView.text = mnemonic;
                                                                                      //                                                                             self.alertView.alertTextView.userInteractionEnabled = NO;
                                                                                      //                                                                             [self.alertView showWithView:nil];
@@ -694,7 +709,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         if (self.ethWalletModel.isLookWallet) {
             _menuArray = [@[@"Transform Wallet", @"Delete Wallet"] mutableCopy];
         } else {
-            _menuArray = self.ethWalletModel.isBackUpMnemonnic ? [@[@"Backup Keystore", @"Delete Wallet"] mutableCopy] : [@[@"Backup Mnemonic", @"Backup Keystore", @"Delete Wallet"] mutableCopy];
+            _menuArray = [@[@"Backup Mnemonic", @"Backup Keystore", @"Delete Wallet"] mutableCopy];
         }
     }
     return _menuArray;

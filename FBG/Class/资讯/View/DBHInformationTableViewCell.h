@@ -9,6 +9,7 @@
 #import "DBHBaseTableViewCell.h"
 
 @class DBHInformationModelData;
+@class DBHInformationModelIco;
 
 @interface DBHInformationTableViewCell : DBHBaseTableViewCell
 
@@ -16,6 +17,8 @@
  项目信息
  */
 @property (nonatomic, strong) DBHInformationModelData *model;
+
+@property (nonatomic, strong) DBHInformationModelIco *icoModel;
 
 /**
  功能组件标题

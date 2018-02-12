@@ -32,6 +32,7 @@
 #import "DBHInformationTableViewCell.h"
 
 #import "DBHInformationDataModels.h"
+#import "DBHInformationForICODataModels.h"
 
 static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformationTableViewCellIdentifier";
 
@@ -55,6 +56,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 @property (nonatomic, copy) NSArray *titleGroupNameArray; // 功能组件对应环信的组名
 @property (nonatomic, strong) NSMutableArray *functionalUnitArray; // 功能组件
 @property (nonatomic, strong) NSMutableArray *dataSource; // 项目
+@property (nonatomic, strong) NSMutableArray *icoArray; // ico
 
 @end
 
@@ -112,7 +114,12 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         cell.time = self.timeArray[indexPath.row];
         cell.noReadNumber = self.noReadArray[indexPath.row];
     } else {
-        cell.model = self.dataSource[indexPath.row];
+        if (indexPath.row < self.icoArray.count) {
+            cell.icoModel = self.icoArray[indexPath.row];
+        }
+        if (indexPath.row < self.dataSource.count) {
+            cell.model = self.dataSource[indexPath.row];
+        }
         cell.noReadNumber = 0;
     }
     
@@ -211,7 +218,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 {
     // 取消收藏
     WEAKSELF
-    UITableViewRowAction *cancelColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:NSLocalizedString(!indexPath.section ? @"Delete" : @"Cancel Collection", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    UITableViewRowAction *cancelColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:DBHGetStringWithKeyFromTable(!indexPath.section ? @"Delete" : @"Cancel Collection", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         if (!indexPath.section) {
             // 删除功能组件
             [UserSignData share].user.functionalUnitArray[indexPath.row] = @"1";
@@ -301,7 +308,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
  */
 - (void)getProjectList {
     WEAKSELF
-    [PPNetworkHelper GET:!self.informationHeaderView.currentSelectedIndex ? @"category?user_favorite" : [NSString stringWithFormat:@"category?type=%ld", self.informationHeaderView.currentSelectedIndex] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:!self.informationHeaderView.currentSelectedIndex ? @"category?user_favorite&per_page=100" : [NSString stringWithFormat:@"category?type=%ld&per_page=100", self.informationHeaderView.currentSelectedIndex] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         [weakSelf.dataSource removeAllObjects];
         
         for (NSDictionary *dic in responseCache[@"data"]) {
@@ -319,12 +326,47 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
             
             [weakSelf.dataSource addObject:model];
         }
+        
+        if (weakSelf.dataSource.count && (!self.informationHeaderView.currentSelectedIndex || self.informationHeaderView.currentSelectedIndex == 1)) {
+            [weakSelf getICOData];
+        }
 
         [weakSelf.informationHeaderView stopAnimation];
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
         [weakSelf.informationHeaderView stopAnimation];
         [LCProgressHUD showFailure:error];
+    }];
+}
+- (void)getICOData {
+    NSMutableArray *icoList = [NSMutableArray array];
+    for (DBHInformationModelData *model in self.dataSource) {
+        [icoList addObject:model.unit];
+    }
+    NSDictionary *paramters = @{@"ico_list":icoList,
+                                @"currency":@"cny"};
+    
+    WEAKSELF
+    [PPNetworkHelper POST:@"ico/ranks" baseUrlType:3 parameters:paramters hudString:nil responseCache:^(id responseCache) {
+        [weakSelf.icoArray removeAllObjects];
+        
+        for (DBHInformationModelData *model in weakSelf.dataSource) {
+            DBHInformationModelIco *icoModel = [DBHInformationModelIco modelObjectWithDictionary:responseCache[model.unit]];
+            [weakSelf.icoArray addObject:icoModel];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf.icoArray removeAllObjects];
+        
+        for (DBHInformationModelData *model in weakSelf.dataSource) {
+            DBHInformationModelIco *icoModel = [DBHInformationModelIco modelObjectWithDictionary:responseObject[model.unit]];
+            [weakSelf.icoArray addObject:icoModel];
+        }
+        
+        [weakSelf.tableView reloadData];
+    } failure:^(NSString *error) {
+        
     }];
 }
 /**
@@ -397,10 +439,10 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         if ([tag isEqualToString:@"0"]) {
             [self.functionalUnitArray addObject:self.titleArray[i]];
         } else {
-            [self.conversationArray removeObjectAtIndex:i];
-            [self.contentArray removeObjectAtIndex:i];
-            [self.timeArray removeObjectAtIndex:i];
-            [self.noReadArray removeObjectAtIndex:i];
+            [self.conversationArray removeLastObject];
+            [self.contentArray removeLastObject];
+            [self.timeArray removeLastObject];
+            [self.noReadArray removeLastObject];
         }
     }
 
@@ -440,7 +482,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
             switch (index) {
                 case 0: {
                     // 扫一扫
-                    [LCProgressHUD showMessage:NSLocalizedString(@"Coming Soon", nil)];
+                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
                     break;
                 }
                 case 1: {
@@ -600,7 +642,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 });
             } else {
                 // 添加ETH
-                [LCProgressHUD showInfoMsg:NSLocalizedString(@"Coming Soon", nil)];
+                [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
             }
         }];
     }
@@ -626,7 +668,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                     [weakSelf.navigationController pushViewController:createWalletViewController animated:YES];
                 } else {
                     // 冷钱包
-                    [LCProgressHUD showInfoMsg:NSLocalizedString(@"Coming Soon", nil)];
+                    [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
                 }
             }
         }];
@@ -712,6 +754,12 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         _dataSource = [NSMutableArray array];
     }
     return _dataSource;
+}
+- (NSMutableArray *)icoArray {
+    if (!_icoArray) {
+        _icoArray = [NSMutableArray array];
+    }
+    return _icoArray;
 }
 
 @end

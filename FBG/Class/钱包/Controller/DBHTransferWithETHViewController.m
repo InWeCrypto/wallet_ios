@@ -11,6 +11,7 @@
 
 #import "ScanVC.h"
 #import "DBHTransferConfirmationViewController.h"
+#import "DBHAddressBookViewController.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
 #import "DBHWalletDetailTokenInfomationModelData.h"
@@ -35,6 +36,7 @@
 @property (nonatomic, strong) UIView *thirdLineView;
 @property (nonatomic, strong) UIButton *commitButton;
 
+@property (nonatomic, copy) NSString *defaultGas;
 @property (nonatomic, copy) NSString *nonce; // 交易次数
 
 @end
@@ -49,6 +51,7 @@
     
     [self setUI];
     
+    [self getDefaultGas];
     [self loadWalletData];
 }
 
@@ -172,7 +175,7 @@
  扫一扫成功代理
  */
 - (void)scanSucessWithObject:(id)object {
-    if (![NSString isNEOAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
+    if (![NSString isAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
         [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
         return;
     }
@@ -181,13 +184,51 @@
 }
 
 #pragma mark ------ Data ------
-- (void)loadWalletData
-{
+/**
+ 获取默认Gas费用
+ */
+- (void)getDefaultGas {
+    WEAKSELF
+    [PPNetworkHelper GET:@"extend/getGasPrice" baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        NSString *defautlGas = [NSString stringWithFormat:@"%@", responseCache[@"gasPrice"]];
+        defautlGas = [NSString numberHexString:defautlGas];
+        defautlGas = [NSString DecimalFuncWithOperatorType:2 first:defautlGas secend:@"90000" value:8];
+        weakSelf.defaultGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"1000000000000000000" value:8];
+        if (weakSelf.defaultGas.floatValue < weakSelf.gasSlider.minimumValue) {
+            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.minimumValue];
+            weakSelf.gasSlider.value = weakSelf.gasSlider.minimumValue;
+        } else if (weakSelf.defaultGas.floatValue > weakSelf.gasSlider.maximumValue) {
+            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.maximumValue];
+            weakSelf.gasSlider.value = weakSelf.gasSlider.maximumValue;
+        } else {
+            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.defaultGas.floatValue];
+            weakSelf.gasSlider.value = weakSelf.defaultGas.floatValue;
+        }
+    } success:^(id responseObject) {
+        NSString *defautlGas = [NSString stringWithFormat:@"%@", responseObject[@"gasPrice"]];
+        defautlGas = [NSString numberHexString:defautlGas];
+        defautlGas = [NSString DecimalFuncWithOperatorType:2 first:defautlGas secend:@"90000" value:8];
+        weakSelf.defaultGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"1000000000000000000" value:8];
+        if (weakSelf.defaultGas.floatValue < weakSelf.gasSlider.minimumValue) {
+            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.minimumValue];
+            weakSelf.gasSlider.value = weakSelf.gasSlider.minimumValue;
+        } else if (weakSelf.defaultGas.floatValue > weakSelf.gasSlider.maximumValue) {
+            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.maximumValue];
+            weakSelf.gasSlider.value = weakSelf.gasSlider.maximumValue;
+        } else {
+            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.defaultGas.floatValue];
+            weakSelf.gasSlider.value = weakSelf.defaultGas.floatValue;
+        }
+    } failure:^(NSString *error) {
+        
+    }];
+}
+- (void)loadWalletData {
     //获取交易次数
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     [dic setObject:self.tokenModel.address forKey:@"address"];
     
-    [PPNetworkHelper POST:@"extend/getTransactionCount" baseUrlType:1 parameters:dic hudString:@"获取中..." success:^(id responseObject)
+    [PPNetworkHelper POST:@"extend/getTransactionCount" baseUrlType:1 parameters:dic hudString:nil success:^(id responseObject)
      {
          // nonce 参数
          if (![NSString isNulllWithObject:[responseObject objectForKey:@"count"]])
@@ -212,12 +253,17 @@
 /**
  电话薄
  */
-//- (void)respondsToPhoneBookButton {
-//    MailListVC *vc = [[MailListVC alloc] init];
-//    vc.delegate = self;
-//    vc.isChose = YES;
-//    [self.navigationController pushViewController:vc animated:YES];
-//}
+- (void)respondsToPhoneBookButton {
+    DBHAddressBookViewController *addressBookViewController = [[DBHAddressBookViewController alloc] init];
+    addressBookViewController.isSelected = YES;
+    
+    WEAKSELF
+    [addressBookViewController selectedAddressBlock:^(NSString *address) {
+        weakSelf.walletAddressTextField.text = address;
+    }];
+    
+    [self.navigationController pushViewController:addressBookViewController animated:YES];
+}
 /**
  提交
  */
@@ -247,9 +293,10 @@
     transferConfirmationViewController.tokenModel = self.tokenModel;
     transferConfirmationViewController.neoWalletModel = self.neoWalletModel;
     transferConfirmationViewController.transferNumber = self.transferNumberTextField.text;
-    transferConfirmationViewController.poundage = @"0";
+    transferConfirmationViewController.poundage = [NSString stringWithFormat:@"%lf", self.gasSlider.value];
     transferConfirmationViewController.address = self.walletAddressTextField.text;
     transferConfirmationViewController.remark = self.remarkTextField.text;
+    transferConfirmationViewController.nonce = self.nonce;
     [self.navigationController pushViewController:transferConfirmationViewController animated:YES];
 }
 - (void)respondsToGasSlider {
@@ -277,7 +324,7 @@
     if (!_walletAddressLabel) {
         _walletAddressLabel = [[UILabel alloc] init];
         _walletAddressLabel.font = FONT(13);
-        _walletAddressLabel.text = [NSString stringWithFormat:@"%@:", NSLocalizedString(@"Wallet Address", nil)];
+        _walletAddressLabel.text = [NSString stringWithFormat:@"%@:", DBHGetStringWithKeyFromTable(@"Wallet Address", nil)];
         _walletAddressLabel.textColor = COLORFROM16(0x000000, 1);
     }
     return _walletAddressLabel;
@@ -309,7 +356,7 @@
     if (!_transferNumberLabel) {
         _transferNumberLabel = [[UILabel alloc] init];
         _transferNumberLabel.font = FONT(13);
-        _transferNumberLabel.text = [NSString stringWithFormat:@"%@:", NSLocalizedString(@"Transfer Number", nil)];
+        _transferNumberLabel.text = [NSString stringWithFormat:@"%@:", DBHGetStringWithKeyFromTable(@"Transfer Number", nil)];
         _transferNumberLabel.textColor = COLORFROM16(0x000000, 1);
     }
     return _transferNumberLabel;
@@ -337,8 +384,8 @@
         _balanceLabel.textColor = COLORFROM16(0xA6A4A4, 1);
         
         NSString *balance = [NSString stringWithFormat:@"%.8lf", self.tokenModel.balance.floatValue];
-        NSMutableAttributedString *balanceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"（%@ %@：%@）", self.tokenModel.flag, NSLocalizedString(@"Available Number", nil), balance]];
-        [balanceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xF9480E, 1) range:NSMakeRange([NSString stringWithFormat:@"%@ %@", self.tokenModel.flag, NSLocalizedString(@"Available Number", nil)].length + 2, balance.length)];
+        NSMutableAttributedString *balanceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"（%@ %@：%@）", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Available Number", nil), balance]];
+        [balanceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xF9480E, 1) range:NSMakeRange([NSString stringWithFormat:@"%@ %@", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Available Number", nil)].length + 2, balance.length)];
         _balanceLabel.attributedText = balanceAttributedString;
     }
     return _balanceLabel;
@@ -393,7 +440,7 @@
     if (!_remarkLabel) {
         _remarkLabel = [[UILabel alloc] init];
         _remarkLabel.font = FONT(13);
-        _remarkLabel.text = [NSString stringWithFormat:@"%@:", NSLocalizedString(@"Remarks", nil)];
+        _remarkLabel.text = [NSString stringWithFormat:@"%@:", DBHGetStringWithKeyFromTable(@"Remarks", nil)];
         _remarkLabel.textColor = COLORFROM16(0x000000, 1);
     }
     return _remarkLabel;
@@ -418,7 +465,7 @@
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _commitButton.titleLabel.font = FONT(14);
-        [_commitButton setTitle:NSLocalizedString(@"Commit", nil) forState:UIControlStateNormal];
+        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Commit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;

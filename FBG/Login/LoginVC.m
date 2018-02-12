@@ -37,8 +37,8 @@
 {
     [super viewDidLoad];
     
-    [self.hotPurseButton setTitle:NSLocalizedString(@"Log in", nil) forState:UIControlStateNormal];
-    [self.coldPurseButton setTitle:NSLocalizedString(@"Cold Purse", nil) forState:UIControlStateNormal];
+    [self.hotPurseButton setTitle:DBHGetStringWithKeyFromTable(@"Log in", nil) forState:UIControlStateNormal];
+    [self.coldPurseButton setTitle:DBHGetStringWithKeyFromTable(@"Cold Purse", nil) forState:UIControlStateNormal];
     
     NSString *text = @"登录钱包即表示同意《服务协议》《隐私条款》";
     __weak typeof(self)weakSelf = self;

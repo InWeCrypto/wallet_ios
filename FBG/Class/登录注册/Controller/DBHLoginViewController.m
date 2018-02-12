@@ -133,7 +133,7 @@
                                 @"password":self.passwordTextField.text};
     
     WEAKSELF
-    [PPNetworkHelper POST:@"login" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", NSLocalizedString(@"Log in", nil)] success:^(id responseObject) {
+    [PPNetworkHelper POST:@"login" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Log in", nil)] success:^(id responseObject) {
         EMError *error = [[EMClient sharedClient] loginWithUsername:[NSString stringWithFormat:@"%@", responseObject[@"id"]] password:weakSelf.passwordTextField.text];
         if (!error) {
             // 环信登录成功
@@ -150,7 +150,7 @@
             
             [weakSelf goHome];
         } else {
-            [LCProgressHUD showFailure:NSLocalizedString(@"Login Failed", nil)];
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Login Failed", nil)];
         }
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -177,11 +177,11 @@
  */
 - (void)respondsToenterWalletButton {
     if (!self.accountTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please input a email", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a email", nil)];
         return;
     }
     if (!self.passwordTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please input a password", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a password", nil)];
         return;
     }
     
@@ -296,7 +296,7 @@
     if (!_forgetPasswordButton) {
         _forgetPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _forgetPasswordButton.titleLabel.font = FONT(11);
-        [_forgetPasswordButton setTitle:NSLocalizedString(@"Forget the password？", nil) forState:UIControlStateNormal];
+        [_forgetPasswordButton setTitle:DBHGetStringWithKeyFromTable(@"Forget the password？", nil) forState:UIControlStateNormal];
         [_forgetPasswordButton setTitleColor:COLORFROM16(0xDADDDC, 1) forState:UIControlStateNormal];
         [_forgetPasswordButton addTarget:self action:@selector(respondsToforgetPasswordButton) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -310,7 +310,7 @@
         _enterWalletButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _enterWalletButton.clipsToBounds = YES;
         
-        [_enterWalletButton setTitle:NSLocalizedString(@"Enter InWeCrypto", nil) forState:UIControlStateNormal];
+        [_enterWalletButton setTitle:DBHGetStringWithKeyFromTable(@"Enter InWeCrypto", nil) forState:UIControlStateNormal];
         [_enterWalletButton addTarget:self action:@selector(respondsToenterWalletButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _enterWalletButton;
@@ -319,7 +319,7 @@
     if (!_registerButton) {
         _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _registerButton.titleLabel.font = FONT(14);
-        [_registerButton setTitle:NSLocalizedString(@"Register", nil) forState:UIControlStateNormal];
+        [_registerButton setTitle:DBHGetStringWithKeyFromTable(@"Register", nil) forState:UIControlStateNormal];
         [_registerButton setTitleColor:COLORFROM16(0x008C55, 1) forState:UIControlStateNormal];
         [_registerButton addTarget:self action:@selector(respondsToregisterButton) forControlEvents:UIControlEventTouchUpInside];
     }

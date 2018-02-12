@@ -16,6 +16,7 @@
 
 -(void)showLoginController;
 - (void)goToTabbar;
+- (void)emregister;
 
 @end
 

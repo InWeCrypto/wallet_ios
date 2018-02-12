@@ -36,7 +36,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Confirm", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToSureBarButtonItem)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Confirm", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToSureBarButtonItem)];
     
     [self.view addSubview:self.tableView];
     
@@ -79,6 +79,8 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
         [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
         [[NSUserDefaults standardUserDefaults] setObject:!self.currentSelectedRow ? APIEHEAD1 : TESTAPIEHEAD1 forKey:@"appNetWorkApi"];
+        EMError *error = [[EMClient sharedClient] logout:YES];
+        [[AppDelegate delegate] emregister];
         [[AppDelegate delegate] showLoginController];
     }
 }

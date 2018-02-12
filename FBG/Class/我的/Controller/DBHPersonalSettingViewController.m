@@ -253,9 +253,9 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     NSDictionary *paramters = @{@"img":headImageUrl,
                                 @"name":[UserSignData share].user.nickname};
     WEAKSELF
-    [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", NSLocalizedString(@"Commit", nil)] success:^(id responseObject) {
+    [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Commit", nil)] success:^(id responseObject) {
         [UserSignData share].user.img = responseObject[@"img"];
-        [LCProgressHUD showSuccess:NSLocalizedString(@"Change Success", nil)];
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Change Success", nil)];
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -302,7 +302,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         _quitLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _quitLoginButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _quitLoginButton.titleLabel.font = FONT(14);
-        [_quitLoginButton setTitle:NSLocalizedString(@"Log Out", nil) forState:UIControlStateNormal];
+        [_quitLoginButton setTitle:DBHGetStringWithKeyFromTable(@"Log Out", nil) forState:UIControlStateNormal];
         [_quitLoginButton addTarget:self action:@selector(respondsToQuitLoginButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _quitLoginButton;

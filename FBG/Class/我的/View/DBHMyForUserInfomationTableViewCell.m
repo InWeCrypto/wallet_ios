@@ -61,7 +61,7 @@
 #pragma mark ------ Getters And Setters ------
 - (UIImageView *)headImageView {
     if (!_headImageView) {
-        _headImageView = [[UIImageView alloc] init];
+        _headImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"touxiang"]];
         _headImageView.contentMode = UIViewContentModeScaleAspectFill;
         _headImageView.layer.cornerRadius = AUTOLAYOUTSIZE(27.5);
         _headImageView.clipsToBounds = YES;

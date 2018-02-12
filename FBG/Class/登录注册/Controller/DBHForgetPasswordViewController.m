@@ -99,7 +99,7 @@
         make.right.equalTo(weakSelf.getVerificationCodeButton.mas_left).offset(- AUTOLAYOUTSIZE(10));
     }];
     [self.getVerificationCodeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset([NSString getWidthtWithString:NSLocalizedString(@"Get Verification Code", nil) fontSize:AUTOLAYOUTSIZE(14)]);
+        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Get Verification Code", nil) fontSize:AUTOLAYOUTSIZE(14)]);
         make.right.equalTo(weakSelf.secondLineView);
         make.height.equalTo(weakSelf.verificationCodeTextField);
         make.centerY.equalTo(weakSelf.verificationCodeTextField);
@@ -151,7 +151,7 @@
  */
 - (void)getVerificationCode {
     WEAKSELF
-    [PPNetworkHelper POST:[NSString stringWithFormat:@"send_code/%@", self.accountTextField.text] baseUrlType:3 parameters:nil hudString:[NSString stringWithFormat:@"%@...", NSLocalizedString(@"Get Verification Code", nil)] success:^(id responseObject) {
+    [PPNetworkHelper POST:[NSString stringWithFormat:@"send_code/%@", self.accountTextField.text] baseUrlType:3 parameters:nil hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Get Verification Code", nil)] success:^(id responseObject) {
         [weakSelf keepTime];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -168,7 +168,7 @@
     
     WEAKSELF
     [PPNetworkHelper POST:@"forgot_password" baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
-        [LCProgressHUD showSuccess:NSLocalizedString(@"Password reset successful", nil)];
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Password reset successful", nil)];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -181,7 +181,7 @@
  */
 - (void)respondsToGetVerificationCodeButton {
     if (!self.accountTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please input a email", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a email", nil)];
         return;
     }
     
@@ -194,29 +194,30 @@
 - (void)respondsToShowPasswordButton:(UIButton *)button {
     button.selected = !button.selected;
     self.passwordTextField.secureTextEntry = !button.isSelected;
+    self.surePasswordTextField.secureTextEntry = !button.isSelected;
 }
 /**
  提交
  */
 - (void)respondsToCommitButton {
     if (!self.accountTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please input a email", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a email", nil)];
         return;
     }
     if (!self.verificationCodeTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please input a verification code", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a verification code", nil)];
         return;
     }
     if (!self.passwordTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please input a password", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a password", nil)];
         return;
     }
     if (!self.surePasswordTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please enter your password again", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please enter your password again", nil)];
         return;
     }
     if (![self.passwordTextField.text isEqualToString:self.surePasswordTextField.text]) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"The two passwords differ", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The two passwords differ", nil)];
         return;
     }
     
@@ -247,7 +248,7 @@
             dispatch_source_cancel(_timer);
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 设置按钮的样式
-                [weakSelf.getVerificationCodeButton setTitle:NSLocalizedString(@"Retrieves", nil) forState:UIControlStateNormal];
+                [weakSelf.getVerificationCodeButton setTitle:DBHGetStringWithKeyFromTable(@"Retrieves", nil) forState:UIControlStateNormal];
                 [weakSelf.getVerificationCodeButton setTitleColor:COLORFROM16(0x008C55, 1) forState:UIControlStateNormal];
                 weakSelf.getVerificationCodeButton.userInteractionEnabled = YES;
             });
@@ -315,7 +316,7 @@
     if (!_getVerificationCodeButton) {
         _getVerificationCodeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _getVerificationCodeButton.titleLabel.font = FONT(14);
-        [_getVerificationCodeButton setTitle:NSLocalizedString(@"Get Verification Code", nil) forState:UIControlStateNormal];
+        [_getVerificationCodeButton setTitle:DBHGetStringWithKeyFromTable(@"Get Verification Code", nil) forState:UIControlStateNormal];
         [_getVerificationCodeButton setTitleColor:COLORFROM16(0x008C55, 1) forState:UIControlStateNormal];
         [_getVerificationCodeButton addTarget:self action:@selector(respondsToGetVerificationCodeButton) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -379,7 +380,7 @@
         _commitButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _commitButton.clipsToBounds = YES;
         
-        [_commitButton setTitle:NSLocalizedString(@"Commit", nil) forState:UIControlStateNormal];
+        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Commit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;

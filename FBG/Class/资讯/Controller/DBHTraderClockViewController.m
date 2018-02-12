@@ -9,6 +9,7 @@
 #import "DBHTraderClockViewController.h"
 
 #import "DBHFunctionalUnitLookViewController.h"
+#import "DBHTransferDetailViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHTraderClockTableViewCell.h"
@@ -67,7 +68,11 @@ static NSString *const kDBHTraderClockTableViewCellIdentifier = @"kDBHTraderCloc
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    EMMessage *message = self.dataSource[indexPath.section];
+    DBHTransferDetailViewController *transferDetailViewController = [[DBHTransferDetailViewController alloc] init];
+    transferDetailViewController.title = message.ext[@"title"];
+    transferDetailViewController.message = self.dataSource[indexPath.section];
+    [self.navigationController pushViewController:transferDetailViewController animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     EMMessage *message = self.dataSource[section];

@@ -31,8 +31,8 @@
 //    self.layer.cornerRadius = 10;
 //    self.layer.masksToBounds = YES;
     
-    [self.canelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
-    [self.commitButton setTitle:NSLocalizedString(@"Determine", nil) forState:UIControlStateNormal];
+    [self.canelButton setTitle:DBHGetStringWithKeyFromTable(@"Cancel", nil) forState:UIControlStateNormal];
+    [self.commitButton setTitle:DBHGetStringWithKeyFromTable(@"Determine", nil) forState:UIControlStateNormal];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

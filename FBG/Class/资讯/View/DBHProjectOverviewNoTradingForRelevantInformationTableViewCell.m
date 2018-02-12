@@ -61,7 +61,7 @@
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setProjectDetailModel:(DBHProjectDetailInformationModelDataBase *)projectDetailModel {
+- (void)setProjectDetailModel:(DBHProjectDetailInformationModelData *)projectDetailModel {
     _projectDetailModel = projectDetailModel;
     
     self.dateLabel.text = _projectDetailModel.categoryDesc.startAt;

@@ -11,7 +11,7 @@
 #import "ScanVC.h"
 #import "DBHCreateWalletWithETHViewController.h"
 #import "DBHCreateWalletWithNameViewController.h"
-#import "DBHWalletDetailViewController.h"
+#import "DBHWalletDetailWithETHViewController.h"
 
 #import "DBHInputPasswordPromptView.h"
 
@@ -82,7 +82,7 @@
         typeButton.tag = 200 + i;
         typeButton.titleLabel.font = FONT(12);
         typeButton.selected = self.currentSelectedIndex == i;
-        [typeButton setTitle:NSLocalizedString(self.typeArray[i], nil) forState:UIControlStateNormal];
+        [typeButton setTitle:DBHGetStringWithKeyFromTable(self.typeArray[i], nil) forState:UIControlStateNormal];
         [typeButton setTitleColor:COLORFROM16(0x333333, 1) forState:UIControlStateNormal];
         [typeButton setTitleColor:COLORFROM16(0x0A9234, 1) forState:UIControlStateSelected];
         [typeButton addTarget:self action:@selector(respondsToTypeButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -90,7 +90,7 @@
         [self.view addSubview:typeButton];
         
         [typeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.width.offset([NSString getWidthtWithString:NSLocalizedString(self.typeArray[i], nil) fontSize:12]);
+            make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(self.typeArray[i], nil) fontSize:12]);
             make.height.offset(AUTOLAYOUTSIZE(30));
             make.left.equalTo(!i ? weakSelf.contentTextView : [weakSelf.view viewWithTag:199 + i].mas_right).offset(!i ? 0 : AUTOLAYOUTSIZE(15));
             make.centerY.equalTo(weakSelf.scanQRCodeButton);
@@ -359,7 +359,7 @@
         _importButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _importButton.titleLabel.font = BOLDFONT(14);
         _importButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
-        [_importButton setTitle:NSLocalizedString(@"Import", nil) forState:UIControlStateNormal];
+        [_importButton setTitle:DBHGetStringWithKeyFromTable(@"Import", nil) forState:UIControlStateNormal];
         [_importButton addTarget:self action:@selector(respondsToImportButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _importButton;
@@ -395,11 +395,11 @@
                                                           {
                                                               [LCProgressHUD showMessage:@"转化成功"];
                                                               [PDKeyChain save:[self.ethWallet address] data:data];
-                                                              DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+                                                              DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
                                                               self.ethWalletModel.isLookWallet = NO;
-                                                              walletDetailViewController.neoWalletModel = self.ethWalletModel;
-                                                              walletDetailViewController.backIndex = 2;
-                                                              [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                                              walletDetailWithETHViewController.ethWalletModel = self.ethWalletModel;
+                                                              walletDetailWithETHViewController.backIndex = 2;
+                                                              [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
                                                           }
                                                           else
                                                           {

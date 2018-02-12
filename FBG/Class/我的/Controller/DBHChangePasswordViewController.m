@@ -38,7 +38,7 @@ static NSString *const kDBHChangePasswordTableViewCellIdentifier = @"kDBHChangeP
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToSaveBarButtonItem)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToSaveBarButtonItem)];
     
     [self.view addSubview:self.tableView];
     
@@ -90,7 +90,7 @@ static NSString *const kDBHChangePasswordTableViewCellIdentifier = @"kDBHChangeP
         [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
         [[AppDelegate delegate] showLoginController];
-        [LCProgressHUD showSuccess:NSLocalizedString(@"Password Update Success", nil)];
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Password Update Success", nil)];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
@@ -106,19 +106,19 @@ static NSString *const kDBHChangePasswordTableViewCellIdentifier = @"kDBHChangeP
     DBHChangePasswordTableViewCell *surePasswordCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
     
     if (!verificationCodeCell.valueTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please input your old password", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input your old password", nil)];
         return;
     }
     if (!newPasswordCell.valueTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please input a password", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a password", nil)];
         return;
     }
     if (!surePasswordCell.valueTextField.text.length) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"Please enter your password again", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please enter your password again", nil)];
         return;
     }
     if (![newPasswordCell.valueTextField.text isEqualToString:surePasswordCell.valueTextField.text]) {
-        [LCProgressHUD showFailure:NSLocalizedString(@"The two passwords differ", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The two passwords differ", nil)];
         return;
     }
     

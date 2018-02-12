@@ -204,7 +204,7 @@
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _commitButton.titleLabel.font = BOLDFONT(14);
-        [_commitButton setTitle:NSLocalizedString(@"Confirm", nil) forState:UIControlStateNormal];
+        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Confirm", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;

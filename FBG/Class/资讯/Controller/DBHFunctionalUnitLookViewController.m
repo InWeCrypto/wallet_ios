@@ -32,7 +32,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 
 @property (nonatomic, strong) UITableView *tableView;
 
-@property (nonatomic, strong) DBHProjectDetailInformationModelDataBase *projectDetailModel;
+@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;;
 @property (nonatomic, copy) NSArray *titleArray; // 功能组件标题
 
 @end

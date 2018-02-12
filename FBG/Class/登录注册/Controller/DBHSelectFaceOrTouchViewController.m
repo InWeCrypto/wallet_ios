@@ -145,7 +145,7 @@
         _nowOpenButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _nowOpenButton.clipsToBounds = YES;
         
-        [_nowOpenButton setTitle:NSLocalizedString(@"Now Open", nil) forState:UIControlStateNormal];
+        [_nowOpenButton setTitle:DBHGetStringWithKeyFromTable(@"Now Open", nil) forState:UIControlStateNormal];
         [_nowOpenButton addTarget:self action:@selector(respondsToNowOpenButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _nowOpenButton;
@@ -154,7 +154,7 @@
     if (!_noOpenButton) {
         _noOpenButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _noOpenButton.titleLabel.font = BOLDFONT(12);
-        [_noOpenButton setTitle:NSLocalizedString(@"No Open", nil) forState:UIControlStateNormal];
+        [_noOpenButton setTitle:DBHGetStringWithKeyFromTable(@"No Open", nil) forState:UIControlStateNormal];
         [_noOpenButton setTitleColor:COLORFROM16(0x888888, 1) forState:UIControlStateNormal];
         [_noOpenButton addTarget:self action:@selector(respondsToNoOpenButton) forControlEvents:UIControlEventTouchUpInside];
     }

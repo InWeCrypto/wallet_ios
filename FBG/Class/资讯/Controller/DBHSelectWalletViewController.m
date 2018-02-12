@@ -43,7 +43,7 @@ static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWal
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Confirm", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToConfirmBarButtonItem)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Confirm", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToConfirmBarButtonItem)];
     
     [self.view addSubview:self.tableView];
     

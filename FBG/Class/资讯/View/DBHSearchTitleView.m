@@ -8,10 +8,12 @@
 
 #import "DBHSearchTitleView.h"
 
-@interface DBHSearchTitleView ()
+@interface DBHSearchTitleView ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField *searchTextField;
 @property (nonatomic, strong) UIButton *cancelButton;
+
+@property (nonatomic, copy) SearchBlock searchBlock;
 
 @end
 
@@ -34,16 +36,35 @@
     
     WEAKSELF
     [self.searchTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(AUTOLAYOUTSIZE(40));
-        make.centerY.equalTo(weakSelf);
         make.left.offset(AUTOLAYOUTSIZE(15));
         make.right.equalTo(weakSelf.cancelButton.mas_left);
+        make.height.offset(40);
+        make.bottom.offset(- AUTOLAYOUTSIZE(2));
     }];
     [self.cancelButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.height.equalTo(weakSelf);
+        make.centerY.height.equalTo(weakSelf.searchTextField);
         make.width.offset(AUTOLAYOUTSIZE(66));
         make.right.equalTo(weakSelf);
     }];
+}
+
+#pragma mark ------ UITextFieldDelegate ------
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *changeAfterString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (!changeAfterString.length) {
+        self.searchBlock(-1, nil);
+    }
+    
+    return YES;
+}
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    self.searchBlock(-1, nil);
+    return YES;
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    self.searchBlock(1, textField.text);
+    [textField endEditing:YES];
+    return YES;
 }
 
 #pragma mark ------ Event Responds ------
@@ -51,13 +72,26 @@
  取消
  */
 - (void)respondsToCancelButton {
-    
+    self.searchBlock(0, nil);
+}
+
+#pragma mark ------ Public Methods ------
+- (void)searchBlock:(SearchBlock)searchBlock {
+    self.searchBlock = searchBlock;
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setSearchType:(NSInteger)searchType {
+    _searchType = searchType;
+    
+    self.searchTextField.placeholder = DBHGetStringWithKeyFromTable(!_searchType ? @"Information" : @"Project", nil);
+}
+
 - (UITextField *)searchTextField {
     if (!_searchTextField) {
         _searchTextField = [[UITextField alloc] init];
+        _searchTextField.backgroundColor = COLORFROM16(0xF6F6F6, 1);
+        _searchTextField.layer.cornerRadius = 20;
         _searchTextField.font = FONT(13);
         _searchTextField.placeholder = DBHGetStringWithKeyFromTable(@"Information", nil);
         _searchTextField.textColor = COLORFROM16(0x333333, 1);
@@ -69,6 +103,8 @@
         _searchTextField.leftView = leftView;
         _searchTextField.leftViewMode = UITextFieldViewModeAlways;
         _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _searchTextField.returnKeyType = UIReturnKeySearch;
+        _searchTextField.delegate = self;
     }
     return _searchTextField;
 }
