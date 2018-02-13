@@ -581,18 +581,14 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
  收到消息
  */
 - (void)messagesDidReceive:(NSArray *)aMessages {
-    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-    // App在前台
-    if (state != UIApplicationStateBackground) {
-        return;
-    }
-    
     for (EMMessage *msg in aMessages) {
         switch (msg.chatType) {
             case EMChatTypeChat: {
                 // 单聊
-//                EMConversation *conversation =
-                NSLog(@"ssss:%@", msg.conversationId);
+                if ([msg.conversationId isEqualToString:@"sys_msg_order"] || [msg.conversationId isEqualToString:@"sys_msg"]) {
+                    [UserSignData share].user.functionalUnitArray[[msg.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = @"0";
+                    [[UserSignData share] storageData:[UserSignData share].user];
+                }
                 break;
             }
             case EMChatTypeGroupChat: {
@@ -604,7 +600,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
                     if (index < 0 || index > 5) {
                         return;
                     }
-                    if ([[UserSignData share].user.realTimeDeliveryArray[index] isEqualToString:@"0"]) {
+                    if ([[UserSignData share].user.functionalUnitArray[index] isEqualToString:@"1"]) {
+                        [UserSignData share].user.functionalUnitArray[index] = @"0";
+                        [[UserSignData share] storageData:[UserSignData share].user];
                         return;
                     }
                 }
@@ -618,6 +616,36 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
                 
             default:
                 break;
+        }
+    }
+    
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    // App在前台
+    if (state != UIApplicationStateBackground) {
+        return;
+    }
+    
+    for (EMMessage *msg in aMessages) {
+        if (msg.chatType == EMChatTypeGroupChat) {
+            // 群聊
+            EMError *error = nil;
+            EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:msg.conversationId error:&error];
+            if (!error) {
+                NSInteger index = [self.titleGroupNameArray indexOfObject:[group.subject substringToIndex:group.subject.length - 3]];
+                if (index < 0 || index > 5) {
+                    continue;
+                }
+                if ([[UserSignData share].user.realTimeDeliveryArray[index] isEqualToString:@"0"]) {
+                    continue;
+                }
+            }
+        } else if (msg.chatType == EMChatTypeChat) {
+            // 单聊
+            if ([msg.conversationId isEqualToString:@"sys_msg_order"] || [msg.conversationId isEqualToString:@"sys_msg"]) {
+                if ([[UserSignData share].user.realTimeDeliveryArray[[msg.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] isEqualToString:@"0"]) {
+                    continue;
+                }
+            }
         }
         
         EMTextMessageBody *message = (EMTextMessageBody *)msg.body;

@@ -133,17 +133,24 @@
     self.nameLabel.attributedText = nameAttributedString;
     self.tagLabel.text = _projectDetailModel.industry;
     
-    NSString *price = [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.priceCny : _projectDetailModel.ico.priceUsd;
-    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-    self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", _projectDetailModel.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _projectDetailModel.ico.percentChange24h.floatValue];
-    self.volumeLabel.text = [NSString stringWithFormat:@"%@ (24h)：%@%@%@", DBHGetStringWithKeyFromTable(@"Volume", nil), [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.volumeCny24h : _projectDetailModel.ico.volumeUsd24h, [UserSignData share].user.walletUnitType == 1 ? @"CNY" : @"USD"];
+    self.priceLabel.hidden = _projectDetailModel.type != 1;
+    self.changeLabel.hidden = _projectDetailModel.type != 1;
+    self.volumeLabel.hidden = _projectDetailModel.type != 1;
+    if (_projectDetailModel.type == 1) {
+        NSString *price = [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.priceCny : _projectDetailModel.ico.priceUsd;
+        self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
+        self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", _projectDetailModel.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _projectDetailModel.ico.percentChange24h.floatValue];
+        self.volumeLabel.text = [NSString stringWithFormat:@"%@ (24h)：%@%@%@", DBHGetStringWithKeyFromTable(@"Volume", nil), [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.volumeCny24h : _projectDetailModel.ico.volumeUsd24h, [UserSignData share].user.walletUnitType == 1 ? @"CNY" : @"USD"];
+    } else {
+        
+    }
     if ([[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"]) {
         self.rankLabel.text = [NSString stringWithFormat:@"第%ld名", (NSInteger)_projectDetailModel.categoryScore.sort];
     } else {
         self.rankLabel.text = [NSString stringWithFormat:@"%ld", (NSInteger)_projectDetailModel.categoryScore.sort];
     }
     self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
-    self.gradeLabel.text = [NSString stringWithFormat:@"%.2lf%@", _projectDetailModel.categoryScore.value, DBHGetStringWithKeyFromTable(@"Part", nil)];
+    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf%@", _projectDetailModel.categoryScore.value, DBHGetStringWithKeyFromTable(@"Part", nil)];
 }
 
 - (UIImageView *)iconImageView {

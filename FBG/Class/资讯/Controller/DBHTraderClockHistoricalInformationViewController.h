@@ -10,4 +10,9 @@
 
 @interface DBHTraderClockHistoricalInformationViewController : DBHBaseViewController
 
+/**
+ 聊天会话
+ */
+@property (nonatomic, strong) EMConversation *conversation;
+
 @end

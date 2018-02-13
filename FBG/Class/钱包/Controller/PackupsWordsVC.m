@@ -26,6 +26,7 @@
     
     self.title = @"备份助记词";
     self.mnemonicTextView.text = self.mnemonic;
+    self.mnemonicTextView.editable = NO;
 }
 
 #pragma mark - Custom Accessors (控件响应方法)

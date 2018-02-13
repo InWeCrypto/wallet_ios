@@ -18,6 +18,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 
 @property (nonatomic, strong) UITableView *tableView;
 
+@property (nonatomic, assign) NSInteger currentPage; // 当前页
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
@@ -31,10 +32,9 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     self.title = DBHGetStringWithKeyFromTable(@"Historical Information", nil);
     
     [self setUI];
-}
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    [self addRefresh];
     
+    self.currentPage = 1;
     [self getExchangeNotice];
 }
 
@@ -62,7 +62,10 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHExchangeNoticeModelData *model = self.dataSource[indexPath.row];
+    KKWebView *webView = [[KKWebView alloc] initWithUrl:model.sourceUrl];
+    webView.title = model.desc;
+    [self.navigationController pushViewController:webView animated:YES];
 }
 
 #pragma mark ------ Data ------
@@ -71,7 +74,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
  */
 - (void)getExchangeNotice {
     WEAKSELF
-    [PPNetworkHelper GET:@"exchange_notice" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"exchange_notice?per_page=5&page=%ld", self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         if (weakSelf.dataSource.count) {
             return ;
         }
@@ -85,19 +88,83 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
         }
         
         [weakSelf.tableView reloadData];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf scrollViewToBottom:NO];
+        });
     } success:^(id responseObject) {
-        [weakSelf.dataSource removeAllObjects];
+        [weakSelf endRefresh];
         
-        for (NSDictionary *dic in responseObject[@"data"]) {
-            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:dic];
+        if (weakSelf.currentPage == 1) {
+            [weakSelf.dataSource removeAllObjects];
+        }
+        
+        
+        NSMutableArray *dataArray = [NSMutableArray array];
+        NSArray *array = responseObject[@"data"];
+        for (NSInteger i = array.count - 1; i >= 0; i--) {
+            DBHExchangeNoticeModelData *model = [DBHExchangeNoticeModelData modelObjectWithDictionary:array[i]];
             
-            [weakSelf.dataSource addObject:model];
+            [dataArray addObject:model];
+        }
+        
+        if (weakSelf.currentPage == 1) {
+            [weakSelf.dataSource addObjectsFromArray:dataArray];
+        } else if (dataArray.count) {
+            [weakSelf.dataSource insertObjects:dataArray atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataArray.count)]];
         }
         
         [weakSelf.tableView reloadData];
+        
+        if (weakSelf.currentPage == 1) {
+            if (weakSelf.dataSource.count > 2) {
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[weakSelf.dataSource count] - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
+        } else if (dataArray.count) {
+            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:dataArray.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
+}
+
+#pragma mark ------ Private Methods ------
+/**
+ 滑动到底部
+ */
+- (void)scrollViewToBottom:(BOOL)animated
+{
+    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+    {
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        [self.tableView setContentOffset:offset animated:animated];
+    }
+}
+/**
+ 添加刷新
+ */
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (weakSelf.dataSource.count < weakSelf.currentPage * 5) {
+            [weakSelf endRefresh];
+            
+            return ;
+        }
+        
+        weakSelf.currentPage += 1;
+        [weakSelf getExchangeNotice];
+    }];
+}
+/**
+ 结束刷新
+ */
+- (void)endRefresh {
+    if ([self.tableView.mj_header isRefreshing]) {
+        [self.tableView.mj_header endRefreshing];
+    }
+    if ([self.tableView.mj_footer isRefreshing]) {
+        [self.tableView.mj_footer endRefreshing];
+    }
 }
 
 #pragma mark ------ Getters And Setters ------

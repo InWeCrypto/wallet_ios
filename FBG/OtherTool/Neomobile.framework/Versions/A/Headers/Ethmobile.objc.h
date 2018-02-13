@@ -6,9 +6,9 @@
 #ifndef __Ethmobile_H__
 #define __Ethmobile_H__
 
-//@import Foundation;
+#import "ref.h"
 #include "Universe.objc.h"
-#include "ref.h"
+
 
 @class EthmobileWallet;
 

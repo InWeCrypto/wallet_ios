@@ -122,12 +122,14 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
                     case 4: {
                         // 交易提醒
                         DBHTraderClockHistoricalInformationViewController *traderClockHistoricalInformationViewController = [[DBHTraderClockHistoricalInformationViewController alloc] init];
+                        traderClockHistoricalInformationViewController.conversation = weakSelf.conversation;
                         [self.navigationController pushViewController:traderClockHistoricalInformationViewController animated:YES];
                         break;
                     }
                     case 5: {
                         // 通知
                         DBHNotificationHistoricalInformationViewController *notificationHistoricalInformationViewController = [[DBHNotificationHistoricalInformationViewController alloc] init];
+                        notificationHistoricalInformationViewController.conversation = weakSelf.conversation;
                         [self.navigationController pushViewController:notificationHistoricalInformationViewController animated:YES];
                         break;
                     }

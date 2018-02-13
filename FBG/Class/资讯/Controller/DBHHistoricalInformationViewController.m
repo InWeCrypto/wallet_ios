@@ -79,7 +79,11 @@ static const CGFloat scale = 1.3; // 选中形变倍数
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHHistoricalInformationModelData *model = self.dataSource[tableView.tag - 300][indexPath.row];
+    KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
+    webView.title = model.title;
+    webView.isHaveShare = YES;
+    [self.navigationController pushViewController:webView animated:YES];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -121,10 +125,13 @@ static const CGFloat scale = 1.3; // 选中形变倍数
  获取资讯
  */
 - (void)getInfomation {
-    DBHHistoricalInformationForTagModelData *model = self.titleArray[self.currentSelectedTitleLabel.tag - 200];
+    DBHHistoricalInformationForTagModelData *model;
+    if (!(self.currentSelectedTitleLabel.tag == 200)) {
+        model = self.titleArray[self.currentSelectedTitleLabel.tag - 201];
+    }
     
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%@%@", self.projevtId, self.currentSelectedTitleLabel.tag == 200 ? @"" : [NSString stringWithFormat:@"%d", (NSInteger)model.dataIdentifier]] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%@&tag_id=%@&per_page=100", self.projevtId, self.currentSelectedTitleLabel.tag == 200 ? @"" : [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier]] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         NSMutableArray *array = weakSelf.dataSource[weakSelf.currentSelectedTitleLabel.tag - 200];
         [array removeAllObjects];
         
@@ -197,6 +204,7 @@ static const CGFloat scale = 1.3; // 选中形变倍数
  添加所有子控制器对应的标题
  */
 - (void)addTitleLabels {
+    self.contentScrollView.contentSize = CGSizeMake(SCREENWIDTH * self.titleArray.count, 0);
     for (NSInteger i = 0; i < self.titleArray.count + 1; i++) {
         DBHHistoricalInformationForTagModelData *model = !i ? nil : self.titleArray[i - 1];
         UILabel *titleLabel = [[UILabel alloc] init];
@@ -232,7 +240,7 @@ static const CGFloat scale = 1.3; // 选中形变倍数
         }
     }
     
-    _titleScrollView.contentSize = CGSizeMake(CGRectGetMaxX([self.view viewWithTag:199 + self.titleArray.count].frame), 0);
+    _titleScrollView.contentSize = CGSizeMake(CGRectGetMaxX([self.view viewWithTag:200 + self.titleArray.count].frame), 0);
 }
 /**
  添加所有子控制器

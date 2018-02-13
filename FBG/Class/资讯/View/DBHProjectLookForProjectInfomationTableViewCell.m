@@ -219,7 +219,7 @@
     self.nameLabel.text = [NSString stringWithFormat:@"%@（%@）", _projectDetailModel.unit, _projectDetailModel.name];
     self.contentLabel.text = _projectDetailModel.industry;
     self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
-    self.gradeLabel.text = [NSString stringWithFormat:@"%.2lf分（%@）", _projectDetailModel.categoryScore.value, DBHGetStringWithKeyFromTable(_projectDetailModel.categoryUser.score.floatValue ? @"Has Score" : @"Not Score", nil)];
+    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf分", _projectDetailModel.categoryScore.value/*, DBHGetStringWithKeyFromTable(_projectDetailModel.categoryUser.score.floatValue ? @"Has Score" : @"Not Score", nil)*/];
     self.stateValueLabel.text = DBHGetStringWithKeyFromTable(self.menuArray[(NSInteger)_projectDetailModel.type - 1], nil);
     self.projectSkypeValueLabel.text = _projectDetailModel.website;
 }

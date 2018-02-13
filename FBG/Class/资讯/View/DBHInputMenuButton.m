@@ -54,10 +54,10 @@
             make.width.offset(AUTOLAYOUTSIZE(13.5));
             make.height.offset(AUTOLAYOUTSIZE(10));
             make.centerY.equalTo(weakSelf);
-            make.left.offset(AUTOLAYOUTSIZE(14));
+            make.left.offset(AUTOLAYOUTSIZE(24));
         }];
         [self.valueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(weakSelf.leftImageView.mas_right).offset(AUTOLAYOUTSIZE(5));
+            make.left.equalTo(weakSelf.leftImageView.mas_right).offset(AUTOLAYOUTSIZE(8));
             make.right.offset(- AUTOLAYOUTSIZE(5));
             make.centerY.equalTo(weakSelf);
         }];

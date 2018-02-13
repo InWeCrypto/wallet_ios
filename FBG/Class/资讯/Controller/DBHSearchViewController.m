@@ -98,7 +98,7 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!self.searchType) {
         DBHProjectHomeNewsModelData *model = self.datasource[indexPath.row];
-        KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"http://inwecrypto.com/newsdetail2?art_id=%ld", (NSInteger)model.dataIdentifier]];
+        KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
         webView.title = model.title;
         webView.isHaveShare = YES;
         [self.navigationController pushViewController:webView animated:YES];

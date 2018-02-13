@@ -68,8 +68,8 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
         button.tag = 200 + i;
         if (!i) {
             button.selected = YES;
-            [button setImage:[UIImage imageNamed:@"xiangmugaikuang_xing"] forState:UIControlStateNormal];
-            [button setImage:[UIImage imageNamed:@"xiangmugaikuang_xing_s"] forState:UIControlStateSelected];
+            [button setImage:[UIImage imageNamed:@"xiangmugaikuang_xing1"] forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"xiangmugaikuang_xing_s1"] forState:UIControlStateSelected];
         } else {
             button.titleLabel.font = BOLDFONT(12);
             [button setTitle:DBHGetStringWithKeyFromTable(self.menuArray[i - 1], nil) forState:UIControlStateNormal];

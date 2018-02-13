@@ -639,7 +639,7 @@ static NetworkStatus _status;
     //设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"application/x-www-form-urlencoded", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
-    [manager.requestSerializer setValue:[[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"] ? @"zh" : @"en" forHTTPHeaderField:@"lang"];
+    [manager.requestSerializer setValue:[[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en" forHTTPHeaderField:@"lang"];
     if ([UserSignData share].user.token.length > 0)
     {
         [manager.requestSerializer setValue:[UserSignData share].user.token forHTTPHeaderField:@"Authorization"];

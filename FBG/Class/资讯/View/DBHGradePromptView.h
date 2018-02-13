@@ -12,6 +12,10 @@ typedef void(^GradeBlock)(NSInteger grade);
 
 @interface DBHGradePromptView : UIView
 
+@property (nonatomic, assign) NSInteger grade;
+
+@property (nonatomic, assign) BOOL canGrade;
+
 /**
  动画显示
  */

@@ -71,10 +71,10 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
  */
 - (void)getCandyBowl {
     WEAKSELF
-    [PPNetworkHelper GET:@"candy_bow?is_scroll" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:@"candy_bow" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         [weakSelf.dataSource removeAllObjects];
         
-        for (NSDictionary *dic in responseCache) {
+        for (NSDictionary *dic in responseCache[@"list"][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
             
             [weakSelf.dataSource addObject:model];
@@ -84,7 +84,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     } success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
         
-        for (NSDictionary *dic in responseObject) {
+        for (NSDictionary *dic in responseObject[@"list"][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
             
             [weakSelf.dataSource addObject:model];

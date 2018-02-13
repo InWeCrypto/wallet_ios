@@ -103,7 +103,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
-    KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"http://inwecrypto.com/newsdetail2?art_id=%ld", (NSInteger)model.dataIdentifier]];
+    KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
     webView.isHaveShare = YES;
     [self.navigationController pushViewController:webView animated:YES];
@@ -311,7 +311,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     if (!_keyboardView) {
         _keyboardView = [[DBHInputView alloc] init];
         _keyboardView.dataSource = @[@{@"value":@"Project Overview", @"isMore":@"1"},
-                                     @{@"value":@"Historical Information", @"isMore":@"0"},
+                                     @{@"value":@"Project Dynamic", @"isMore":@"0"},
                                      @{@"value":@"Project Introduction", @"isMore":@"0"}];
         
         WEAKSELF
@@ -400,6 +400,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                     marketDetailViewController.yourOpinion = DBHGetStringWithKeyFromTable(@"Your Opinion", nil);
                     marketDetailViewController.chatRoomId = [NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectDetailModel.roomId];
                     marketDetailViewController.projectId = [NSString stringWithFormat:@"%ld", (NSInteger)self.projectModel.dataIdentifier];
+                    marketDetailViewController.isMarketFollow = self.projectDetailModel.categoryUser.isMarketFollow ? @"1" : @"0";
+                    marketDetailViewController.max = self.projectDetailModel.categoryUser.marketHige;
+                    marketDetailViewController.min = self.projectDetailModel.categoryUser.marketLost;
                     marketDetailViewController.title = weakSelf.projectDetailModel.unit;
                     [weakSelf.navigationController pushViewController:marketDetailViewController animated:YES];
                     break;

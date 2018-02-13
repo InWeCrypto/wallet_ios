@@ -105,7 +105,7 @@
     PieChartDataSet *dataSet;
     for (NSInteger i = 0; i < _projectDetailModel.categoryStructure.count; i++) {
         DBHProjectDetailInformationModelCategoryStructure *model = _projectDetailModel.categoryStructure[i];
-        PieChartDataEntry *pieChartDataEntry = [[PieChartDataEntry alloc] initWithValue:model.percentage label:model.desc data:[NSString stringWithFormat:@"%ld", i]];
+        PieChartDataEntry *pieChartDataEntry = [[PieChartDataEntry alloc] initWithValue:model.percentage label:[NSString stringWithFormat:@"%ld%%%@%@", (NSInteger)model.percentage, DBHGetStringWithKeyFromTable(@"Used for", nil), model.desc] data:[NSString stringWithFormat:@"%ld", i]];
         
         [values addObject:pieChartDataEntry];
         [pointColors addObject:[UIColor colorWithHexString:[model.colorValue substringFromIndex:1]]];

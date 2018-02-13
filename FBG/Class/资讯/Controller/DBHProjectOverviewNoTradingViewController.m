@@ -111,7 +111,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
             return AUTOLAYOUTSIZE(159);
             break;
         case 1:
-            return AUTOLAYOUTSIZE(215.5);
+            return AUTOLAYOUTSIZE(120);
             break;
         case 2:
             return self.projectDetailModel.categoryStructure.count >= 4 ? AUTOLAYOUTSIZE(56) + AUTOLAYOUTSIZE(30) * self.projectDetailModel.categoryStructure.count : AUTOLAYOUTSIZE(180);
@@ -132,7 +132,11 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 - (void)projectGradeWithGrade:(NSInteger)grade {
     NSDictionary *paramters = @{@"score":@(grade)};
     
+    WEAKSELF
     [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/score", (NSInteger)self.projectDetailModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Submit", nil)] success:^(id responseObject) {
+        weakSelf.projectDetailModel.categoryUser.score = responseObject[@"score"];
+        weakSelf.gradePromptView.canGrade = NO;
+        weakSelf.gradePromptView.grade = weakSelf.projectDetailModel.categoryUser.score.integerValue;
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Submit Success", nil)];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -153,6 +157,13 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setProjectDetailModel:(DBHProjectDetailInformationModelData *)projectDetailModel {
+    _projectDetailModel = projectDetailModel;
+    
+    self.gradePromptView.canGrade = _projectDetailModel.categoryUser.score.integerValue == 0;
+    self.gradePromptView.grade = _projectDetailModel.categoryUser.score.integerValue;
+}
+
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];

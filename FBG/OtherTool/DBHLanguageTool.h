@@ -12,7 +12,9 @@
 
 @interface DBHLanguageTool : NSObject
 
-+(id)sharedInstance;
+@property (nonatomic, copy) NSString *language;
+
++(instancetype)sharedInstance;
 
 /**
  *  返回table中指定的key的值

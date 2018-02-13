@@ -176,6 +176,7 @@
 - (void)getVerificationCode {
     WEAKSELF
     [PPNetworkHelper POST:[NSString stringWithFormat:@"send_code/%@", self.accountTextField.text] baseUrlType:3 parameters:nil hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Get Verification Code", nil)] success:^(id responseObject) {
+        [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"The verification code has been sent to your mailbox", nil)];
         [weakSelf keepTime];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];

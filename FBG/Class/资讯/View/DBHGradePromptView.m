@@ -105,6 +105,10 @@
  确定
  */
 - (void)respondsToCommitButton {
+    if (!self.commitButton.isSelected) {
+        return;
+    }
+    
     NSString *grade = [self.gradeLabel.text substringToIndex:1];
     if ([grade isEqualToString:@"0"]) {
         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please Grade", nil)];
@@ -119,6 +123,10 @@
  评分
  */
 - (void)respondsToStartButton:(UIButton *)startButton {
+    if (!self.canGrade) {
+        return;
+    }
+    
     for (NSInteger i = 0; i < 5; i++) {
         UIButton *button = [self viewWithTag:200 + i];
         button.selected = button.tag <= startButton.tag;
@@ -166,6 +174,25 @@
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setGrade:(NSInteger)grade {
+    _grade = grade;
+    
+    if (!_grade) {
+        return;
+    }
+    
+    for (NSInteger i = 0; i < 5; i++) {
+        UIButton *button = [self viewWithTag:200 + i];
+        button.selected = button.tag - 200 < _grade;
+    }
+    self.gradeLabel.text = [NSString stringWithFormat:@"%ld%@", _grade, DBHGetStringWithKeyFromTable(@"Part", nil)];
+}
+- (void)setCanGrade:(BOOL)canGrade {
+    _canGrade = canGrade;
+    
+    self.commitButton.selected = _canGrade;
+}
+
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
@@ -202,8 +229,9 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _commitButton.titleLabel.font = BOLDFONT(14);
+        [_commitButton setBackgroundImage:[UIImage getImageFromColor:COLORFROM16(0xDADADA, 1) Rect:CGRectMake(0, 0, AUTOLAYOUTSIZE(400), AUTOLAYOUTSIZE(200))] forState:UIControlStateNormal];
+        [_commitButton setBackgroundImage:[UIImage getImageFromColor:COLORFROM16(0xFF841C, 1) Rect:CGRectMake(0, 0, AUTOLAYOUTSIZE(400), AUTOLAYOUTSIZE(200))] forState:UIControlStateSelected];
         [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Confirm", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }

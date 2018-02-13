@@ -107,8 +107,10 @@ static NSString *const kDBHTraderClockTableViewCellIdentifier = @"kDBHTraderCloc
     EMMessage *message = self.dataSource.firstObject;
     
     WEAKSELF
-    [self.conversation loadMessagesStartFromId:message.messageId count:self.currentPage * 5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+    [self.conversation loadMessagesStartFromId:message.messageId count:5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        [weakSelf endRefresh];
         [weakSelf.dataSource insertObjects:aMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, aMessages.count)]];
+        [weakSelf.tableView reloadData];
         [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:aMessages.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }];
 }
@@ -120,6 +122,7 @@ static NSString *const kDBHTraderClockTableViewCellIdentifier = @"kDBHTraderCloc
 - (void)respondsToPersonBarButtonItem {
     DBHFunctionalUnitLookViewController *functionalUnitLookViewController = [[DBHFunctionalUnitLookViewController alloc] init];
     functionalUnitLookViewController.title = self.title;
+    functionalUnitLookViewController.conversation = self.conversation;
     functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
     [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
 }

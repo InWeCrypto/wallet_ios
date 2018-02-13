@@ -55,14 +55,14 @@
     
     EMTextMessageBody *content = (EMTextMessageBody *)_message.body;
     
-    NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)_message.timestamp];
-    self.timeLabel.text = [messageDate formattedTime];
+    self.timeLabel.text = [NSString timeExchangeWithType:@"yyyy-MM-dd hh:mm" timestamp:_message.timestamp];
     
     self.titleLabel.text = _message.ext[@"title"];
     if (content.text.length) {
+        NSString *changeContent = [content.text stringByReplacingOccurrencesOfString:@":date" withString:self.timeLabel.text];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:AUTOLAYOUTSIZE(5)];
-        NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:content.text attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
+        NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:changeContent attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
         self.contentLabel.attributedText = contentAttributedString;
     }
 }

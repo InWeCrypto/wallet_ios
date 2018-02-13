@@ -97,6 +97,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
                 } else {
                     // 历史资讯
                     DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
+                    historicalInformationViewController.projevtId = [NSString stringWithFormat:@"%ld", (NSInteger)weakSelf.projectDetailModel.dataIdentifier];
                     [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                 }
             }];

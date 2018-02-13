@@ -15,7 +15,6 @@ static DBHLanguageTool *sharedModel;
 @interface DBHLanguageTool()
 
 @property (nonatomic, strong) NSBundle *bundle;
-@property (nonatomic, copy) NSString *language;
 
 @end
 

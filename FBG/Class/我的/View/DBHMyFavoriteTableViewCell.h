@@ -41,4 +41,6 @@
  */
 @property (nonatomic, strong) DBHInfomationModelData *articleModel;
 
+@property (nonatomic, strong) EMMessage *message;
+
 @end

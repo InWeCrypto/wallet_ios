@@ -10,6 +10,11 @@
 
 @interface DBHFunctionalUnitLookViewController : DBHBaseViewController
 
+/**
+ 聊天会话
+ */
+@property (nonatomic, strong) EMConversation *conversation;
+
 @property (nonatomic, assign) NSInteger functionalUnitType; // 功能组件类型
 
 @end

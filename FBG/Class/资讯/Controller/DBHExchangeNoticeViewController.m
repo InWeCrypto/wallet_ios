@@ -9,7 +9,6 @@
 #import "DBHExchangeNoticeViewController.h"
 
 #import "DBHFunctionalUnitLookViewController.h"
-#import "DBHWebViewController.h"
 
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHIotificationTableViewCell.h"
@@ -88,10 +87,9 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHExchangeNoticeModelData *model = self.dataSource[indexPath.section];
-    DBHWebViewController *webViewController = [[DBHWebViewController alloc] init];
-    webViewController.title = @"公告";
-    webViewController.htmlString = model.content;
-    [self.navigationController pushViewController:webViewController animated:YES];
+    KKWebView *webView = [[KKWebView alloc] initWithUrl:model.sourceUrl];
+    webView.title = model.desc;
+    [self.navigationController pushViewController:webView animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     DBHExchangeNoticeModelData *model = self.dataSource[section];

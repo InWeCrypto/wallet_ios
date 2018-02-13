@@ -69,8 +69,10 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    EMMessage *message = self.dataSource[indexPath.section];
     DBHNotificationDetailViewController *notificationDetailViewController = [[DBHNotificationDetailViewController alloc] init];
-    notificationDetailViewController.message = self.dataSource[indexPath.section];
+    notificationDetailViewController.title = message.ext[@"title"];
+    notificationDetailViewController.message = message;
     [self.navigationController pushViewController:notificationDetailViewController animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -106,7 +108,7 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
     EMMessage *message = self.dataSource.firstObject;
     
     WEAKSELF
-    [self.conversation loadMessagesStartFromId:message.messageId count:self.currentPage * 5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+    [self.conversation loadMessagesStartFromId:message.messageId count:5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
         [weakSelf endRefresh];
         [weakSelf.dataSource insertObjects:aMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, aMessages.count)]];
         [weakSelf.tableView reloadData];
@@ -121,6 +123,7 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 - (void)respondsToPersonBarButtonItem {
     DBHFunctionalUnitLookViewController *functionalUnitLookViewController = [[DBHFunctionalUnitLookViewController alloc] init];
     functionalUnitLookViewController.title = self.title;
+    functionalUnitLookViewController.conversation = self.conversation;
     functionalUnitLookViewController.functionalUnitType = self.functionalUnitType;
     [self.navigationController pushViewController:functionalUnitLookViewController animated:YES];
 }

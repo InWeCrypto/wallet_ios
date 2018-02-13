@@ -230,6 +230,8 @@
 "Login with password" = "使用密码登录";
 "check" = "检查";
 "Check Failed" = "验证失败";
+"Project Dynamic" = "项目动态";
+"The verification code has been sent to your mailbox" = "验证码已发送您的邮箱";
 
 /*
  我的
@@ -243,6 +245,7 @@
 "Originality" = "原创";
 "Cancel Collection" = "取消收藏";
 "Login Account" = "登录账户";
+"Used for" = "用于";
 
 /*
  资讯
@@ -319,6 +322,7 @@
 "Part" = "分";
 "Please Grade" = "请评分";
 "You want to search for content" = "你想要搜索的内容";
+"Order Details" = "订单详情";
 
 /*
  历史资讯

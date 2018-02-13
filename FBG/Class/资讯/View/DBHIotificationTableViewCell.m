@@ -107,9 +107,11 @@
     self.titleLabel.text = _model.sourceName;
     self.timeLabel.text = _model.updatedAt;
     
+    NSString *content = [self filterHTML:_model.content];
+    content = [content stringByReplacingOccurrencesOfString:@"&nbsp;" withString:@""];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:AUTOLAYOUTSIZE(5)];
-    NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:[self filterHTML:_model.content] attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
+    NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:content attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
     self.contentLabel.attributedText = contentAttributedString;
 }
 - (void)setMessage:(EMMessage *)message {
@@ -121,9 +123,10 @@
     
     self.titleLabel.text = _message.ext[@"title"];
     if (content.text.length) {
+        NSString *changeContent = [content.text stringByReplacingOccurrencesOfString:@":date" withString:self.timeLabel.text];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:AUTOLAYOUTSIZE(5)];
-        NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:content.text attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
+        NSAttributedString *contentAttributedString = [[NSAttributedString alloc] initWithString:changeContent attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
         self.contentLabel.attributedText = contentAttributedString;
     }
 }

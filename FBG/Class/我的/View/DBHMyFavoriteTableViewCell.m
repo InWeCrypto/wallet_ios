@@ -106,6 +106,12 @@
     self.timeLabel.text = _articleModel.createdAt;
     self.originalLabel.hidden = !_articleModel.isSole;
 }
+- (void)setMessage:(EMMessage *)message {
+    _message = message;
+    
+    self.titleLabel.text = _message.ext[@"title"];
+    self.timeLabel.text = [NSString timeExchangeWithType:@"yyyy-MM-dd hh:mm" timestamp:_message.timestamp];
+}
 
 - (UIImageView *)pictureImageView {
     if (!_pictureImageView) {

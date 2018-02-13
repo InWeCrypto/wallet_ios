@@ -88,9 +88,9 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
             [[UserSignData share] storageData:[UserSignData share].user];
         }
         
-        [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:YES];
+        [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count - 3] animated:YES];
         //发送消息
-        [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SurePackupsWordNotfi" object:@(YES) userInfo:nil]];
+//        [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SurePackupsWordNotfi" object:@(YES) userInfo:nil]];
     }
     else
     {
