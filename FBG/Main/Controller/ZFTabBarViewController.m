@@ -50,21 +50,26 @@
     if ([UserSignData share].user.isFirstRegister) {
         [UserSignData share].user.isFirstRegister = NO;
         [[UserSignData share] storageData:[UserSignData share].user];
-        if ([UserSignData share].user.invitationCode.length) {
-            KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
-            webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
-            webView.isHiddenRefresh = NO;
-            UINavigationController *currentNav = (UINavigationController *)self.selectedViewController;
-            [currentNav pushViewController:webView animated:YES];
-        } else {
+//        if ([UserSignData share].user.invitationCode.length) {
+//            KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
+//            webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
+//            webView.isHiddenRefresh = NO;
+//            UINavigationController *currentNav = (UINavigationController *)self.selectedViewController;
+//            [currentNav pushViewController:webView animated:YES];
+//        } else {
             [self getInvitationCode];
-        }
+//        }
     }
 }
 
 #pragma mark ------ Data ------
 - (void)getInvitationCode {
     [PPNetworkHelper GET:@"user/ont_candy_bow" baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
+        NSString *start = [NSString stringWithFormat:@"%@", responseObject[@"candy_bow_stat"]];
+        if ([start isEqualToString:@"0"]) {
+            return ;
+        }
+        
         [UserSignData share].user.invitationCode = [NSString stringWithFormat:@"%@", responseObject[@"code"]];
         [[UserSignData share] storageData:[UserSignData share].user];
         

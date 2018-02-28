@@ -73,7 +73,6 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
  确定
  */
 - (void)respondsToSureBarButtonItem {
-    EMError *error = [[EMClient sharedClient] logout:YES];
     [[DBHLanguageTool sharedInstance] setNewLanguage:self.currentSelectedRow ? EN : CNS];
     [self.navigationController popViewControllerAnimated:YES];
 }

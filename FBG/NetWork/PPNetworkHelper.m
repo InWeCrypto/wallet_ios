@@ -291,9 +291,6 @@ static NetworkStatus _status;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
             }
-            if (![UserSignData share].user.token.length) {
-                return ;
-            }
             failure([responseObject objectForKey:@"msg"]);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)

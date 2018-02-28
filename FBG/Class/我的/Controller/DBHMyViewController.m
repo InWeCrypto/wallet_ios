@@ -94,14 +94,14 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
             switch (indexPath.row) {
                 case 0: {
                     // 邀请码
-                    if ([UserSignData share].user.invitationCode.length) {
-                        KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
-                        webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
-                        webView.isHiddenRefresh = NO;
-                        [self.navigationController pushViewController:webView animated:YES];
-                    } else {
+//                    if ([UserSignData share].user.invitationCode.length) {
+//                        KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
+//                        webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
+//                        webView.isHiddenRefresh = NO;
+//                        [self.navigationController pushViewController:webView animated:YES];
+//                    } else {
                         [self getInvitationCode];
-                    }
+//                    }
                     break;
                 }
                 case 1: {
@@ -161,6 +161,11 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
 - (void)getInvitationCode {
     WEAKSELF
     [PPNetworkHelper GET:@"user/ont_candy_bow" baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
+        NSString *start = [NSString stringWithFormat:@"%@", responseObject[@"candy_bow_stat"]];
+        if ([start isEqualToString:@"0"]) {
+            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
+            return ;
+        }
         [UserSignData share].user.invitationCode = [NSString stringWithFormat:@"%@", responseObject[@"code"]];
         [[UserSignData share] storageData:[UserSignData share].user];
         
