@@ -43,9 +43,11 @@
         [_functionalUnitArray addObject:@"0"];
         [_functionalUnitArray addObject:@"0"];
         [_functionalUnitArray addObject:@"0"];
-//        [_functionalUnitArray addObject:@"0"];
         [_functionalUnitArray addObject:@"0"];
         [_functionalUnitArray addObject:@"0"];
+    }
+    if (_functionalUnitArray.count > 5) {
+        [_functionalUnitArray removeLastObject];
     }
     return _functionalUnitArray;
 }

@@ -78,10 +78,10 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     [self netNotification];
     
     //键盘处理
-//    [self configureBoardManager];
+    //    [self configureBoardManager];
     
     //白色导航
-//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
     if ([APP_WALLETSTATUS isEqualToString:@"HOT"])
     {
@@ -102,10 +102,10 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         [[UserSignData share] storageData:[UserSignData share].user];
         YYCache * dataCache = [YYCache cacheWithName:@"FBGNetworkResponseCache"];
         [dataCache removeAllObjects];
-
+        
         [self goToTabbar];
     }
-
+    
     //友盟统计
     UMConfigInstance.appKey = UM_APP_KEY;
     UMConfigInstance.channelId = @"App Store";
@@ -115,40 +115,40 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     
     //推送
     // APNs注册，获取deviceToken并上报
-//    [self registerAPNS:application];
+    //    [self registerAPNS:application];
     // 初始化SDK
     [self initCloudPush];
     // 监听推送通道打开动作
-//    [self listenerOnChannelOpened];
+    //    [self listenerOnChannelOpened];
     // 监听推送消息到达
-//    [self registerMessageReceive];
+    //    [self registerMessageReceive];
     // 点击通知将App从关闭状态启动时，将通知打开回执上报
     // [CloudPushSDK handleLaunching:launchOptions];(Deprecated from v1.8.1)
-//    [CloudPushSDK sendNotificationAck:launchOptions];
+    //    [CloudPushSDK sendNotificationAck:launchOptions];
     
     // 点击通知将App从关闭状态启动时，将通知打开回执上报
     // [CloudPushSDK handleLaunching:launchOptions];(Deprecated from v1.8.1)
-//    [CloudPushSDK sendNotificationAck:launchOptions];
+    //    [CloudPushSDK sendNotificationAck:launchOptions];
     
     //获取钱包类型
-//    [PPNetworkHelper GET:@"wallet-category" parameters:nil hudString:nil responseCache:^(id responseCache)
-//     {
-//     } success:^(id responseObject)
-//     {
-//     } failure:^(NSString *error)
-//     {
-//     }];
+    //    [PPNetworkHelper GET:@"wallet-category" parameters:nil hudString:nil responseCache:^(id responseCache)
+    //     {
+    //     } success:^(id responseObject)
+    //     {
+    //     } failure:^(NSString *error)
+    //     {
+    //     }];
     
     if ([UserSignData share].user.token.length && [UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone && ([UserSignData share].user.isOpenTouchId || [UserSignData share].user.isOpenFaceId)) {
         [self showThirdLogin];
     }
-
+    
     return YES;
 }
 
 #pragma mark APNs Register
 /**
- *	向APNs注册，获取deviceToken用于推送
+ *    向APNs注册，获取deviceToken用于推送
  */
 - (void)registerAPNS:(UIApplication *)application {
     float systemVersionNum = [[[UIDevice currentDevice] systemVersion] floatValue];
@@ -282,7 +282,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     // 处理iOS 10通知，并上报通知打开回执
     [self handleiOS10Notification:notification];
     // 通知不弹出
-//    completionHandler(UNNotificationPresentationOptionNone);
+    //    completionHandler(UNNotificationPresentationOptionNone);
     
     // 通知弹出，且带有声音、内容和角标
     completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);
@@ -302,8 +302,8 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         //跳转消息页面
         ZFTabBarViewController * tab = (ZFTabBarViewController*) (self.window.rootViewController);
         CDNavigationController * nav = tab.childViewControllers[tab.selectedIndex];
-//        MessageVC * vc = [[MessageVC alloc]init];
-//        [nav pushViewController:vc animated:YES];
+        //        MessageVC * vc = [[MessageVC alloc]init];
+        //        [nav pushViewController:vc animated:YES];
     }
     // 通知dismiss，category创建时传入UNNotificationCategoryOptionCustomDismissAction才可以触发
     if ([userAction isEqualToString:UNNotificationDismissActionIdentifier])
@@ -379,7 +379,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 #pragma mark Receive Message
 /**
- *	@brief	注册推送消息到来监听
+ *    @brief    注册推送消息到来监听
  */
 - (void)registerMessageReceive {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -389,7 +389,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 }
 
 /**
- *	处理到来推送消息
+ *    处理到来推送消息
  *
  */
 - (void)onMessageReceived:(NSNotification *)notification {
@@ -407,7 +407,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     //弹出提示框；
-//    [self presentViewController:alert animated:true completion:nil];
+    //    [self presentViewController:alert animated:true completion:nil];
 }
 
 //判断网络状态
@@ -492,24 +492,24 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     [[EMClient sharedClient] applicationDidEnterBackground:application];
     //后台运行timer
     /*
-    UIApplication*   app = [UIApplication sharedApplication];
-    __block    UIBackgroundTaskIdentifier bgTask;
-    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (bgTask != UIBackgroundTaskInvalid)
-            {
-                bgTask = UIBackgroundTaskInvalid;
-            }
-        });
-    }];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (bgTask != UIBackgroundTaskInvalid)
-            {
-                bgTask = UIBackgroundTaskInvalid;
-            }
-        });
-    });
+     UIApplication*   app = [UIApplication sharedApplication];
+     __block    UIBackgroundTaskIdentifier bgTask;
+     bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+     dispatch_async(dispatch_get_main_queue(), ^{
+     if (bgTask != UIBackgroundTaskInvalid)
+     {
+     bgTask = UIBackgroundTaskInvalid;
+     }
+     });
+     }];
+     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+     dispatch_async(dispatch_get_main_queue(), ^{
+     if (bgTask != UIBackgroundTaskInvalid)
+     {
+     bgTask = UIBackgroundTaskInvalid;
+     }
+     });
+     });
      */
 }
 
@@ -586,7 +586,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
             case EMChatTypeChat: {
                 // 单聊
                 if ([msg.conversationId isEqualToString:@"sys_msg_order"] || [msg.conversationId isEqualToString:@"sys_msg"]) {
-                    [UserSignData share].user.functionalUnitArray[[msg.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = @"0";
+                    [UserSignData share].user.functionalUnitArray[[msg.conversationId isEqualToString:@"sys_msg_order"] ? 3 : 4] = @"0";
                     [[UserSignData share] storageData:[UserSignData share].user];
                 }
                 break;

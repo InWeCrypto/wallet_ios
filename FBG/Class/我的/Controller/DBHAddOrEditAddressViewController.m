@@ -19,6 +19,7 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
 @interface DBHAddOrEditAddressViewController ()<UITableViewDataSource, ScanVCDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIButton *sureButton;
 
 @end
 
@@ -38,11 +39,18 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(self.addressViewControllerType == DBHAddressViewControllerAddType ? @"Submit" : @"Save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToRightBarButtonItem)];
     
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.sureButton];
     
     WEAKSELF
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(weakSelf.view);
         make.center.equalTo(weakSelf.view);
+    }];
+    [self.sureButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(108));
+        make.height.offset(AUTOLAYOUTSIZE(40.5));
+        make.centerX.equalTo(weakSelf.view);
+        make.bottom.offset(- AUTOLAYOUTSIZE(47.5));
     }];
 }
 
@@ -123,6 +131,17 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
 }
 
 #pragma mark ------ Event Responds ------
+- (void)respondsToSureButton {
+    [PPNetworkHelper DELETE:[NSString stringWithFormat:@"contact/%ld", (NSInteger)self.model.listIdentifier] baseUrlType:1 parameters:nil hudString:@"删除中..." success:^(id responseObject)
+     {
+         [LCProgressHUD showSuccess:@"删除成功"];
+         [self.navigationController popViewControllerAnimated:YES];
+         
+     } failure:^(NSString *error)
+     {
+         [LCProgressHUD showFailure:error];
+     }];
+}
 /**
  保存/提交
  */
@@ -175,6 +194,16 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
         [_tableView registerClass:[DBHAddOrEditAddressTableViewCell class] forCellReuseIdentifier:kDBHAddOrEditAddressTableViewCellIdentifier];
     }
     return _tableView;
+}
+- (UIButton *)sureButton {
+    if (!_sureButton) {
+        _sureButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _sureButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _sureButton.titleLabel.font = FONT(14);
+        [_sureButton setTitle:DBHGetStringWithKeyFromTable(@"Delete", nil) forState:UIControlStateNormal];
+        [_sureButton addTarget:self action:@selector(respondsToSureButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _sureButton;
 }
 
 @end

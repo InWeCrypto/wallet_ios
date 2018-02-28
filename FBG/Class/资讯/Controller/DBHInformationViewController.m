@@ -167,20 +167,20 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 [self.navigationController pushViewController:exchangeNoticeViewController animated:YES];
                 break;
             }
-//            case 3: {
-//                // CandyBowl
-//                DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
-//                candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
-//                candyBowlViewController.functionalUnitType = 3;
-//                candyBowlViewController.conversation = self.conversationArray[indexPath.row];
-//                [self.navigationController pushViewController:candyBowlViewController animated:YES];
-//                break;
-//            }
+                //            case 3: {
+                //                // CandyBowl
+                //                DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
+                //                candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
+                //                candyBowlViewController.functionalUnitType = 3;
+                //                candyBowlViewController.conversation = self.conversationArray[indexPath.row];
+                //                [self.navigationController pushViewController:candyBowlViewController animated:YES];
+                //                break;
+                //            }
             case 3: {
                 // 交易提醒
                 DBHTraderClockViewController *traderClockViewController = [[DBHTraderClockViewController alloc] init];
                 traderClockViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
-                traderClockViewController.functionalUnitType = 4;
+                traderClockViewController.functionalUnitType = 3;
                 traderClockViewController.conversation = self.conversationArray[indexPath.row];
                 [self.navigationController pushViewController:traderClockViewController animated:YES];
                 break;
@@ -189,7 +189,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 // 通知
                 DBHNotificationViewController *notificationViewController = [[DBHNotificationViewController alloc] init];
                 notificationViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
-                notificationViewController.functionalUnitType = 5;
+                notificationViewController.functionalUnitType = 4;
                 notificationViewController.conversation = self.conversationArray[indexPath.row];
                 [self.navigationController pushViewController:notificationViewController animated:YES];
                 break;
@@ -279,7 +279,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
             case EMChatTypeChat: {
                 // 单聊
                 if ([msg.conversationId isEqualToString:@"sys_msg_order"] || [msg.conversationId isEqualToString:@"sys_msg"]) {
-                    [UserSignData share].user.functionalUnitArray[[msg.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = @"0";
+                    [UserSignData share].user.functionalUnitArray[[msg.conversationId isEqualToString:@"sys_msg_order"] ? 3 : 4] = @"0";
                     [[UserSignData share] storageData:[UserSignData share].user];
                 }
                 break;
@@ -352,7 +352,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         if (dataArray.count && (!self.informationHeaderView.currentSelectedIndex || self.informationHeaderView.currentSelectedIndex == 1)) {
             [weakSelf getICOData];
         }
-
+        
         [weakSelf.informationHeaderView stopAnimation];
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
@@ -461,20 +461,20 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 if (conversation.latestMessage) {
                     NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)conversation.latestMessage.timestamp];
                     EMTextMessageBody *messageContent = (EMTextMessageBody *)conversation.latestMessage.body;
-                    self.conversationArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = conversation;
-                    self.conversationCacheArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = conversation;
+                    self.conversationArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 3 : 4] = conversation;
+                    self.conversationCacheArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 3 : 4] = conversation;
                     
                     if ([conversation.conversationId isEqualToString:@"sys_msg_order"]) {
-                        self.contentArray[4] = messageContent.text;
+                        self.contentArray[3] = messageContent.text;
                     } else {
                         NSString *time = [NSString timeExchangeWithType:@"yyyy-MM-dd hh:mm" timestamp:conversation.latestMessage.timestamp];
                         
                         if (messageContent.text.length) {
-                            self.contentArray[5] = [messageContent.text stringByReplacingOccurrencesOfString:@":date" withString:time];
+                            self.contentArray[4] = [messageContent.text stringByReplacingOccurrencesOfString:@":date" withString:time];
                         }
                     }
-                    self.timeArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = [messageDate formattedTime];
-                    self.noReadArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 4 : 5] = [NSString stringWithFormat:@"%d", conversation.unreadMessagesCount];
+                    self.timeArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 3 : 4] = [messageDate formattedTime];
+                    self.noReadArray[[conversation.conversationId isEqualToString:@"sys_msg_order"] ? 3 : 4] = [NSString stringWithFormat:@"%d", conversation.unreadMessagesCount];
                 }
             }
         }
@@ -494,7 +494,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
             count += 1;
         }
     }
-
+    
     [self getProjectList];
 }
 
@@ -595,14 +595,14 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                     [weakSelf.navigationController pushViewController:exchangeNoticeViewController animated:YES];
                     break;
                 }
-//                case 3: {
-//                    // CandyBowl
-//                    DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
-//                    candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
-//                    candyBowlViewController.functionalUnitType = 3;
-//                    [weakSelf.navigationController pushViewController:candyBowlViewController animated:YES];
-//                    break;
-//                }
+                    //                case 3: {
+                    //                    // CandyBowl
+                    //                    DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
+                    //                    candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
+                    //                    candyBowlViewController.functionalUnitType = 3;
+                    //                    [weakSelf.navigationController pushViewController:candyBowlViewController animated:YES];
+                    //                    break;
+                    //                }
                 case 3: {
                     // 交易提醒
                     DBHTraderClockViewController *traderClockViewController = [[DBHTraderClockViewController alloc] init];
@@ -742,7 +742,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         _titleArray = @[@"InWe Hotspot",
                         @"Trading View",
                         @"Exchange",
-//                        @"Candybowl",
+                        //                        @"Candybowl",
                         @"Trading Reminder",
                         @"Notice"];
     }
@@ -754,7 +754,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         [_conversationArray addObject:@""];
         [_conversationArray addObject:@""];
         [_conversationArray addObject:@""];
-//        [_conversationArray addObject:@""];
+        //        [_conversationArray addObject:@""];
         [_conversationArray addObject:@""];
         [_conversationArray addObject:@""];
     }
@@ -766,7 +766,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         [_conversationCacheArray addObject:@""];
         [_conversationCacheArray addObject:@""];
         [_conversationCacheArray addObject:@""];
-//        [_conversationCacheArray addObject:@""];
+        //        [_conversationCacheArray addObject:@""];
         [_conversationCacheArray addObject:@""];
         [_conversationCacheArray addObject:@""];
     }
@@ -782,7 +782,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     if (!_timeArray) {
         _timeArray = [NSMutableArray array];
         [_timeArray addObject:@""];
-//        [_timeArray addObject:@""];
+        //        [_timeArray addObject:@""];
         [_timeArray addObject:@""];
         [_timeArray addObject:@""];
         [_timeArray addObject:@""];
@@ -794,7 +794,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     if (!_noReadArray) {
         _noReadArray = [NSMutableArray array];
         [_noReadArray addObject:@"0"];
-//        [_noReadArray addObject:@"0"];
+        //        [_noReadArray addObject:@"0"];
         [_noReadArray addObject:@"0"];
         [_noReadArray addObject:@"0"];
         [_noReadArray addObject:@"0"];

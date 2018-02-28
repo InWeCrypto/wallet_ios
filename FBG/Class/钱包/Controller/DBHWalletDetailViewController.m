@@ -165,7 +165,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             return ;
         }
         [weakSelf.dataSource removeAllObjects];
-
+        
         NSString *sum = @"0.00";
         NSDictionary *record = responseCache[@"record"];
         NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
@@ -180,7 +180,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         neoModel.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:neoNumber secend:neoPriceForUsd value:2];
         neoModel.flag = @"NEO";
         sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:[UserSignData share].user.walletUnitType == 1 ? neoModel.priceCny : neoModel.priceUsd value:2];
-
+        
         NSArray *gny = record[@"gnt"];
         NSDictionary *gas = gny.firstObject;
         NSString *gasPriceForCny = gas[@"cap"][@"price_cny"];
@@ -198,10 +198,10 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         gasModel.noExtractbalance = gas[@"unavailable"];
         gasModel.dataIdentifier = gas[@"cap"][@"id"];
         sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:[UserSignData share].user.walletUnitType == 1 ? gasModel.priceCny : gasModel.priceUsd value:2];
-
+        
         [self.dataSource addObject:neoModel];
         [self.dataSource addObject:gasModel];
-
+        
         for (NSDictionary * dic in [responseCache objectForKey:@"list"])
         {
             DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
@@ -222,15 +222,17 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:priceForUsd value:2];
             //                model.gas = [[[dic objectForKey:@"gnt_category"] objectForKey:@"gas"] intValue];
             [weakSelf.dataSource addObject:model];
+            
+            sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:[UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd value:2];
         }
-
+        
         weakSelf.titleView.totalAsset = sum;
         weakSelf.headerView.asset = sum;
         [weakSelf.tableView reloadData];
     } success:^(id responseObject) {
         [weakSelf endRefresh];
         [weakSelf.dataSource removeAllObjects];
-
+        
         NSString *sum = @"0.00";
         NSDictionary *record = responseObject[@"record"];
         NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
@@ -245,7 +247,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         neoModel.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:neoNumber secend:neoPriceForUsd value:2];
         neoModel.flag = @"NEO";
         sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:[UserSignData share].user.walletUnitType == 1 ? neoModel.priceCny : neoModel.priceUsd value:2];
-
+        
         NSArray *gny = record[@"gnt"];
         NSDictionary *gas = gny.firstObject;
         NSString *gasPriceForCny = gas[@"cap"][@"price_cny"];
@@ -263,10 +265,10 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         gasModel.noExtractbalance = gas[@"unavailable"];
         gasModel.dataIdentifier = gas[@"cap"][@"id"];
         sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:[UserSignData share].user.walletUnitType == 1 ? gasModel.priceCny : gasModel.priceUsd value:2];
-
+        
         [self.dataSource addObject:neoModel];
         [self.dataSource addObject:gasModel];
-
+        
         for (NSDictionary * dic in [responseObject objectForKey:@"list"])
         {
             DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
@@ -276,19 +278,22 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             model.address = [[dic objectForKey:@"gnt_category"] objectForKey:@"address"];
             //                model.symbol = [[[dic objectForKey:@"gnt_category"] objectForKey:@"cap"] objectForKey:@"symbol"];
             model.flag = [dic objectForKey:@"name"];
-
+            
             NSData *data = [weakSelf convertHexStrToData:dic[@"balance"]];
             NSString *decimals = dic[@"decimals"];
             NSString *priceForCny = dic[@"gnt_category"][@"cap"][@"price_cny"];
             NSString *priceForUsd = dic[@"gnt_category"][@"cap"][@"price_usd"];
             model.decimals = decimals;
-            model.balance = [NSString stringWithFormat:@"%lf", [self getBalanceWithByte:(Byte *)data.bytes length:data.length] / pow(10, decimals.doubleValue)];
+            model.balance =
+            [NSString stringWithFormat:@"%lf", [self getBalanceWithByte:(Byte *)data.bytes length:data.length] / pow(10, decimals.doubleValue)];
             model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:priceForCny value:2];
             model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:priceForUsd value:2];
             //                model.gas = [[[dic objectForKey:@"gnt_category"] objectForKey:@"gas"] intValue];
             [weakSelf.dataSource addObject:model];
+            
+            sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:[UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd value:2];
         }
-
+        
         weakSelf.titleView.totalAsset = sum;
         weakSelf.headerView.asset = sum;
         [weakSelf.tableView reloadData];
