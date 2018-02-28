@@ -137,6 +137,9 @@ static NetworkStatus _status;
             NSString *code = responseObject[@"code"];
             if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
             {
+                if (![UserSignData share].user.token.length) {
+                    return ;
+                }
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
@@ -201,6 +204,9 @@ static NetworkStatus _status;
             NSString *code = responseObject[@"code"];
             if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
             {
+                if (![UserSignData share].user.token.length) {
+                    return ;
+                }
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
@@ -275,6 +281,12 @@ static NetworkStatus _status;
             NSString *code = responseObject[@"code"];
             if (code.integerValue == 4009|| code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
             {
+                if (![UserSignData share].user.token.length) {
+                    return ;
+                }
+                if (![UserSignData share].user.token.length) {
+                    return ;
+                }
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
@@ -409,6 +421,9 @@ static NetworkStatus _status;
             NSString *code = responseObject[@"code"];
             if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
             {
+                if (![UserSignData share].user.token.length) {
+                    return ;
+                }
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];

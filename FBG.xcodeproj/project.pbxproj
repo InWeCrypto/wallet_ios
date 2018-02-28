@@ -4004,7 +4004,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: 18280053620@163.com (Z4WT5TBJ76)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = L44XCS63SL;
@@ -4051,8 +4051,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "19c84ab6-d5b4-42aa-bd8e-a023f4a8cb4f";
-				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
+				PROVISIONING_PROFILE = "0e0fa446-733b-4847-9926-ef94ad736a26";
+				PROVISIONING_PROFILE_SPECIFIER = ios_distribution1;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -4069,7 +4069,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen Station and friends information technology co., LTD (A586DWSV4P)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = L44XCS63SL;
@@ -4116,8 +4116,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.InWeCrypto.wallets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "19c84ab6-d5b4-42aa-bd8e-a023f4a8cb4f";
-				PROVISIONING_PROFILE_SPECIFIER = ios_development_provisioning;
+				PROVISIONING_PROFILE = "0e0fa446-733b-4847-9926-ef94ad736a26";
+				PROVISIONING_PROFILE_SPECIFIER = ios_distribution1;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
