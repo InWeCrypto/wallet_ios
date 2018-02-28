@@ -290,7 +290,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:msg.conversationId error:&error];
                 if (!error) {
                     NSInteger index = [self.titleGroupNameArray indexOfObject:[group.subject substringToIndex:group.subject.length - 3]];
-                    if (index < 0 || index > 5) {
+                    if (index < 0 || index > 4) {
                         return;
                     }
                     if ([[UserSignData share].user.functionalUnitArray[index] isEqualToString:@"1"]) {
@@ -607,7 +607,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                     // 交易提醒
                     DBHTraderClockViewController *traderClockViewController = [[DBHTraderClockViewController alloc] init];
                     traderClockViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
-                    traderClockViewController.functionalUnitType = 4;
+                    traderClockViewController.functionalUnitType = 3;
                     traderClockViewController.conversation = self.conversationCacheArray[4];
                     [weakSelf.navigationController pushViewController:traderClockViewController animated:YES];
                     break;
@@ -616,7 +616,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                     // 通知
                     DBHNotificationViewController *notificationViewController = [[DBHNotificationViewController alloc] init];
                     notificationViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
-                    notificationViewController.functionalUnitType = 5;
+                    notificationViewController.functionalUnitType = 4;
                     notificationViewController.conversation = self.conversationCacheArray.lastObject;
                     [weakSelf.navigationController pushViewController:notificationViewController animated:YES];
                     break;
