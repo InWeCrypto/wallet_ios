@@ -1,0 +1,404 @@
+/* 
+  Localizable.strings
+  FBG
+
+  Created by mac on 2017/7/28.
+  Copyright © 2017年 ButtonRoot. All rights reserved.
+*/
+
+//中文
+
+"english" = "chainese";
+
+/*
+ 导航
+ */
+"Property" = "资产";
+"Wallet" = "钱包";
+"Market" = "行情";
+"News" = "资讯";
+"Custom" = "定制";
+
+/*
+ 通用
+ */
+"Log in" = "登录";
+"Hot Wallet" = "热钱包";
+"Cold Wallet" = "冷钱包";
+"Confirm" = "确定";
+"Cancel" = "取消";
+"Please input a password" = "请输入密码";
+
+"Scan QR Code" = "扫一扫";
+"No Camera Privileges" = "没有相机权限";
+"Please go to settings - Privacy - camera for sweeping authorization" = "请去设置-隐私-相机中对扫一扫授权";
+"Well" = "好的";
+"The viewfinder frame is aligned with the two-dimensional code and automatically scans" = "将取景框对准二维码，即可自动扫描";
+"Flashlight" = "手电";
+"Scan Result" = "扫描结果";
+"Only FBG related information can be scanned" = "只能扫描FBG相关信息";
+
+/*
+ 钱包
+ */
+"Total Assets" = "总资产";
+"Add Wallet" = "添加钱包";
+"Scan" = "  扫一扫  ";
+"Import Wallet" = " 导入钱包";
+"Unbackup" = "未备份";
+"Observe" = "观察";
+
+"ETH Wallet" = "ETH 钱包";
+"BTC Wallet" = "ETH 钱包";
+"Token Wallet" = "代币钱包";
+"Add New Wallet" = "添加新钱包";
+"Wallet Name" = "钱包名称";
+"Password Setting" = "设定密码";
+"Repeat Password" = "重复输入密码";
+"Case letters and numbers of not less than 8 digits are required" = "需包含不少于8位数的大小写字母及数字";
+"Confirm Add" = "确认添加";
+"Add Success" = "添加成功";
+"Please enter the wallet in time and backup the seed to ensure the safety of the wallet. Once the seed is backed up, it will disappear on the APP. It should be kept in mind, otherwise the wallet can not be retrieved" = "请及时进入钱包并备份助记词保障钱包的安全，助记词一经备份则会在APP上消失，需要牢记，否则钱包无法找回";
+
+
+"Mnemonic" = "助记词";
+"Private Key" = "私匙";
+"Watch1" = "查看";
+"Watch2" = "观察";
+"Seed" = "种子";
+
+"Add KeyStore" = "添加KeyStore";
+"Copy and paste the content of the keystore file, or using the scanner at the right comer for the QR code" = "复制粘贴keystore文件内容，也可通过右上角扫描二维码，将信息录入";
+"Add Security Code" = "添加助记词";
+"Please use space to separate the mnemonic words" = "请输入助记词，按空格分隔";
+"Add Plaintext Private Key" = "添加明文私钥";
+"Please input your private key" = "请输入明文私钥";
+"Add Watch Wallet" = "添加观察钱包";
+"Watch Wallet needs your wallet address only,serving as a way to manage and trade as a regular account, For security reasons, Cold Wallets among the others are recommended for large amount of assets." = "观察钱包只需要导入钱包地址即可，可进行日常的账户管理以及交易。大额资产建议使用冷钱包或其他途径管理，避免泄露被盗";
+"Add Seed" = "添加种子";
+"Please enter seeds, separated by spaces" = "请输入种子，按空格分隔";
+"Begin Import" = "开始导入";
+
+"My Property" = "我的资产";
+"Wallet Details" = "钱包详情";
+"Wallet Address" = "钱包地址";
+"Transfer" = "转账";
+"Receivables" = "收款";
+"Transaction Record" = "交易记录";
+"All Assets" = "全部资产";
+"Backup Mnemonic" = "备份助记词";
+"Backup Keystore" = "备份keystore";
+"Delete Wallet" = "删除钱包";
+"Delete" = "删除";
+"Top" = "置顶";
+"Repeat enter security code to verify the correctness of the wallet security code" = "重复输入助记词，确认钱包助记词的正确性";
+"Backup security code and delete records" = "备份助记词 并删除记录";
+"Please keep in mind the following account security code, which is the effective way to retrieve the wallet, the wallet is once forgot to be able to retrieve account failure, please remember the security code and copied down, no longer appear this operation is not reversible and backup" = "请牢记下面的账户助记词，这是找回钱包的有效方式，一旦忘记则钱包无法找回，账户失效 ，此助记词请记好并抄录下来，此操作不可逆且备份后不会再出现";
+"I remember" = "我记好了";
+"You can't retrieve your wallet after you delete it. Please be careful" = "删除后无法找回钱包，请慎重";
+"Look Private Key" = "查看私钥";
+"Extract" = "提取";
+
+"Transfer wallet address" = "转账钱包地址";
+"Please enter a transfer address" = "请输入转账地址";
+"Transfer amount" = "转账金额";
+"GAS Cost" = "GAS费用";
+"Slow" = "慢";
+"Fast" = "快";
+"Memo" = "备注";
+"Please input remarks" = "请输入备注";
+
+"Transfer Confirmation" = "转账确认";
+"Additional service charge:" = "另附手续费:";
+"Order number:" = "订单号:";
+"Transfer Account" = "转 账";
+
+"Edit amount" = "编辑金额";
+"Copy collection address" = "复制收款地址";
+
+"Receipt Confirmation" = "收款确认";
+
+"Collection Details" = "收款详情";
+"Transfer Details" = "转账详情";
+"Time of Transaction" = "交易时间";
+"Payment date" = "到账时间";
+
+"Add Token" = "添加代币";
+"All tokens" = "全部代币";
+"Confirm" = "完成";
+"Processing..." = "确认中";
+"Successful Transaction" = "交易成功";
+"Failed Transaction" = "交易失败";
+"Packaging..." = "正在打包";
+"Confirmed" = "已经确认";
+
+/*
+ 行情
+ */
+"Add Quotes" = "添加行情";
+"Edit Quotes" = "编辑行情";
+"Add" = "添加";
+"Remind" = "提醒";
+"Edit" = "编辑";
+"Market Detail" = "行情详情";
+
+/*
+ 发现
+ */
+"Home page" = "首页";
+"All the information" = "所有资讯";
+"Business Project" = "项目精品";
+"Bonbonniere" = "糖果盒";
+
+/*
+ 钱包
+ */
+"Manager Wallets" = "钱包管理";
+"Add Wallets" = "新增钱包";
+"Create Wallet" = "创建钱包";
+"Start Import" = "导入";
+"Import Success" = "导入成功";
+"Keystore" = "Keystore";
+"Input Password" = "输入密码";
+"Confirm Password" = "确认密码";
+"Select Wallet Type" = "选择钱包类型";
+"Asset" = "资产";
+"Join" = "加入";
+"Available" = "可提取";
+"Claim" = "提取";
+"Total" = "全部提取";
+"Apply" = "申请提取";
+"Claim Gas Limit" = "最高可提取Gas";
+"Wallet QR Code" = "钱包二维码";
+"Add Nep-5 asset" = "添加NEP-5资产";
+"Claim" = "提取Gas";
+"Transactions Records" = "最近交易记录";
+"Amount" = "转账数量";
+"To:" = "收款钱包地址";
+"From:" = "付款钱包地址";
+"（Free handling charge under 10Gas）" = "（10Gas以下免收手续费）";
+"Intelligent Contract Address" = "智能合约地址";
+"Transaction Fee" = "交易手续费";
+"Token Sale Confirmation" = "Token Sale 确认";
+"Fees" = "手续费";
+"Original Fees" = "原手续费";
+"Total Balance" = "总资产";
+"Wallet Lists" = "钱包查看";
+"Amount Available" = "可用数量";
+"Please select a token" = "请选择一种代币";
+"Transform Wallet" = "转化钱包";
+"Transaction Details" = "交易详情";
+"Can Extracted" = "可提取";
+"Unfreeze" = "不可提取";
+"In gas extraction, Please be patient" = "gas解冻中，请耐心等待";
+"In the validation..." = "验证中...";
+"Coming Soon" = "敬请期待";
+"The current wallet GAS balance is insufficient and cannot be submitted" = "当前钱包GAS余额不足，无法提交";
+"Copy success, you can send it to friends" = "复制成功，可以发给朋友们了";
+"Transaction Number" = "交易单号";
+"Enter The Wallet And Start Backup" = "进入钱包开始备份";
+
+/*
+ 登录注册
+ */
+"Profile" = "我的";
+"Hello," = "嗨,";
+"Welcome Back!" = "欢迎回来!";
+"Email" = "邮箱";
+"Password" = "密码";
+"Login Failed" = "登录失败";
+"Forget password？" = "忘记密码？";
+"Join InWeCrypto" = "进入InWeCrypto";
+"Sign Up" = "注册";
+"Please input a email" = "请输入邮箱";
+"Password Update Success" = "密码修改成功";
+"Please enter verification code" = "请输入验证码";
+"Please input your old password" = "请输入旧密码";
+"Old Password" = "旧密码";
+"Get" = "获取验证码";
+"Confirm Password" = "确认输入密码";
+"Please enter your password again" = "请再次输入密码";
+"Sign Up" = "注册";
+"'Sign up' constitutes your acceptance and agreement to be bound by" = "注册即表示同意";
+"And" = "与";
+"《the Terms of Service》" = "《服务协议》";
+"《the Privacy Policy》" = "《隐私条款》";
+"Retrieves" = "重新获取";
+"The two passwords differ" = "两次密码不一致";
+"New Password" = "新密码";
+"Password reset successful" = "密码重置成功";
+"Forget Password" = "忘记密码";
+"Use" = "开启";
+"Quick Unlock" = "进行快捷登录";
+"Use" = "现在开启";
+"No Now" = "暂不开启";
+"use password to sign in" = "使用密码登录";
+"check" = "检查";
+"Check Failed" = "验证失败";
+"The verification code has been sent to your mailbox" = "验证码已发送您的邮箱";
+"1 hour" = "1小时";
+"1 Day" = "天";
+"1 Week" = "周";
+
+/*
+ 我的
+ */
+"Invitation Code" = "邀请码";
+"Book of Assets" = "资产账本";
+"Contacts" = "通讯录";
+"My Reserves" = "我的收藏";
+"Reserves" = "收藏";
+"Reserves Success" = "收藏成功";
+"Look Project" = "查找项目";
+"My notifications" = "我的行情提醒";
+"Settings" = "设置";
+"About Us" = "关于我们";
+"Originality" = "原创";
+"Cancel Collection" = "取消收藏";
+"My account" = "登录账户";
+"Used for" = "用于";
+"Wallet 1" = "钱包1";
+"You have no wallet" = "您暂无钱包";
+"Current version：1.0.0" = "当前版本：1.0.0";
+"Service Policy" = "服务协议";
+"Privacy Policy" = "隐私条款";
+"Open Source Agreement" = "开源协议";
+"Development Team" = "开发团队";
+
+/*
+ 资讯
+ */
+"InWe Hotspot" = "InWe热点";
+"Trading View" = "交易观点";
+"Exchange" = "交易所公告";
+"Candybowl" = "糖果盒";
+"Trading Reminder" = "交易提醒";
+"Notice" = "通知";
+"Trading" = "交易中";
+"Active" = "正在进行";
+"Upcoming" = "即将开始";
+"Ended" = "已结束";
+"Payment" = "收付款";
+"Please select a wallet" = "请选择一个钱包";
+
+/*
+ 交易所公告
+ */
+"Your Opinion" = "你的观点";
+"Collection Address" = "收款地址";
+"Transfer Address" = "转账地址";
+"Transfer Wallet" = "转账钱包";
+
+/*
+ 通知
+ */
+"Details" = "详情";
+
+/*
+ 项目主页
+ */
+"Overview" = "项目全览";
+"Markets" = "实时行情";
+"Exchanges" = "交易市场";
+"Project" = "项目";
+"Overview" = "项目概况";
+"Follow-up" = "项目动态";
+"History" = "历史资讯";
+"Project Information" = "项目资讯";
+"Introduction" = "项目介绍";
+"Community" = "项目社区";
+"Rating" = "评分";
+"Rating" = "项目评分";
+"Status" = "状态";
+"Offical website" = "项目官网";
+"Receive Follow-up Updates" = "实时资讯推送";
+"Sticky on Top" = "项目置顶";
+"Has Score" = "已评分";
+"Not Score" = "未评分";
+"Explore" = "浏览器";
+"Token Holder" = "令牌持有人";
+"Volume" = "量";
+"" = "分";
+"Rank" = "关注热度";
+"Rating" = "用户评分";
+"ICO Distribution" = "ICO 结构";
+"No CandyBowl" = "暂无空投";
+"Related Information" = "相关信息";
+"The project has no chat room" = "该项目暂无聊天室";
+"No Data" = "暂无数据";
+"Reminder" = "提醒设置";
+"After setting the reminder, the system will push notifications at the Above/Below value of the quotation" = "设置提醒后，系统将于行情价格的最高值/最低值进行推送提醒";
+"Above" = "最高值";
+"Below" = "最低值";
+"Current Price" = "当前价格";
+"The highest value should be greater than the minimum" = "最高值应大于最低值";
+"Set Success" = "设置成功";
+"Rank" = "关注热度";
+"Market Cap" = "市值";
+"Circulating Supply" = "流通量";
+"Total Supply" = "总量";
+"ICO Price" = "ICO价格";
+"Please Rating" = "请评分";
+"You want to search for content" = "你想要搜索的内容";
+"Order Details" = "订单详情";
+"Change" = "24小时涨跌";
+"High" = "24小时最高价";
+"Volume" = "24小时成交额";
+"Low" = "24小时最低价";
+"Detail" = "详情";
+
+/*
+ 历史资讯
+ */
+"All" = "全部";
+"Technology Tracking" = "技术追踪";
+"Road Map And Completion" = "路线图及完成情况";
+"Team And Consultant" = "团队及顾问";
+"Cooperation And Investors" = "合作及投资人";
+"Media Commentary" = "媒体评论";
+"Community Dynamic" = "社区动态";
+
+/*
+ 个人设置
+ */
+"Personal Setting" = "个人设置";
+"Profile photo" = "头像";
+"Name" = "昵称";
+"Please enter your nickname" = "请输入您的昵称";
+"Please enter a nickname of 2~12 non-special characters" = "请输入2~12位非特殊字符";
+"Account" = "账号";
+"Change Password" = "修改密码";
+"Change Success" = "修改成功";
+"Setting your name" = "设置昵称";
+"Save" = "保存";
+"Exit" = "退出登录";
+"Exit Success" = "退出登录成功";
+"Exit Failed" = "退出登录失败";
+
+/*
+ 修改密码
+ */
+"Email verification code" = "邮箱验证码";
+"Verification code" = "验证码";
+
+/*
+ 通讯录
+ */
+"Add Contact" = "添加联系人";
+"Edit Contact" = "编辑联系人";
+"Address" = "地址";
+"Submit" = "提交";
+"Submit Success" = "提交成功";
+
+/*
+ 设置
+ */
+"Currency Unit" = "货币单位";
+"CNY" = "人民币";
+"USD" = "美元";
+"Network Settings" = "网络切换";
+"Languages" = "语言设置";
+"MainNet" = "正式网络";
+"TestNet" = "测试网络";
+"简体中文" = "简体中文";
+"English(U.S.)" = "英文";
