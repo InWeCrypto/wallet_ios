@@ -114,7 +114,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         }
         case 2: {
             DBHPersonalSettingForSwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier forIndexPath:indexPath];
-            cell.title = @"Project Stick";
+            cell.title = @"Sticky on Top";
             cell.isStick = self.projectDetailModel.categoryUser.isTop;
             
             WEAKSELF

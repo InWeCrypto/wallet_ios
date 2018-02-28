@@ -135,7 +135,7 @@
     if (!_marketRankingLabel) {
         _marketRankingLabel = [[UILabel alloc] init];
         _marketRankingLabel.font = FONT(13);
-        _marketRankingLabel.text = DBHGetStringWithKeyFromTable(@"Market Ranking", nil);
+        _marketRankingLabel.text = DBHGetStringWithKeyFromTable(@"Rank", nil);
         _marketRankingLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _marketRankingLabel;
@@ -152,7 +152,7 @@
     if (!_marketLabel) {
         _marketLabel = [[UILabel alloc] init];
         _marketLabel.font = FONT(13);
-        _marketLabel.text = DBHGetStringWithKeyFromTable(@"Market", nil);
+        _marketLabel.text = DBHGetStringWithKeyFromTable(@"Market Cap", nil);
         _marketLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _marketLabel;
@@ -169,7 +169,7 @@
     if (!_turnoverLabel) {
         _turnoverLabel = [[UILabel alloc] init];
         _turnoverLabel.font = FONT(13);
-        _turnoverLabel.text = DBHGetStringWithKeyFromTable(@"Turnover", nil);
+        _turnoverLabel.text = DBHGetStringWithKeyFromTable(@"Circulating Supply", nil);
         _turnoverLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _turnoverLabel;
@@ -186,7 +186,7 @@
     if (!_grossLabel) {
         _grossLabel = [[UILabel alloc] init];
         _grossLabel.font = FONT(13);
-        _grossLabel.text = DBHGetStringWithKeyFromTable(@"Gross", nil);
+        _grossLabel.text = DBHGetStringWithKeyFromTable(@"Total Supply", nil);
         _grossLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _grossLabel;

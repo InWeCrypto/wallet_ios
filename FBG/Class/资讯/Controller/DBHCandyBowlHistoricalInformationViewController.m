@@ -8,6 +8,8 @@
 
 #import "DBHCandyBowlHistoricalInformationViewController.h"
 
+#import "DBHCandyBowlDetailViewController.h"
+
 #import "DBHMyFavoriteTableViewCell.h"
 
 #import "DBHCandyBowlDataModels.h"
@@ -28,7 +30,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Historical Information", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"History", nil);
     
     [self setUI];
 }
@@ -55,6 +57,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHMyFavoriteTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyFavoriteTableViewCellIdentifier forIndexPath:indexPath];
+    cell.isNoImage = YES;
     cell.candyBowlModel = self.dataSource[indexPath.row];
     
     return cell;
@@ -62,7 +65,9 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHCandyBowlDetailViewController *candyBowlDetailViewController = [[DBHCandyBowlDetailViewController alloc] init];
+    candyBowlDetailViewController.model = self.dataSource[indexPath.row];
+    [self.navigationController pushViewController:candyBowlDetailViewController animated:YES];
 }
 
 #pragma mark ------ Data ------

@@ -55,12 +55,12 @@
 - (void)setTitle:(NSString *)title {
     _title = title;
     
-    self.valueLabel.hidden = ![_title isEqualToString:DBHGetStringWithKeyFromTable(@"Account Number", nil)] && ![_title isEqualToString:DBHGetStringWithKeyFromTable(@"Nickname", nil)];
-    self.moreImageView.hidden = [_title isEqualToString:DBHGetStringWithKeyFromTable(@"Account Number", nil)];
-    self.valueLabel.textColor = [_title isEqualToString:DBHGetStringWithKeyFromTable(@"Account Number", nil)] ? COLORFROM16(0xB4B4B4, 1) : COLORFROM16(0x333333, 1);
+    self.valueLabel.hidden = ![_title isEqualToString:DBHGetStringWithKeyFromTable(@"Account", nil)] && ![_title isEqualToString:DBHGetStringWithKeyFromTable(@"Name", nil)];
+    self.moreImageView.hidden = [_title isEqualToString:DBHGetStringWithKeyFromTable(@"Account", nil)];
+    self.valueLabel.textColor = [_title isEqualToString:DBHGetStringWithKeyFromTable(@"Account", nil)] ? COLORFROM16(0xB4B4B4, 1) : COLORFROM16(0x333333, 1);
     
     WEAKSELF
-    if ([_title isEqualToString:DBHGetStringWithKeyFromTable(@"Account Number", nil)]) {
+    if ([_title isEqualToString:DBHGetStringWithKeyFromTable(@"Account", nil)]) {
         [self.valueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.offset(- AUTOLAYOUTSIZE(15));
             make.centerY.equalTo(weakSelf.contentView);

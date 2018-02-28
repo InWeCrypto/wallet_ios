@@ -140,6 +140,7 @@
         make.top.equalTo(weakSelf.stateLabel.mas_bottom);
     }];
     [self.projectSkypeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(AUTOLAYOUTSIZE(60));
         make.left.equalTo(weakSelf.iconBackView);
         make.height.equalTo(weakSelf.projectGradeLabel);
         make.top.equalTo(weakSelf.secondLineView.mas_bottom);
@@ -219,7 +220,7 @@
     self.nameLabel.text = [NSString stringWithFormat:@"%@（%@）", _projectDetailModel.unit, _projectDetailModel.name];
     self.contentLabel.text = _projectDetailModel.industry;
     self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
-    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf分", _projectDetailModel.categoryScore.value/*, DBHGetStringWithKeyFromTable(_projectDetailModel.categoryUser.score.floatValue ? @"Has Score" : @"Not Score", nil)*/];
+    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf", _projectDetailModel.categoryScore.value/*, DBHGetStringWithKeyFromTable(_projectDetailModel.categoryUser.score.floatValue ? @"Has Score" : @"Not Score", nil)*/];
     self.stateValueLabel.text = DBHGetStringWithKeyFromTable(self.menuArray[(NSInteger)_projectDetailModel.type - 1], nil);
     self.projectSkypeValueLabel.text = _projectDetailModel.website;
 }
@@ -266,7 +267,7 @@
     if (!_projectGradeLabel) {
         _projectGradeLabel = [[UILabel alloc] init];
         _projectGradeLabel.font = FONT(13);
-        _projectGradeLabel.text = DBHGetStringWithKeyFromTable(@"Project Grade", nil);
+        _projectGradeLabel.text = DBHGetStringWithKeyFromTable(@"Rating", nil);
         _projectGradeLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _projectGradeLabel;
@@ -296,7 +297,7 @@
     if (!_stateLabel) {
         _stateLabel = [[UILabel alloc] init];
         _stateLabel.font = FONT(13);
-        _stateLabel.text = DBHGetStringWithKeyFromTable(@"State", nil);
+        _stateLabel.text = DBHGetStringWithKeyFromTable(@"Status", nil);
         _stateLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _stateLabel;
@@ -320,7 +321,7 @@
     if (!_projectSkypeLabel) {
         _projectSkypeLabel = [[UILabel alloc] init];
         _projectSkypeLabel.font = FONT(13);
-        _projectSkypeLabel.text = DBHGetStringWithKeyFromTable(@"Project Skype", nil);
+        _projectSkypeLabel.text = DBHGetStringWithKeyFromTable(@"Offical website", nil);
         _projectSkypeLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _projectSkypeLabel;
@@ -357,7 +358,7 @@
     if (!_historicalInformationLabel) {
         _historicalInformationLabel = [[UILabel alloc] init];
         _historicalInformationLabel.font = FONT(13);
-        _historicalInformationLabel.text = DBHGetStringWithKeyFromTable(@"Historical Information", nil);
+        _historicalInformationLabel.text = DBHGetStringWithKeyFromTable(@"History", nil);
         _historicalInformationLabel.textColor = COLORFROM16(0x34A21F, 1);
     }
     return _historicalInformationLabel;
@@ -386,7 +387,7 @@
     if (!_communityProjectLabel) {
         _communityProjectLabel = [[UILabel alloc] init];
         _communityProjectLabel.font = FONT(13);
-        _communityProjectLabel.text = DBHGetStringWithKeyFromTable(@"Project Community", nil);
+        _communityProjectLabel.text = DBHGetStringWithKeyFromTable(@"Community", nil);
         _communityProjectLabel.textColor = COLORFROM16(0x838383, 1);
     }
     return _communityProjectLabel;

@@ -27,6 +27,8 @@
  */
 @property (nonatomic, assign) BOOL isHiddenRefresh;
 
+@property (nonatomic, copy) NSString *infomationId;
+
 - (instancetype)initWithUrl:(NSString *)url;
 
 @end

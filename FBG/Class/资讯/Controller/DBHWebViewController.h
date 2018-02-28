@@ -20,4 +20,6 @@
  */
 @property (nonatomic, copy) NSString *htmlString;
 
+@property (nonatomic, copy) NSString *url;
+
 @end

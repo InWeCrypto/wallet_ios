@@ -13,10 +13,12 @@
 
 #import "DBHProjectHomeHeaderView.h"
 #import "DBHProjectHomeTypeTwoTableViewCell.h"
+#import "DBHProjectHomeTypeThreeTableViewCell.h"
 
 #import "DBHProjectHomeNewsDataModels.h"
 
 static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHProjectHomeTypeTwoTableViewCellIdentifier";
+static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHProjectHomeTypeThreeTableViewCellIdentifer";
 
 @interface DBHInWeHotViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -24,6 +26,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 @property (nonatomic, strong) UIView *grayLineView;
 @property (nonatomic, strong) UIButton *yourOpinionButton;
 
+@property (nonatomic, assign) NSInteger type;
 @property (nonatomic, assign) NSInteger currentPage; // 当前页
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
@@ -79,10 +82,18 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
-    cell.model = self.dataSource[indexPath.section];
-    
-    return cell;
+    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
+//    if (model.type == 1) {
+//        DBHProjectHomeTypeThreeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeThreeTableViewCellIdentifer forIndexPath:indexPath];
+//        cell.model = model;
+//
+//        return cell;
+//    } else {
+        DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
+        cell.model = model;
+        
+        return cell;
+//    }
 }
 
 #pragma mark ------ UITableViewDelegate ------
@@ -91,17 +102,23 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
     webView.isHaveShare = YES;
+        webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
     [self.navigationController pushViewController:webView animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     DBHProjectHomeNewsModelData *model = self.dataSource[section];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-    headerView.time = model.updatedAt;
+    headerView.isAdd = YES;
+    headerView.time = model.createdAt;
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return AUTOLAYOUTSIZE(42);
 }
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
+//    return model.type == 1 ? AUTOLAYOUTSIZE(122) : AUTOLAYOUTSIZE(215.5);
+//}
 
 #pragma mark ------ Data ------
 /**
@@ -109,6 +126,21 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
  */
 - (void)getInfomation {
     WEAKSELF
+//    NSString *type;
+//    switch (self.type) {
+//        case 0:
+//            type = @"inwe_hot";
+//            break;
+//        case 1:
+//            type = @"is_scroll";
+//            break;
+//        case 2:
+//            type = @"type=1";
+//            break;
+//
+//        default:
+//            break;
+//    }
     [PPNetworkHelper GET:[NSString stringWithFormat:@"article?is_scroll&per_page=5&page=%ld", self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         if (weakSelf.dataSource.count) {
             return ;
@@ -253,6 +285,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         _tableView.delegate = self;
         
         [_tableView registerClass:[DBHProjectHomeTypeTwoTableViewCell class] forCellReuseIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier];
+        [_tableView registerClass:[DBHProjectHomeTypeThreeTableViewCell class] forCellReuseIdentifier:kDBHProjectHomeTypeThreeTableViewCellIdentifer];
     }
     return _tableView;
 }

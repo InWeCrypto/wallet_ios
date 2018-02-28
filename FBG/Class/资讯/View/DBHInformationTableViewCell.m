@@ -39,8 +39,8 @@
 #pragma mark ------ UI ------
 - (void)setUI {
     [self.contentView addSubview:self.iconBackImageView];
-    [self.contentView addSubview:self.noReadLabel];
     [self.contentView addSubview:self.iconImageView];
+    [self.contentView addSubview:self.noReadLabel];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.contentLabel];
     [self.contentView addSubview:self.priceLabel];
@@ -118,11 +118,12 @@
     self.iconBackImageView.image = nil;
     self.iconImageView.hidden = NO;
     [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@""]];
-    self.titleLabel.text = [NSString stringWithFormat:@"%@（%@）", _model.unit, _model.name];
+    self.titleLabel.text = [NSString stringWithFormat:@"%@（%@）", _model.unit, _model.longName];
     self.contentLabel.text = _model.lastArticle.title;
     self.timeLabel.text = _model.lastArticle.createdAt;
     self.priceLabel.hidden = _model.type != 1;
     self.changeLabel.hidden = _model.type != 1;
+    self.isNoRead = _model.categoryUser.isFavoriteDot;
 }
 - (void)setIcoModel:(DBHInformationModelIco *)icoModel {
     _icoModel = icoModel;
@@ -130,6 +131,7 @@
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _icoModel.priceCny : _icoModel.priceUsd;
     self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
     self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", _icoModel.percentChange24h.floatValue >= 0 ? @"+" : @"", _icoModel.percentChange24h.floatValue];
+    self.changeLabel.backgroundColor = _icoModel.percentChange24h.floatValue >= 0 ? COLORFROM16(0x008C55, 1) : COLORFROM16(0xFF841C, 1);
 }
 - (void)setFunctionalUnitTitle:(NSString *)functionalUnitTitle {
     _functionalUnitTitle = functionalUnitTitle;
@@ -155,6 +157,12 @@
     
     self.noReadLabel.hidden = !_noReadNumber.integerValue;
     self.noReadLabel.text = _noReadNumber;
+}
+- (void)setIsNoRead:(BOOL)isNoRead {
+    _isNoRead = isNoRead;
+    
+    self.noReadLabel.text = @" ";
+    self.noReadLabel.hidden = !_isNoRead;
 }
 
 - (UIImageView *)iconBackImageView {

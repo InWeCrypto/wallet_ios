@@ -111,7 +111,7 @@
     
     NSString *grade = [self.gradeLabel.text substringToIndex:1];
     if ([grade isEqualToString:@"0"]) {
-        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please Grade", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please Rating", nil)];
         
         return;
     }
@@ -131,7 +131,7 @@
         UIButton *button = [self viewWithTag:200 + i];
         button.selected = button.tag <= startButton.tag;
     }
-    self.gradeLabel.text = [NSString stringWithFormat:@"%ld%@", startButton.tag - 199, DBHGetStringWithKeyFromTable(@"Part", nil)];
+    self.gradeLabel.text = [NSString stringWithFormat:@"%ld%@", startButton.tag - 199, DBHGetStringWithKeyFromTable(@"", nil)];
 }
 /**
  退出
@@ -185,7 +185,7 @@
         UIButton *button = [self viewWithTag:200 + i];
         button.selected = button.tag - 200 < _grade;
     }
-    self.gradeLabel.text = [NSString stringWithFormat:@"%ld%@", _grade, DBHGetStringWithKeyFromTable(@"Part", nil)];
+    self.gradeLabel.text = [NSString stringWithFormat:@"%ld%@", _grade, DBHGetStringWithKeyFromTable(@"", nil)];
 }
 - (void)setCanGrade:(BOOL)canGrade {
     _canGrade = canGrade;
@@ -212,7 +212,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = BOLDFONT(18);
-        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Grade", nil);
+        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Rating", nil);
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _titleLabel;
@@ -221,7 +221,7 @@
     if (!_gradeLabel) {
         _gradeLabel = [[UILabel alloc] init];
         _gradeLabel.font = FONT(15);
-        _gradeLabel.text = [NSString stringWithFormat:@"0%@", DBHGetStringWithKeyFromTable(@"Part", nil)];
+        _gradeLabel.text = [NSString stringWithFormat:@"0%@", DBHGetStringWithKeyFromTable(@"", nil)];
         _gradeLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _gradeLabel;

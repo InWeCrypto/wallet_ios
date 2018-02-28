@@ -105,7 +105,8 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     return !self.informationHeaderView.currentSelectedIndex ? 2 : 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return !section && !self.informationHeaderView.currentSelectedIndex ? self.functionalUnitArray.count : self.dataSource.count;
+    NSMutableArray *dataArray = self.dataSource[self.informationHeaderView.currentSelectedIndex];
+    return !section && !self.informationHeaderView.currentSelectedIndex ? self.functionalUnitArray.count : dataArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHInformationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHInformationTableViewCellIdentifier forIndexPath:indexPath];
@@ -115,13 +116,15 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         cell.time = self.timeArray[indexPath.row];
         cell.noReadNumber = self.noReadArray[indexPath.row];
     } else {
-        if (indexPath.row < self.icoArray.count) {
-            cell.icoModel = self.icoArray[indexPath.row];
-        }
-        if (indexPath.row < self.dataSource.count) {
-            cell.model = self.dataSource[indexPath.row];
-        }
+        NSMutableArray *array1 = self.icoArray[self.informationHeaderView.currentSelectedIndex];
+        NSMutableArray *array2 = self.dataSource[self.informationHeaderView.currentSelectedIndex];
         cell.noReadNumber = 0;
+        if (indexPath.row < array1.count) {
+            cell.icoModel = self.icoArray[self.informationHeaderView.currentSelectedIndex][indexPath.row];
+        }
+        if (indexPath.row < array2.count) {
+            cell.model = self.dataSource[self.informationHeaderView.currentSelectedIndex][indexPath.row];
+        }
     }
     
     return cell;
@@ -164,16 +167,16 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 [self.navigationController pushViewController:exchangeNoticeViewController animated:YES];
                 break;
             }
+//            case 3: {
+//                // CandyBowl
+//                DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
+//                candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
+//                candyBowlViewController.functionalUnitType = 3;
+//                candyBowlViewController.conversation = self.conversationArray[indexPath.row];
+//                [self.navigationController pushViewController:candyBowlViewController animated:YES];
+//                break;
+//            }
             case 3: {
-                // CandyBowl
-                DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
-                candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
-                candyBowlViewController.functionalUnitType = 3;
-                candyBowlViewController.conversation = self.conversationArray[indexPath.row];
-                [self.navigationController pushViewController:candyBowlViewController animated:YES];
-                break;
-            }
-            case 4: {
                 // 交易提醒
                 DBHTraderClockViewController *traderClockViewController = [[DBHTraderClockViewController alloc] init];
                 traderClockViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
@@ -182,7 +185,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 [self.navigationController pushViewController:traderClockViewController animated:YES];
                 break;
             }
-            case 5: {
+            case 4: {
                 // 通知
                 DBHNotificationViewController *notificationViewController = [[DBHNotificationViewController alloc] init];
                 notificationViewController.title = DBHGetStringWithKeyFromTable(self.functionalUnitArray[indexPath.row], nil);
@@ -196,7 +199,9 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                 break;
         }
     } else {
-        DBHInformationModelData *projectModel = self.dataSource[indexPath.row];
+        [self readMessage:indexPath.row];
+        
+        DBHInformationModelData *projectModel = self.dataSource[self.informationHeaderView.currentSelectedIndex][indexPath.row];
         
         if (projectModel.type == 1) {
             // 交易中项目
@@ -222,7 +227,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     UITableViewRowAction *cancelColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:DBHGetStringWithKeyFromTable(!indexPath.section ? @"Delete" : @"Cancel Collection", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         if (!indexPath.section) {
             // 删除功能组件
-            [UserSignData share].user.functionalUnitArray[indexPath.row] = @"1";
+            [UserSignData share].user.functionalUnitArray[[self.titleArray indexOfObject:self.functionalUnitArray[indexPath.row]]] = @"1";
             [[UserSignData share] storageData:[UserSignData share].user];
             [weakSelf.functionalUnitArray removeObjectAtIndex:indexPath.row];
             [weakSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -317,33 +322,34 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 - (void)getProjectList {
     WEAKSELF
     [PPNetworkHelper GET:!self.informationHeaderView.currentSelectedIndex ? @"category?user_favorite&per_page=100" : [NSString stringWithFormat:@"category?type=%ld&per_page=100", self.informationHeaderView.currentSelectedIndex] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        [weakSelf.dataSource removeAllObjects];
+        [weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex] removeAllObjects];
         
         for (NSDictionary *dic in responseCache[@"data"]) {
             DBHInformationModelData *model = [DBHInformationModelData modelObjectWithDictionary:dic];
             
             if (model.categoryUser.isTop) {
-                [weakSelf.dataSource insertObject:model atIndex:0];
+                [weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex] insertObject:model atIndex:0];
             } else {
-                [weakSelf.dataSource addObject:model];
+                [weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex] addObject:model];
             }
         }
         
         [weakSelf.tableView reloadData];
     } success:^(id responseObject) {
-        [weakSelf.dataSource removeAllObjects];
+        [weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex] removeAllObjects];
         
         for (NSDictionary *dic in responseObject[@"data"]) {
             DBHInformationModelData *model = [DBHInformationModelData modelObjectWithDictionary:dic];
             
             if (model.categoryUser.isTop) {
-                [weakSelf.dataSource insertObject:model atIndex:0];
+                [weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex] insertObject:model atIndex:0];
             } else {
-                [weakSelf.dataSource addObject:model];
+                [weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex] addObject:model];
             }
         }
         
-        if (weakSelf.dataSource.count && (!self.informationHeaderView.currentSelectedIndex || self.informationHeaderView.currentSelectedIndex == 1)) {
+        NSMutableArray *dataArray = weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex];
+        if (dataArray.count && (!self.informationHeaderView.currentSelectedIndex || self.informationHeaderView.currentSelectedIndex == 1)) {
             [weakSelf getICOData];
         }
 
@@ -356,7 +362,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 }
 - (void)getICOData {
     NSMutableArray *icoList = [NSMutableArray array];
-    for (DBHInformationModelData *model in self.dataSource) {
+    for (DBHInformationModelData *model in self.dataSource[self.informationHeaderView.currentSelectedIndex]) {
         [icoList addObject:model.unit];
     }
     NSDictionary *paramters = @{@"ico_list":icoList,
@@ -364,20 +370,20 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     
     WEAKSELF
     [PPNetworkHelper POST:@"ico/ranks" baseUrlType:3 parameters:paramters hudString:nil responseCache:^(id responseCache) {
-        [weakSelf.icoArray removeAllObjects];
+        [weakSelf.icoArray[self.informationHeaderView.currentSelectedIndex] removeAllObjects];
         
-        for (DBHInformationModelData *model in weakSelf.dataSource) {
+        for (DBHInformationModelData *model in weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex]) {
             DBHInformationModelIco *icoModel = [DBHInformationModelIco modelObjectWithDictionary:responseCache[model.unit]];
-            [weakSelf.icoArray addObject:icoModel];
+            [weakSelf.icoArray[self.informationHeaderView.currentSelectedIndex] addObject:icoModel];
         }
         
         [weakSelf.tableView reloadData];
     } success:^(id responseObject) {
-        [weakSelf.icoArray removeAllObjects];
+        [weakSelf.icoArray[self.informationHeaderView.currentSelectedIndex] removeAllObjects];
         
-        for (DBHInformationModelData *model in weakSelf.dataSource) {
+        for (DBHInformationModelData *model in weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex]) {
             DBHInformationModelIco *icoModel = [DBHInformationModelIco modelObjectWithDictionary:responseObject[model.unit]];
-            [weakSelf.icoArray addObject:icoModel];
+            [weakSelf.icoArray[self.informationHeaderView.currentSelectedIndex] addObject:icoModel];
         }
         
         [weakSelf.tableView reloadData];
@@ -389,13 +395,27 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
  取消收藏
  */
 - (void)cancelColletWithRow:(NSInteger)row {
-    DBHInformationModelData *projectModel = self.dataSource[row];
+    DBHInformationModelData *projectModel = self.dataSource[self.informationHeaderView.currentSelectedIndex][row];
     NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:false]};
     
     WEAKSELF
     [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/collect", (NSInteger)projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
-        [weakSelf.dataSource removeObjectAtIndex:row];
+        [weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex] removeObjectAtIndex:row];
         [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+- (void)readMessage:(NSInteger)row {
+    DBHInformationModelData *projectModel = self.dataSource[self.informationHeaderView.currentSelectedIndex][row];
+    if (!projectModel.categoryUser.isFavoriteDot) {
+        return;
+    }
+    NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:false]};
+    
+    WEAKSELF
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/undot", (NSInteger)projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
+        
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
@@ -406,10 +426,10 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
  获取功能组件
  */
 - (void)getFunctionalUnit {
-    self.conversationArray = [@[@"", @"", @"", @"", @"", @""] mutableCopy];
-    self.contentArray = [@[@"", @"", @"", @"", @"", @""] mutableCopy];
-    self.timeArray = [@[@"", @"", @"", @"", @"", @""] mutableCopy];
-    self.noReadArray = [@[@"0", @"0", @"0", @"0", @"0", @"0"] mutableCopy];
+    self.conversationArray = [@[/*@"", */@"", @"", @"", @"", @""] mutableCopy];
+    self.contentArray = [@[/*@"", */@"", @"", @"", @"", @""] mutableCopy];
+    self.timeArray = [@[/*@"", */@"", @"", @"", @"", @""] mutableCopy];
+    self.noReadArray = [@[/*@"0", */@"0", @"0", @"0", @"0", @"0"] mutableCopy];
     
     NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
     
@@ -543,11 +563,11 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         
         WEAKSELF
         [_informationHeaderView selectTypeBlock:^{
-            [weakSelf.dataSource removeAllObjects];
+            [weakSelf.tableView reloadData];
             [weakSelf getProjectList];
         }];
         [_informationHeaderView clickFunctionalUnitBlock:^(NSInteger functionalUnitType) {
-            [UserSignData share].user.realTimeDeliveryArray[functionalUnitType] = @"1";
+            [UserSignData share].user.functionalUnitArray[functionalUnitType] = @"0";
             [[UserSignData share] storageData:[UserSignData share].user];
             // 点击功能组件
             switch (functionalUnitType) {
@@ -575,15 +595,15 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                     [weakSelf.navigationController pushViewController:exchangeNoticeViewController animated:YES];
                     break;
                 }
+//                case 3: {
+//                    // CandyBowl
+//                    DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
+//                    candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
+//                    candyBowlViewController.functionalUnitType = 3;
+//                    [weakSelf.navigationController pushViewController:candyBowlViewController animated:YES];
+//                    break;
+//                }
                 case 3: {
-                    // CandyBowl
-                    DBHCandyBowlViewController *candyBowlViewController = [[DBHCandyBowlViewController alloc] init];
-                    candyBowlViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
-                    candyBowlViewController.functionalUnitType = 3;
-                    [weakSelf.navigationController pushViewController:candyBowlViewController animated:YES];
-                    break;
-                }
-                case 4: {
                     // 交易提醒
                     DBHTraderClockViewController *traderClockViewController = [[DBHTraderClockViewController alloc] init];
                     traderClockViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
@@ -592,7 +612,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
                     [weakSelf.navigationController pushViewController:traderClockViewController animated:YES];
                     break;
                 }
-                case 5: {
+                case 4: {
                     // 通知
                     DBHNotificationViewController *notificationViewController = [[DBHNotificationViewController alloc] init];
                     notificationViewController.title = DBHGetStringWithKeyFromTable(self.titleArray[functionalUnitType], nil);
@@ -711,9 +731,9 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 
 - (NSArray *)menuArray {
     if (!_menuArray) {
-        _menuArray = @[@"Scan",
+        _menuArray = @[@"Scan QR Code",
                        @"Add Wallet",
-                       @"Payment Received"];
+                       @"Payment"];
     }
     return _menuArray;
 }
@@ -721,8 +741,8 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     if (!_titleArray) {
         _titleArray = @[@"InWe Hotspot",
                         @"Trading View",
-                        @"Exchange Announcement",
-                        @"Candybowl",
+                        @"Exchange",
+//                        @"Candybowl",
                         @"Trading Reminder",
                         @"Notice"];
     }
@@ -734,7 +754,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         [_conversationArray addObject:@""];
         [_conversationArray addObject:@""];
         [_conversationArray addObject:@""];
-        [_conversationArray addObject:@""];
+//        [_conversationArray addObject:@""];
         [_conversationArray addObject:@""];
         [_conversationArray addObject:@""];
     }
@@ -746,7 +766,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
         [_conversationCacheArray addObject:@""];
         [_conversationCacheArray addObject:@""];
         [_conversationCacheArray addObject:@""];
-        [_conversationCacheArray addObject:@""];
+//        [_conversationCacheArray addObject:@""];
         [_conversationCacheArray addObject:@""];
         [_conversationCacheArray addObject:@""];
     }
@@ -762,7 +782,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     if (!_timeArray) {
         _timeArray = [NSMutableArray array];
         [_timeArray addObject:@""];
-        [_timeArray addObject:@""];
+//        [_timeArray addObject:@""];
         [_timeArray addObject:@""];
         [_timeArray addObject:@""];
         [_timeArray addObject:@""];
@@ -774,7 +794,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
     if (!_noReadArray) {
         _noReadArray = [NSMutableArray array];
         [_noReadArray addObject:@"0"];
-        [_noReadArray addObject:@"0"];
+//        [_noReadArray addObject:@"0"];
         [_noReadArray addObject:@"0"];
         [_noReadArray addObject:@"0"];
         [_noReadArray addObject:@"0"];
@@ -784,7 +804,7 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 }
 - (NSArray *)titleGroupNameArray {
     if (!_titleGroupNameArray) {
-        _titleGroupNameArray = @[@"SYS_MSG_INWEHOT", @"SYS_MSG_TRADING", @"SYS_MSG_EXCHANGENOTICE", @"SYS_MSG_CANDYBOW", @"SYS_MSG_ORDER", @"SYS_MSG"];
+        _titleGroupNameArray = @[@"SYS_MSG_INWEHOT", @"SYS_MSG_TRADING", @"SYS_MSG_EXCHANGENOTICE"/*, @"SYS_MSG_CANDYBOW"*/, @"SYS_MSG_ORDER", @"SYS_MSG"];
     }
     return _titleGroupNameArray;
 }
@@ -797,12 +817,22 @@ static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformatio
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [NSMutableArray array];
+        [_dataSource addObject:[NSMutableArray array]];
+        [_dataSource addObject:[NSMutableArray array]];
+        [_dataSource addObject:[NSMutableArray array]];
+        [_dataSource addObject:[NSMutableArray array]];
+        [_dataSource addObject:[NSMutableArray array]];
     }
     return _dataSource;
 }
 - (NSMutableArray *)icoArray {
     if (!_icoArray) {
         _icoArray = [NSMutableArray array];
+        [_icoArray addObject:[NSMutableArray array]];
+        [_icoArray addObject:[NSMutableArray array]];
+        [_icoArray addObject:[NSMutableArray array]];
+        [_icoArray addObject:[NSMutableArray array]];
+        [_icoArray addObject:[NSMutableArray array]];
     }
     return _icoArray;
 }

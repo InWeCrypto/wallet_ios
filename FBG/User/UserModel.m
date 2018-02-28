@@ -19,22 +19,22 @@
 - (void)setWalletUnitType:(int)walletUnitType {
     _walletUnitType = walletUnitType;
     
-    [self saveData];
+//    [self saveData];
 }
 - (void)setIsOpenTouchId:(BOOL)isOpenTouchId {
     _isOpenTouchId = isOpenTouchId;
     
-    [self saveData];
+//    [self saveData];
 }
 - (void)setIsOpenFaceId:(BOOL)isOpenFaceId {
     _isOpenFaceId = isOpenFaceId;
     
-    [self saveData];
+//    [self saveData];
 }
 - (void)setCanUseUnlockType:(DBHCanUseUnlockType)canUseUnlockType {
     _canUseUnlockType = canUseUnlockType;
     
-    [self saveData];
+//    [self saveData];
 }
 
 - (NSMutableArray *)functionalUnitArray {
@@ -43,7 +43,7 @@
         [_functionalUnitArray addObject:@"0"];
         [_functionalUnitArray addObject:@"0"];
         [_functionalUnitArray addObject:@"0"];
-        [_functionalUnitArray addObject:@"0"];
+//        [_functionalUnitArray addObject:@"0"];
         [_functionalUnitArray addObject:@"0"];
         [_functionalUnitArray addObject:@"0"];
     }
@@ -54,7 +54,7 @@
         _realTimeDeliveryArray = [NSMutableArray array];
         [_realTimeDeliveryArray addObject:@"1"];
         [_realTimeDeliveryArray addObject:@"1"];
-        [_realTimeDeliveryArray addObject:@"1"];
+//        [_realTimeDeliveryArray addObject:@"1"];
         [_realTimeDeliveryArray addObject:@"1"];
         [_realTimeDeliveryArray addObject:@"1"];
         [_realTimeDeliveryArray addObject:@"1"];

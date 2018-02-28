@@ -43,13 +43,12 @@ static NSString *const kUserCacheKey = @"FBGCacheKey";
 - (UserModel *)user
 {
     // 检查 读取（直接读取，不存在则是 nil）
-    if ([self.userCache objectForKey:kUserCacheKey])
+    if ([self.userCache containsObjectForKey:kUserCacheKey])
     {
         UserModel *user = (UserModel *)[self.userCache objectForKey:kUserCacheKey];
         return user;
     }
     UserModel *user = [[UserModel alloc] init];
-    [self setUserModel:user];
     return user;
 }
 - (YYCache *)userCache

@@ -77,7 +77,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         make.width.equalTo(weakSelf.view);
         make.centerX.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.keyboardView.mas_top);
+        make.bottom.equalTo(weakSelf.view);
     }];
     [self.keyboardView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
@@ -106,12 +106,14 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
     webView.isHaveShare = YES;
+        webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
     [self.navigationController pushViewController:webView animated:YES];
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     DBHProjectHomeNewsModelData *model = self.dataSource[section];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-    headerView.time = model.updatedAt;
+    headerView.isAdd = YES;
+    headerView.time = model.createdAt;
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -244,6 +246,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 {
     if (self.tableView.contentSize.height > self.tableView.frame.size.height)
     {
+        NSLog(@"height:%lf %lf", self.tableView.contentSize.height, self.tableView.frame.size.height);
         CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
         [self.tableView setContentOffset:offset animated:animated];
     }
@@ -295,8 +298,10 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         _tableView.backgroundColor = COLORFROM10(235, 235, 235, 1);
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
+        _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.001)];
+        _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(47))];
+        
         _tableView.sectionHeaderHeight = 0;
-        _tableView.sectionFooterHeight = 0;
         _tableView.sectionFooterHeight = 0;
         
         _tableView.dataSource = self;
@@ -310,9 +315,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 - (DBHInputView *)keyboardView {
     if (!_keyboardView) {
         _keyboardView = [[DBHInputView alloc] init];
-        _keyboardView.dataSource = @[@{@"value":@"Project Overview", @"isMore":@"1"},
-                                     @{@"value":@"Project Dynamic", @"isMore":@"0"},
-                                     @{@"value":@"Project Introduction", @"isMore":@"0"}];
+        _keyboardView.dataSource = @[@{@"value":@"Overview", @"isMore":@"1"},
+                                     @{@"value":@"Follow-up", @"isMore":@"0"},
+                                     @{@"value":@"Introduction", @"isMore":@"0"}];
         
         WEAKSELF
         [_keyboardView clickButtonBlock:^(NSInteger buttonType) {
@@ -380,9 +385,9 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         _projectHomeMenuView = [[DBHProjectHomeMenuView alloc] init];
         _projectHomeMenuView.line = 1;
         _projectHomeMenuView.maxLine = 3;
-        _projectHomeMenuView.dataSource = @[@"Project overview",
-                                            @"Real-Time Quotes",
-                                            @"Trading Market"];
+        _projectHomeMenuView.dataSource = @[@"Overview",
+                                            @"Markets",
+                                            @"Exchanges"];
         
         WEAKSELF
         [_projectHomeMenuView selectedBlock:^(NSInteger index) {

@@ -66,6 +66,30 @@
     }];
 }
 
+// 改变滑动删除按钮样式
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    for (UIView *subView in self.subviews){
+        if([subView isKindOfClass:NSClassFromString(@"UITableViewCellDeleteConfirmationView")]) {
+            CGRect cRect = subView.frame;
+            cRect.size.height = self.contentView.frame.size.height - 10;
+            subView.frame = cRect;
+            
+            UIView *confirmView=(UIView *)[subView.subviews firstObject];
+            // 改背景颜色
+            //            confirmView.backgroundColor=[UIColor colorWithRed:254/255.0 green:85/255.0 blue:46/255.0 alpha:1];
+            for(UIView *sub in confirmView.subviews){
+                if([sub isKindOfClass:NSClassFromString(@"UIButtonLabel")]){
+                    UILabel *deleteLabel=(UILabel *)sub;
+                    // 改删除按钮的字体
+                    deleteLabel.font = FONT(13);
+                }
+            }
+            break;
+        }
+    }
+}
+
 #pragma mark ------ Getters And Setters ------
 - (void)setModel:(DBHHistoricalInformationModelData *)model {
     _model = model;
@@ -112,6 +136,19 @@
     self.titleLabel.text = _message.ext[@"title"];
     self.timeLabel.text = [NSString timeExchangeWithType:@"yyyy-MM-dd hh:mm" timestamp:_message.timestamp];
 }
+- (void)setIsNoImage:(BOOL)isNoImage {
+    _isNoImage = isNoImage;
+    
+    if (_isNoImage) {
+        self.pictureImageView.hidden = YES;
+        
+        [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.offset(AUTOLAYOUTSIZE(15));
+            make.right.offset(- AUTOLAYOUTSIZE(15));
+            make.top.offset(AUTOLAYOUTSIZE(13));
+        }];
+    }
+}
 
 - (UIImageView *)pictureImageView {
     if (!_pictureImageView) {
@@ -141,6 +178,7 @@
     if (!_originalLabel) {
         _originalLabel = [[UILabel alloc] init];
         _originalLabel.font = FONT(6);
+        _originalLabel.hidden = YES;
         _originalLabel.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _originalLabel.layer.borderWidth = AUTOLAYOUTSIZE(0.5);
         _originalLabel.layer.borderColor = COLORFROM16(0xA1C7B5, 1).CGColor;

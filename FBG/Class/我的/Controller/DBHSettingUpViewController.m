@@ -31,7 +31,7 @@ static NSString *const kDBHSettingUpTableViewCellIdentifier = @"kDBHSettingUpTab
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Setting Up", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Settings", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];
@@ -110,7 +110,7 @@ static NSString *const kDBHSettingUpTableViewCellIdentifier = @"kDBHSettingUpTab
 
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@"Monetary Unit", @"Network Switcher", @"Language Settings"];
+        _titleArray = @[@"Currency Unit", @"Network Settings", @"Languages"];
     }
     return _titleArray;
 }

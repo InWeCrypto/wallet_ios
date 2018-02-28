@@ -94,7 +94,8 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     DBHExchangeNoticeModelData *model = self.dataSource[section];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
-    headerView.time = model.updatedAt;
+    headerView.isAdd = YES;
+    headerView.time = model.createdAt;
     return headerView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

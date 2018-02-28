@@ -29,7 +29,7 @@ static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWal
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Wallet Manager", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Manager Wallets", nil);
     
     [self setUI];
     
@@ -62,6 +62,7 @@ static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWal
     DBHSelectWalletTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHSelectWalletTableViewCellIdentifier forIndexPath:indexPath];
     DBHWalletManagerForNeoModelList *model = self.dataSource[indexPath.row];
     cell.title = model.name;
+    cell.iconImageView.image = [UIImage imageNamed:model.category.name];
     cell.isSelected = indexPath.row == self.currentSelectedRow;
     
     return cell;
@@ -88,10 +89,6 @@ static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWal
         for (NSDictionary *dic in responseCache[@"list"]) {
             DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
             
-            if (model.categoryId != 2) {
-                continue;
-            }
-            
             model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
@@ -104,10 +101,6 @@ static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWal
         [weakSelf.dataSource removeAllObjects];
         for (NSDictionary *dic in responseObject[@"list"]) {
             DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
-            
-            if (model.categoryId != 2) {
-                continue;
-            }
             
             model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];

@@ -12,6 +12,8 @@
 #import "CommitOrderView.h"
 //#import "ConfirmationTransferVC.h"
 
+#import "CustomActivity.h"
+
 #import "WalletLeftListModel.h"
 
 @interface KKWebView ()<WKUIDelegate,WKNavigationDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, ChoseWalletViewDelegate, CommitOrderViewDelegate>
@@ -60,7 +62,7 @@
             if (self.isHaveShare) {
                 self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gonggaoxiangqing_gengduo"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToShareBarButtonItem)];
             } else {
-                UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_刷新"] style:UIBarButtonItemStyleDone target:self action:@selector(rightButton)];
+                UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"shishihangqing_shuaxin"] style:UIBarButtonItemStyleDone target:self action:@selector(rightButton)];
                 self.navigationItem.rightBarButtonItem = rightBarButtonItem;
             }
         }
@@ -461,7 +463,12 @@
 - (void)respondsToShareBarButtonItem {
     NSArray* activityItems = [[NSArray alloc] initWithObjects:self.urlStr, nil];
     
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    CustomActivity *reservesActivity = [[CustomActivity alloc]initWithTitle:DBHGetStringWithKeyFromTable(@"Reserves", nil) ActivityImage:[UIImage imageNamed:@"fenxiang_shoucang"] URL:[NSURL URLWithString:@"Reserves"] ActivityType:@"Reserves"];
+    CustomActivity *lookProjectActivity = [[CustomActivity alloc]initWithTitle:DBHGetStringWithKeyFromTable(@"Look Project", nil) ActivityImage:[UIImage imageNamed:@"fenxiang_chakan"] URL:[NSURL URLWithString:@"Look Project"] ActivityType:@"Look Project"];
+    NSArray *activityArray = @[reservesActivity, lookProjectActivity];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activityArray];
+    activityVC.excludedActivityTypes = @[UIActivityTypeMessage, UIActivityTypeMail, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeOpenInIBooks];
     //applicationActivities可以指定分享的应用，不指定为系统默认支持的
     
     kWeakSelf(activityVC)
@@ -469,6 +476,12 @@
     {
         if(completed)
         {
+            if ([activityType isEqualToString:@"Reserves"]) {
+                [self reserves];
+            }
+            if ([activityType isEqualToString:@"Look Project"]) {
+                
+            }
             NSLog(@"Share success");
         }
         else
@@ -478,6 +491,17 @@
         [weakactivityVC dismissViewControllerAnimated:YES completion:nil];
     };
     [self presentViewController:activityVC animated:YES completion:nil];
+}
+
+#pragma mark ------ Data ------
+- (void)reserves {
+    NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:true]};
+    
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"article/%@/collect", self.infomationId] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Reserves Success", nil)];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
 }
 
 //- (void)setIsHaveShare:(BOOL)isHaveShare {

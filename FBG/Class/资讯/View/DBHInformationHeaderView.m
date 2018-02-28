@@ -234,8 +234,8 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
     if (!_titleArray) {
         _titleArray = @[@"InWe Hotspot",
                         @"Trading View",
-                        @"Exchange Announcement",
-                        @"Candybowl",
+                        @"Exchange",
+//                        @"Candybowl",
                         @"Trading Reminder",
                         @"Notice"];
     }

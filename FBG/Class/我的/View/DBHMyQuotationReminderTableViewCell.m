@@ -80,28 +80,27 @@
 }
 
 // 改变滑动删除按钮样式
-//- (void)layoutSubviews {
-//    [super layoutSubviews];
-//    for (UIView *subView in self.subviews){
-//        if([subView isKindOfClass:NSClassFromString(@"UITableViewCellDeleteConfirmationView")] || [subView isKindOfClass:NSClassFromString(@"UITableViewCellContentView")]) {
-//            CGRect cRect = subView.frame;
-//            cRect.size.height = self.contentView.frame.size.height - 10;
-//            subView.frame = cRect;
-//
-//            UIView *confirmView=(UIView *)[subView.subviews firstObject];
-//            // 改背景颜色
-//            //            confirmView.backgroundColor=[UIColor colorWithRed:254/255.0 green:85/255.0 blue:46/255.0 alpha:1];
-//            for(UIView *sub in confirmView.subviews){
-//                if([sub isKindOfClass:NSClassFromString(@"UIButtonLabel")]){
-//                    UILabel *deleteLabel=(UILabel *)sub;
-//                    // 改删除按钮的字体
-//                    deleteLabel.font = FONT(13);
-//                }
-//            }
-//            break;
-//        }
-//    }
-//}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    for (UIView *subView in self.subviews){
+        if([subView isKindOfClass:NSClassFromString(@"UITableViewCellDeleteConfirmationView")]) {
+            CGRect cRect = subView.frame;
+            cRect.size.height = self.contentView.frame.size.height - 10;
+            subView.frame = cRect;
+
+            for (UIView *confirmView in subView.subviews) {
+                for(UIView *sub in confirmView.subviews){
+                    if([sub isKindOfClass:NSClassFromString(@"UIButtonLabel")]){
+                        UILabel *deleteLabel=(UILabel *)sub;
+                        // 改删除按钮的字体
+                        deleteLabel.font = FONT(13);
+                    }
+                }
+            }
+            break;
+        }
+    }
+}
 
 #pragma mark ------ Getters And Setters ------
 - (void)setModel:(DBHInformationModelData *)model {

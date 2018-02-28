@@ -85,6 +85,7 @@
 - (void)respondsToNowOpenButton {
     [UserSignData share].user.isOpenFaceId = self.faceOrTouchViewControllerType == DBHFaceViewControllerType;
     [UserSignData share].user.isOpenTouchId = self.faceOrTouchViewControllerType == DBHTouchViewControllerType;
+    [[UserSignData share] storageData:[UserSignData share].user];
     [[AppDelegate delegate] goToTabbar];
 }
 /**
@@ -98,7 +99,7 @@
 - (void)setFaceOrTouchViewControllerType:(DBHSelectFaceOrTouchViewControllerType)faceOrTouchViewControllerType {
     _faceOrTouchViewControllerType = faceOrTouchViewControllerType;
     
-    self.typeLabel.text = [NSString stringWithFormat:@"%@%@", DBHGetStringWithKeyFromTable(@"Open", nil), _faceOrTouchViewControllerType == DBHTouchViewControllerType ? @"Touch ID" : @"Face ID"];
+    self.typeLabel.text = [NSString stringWithFormat:@"%@%@", DBHGetStringWithKeyFromTable(@"Use", nil), _faceOrTouchViewControllerType == DBHTouchViewControllerType ? @"Touch ID" : @"Face ID"];
     self.typeImageView.image = [UIImage imageNamed:_faceOrTouchViewControllerType == DBHTouchViewControllerType ? @"denglu_zhiwen" : @"faceid"];
 }
 
@@ -120,7 +121,7 @@
     if (!_shortcutLoginLabel) {
         _shortcutLoginLabel = [[UILabel alloc] init];
         _shortcutLoginLabel.font = BOLDFONT(25);
-        _shortcutLoginLabel.text = DBHGetStringWithKeyFromTable(@"Fast Login", nil);
+        _shortcutLoginLabel.text = DBHGetStringWithKeyFromTable(@"Quick Unlock", nil);
         _shortcutLoginLabel.textColor = COLORFROM16(0xFF841C, 1);
     }
     return _shortcutLoginLabel;
@@ -145,7 +146,7 @@
         _nowOpenButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _nowOpenButton.clipsToBounds = YES;
         
-        [_nowOpenButton setTitle:DBHGetStringWithKeyFromTable(@"Now Open", nil) forState:UIControlStateNormal];
+        [_nowOpenButton setTitle:DBHGetStringWithKeyFromTable(@"Use", nil) forState:UIControlStateNormal];
         [_nowOpenButton addTarget:self action:@selector(respondsToNowOpenButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _nowOpenButton;
@@ -154,7 +155,7 @@
     if (!_noOpenButton) {
         _noOpenButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _noOpenButton.titleLabel.font = BOLDFONT(12);
-        [_noOpenButton setTitle:DBHGetStringWithKeyFromTable(@"No Open", nil) forState:UIControlStateNormal];
+        [_noOpenButton setTitle:DBHGetStringWithKeyFromTable(@"No Now", nil) forState:UIControlStateNormal];
         [_noOpenButton setTitleColor:COLORFROM16(0x888888, 1) forState:UIControlStateNormal];
         [_noOpenButton addTarget:self action:@selector(respondsToNoOpenButton) forControlEvents:UIControlEventTouchUpInside];
     }

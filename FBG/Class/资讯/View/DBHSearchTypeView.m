@@ -91,7 +91,7 @@
         _infomationButton.titleLabel.font = FONT(17);
         _infomationButton.tag = 200;
         _infomationButton.selected = YES;
-        [_infomationButton setTitle:DBHGetStringWithKeyFromTable(@"Information", nil) forState:UIControlStateNormal];
+        [_infomationButton setTitle:DBHGetStringWithKeyFromTable(@"News", nil) forState:UIControlStateNormal];
         [_infomationButton setTitleColor:COLORFROM16(0x9B9B9B, 1) forState:UIControlStateNormal];
         [_infomationButton setTitleColor:COLORFROM16(0x0A9234, 1) forState:UIControlStateSelected];
         [_infomationButton addTarget:self action:@selector(respondsToTypeButton:) forControlEvents:UIControlEventTouchUpInside];

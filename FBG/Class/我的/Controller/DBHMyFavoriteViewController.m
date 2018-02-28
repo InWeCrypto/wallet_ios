@@ -30,7 +30,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"My Favorite", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"My Reserves", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];
@@ -66,14 +66,19 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHInfomationModelData *model = self.dataSource[indexPath.row];
+    KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
+    webView.title = model.title;
+    webView.isHaveShare = YES;
+    webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
+    [self.navigationController pushViewController:webView animated:YES];
 }
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // 取消收藏
     WEAKSELF
     UITableViewRowAction *cancelColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:DBHGetStringWithKeyFromTable(@"Cancel Collection", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-        
+        [weakSelf cancelColletWithRow:indexPath.row];
 //        tableView.editing = NO;
     }];
     //删除按钮颜色
@@ -129,6 +134,21 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
         [weakSelf endRefresh];
+        [LCProgressHUD showFailure:error];
+    }];
+}
+/**
+ 取消收藏
+ */
+- (void)cancelColletWithRow:(NSInteger)row {
+    DBHInfomationModelData *projectModel = self.dataSource[row];
+    NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:false]};
+    
+    WEAKSELF
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"article/%ld/collect", (NSInteger)projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
+        [weakSelf.dataSource removeObjectAtIndex:row];
+        [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
 }

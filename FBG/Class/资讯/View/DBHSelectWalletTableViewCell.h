@@ -10,6 +10,8 @@
 
 @interface DBHSelectWalletTableViewCell : DBHBaseTableViewCell
 
+@property (nonatomic, strong) UIImageView *iconImageView;
+
 /**
  标题
  */

@@ -117,7 +117,7 @@
         make.bottom.offset(- AUTOLAYOUTSIZE(214.5));
     }];
     [self.registerButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(50));
+        make.width.offset(AUTOLAYOUTSIZE(80));
         make.height.offset(AUTOLAYOUTSIZE(32));
         make.top.equalTo(weakSelf.enterWalletButton.mas_bottom);
         make.centerX.equalTo(weakSelf.view);
@@ -135,23 +135,28 @@
     WEAKSELF
     [PPNetworkHelper POST:@"login" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Log in", nil)] success:^(id responseObject) {
         EMError *error = [[EMClient sharedClient] loginWithUsername:[NSString stringWithFormat:@"%@", responseObject[@"id"]] password:weakSelf.passwordTextField.text];
-        if (!error) {
-            // 环信登录成功
-            // 开启自动登录
-            [[EMClient sharedClient].options setIsAutoLogin:YES];
-            
-            [UserSignData share].user.token = responseObject[@"token"];
-            [UserSignData share].user.open_id = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
-            [UserSignData share].user.email = responseObject[@"email"];
-            [UserSignData share].user.nickname = responseObject[@"name"];
-            [UserSignData share].user.img = responseObject[@"img"];
-            [UserSignData share].user.walletUnitType = 1;
-            [[UserSignData share] storageData:[UserSignData share].user];
-            
-            [weakSelf goHome];
-        } else {
+        while (error) {
+            [[EMClient sharedClient] logout:YES];
             [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Login Failed", nil)];
+            error = [[EMClient sharedClient] loginWithUsername:[NSString stringWithFormat:@"%@", responseObject[@"id"]] password:weakSelf.passwordTextField.text];
         }
+        // 环信登录成功
+        // 开启自动登录
+        [[EMClient sharedClient].options setIsAutoLogin:YES];
+        
+        UserModel *user = [UserSignData share].user;
+        if (![UserSignData share].user) {
+            user = [[UserModel alloc] init];
+        }
+        user.token = responseObject[@"token"];
+        user.open_id = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
+        user.email = responseObject[@"email"];
+        user.nickname = responseObject[@"name"];
+        user.img = responseObject[@"img"];
+        user.walletUnitType = 1;
+        [[UserSignData share] storageData:user];
+        
+        [weakSelf goHome];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
@@ -204,6 +209,7 @@
     if ([[NSString deviceType] isEqualToString:@"iPhone X"]) {
         // Face ID
         [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeFaceID;
+        [[UserSignData share] storageData:[UserSignData share].user];
         DBHSelectFaceOrTouchViewController *selectFaceOrTouchViewController = [[DBHSelectFaceOrTouchViewController alloc] init];
         selectFaceOrTouchViewController.faceOrTouchViewControllerType = DBHFaceViewControllerType;
         [self.navigationController pushViewController:selectFaceOrTouchViewController animated:YES];
@@ -212,12 +218,14 @@
         if ([self.context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
             // Touch ID
             [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeTouchID;
+            [[UserSignData share] storageData:[UserSignData share].user];
             DBHSelectFaceOrTouchViewController *selectFaceOrTouchViewController = [[DBHSelectFaceOrTouchViewController alloc] init];
             selectFaceOrTouchViewController.faceOrTouchViewControllerType = DBHTouchViewControllerType;
             [self.navigationController pushViewController:selectFaceOrTouchViewController animated:YES];
         } else {
             // 不支持Touch ID
             [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeNone;
+            [[UserSignData share] storageData:[UserSignData share].user];
             [[AppDelegate delegate] goToTabbar];
         }
     }
@@ -296,7 +304,7 @@
     if (!_forgetPasswordButton) {
         _forgetPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _forgetPasswordButton.titleLabel.font = FONT(11);
-        [_forgetPasswordButton setTitle:DBHGetStringWithKeyFromTable(@"Forget the password？", nil) forState:UIControlStateNormal];
+        [_forgetPasswordButton setTitle:DBHGetStringWithKeyFromTable(@"Forget password？", nil) forState:UIControlStateNormal];
         [_forgetPasswordButton setTitleColor:COLORFROM16(0xDADDDC, 1) forState:UIControlStateNormal];
         [_forgetPasswordButton addTarget:self action:@selector(respondsToforgetPasswordButton) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -310,7 +318,7 @@
         _enterWalletButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _enterWalletButton.clipsToBounds = YES;
         
-        [_enterWalletButton setTitle:DBHGetStringWithKeyFromTable(@"Enter InWeCrypto", nil) forState:UIControlStateNormal];
+        [_enterWalletButton setTitle:DBHGetStringWithKeyFromTable(@"Join InWeCrypto", nil) forState:UIControlStateNormal];
         [_enterWalletButton addTarget:self action:@selector(respondsToenterWalletButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _enterWalletButton;
@@ -319,7 +327,7 @@
     if (!_registerButton) {
         _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _registerButton.titleLabel.font = FONT(14);
-        [_registerButton setTitle:DBHGetStringWithKeyFromTable(@"Register", nil) forState:UIControlStateNormal];
+        [_registerButton setTitle:DBHGetStringWithKeyFromTable(@"Sign Up", nil) forState:UIControlStateNormal];
         [_registerButton setTitleColor:COLORFROM16(0x008C55, 1) forState:UIControlStateNormal];
         [_registerButton addTarget:self action:@selector(respondsToregisterButton) forControlEvents:UIControlEventTouchUpInside];
     }

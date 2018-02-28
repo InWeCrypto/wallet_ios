@@ -228,7 +228,7 @@
     if (!_realTimeQuotesLabel) {
         _realTimeQuotesLabel = [[UILabel alloc] init];
         _realTimeQuotesLabel.font = FONT(13);
-        _realTimeQuotesLabel.text = DBHGetStringWithKeyFromTable(@"Real-Time Quotes", nil);
+        _realTimeQuotesLabel.text = DBHGetStringWithKeyFromTable(@"Markets", nil);
         _realTimeQuotesLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _realTimeQuotesLabel;
@@ -267,7 +267,7 @@
     if (!_tradingMarketLabel) {
         _tradingMarketLabel = [[UILabel alloc] init];
         _tradingMarketLabel.font = FONT(13);
-        _tradingMarketLabel.text = DBHGetStringWithKeyFromTable(@"Trading Market", nil);
+        _tradingMarketLabel.text = DBHGetStringWithKeyFromTable(@"Exchanges", nil);
         _tradingMarketLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _tradingMarketLabel;

@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UILabel* dateLabel;
 @property (nonatomic, strong) UILabel *noCandyBowlLabel;
 
+@property (nonatomic, copy) MonthChangeBlock monthChangeBlock;
 @property (nonatomic, copy) SelectedDateBlock selectedDateBlock;
 
 @end
@@ -85,8 +86,16 @@
 - (void)selectedDateBlock:(SelectedDateBlock)selectedDateBlock {
     self.selectedDateBlock = selectedDateBlock;
 }
+- (void)monthChangeBlock:(MonthChangeBlock)monthChangeBlock {
+    self.monthChangeBlock = monthChangeBlock;
+}
 
 #pragma mark ------ Getters And Setters ------
+- (void)setMonthArray:(NSArray *)monthArray {
+    _monthArray = monthArray;
+    
+    self.calendarView.monthArray = [_monthArray copy];
+}
 - (void)setIsNoData:(BOOL)isNoData {
     _isNoData = isNoData;
     
@@ -115,6 +124,11 @@
         _calendarView.indicatorRadius = AUTOLAYOUTSIZE(13);
         _calendarView.boldPrimaryComponentText = NO;
         [_calendarView addTarget:self action:@selector(calendarViewDidChange:) forControlEvents:UIControlEventValueChanged];
+        
+        WEAKSELF
+        [_calendarView monthChangeBlock:^{
+            weakSelf.monthChangeBlock();
+        }];
     }
     return _calendarView;
 }

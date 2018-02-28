@@ -101,6 +101,7 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
         KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
         webView.title = model.title;
         webView.isHaveShare = YES;
+        webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
         [self.navigationController pushViewController:webView animated:YES];
     } else {
         DBHInformationModelData *projectModel = self.datasource[indexPath.row];

@@ -31,7 +31,7 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"My Quotation Reminder", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"My notifications", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     
     [self setUI];

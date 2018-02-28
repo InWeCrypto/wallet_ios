@@ -43,4 +43,6 @@
 
 @property (nonatomic, strong) EMMessage *message;
 
+@property (nonatomic, assign) BOOL isNoImage;
+
 @end

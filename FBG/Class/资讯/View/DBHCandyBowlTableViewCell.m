@@ -40,8 +40,8 @@
 #pragma mark ------ UI ------
 - (void)setUI {
     [self.contentView addSubview:self.boxView];
-    [self.contentView addSubview:self.iconBackView];
-    [self.contentView addSubview:self.iconImageView];
+//    [self.contentView addSubview:self.iconBackView];
+//    [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.contentLabel];
     [self.contentView addSubview:self.moreImageView];
@@ -52,17 +52,18 @@
         make.height.equalTo(weakSelf.contentView).offset(- AUTOLAYOUTSIZE(10));
         make.center.equalTo(weakSelf.contentView);
     }];
-    [self.iconBackView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOLAYOUTSIZE(45));
-        make.left.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(12));
-        make.centerY.equalTo(weakSelf.boxView);
-    }];
-    [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOLAYOUTSIZE(24));
-        make.center.equalTo(weakSelf.iconBackView);
-    }];
+//    [self.iconBackView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.height.offset(AUTOLAYOUTSIZE(45));
+//        make.left.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(12));
+//        make.centerY.equalTo(weakSelf.boxView);
+//    }];
+//    [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.height.offset(AUTOLAYOUTSIZE(24));
+//        make.center.equalTo(weakSelf.iconBackView);
+//    }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.iconBackView.mas_right).offset(AUTOLAYOUTSIZE(17.5));
+        make.left.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(12));
+//        make.left.equalTo(weakSelf.iconBackView.mas_right).offset(AUTOLAYOUTSIZE(17.5));
         make.right.equalTo(weakSelf.moreImageView.mas_left).offset(- AUTOLAYOUTSIZE(45));
         make.top.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(18));
     }];

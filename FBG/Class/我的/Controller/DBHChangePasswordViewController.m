@@ -146,7 +146,7 @@ static NSString *const kDBHChangePasswordTableViewCellIdentifier = @"kDBHChangeP
 
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@"Old Password", @"New Password", @"Sure Password"];
+        _titleArray = @[@"Old Password", @"New Password", @"Confirm Password"];
     }
     return _titleArray;
 }

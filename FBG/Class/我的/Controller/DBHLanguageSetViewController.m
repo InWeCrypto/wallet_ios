@@ -27,7 +27,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Language Settings", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Languages", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     self.currentSelectedRow = [LANGUAGE isEqualToString:EN] ? 1 : 0;
     
@@ -73,6 +73,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
  确定
  */
 - (void)respondsToSureBarButtonItem {
+    EMError *error = [[EMClient sharedClient] logout:YES];
     [[DBHLanguageTool sharedInstance] setNewLanguage:self.currentSelectedRow ? EN : CNS];
     [self.navigationController popViewControllerAnimated:YES];
 }

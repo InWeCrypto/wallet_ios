@@ -142,9 +142,9 @@
     
     self.timeLabel.text = [NSString timeExchangeWithType:@"yyyy-MM-dd hh:mm" timestamp:_message.timestamp];
     
-    self.numberLabel.text = DBHGetStringWithKeyFromTable(@"Transfer Number", nil);
+    self.numberLabel.text = DBHGetStringWithKeyFromTable(@"Amount", nil);
     if ([_message.ext[@"flag"] isEqualToString:@"ETH"]) {
-        self.numberValueLabel.text = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[_message.ext[@"money"] substringFromIndex:3]] secend:@"1000000000000000000" value:4];
+        self.numberValueLabel.text = [NSString stringWithFormat:@"%@%@", [_message.ext[@"money"] substringToIndex:1], [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[_message.ext[@"money"] substringFromIndex:3]] secend:@"1000000000000000000" value:4]];
     } else {
         self.numberValueLabel.text = _message.ext[@"money"];
     }

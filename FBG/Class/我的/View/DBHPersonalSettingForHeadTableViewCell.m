@@ -56,14 +56,14 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = FONT(14);
-        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Head Portrait", nil);
+        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Profile photo", nil);
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _titleLabel;
 }
 - (UIImageView *)headImageView {
     if (!_headImageView) {
-        _headImageView = [[UIImageView alloc] init];
+        _headImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"touxiang"]];
         _headImageView.contentMode = UIViewContentModeScaleAspectFill;
         _headImageView.layer.cornerRadius = AUTOLAYOUTSIZE(27.5);
         _headImageView.clipsToBounds = YES;

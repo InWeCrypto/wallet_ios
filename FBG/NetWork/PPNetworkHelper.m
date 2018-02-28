@@ -135,11 +135,14 @@ static NetworkStatus _status;
         else
         {
             NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011)
+            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
             {
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
+            }
+            if (![UserSignData share].user.token.length) {
+                return ;
             }
             failure([responseObject objectForKey:@"msg"]);
         }
@@ -196,11 +199,14 @@ static NetworkStatus _status;
         else
         {
             NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011)
+            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
             {
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
+            }
+            if (![UserSignData share].user.token.length) {
+                return ;
             }
             failure([responseObject objectForKey:@"msg"]);
             
@@ -267,11 +273,14 @@ static NetworkStatus _status;
         else
         {
             NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4009 || code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011 || code.integerValue == 4011)
+            if (code.integerValue == 4009|| code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
             {
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
+            }
+            if (![UserSignData share].user.token.length) {
+                return ;
             }
             failure([responseObject objectForKey:@"msg"]);
         }
@@ -336,7 +345,7 @@ static NetworkStatus _status;
                 else
                 {
                     NSString *code = responseObject[@"code"];
-                    if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011)
+                    if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
                     {
                         [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
@@ -398,11 +407,14 @@ static NetworkStatus _status;
         else
         {
             NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011)
+            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
             {
                 [UserSignData share].user.token = nil;
         [[UserSignData share] storageData:[UserSignData share].user];
                 [[AppDelegate delegate] showLoginController];
+            }
+            if (![UserSignData share].user.token.length) {
+                return ;
             }
             failure([responseObject objectForKey:@"msg"]);
         }

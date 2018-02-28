@@ -26,6 +26,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString * nickname; //昵称
 @property (nonatomic, copy) NSString * sex;
 @property (nonatomic, copy) NSString * img;
+@property (nonatomic, copy) NSString *invitationCode; // 邀请码
+@property (nonatomic, assign) BOOL isFirstRegister; // 首次注册
 @property (nonatomic, assign) BOOL isCode; //是不是从冷钱包进入
 @property (nonatomic, assign) int walletUnitType; // 1 = rmb  2 = usd
 @property (nonatomic, assign) BOOL isHideAsset; // 是否隐藏资产

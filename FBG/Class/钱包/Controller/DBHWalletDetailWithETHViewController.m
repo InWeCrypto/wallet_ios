@@ -482,6 +482,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 if (!index) {
                     // 转化钱包
                     DBHImportWalletWithETHViewController *importWalletWithETHViewController = [[DBHImportWalletWithETHViewController alloc] init];
+                    importWalletWithETHViewController.isTransform = YES;
                     importWalletWithETHViewController.ethWalletModel = weakSelf.ethWalletModel;
                     [self.navigationController pushViewController:importWalletWithETHViewController animated:YES];
                 } else {

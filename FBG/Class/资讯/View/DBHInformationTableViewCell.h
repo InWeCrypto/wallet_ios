@@ -40,4 +40,6 @@
  */
 @property (nonatomic, copy) NSString *noReadNumber;
 
+@property (nonatomic, assign) BOOL isNoRead;
+
 @end

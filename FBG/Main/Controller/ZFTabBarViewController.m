@@ -47,6 +47,34 @@
             [child removeFromSuperview];
         }
     }
+    if ([UserSignData share].user.isFirstRegister) {
+        [UserSignData share].user.isFirstRegister = NO;
+        [[UserSignData share] storageData:[UserSignData share].user];
+        if ([UserSignData share].user.invitationCode.length) {
+            KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
+            webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
+            webView.isHiddenRefresh = NO;
+            UINavigationController *currentNav = (UINavigationController *)self.selectedViewController;
+            [currentNav pushViewController:webView animated:YES];
+        } else {
+            [self getInvitationCode];
+        }
+    }
+}
+
+#pragma mark ------ Data ------
+- (void)getInvitationCode {
+    [PPNetworkHelper GET:@"user/ont_candy_bow" baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
+        [UserSignData share].user.invitationCode = [NSString stringWithFormat:@"%@", responseObject[@"code"]];
+        [[UserSignData share] storageData:[UserSignData share].user];
+        
+        KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
+        webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
+        UINavigationController *currentNav = (UINavigationController *)self.selectedViewController;
+        [currentNav pushViewController:webView animated:YES];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
 }
 
 /**
@@ -89,7 +117,7 @@
     // 1.资讯
     DBHInformationViewController *informationViewController = [[DBHInformationViewController alloc] init];
     informationViewController.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:informationViewController title:DBHGetStringWithKeyFromTable(@"Information", nil) imageName:@"zixun_ico_s" selectedImageName:@"zixun_ico"];
+    [self setupChildViewController:informationViewController title:DBHGetStringWithKeyFromTable(@"News", nil) imageName:@"zixun_ico_s" selectedImageName:@"zixun_ico"];
     
     // 2.钱包
     DBHHomePageViewController *homePageViewController = [[DBHHomePageViewController alloc] init];
@@ -99,7 +127,7 @@
     // 3.我的
     DBHMyViewController * my = [[DBHMyViewController alloc] init];
     my.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:my title:DBHGetStringWithKeyFromTable(@"My", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
+    [self setupChildViewController:my title:DBHGetStringWithKeyFromTable(@"Profile", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
 }
 
 /**
@@ -113,7 +141,7 @@
 - (void)setupChildViewController:(UIViewController *)childVc title:(NSString *)title imageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName
 {
     // 1.设置控制器的属性
-    if ([title isEqualToString:DBHGetStringWithKeyFromTable(@"My", nil)]) {
+    if ([title isEqualToString:DBHGetStringWithKeyFromTable(@"Profile", nil)]) {
         childVc.title = title;
     } else {
         childVc.tabBarItem.title = title;

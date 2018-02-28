@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^MonthChangeBlock)();
 typedef void(^SelectedDateBlock)(NSDate *date);
 
 @interface DBHCandyBowlHeaderView : UIView
+
+@property (nonatomic, copy) NSArray *monthArray;
 
 /**
  是否没有数据
@@ -21,5 +24,7 @@ typedef void(^SelectedDateBlock)(NSDate *date);
  选择日期回调
  */
 - (void)selectedDateBlock:(SelectedDateBlock)selectedDateBlock;
+
+- (void)monthChangeBlock:(MonthChangeBlock)monthChangeBlock;
 
 @end

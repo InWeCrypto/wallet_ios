@@ -48,7 +48,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Grade", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToGradeButton)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Rating", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToGradeButton)];
     
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.keyboardView];
@@ -110,9 +110,12 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
         case 0:
             return AUTOLAYOUTSIZE(159);
             break;
-        case 1:
-            return AUTOLAYOUTSIZE(120);
+        case 1: {
+            NSAttributedString *htmlString = [[NSAttributedString alloc] initWithData:[self.projectDetailModel.categoryDesc.content dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            NSLog(@"height:%lf", [htmlString boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - AUTOLAYOUTSIZE(30), CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size.height);
+            return [htmlString boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - AUTOLAYOUTSIZE(30), CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size.height + AUTOLAYOUTSIZE(100);
             break;
+        }
         case 2:
             return self.projectDetailModel.categoryStructure.count >= 4 ? AUTOLAYOUTSIZE(56) + AUTOLAYOUTSIZE(30) * self.projectDetailModel.categoryStructure.count : AUTOLAYOUTSIZE(180);
             break;

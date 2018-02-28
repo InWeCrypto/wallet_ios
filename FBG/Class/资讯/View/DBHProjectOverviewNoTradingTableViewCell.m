@@ -138,7 +138,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = BOLDFONT(15);
-        _titleLabel.text = DBHGetStringWithKeyFromTable(@"ICO Construction", nil);
+        _titleLabel.text = DBHGetStringWithKeyFromTable(@"ICO Distribution", nil);
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _titleLabel;

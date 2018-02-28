@@ -29,7 +29,7 @@
 @property (nonatomic, strong) EthmobileWallet *ethWallet;
 @property (nonatomic, assign) NSInteger currentSelectedIndex; // 当前选中下标
 @property (nonatomic, copy) NSArray *placeHolderArray;
-@property (nonatomic, copy) NSArray *typeArray;
+@property (nonatomic, strong) NSMutableArray *typeArray;
 
 @end
 
@@ -38,8 +38,12 @@
 #pragma mark ------ Lifecycle ------
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.title = DBHGetStringWithKeyFromTable(self.isTransform ? @"Transform Wallet" : @"Import Wallet", nil);
     
-    self.title = DBHGetStringWithKeyFromTable(@"Import Wallet", nil);
+    if (self.isTransform) {
+        [self.typeArray removeLastObject];
+    }
     
     [self setUI];
 }
@@ -359,7 +363,7 @@
         _importButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _importButton.titleLabel.font = BOLDFONT(14);
         _importButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
-        [_importButton setTitle:DBHGetStringWithKeyFromTable(@"Import", nil) forState:UIControlStateNormal];
+        [_importButton setTitle:DBHGetStringWithKeyFromTable(@"Start Import", nil) forState:UIControlStateNormal];
         [_importButton addTarget:self action:@selector(respondsToImportButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _importButton;
@@ -430,19 +434,19 @@
 
 - (NSArray *)placeHolderArray {
     if (!_placeHolderArray) {
-        _placeHolderArray = @[@"Copy and paste the contents of the keystore file, you can also scan the two-dimensional code through the upper right corner, enter the information",
-                              @"Please enter a security code, separated by space",
-                              @"Please enter the explicit private key",
-                              @"Watch the wallet, you only need to import the wallet address, you can conduct day-to-day account management and transactions. Large assets suggest cold wallet or other means of management, to avoid leakage, stolen"];
+        _placeHolderArray = @[@"Copy and paste the content of the keystore file, or using the scanner at the right comer for the QR code",
+                              @"Please use space to separate the mnemonic words",
+                              @"Please input your private key",
+                              @"Watch Wallet needs your wallet address only,serving as a way to manage and trade as a regular account, For security reasons, Cold Wallets among the others are recommended for large amount of assets."];
     }
     return _placeHolderArray;
 }
-- (NSArray *)typeArray {
+- (NSMutableArray *)typeArray {
     if (!_typeArray) {
-        _typeArray = @[@"Keystore",
-                       @"Safety Code",
+        _typeArray = [@[@"Keystore",
+                       @"Mnemonic",
                        @"Private Key",
-                       @"Observation"];
+                       @"Watch"] mutableCopy];
     }
     return _typeArray;
 }

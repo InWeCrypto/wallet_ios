@@ -96,6 +96,7 @@
 - (UILabel *)contentLabel {
     if (!_contentLabel) {
         _contentLabel = [[UILabel alloc] init];
+        _contentLabel.numberOfLines = 0;
     }
     return _contentLabel;
 }

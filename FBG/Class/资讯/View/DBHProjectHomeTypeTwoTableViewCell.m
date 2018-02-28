@@ -64,11 +64,19 @@
 - (void)setModel:(DBHProjectHomeNewsModelData *)model {
     _model = model;
     
+    if (!_model.img.length) {
+        self.coverImageView.image = [UIImage imageNamed:@"fenxiang_jietu"];
+    }
+    
     [self.coverImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
     self.titleLabel.text = _model.title;
 }
 - (void)setProjectModel:(DBHInformationModelData *)projectModel {
     _projectModel = projectModel;
+    
+    if (!_model.img.length) {
+        self.coverImageView.image = [UIImage imageNamed:@"fenxiang_jietu"];
+    }
     
     [self.coverImageView sdsetImageWithURL:_projectModel.coverImg placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
     self.titleLabel.text = _projectModel.desc;

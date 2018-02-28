@@ -253,7 +253,7 @@
         _surePasswordTextField.font = FONT(13);
         _surePasswordTextField.secureTextEntry = YES;
         _surePasswordTextField.textColor = COLORFROM16(0x333333, 1);
-        _surePasswordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Sure Password", nil);
+        _surePasswordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Confirm Password", nil);
     }
     return _surePasswordTextField;
 }
@@ -270,7 +270,7 @@
         _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _commitButton.titleLabel.font = BOLDFONT(14);
         _commitButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
-        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Commit", nil) forState:UIControlStateNormal];
+        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;

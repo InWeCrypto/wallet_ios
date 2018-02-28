@@ -138,7 +138,7 @@
     if (!_historicalInformationLabel) {
         _historicalInformationLabel = [[UILabel alloc] init];
         _historicalInformationLabel.font = FONT(13);
-        _historicalInformationLabel.text = DBHGetStringWithKeyFromTable(@"Historical Information", nil);
+        _historicalInformationLabel.text = DBHGetStringWithKeyFromTable(@"History", nil);
         _historicalInformationLabel.textColor = COLORFROM16(0x34A21F, 1);
     }
     return _historicalInformationLabel;
@@ -167,7 +167,7 @@
     if (!_communityProjectLabel) {
         _communityProjectLabel = [[UILabel alloc] init];
         _communityProjectLabel.font = FONT(13);
-        _communityProjectLabel.text = DBHGetStringWithKeyFromTable(@"Project Community", nil);
+        _communityProjectLabel.text = DBHGetStringWithKeyFromTable(@"Community", nil);
         _communityProjectLabel.textColor = COLORFROM16(0x838383, 1);
     }
     return _communityProjectLabel;

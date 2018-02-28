@@ -29,7 +29,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Historical Information", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"History", nil);
     
     [self setUI];
     [self addRefresh];
@@ -57,6 +57,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHMyFavoriteTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyFavoriteTableViewCellIdentifier forIndexPath:indexPath];
     cell.message = self.dataSource[indexPath.row];
+    cell.isNoImage = YES;
     
     return cell;
 }

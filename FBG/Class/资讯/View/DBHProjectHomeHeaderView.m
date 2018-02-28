@@ -43,7 +43,18 @@
 - (void)setTime:(NSString *)time {
     _time = time;
     
-    self.timeLabel.text = _time;
+    if (self.isAdd) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSDate *date = [dateFormatter dateFromString:_time];
+        
+        NSDate *newDate = [NSDate dateWithTimeInterval:8 * 60 * 60 sinceDate:date];
+        
+        self.timeLabel.text = [dateFormatter stringFromDate:newDate];
+    } else {
+        self.timeLabel.text = _time;
+    }
+    
     
     WEAKSELF
     [self.timeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {

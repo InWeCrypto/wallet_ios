@@ -45,7 +45,7 @@ static NSString *const kDBHProjectOverviewForRelevantInformationTableViewCellIde
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Grade", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToGradeButton)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Rating", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToGradeButton)];
     
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.keyboardView];

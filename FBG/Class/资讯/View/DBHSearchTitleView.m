@@ -93,7 +93,7 @@
         _searchTextField.backgroundColor = COLORFROM16(0xF6F6F6, 1);
         _searchTextField.layer.cornerRadius = 20;
         _searchTextField.font = FONT(13);
-        _searchTextField.placeholder = DBHGetStringWithKeyFromTable(@"Information", nil);
+        _searchTextField.placeholder = DBHGetStringWithKeyFromTable(@"News", nil);
         _searchTextField.textColor = COLORFROM16(0x333333, 1);
         
         UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, AUTOLAYOUTSIZE(40), AUTOLAYOUTSIZE(40))];

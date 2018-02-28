@@ -27,7 +27,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Monetary Unit", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Currency Unit", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     self.currentSelectedRow = [UserSignData share].user.walletUnitType - 1;
     
@@ -74,6 +74,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
  */
 - (void)respondsToSureBarButtonItem {
     [UserSignData share].user.walletUnitType = !self.currentSelectedRow ? 1 : 2;
+    [[UserSignData share] storageData:[UserSignData share].user];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

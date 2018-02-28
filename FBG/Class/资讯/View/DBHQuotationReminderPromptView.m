@@ -245,7 +245,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = BOLDFONT(18);
-        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Remind Set", nil);
+        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Reminder", nil);
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _titleLabel;
@@ -254,7 +254,7 @@
     if (!_promptLabel) {
         _promptLabel = [[UILabel alloc] init];
         _promptLabel.font = FONT(11);
-        _promptLabel.text = DBHGetStringWithKeyFromTable(@"After setting the reminder, the system will push notifications at the highest/lowest value of the quotation", nil);
+        _promptLabel.text = DBHGetStringWithKeyFromTable(@"After setting the reminder, the system will push notifications at the Above/Below value of the quotation", nil);
         _promptLabel.textColor = COLORFROM16(0xD4D4D4, 1);
         _promptLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -272,7 +272,7 @@
     if (!_maxPriceLabel) {
         _maxPriceLabel = [[UILabel alloc] init];
         _maxPriceLabel.font = FONT(13);
-        _maxPriceLabel.text = DBHGetStringWithKeyFromTable(@"Highest Value", nil);
+        _maxPriceLabel.text = DBHGetStringWithKeyFromTable(@"Above", nil);
         _maxPriceLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _maxPriceLabel;
@@ -300,7 +300,7 @@
     if (!_minPriceLabel) {
         _minPriceLabel = [[UILabel alloc] init];
         _minPriceLabel.font = FONT(13);
-        _minPriceLabel.text = DBHGetStringWithKeyFromTable(@"Lowest Value", nil);
+        _minPriceLabel.text = DBHGetStringWithKeyFromTable(@"Below", nil);
         _minPriceLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _minPriceLabel;

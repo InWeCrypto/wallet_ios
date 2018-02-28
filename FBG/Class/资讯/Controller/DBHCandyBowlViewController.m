@@ -9,6 +9,7 @@
 #import "DBHCandyBowlViewController.h"
 
 #import "DBHFunctionalUnitLookViewController.h"
+#import "DBHCandyBowlDetailViewController.h"
 
 #import "DBHCandyBowlHeaderView.h"
 #import "DBHCandyBowlTableViewCell.h"
@@ -28,6 +29,7 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 @property (nonatomic, copy) NSString *year;
 @property (nonatomic, copy) NSString *month;
 @property (nonatomic, copy) NSString *day;
+@property (nonatomic, strong) NSMutableArray *monthDataSource;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
@@ -50,6 +52,7 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self getMontyExchangeNotice];
     [self getExchangeNotice];
 }
 
@@ -95,10 +98,43 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    DBHCandyBowlDetailViewController *candyBowlDetailViewController = [[DBHCandyBowlDetailViewController alloc] init];
+    candyBowlDetailViewController.model = self.dataSource[indexPath.row];
+    [self.navigationController pushViewController:candyBowlDetailViewController animated:YES];
 }
 
 #pragma mark ------ Data ------
+/**
+ 获取CandyBowl
+ */
+- (void)getMontyExchangeNotice {
+    WEAKSELF
+    NSDictionary *paramters = @{@"year":@(self.year.integerValue),
+                                @"month":@(self.month.integerValue)};
+    [PPNetworkHelper GET:@"candy_bow" baseUrlType:3 parameters:paramters hudString:nil responseCache:^(id responseCache) {
+        [weakSelf.monthDataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseCache[@"list"][@"data"]) {
+            DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.monthDataSource addObject:[NSString stringWithFormat:@"%ld", (NSInteger)model.day]];
+        }
+        
+        weakSelf.candyBowlHeaderView.monthArray = [weakSelf.monthDataSource copy];
+    } success:^(id responseObject) {
+        [weakSelf.monthDataSource removeAllObjects];
+        
+        for (NSDictionary *dic in responseObject[@"list"][@"data"]) {
+            DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
+            
+            [weakSelf.monthDataSource addObject:[NSString stringWithFormat:@"%ld", (NSInteger)model.day]];
+        }
+        
+        weakSelf.candyBowlHeaderView.monthArray = [weakSelf.monthDataSource copy];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
 /**
  获取CandyBowl
  */
@@ -110,7 +146,7 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
     [PPNetworkHelper GET:@"candy_bow" baseUrlType:3 parameters:paramters hudString:nil responseCache:^(id responseCache) {
         [weakSelf.dataSource removeAllObjects];
 
-        for (NSDictionary *dic in responseCache[@"data"][@"data"]) {
+        for (NSDictionary *dic in responseCache[@"list"][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
 
             [weakSelf.dataSource addObject:model];
@@ -185,6 +221,9 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
             
             [weakSelf getExchangeNotice];
         }];
+        [_candyBowlHeaderView monthChangeBlock:^{
+            [weakSelf getMontyExchangeNotice];
+        }];
     }
     return _candyBowlHeaderView;
 }
@@ -231,6 +270,12 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
         _dateFormatter = [[NSDateFormatter alloc] init];
     }
     return _dateFormatter;
+}
+- (NSMutableArray *)monthDataSource {
+    if (!_monthDataSource) {
+        _monthDataSource = [NSMutableArray array];
+    }
+    return _monthDataSource;
 }
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {

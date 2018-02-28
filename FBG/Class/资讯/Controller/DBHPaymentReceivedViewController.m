@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIImageView *backGroundImageView;
 @property (nonatomic, strong) UIView *boxView;
 @property (nonatomic, strong) UIImageView *qrCodeImageView;
+@property (nonatomic, strong) UILabel *noWalletLabel;
 @property (nonatomic, strong) UIView *grayLineView;
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -37,7 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Payment Received", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Payment", nil);
     
     [self setUI];
 }
@@ -69,6 +70,7 @@
     [self.view addSubview:self.backGroundImageView];
     [self.view addSubview:self.boxView];
     [self.view addSubview:self.qrCodeImageView];
+    [self.view addSubview:self.noWalletLabel];
     [self.view addSubview:self.grayLineView];
     [self.view addSubview:self.iconImageView];
     [self.view addSubview:self.nameLabel];
@@ -92,6 +94,9 @@
         make.centerX.equalTo(weakSelf.boxView);
         make.top.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(50));
     }];
+    [self.noWalletLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(weakSelf.qrCodeImageView);
+    }];
     [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.boxView);
         make.height.offset(AUTOLAYOUTSIZE(1));
@@ -99,7 +104,7 @@
         make.bottom.equalTo(weakSelf.walletButton.mas_top);
     }];
     [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOLAYOUTSIZE(21.5));
+        make.width.height.offset(AUTOLAYOUTSIZE(22));
         make.left.equalTo(weakSelf.walletButton).offset(AUTOLAYOUTSIZE(15));
         make.top.equalTo(weakSelf.walletButton).offset(AUTOLAYOUTSIZE(10.5));
     }];
@@ -138,10 +143,6 @@
         for (NSDictionary *dic in responseCache[@"list"]) {
             DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
             
-            if (model.categoryId != 2) {
-                continue;
-            }
-            
             model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
@@ -152,10 +153,6 @@
         [weakSelf.dataSource removeAllObjects];
         for (NSDictionary *dic in responseObject[@"list"]) {
             DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
-            
-            if (model.categoryId != 2) {
-                continue;
-            }
             
             model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
@@ -225,7 +222,10 @@
         return;
     }
     
+    self.noWalletLabel.hidden = self.dataSource.count;
+    
     DBHWalletManagerForNeoModelList *model = self.dataSource[self.currentSelectedRow];
+    self.iconImageView.image = [UIImage imageNamed:model.category.name];
     self.nameLabel.text = model.name;
     self.addressLabel.text = model.address;
     [self createQrCodeImage];
@@ -290,9 +290,18 @@
 }
 - (UIImageView *)qrCodeImageView {
     if (!_qrCodeImageView) {
-        _qrCodeImageView = [[UIImageView alloc] init];
+        _qrCodeImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"qrcode"]];
     }
     return _qrCodeImageView;
+}
+- (UILabel *)noWalletLabel {
+    if (!_noWalletLabel) {
+        _noWalletLabel = [[UILabel alloc] init];
+        _noWalletLabel.font = FONT(17);
+        _noWalletLabel.text = DBHGetStringWithKeyFromTable(@"You have no wallet", nil);
+        _noWalletLabel.textColor = COLORFROM16(0x333333, 1);
+    }
+    return _noWalletLabel;
 }
 - (UIView *)grayLineView {
     if (!_grayLineView) {
@@ -303,7 +312,9 @@
 }
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
-        _iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NEO"]];
+        _iconImageView = [[UIImageView alloc] init];
+        _iconImageView.backgroundColor = COLORFROM10(232, 232, 232, 1);
+        _iconImageView.layer.cornerRadius = AUTOLAYOUTSIZE(11);
     }
     return _iconImageView;
 }
@@ -311,6 +322,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = FONT(13);
+        _nameLabel.text = DBHGetStringWithKeyFromTable(@"Wallet 1", nil);
         _nameLabel.textColor = COLORFROM16(0x3D3D3D, 1);
     }
     return _nameLabel;
@@ -319,6 +331,7 @@
     if (!_addressLabel) {
         _addressLabel = [[UILabel alloc] init];
         _addressLabel.font = FONT(12);
+        _addressLabel.text = @"xxxxxxxxxxxxxxxx";
         _addressLabel.textColor = COLORFROM16(0xB2B1B1, 1);
     }
     return _addressLabel;

@@ -10,7 +10,6 @@
 
 @interface DBHSelectWalletTableViewCell ()
 
-@property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIImageView *selectedImageView;
 

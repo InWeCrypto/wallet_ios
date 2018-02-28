@@ -102,6 +102,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
             } else {
                 [UserSignData share].user.isOpenFaceId = isOpen;
             }
+            [[UserSignData share] storageData:[UserSignData share].user];
         }];
         
         return cell;
@@ -253,7 +254,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     NSDictionary *paramters = @{@"img":headImageUrl,
                                 @"name":[UserSignData share].user.nickname};
     WEAKSELF
-    [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Commit", nil)] success:^(id responseObject) {
+    [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Submit", nil)] success:^(id responseObject) {
         [UserSignData share].user.img = responseObject[@"img"];
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Change Success", nil)];
         [weakSelf.tableView reloadData];
@@ -271,9 +272,9 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     if (!error) {
         [[UserSignData share] storageData:nil];
         [[AppDelegate delegate] showLoginController];
-        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Log Out Success", nil)];
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Exit Success", nil)];
     } else {
-        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Log Out Failed", nil)];
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Exit Failed", nil)];
     }
 }
 
@@ -302,7 +303,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         _quitLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _quitLoginButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _quitLoginButton.titleLabel.font = FONT(14);
-        [_quitLoginButton setTitle:DBHGetStringWithKeyFromTable(@"Log Out", nil) forState:UIControlStateNormal];
+        [_quitLoginButton setTitle:DBHGetStringWithKeyFromTable(@"Exit", nil) forState:UIControlStateNormal];
         [_quitLoginButton addTarget:self action:@selector(respondsToQuitLoginButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _quitLoginButton;
@@ -310,7 +311,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@[@"", @"Nickname", @"Account Number"], @[@"Change Password"]];
+        _titleArray = @[@[@"", @"Name", @"Account"], @[@"Change Password"]];
     }
     return _titleArray;
 }

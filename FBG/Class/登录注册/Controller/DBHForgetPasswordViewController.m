@@ -99,7 +99,7 @@
         make.right.equalTo(weakSelf.getVerificationCodeButton.mas_left).offset(- AUTOLAYOUTSIZE(10));
     }];
     [self.getVerificationCodeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Get Verification Code", nil) fontSize:AUTOLAYOUTSIZE(14)]);
+        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Get", nil) fontSize:AUTOLAYOUTSIZE(14)] + AUTOLAYOUTSIZE(20));
         make.right.equalTo(weakSelf.secondLineView);
         make.height.equalTo(weakSelf.verificationCodeTextField);
         make.centerY.equalTo(weakSelf.verificationCodeTextField);
@@ -151,7 +151,7 @@
  */
 - (void)getVerificationCode {
     WEAKSELF
-    [PPNetworkHelper POST:[NSString stringWithFormat:@"send_code/%@", self.accountTextField.text] baseUrlType:3 parameters:nil hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Get Verification Code", nil)] success:^(id responseObject) {
+    [PPNetworkHelper POST:[NSString stringWithFormat:@"send_code/%@", self.accountTextField.text] baseUrlType:3 parameters:nil hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Get", nil)] success:^(id responseObject) {
         [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"The verification code has been sent to your mailbox", nil)];
         [weakSelf keepTime];
     } failure:^(NSString *error) {
@@ -206,7 +206,7 @@
         return;
     }
     if (!self.verificationCodeTextField.text.length) {
-        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a verification code", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please enter verification code", nil)];
         return;
     }
     if (!self.passwordTextField.text.length) {
@@ -302,7 +302,7 @@
         _verificationCodeTextField = [[UITextField alloc] init];
         _verificationCodeTextField.font = FONT(14);
         _verificationCodeTextField.textColor = COLORFROM16(0x333333, 1);
-        _verificationCodeTextField.placeholder = DBHGetStringWithKeyFromTable(@"Please input a verification code", nil);
+        _verificationCodeTextField.placeholder = DBHGetStringWithKeyFromTable(@"Please enter verification code", nil);
     }
     return _verificationCodeTextField;
 }
@@ -317,7 +317,7 @@
     if (!_getVerificationCodeButton) {
         _getVerificationCodeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _getVerificationCodeButton.titleLabel.font = FONT(14);
-        [_getVerificationCodeButton setTitle:DBHGetStringWithKeyFromTable(@"Get Verification Code", nil) forState:UIControlStateNormal];
+        [_getVerificationCodeButton setTitle:DBHGetStringWithKeyFromTable(@"Get", nil) forState:UIControlStateNormal];
         [_getVerificationCodeButton setTitleColor:COLORFROM16(0x008C55, 1) forState:UIControlStateNormal];
         [_getVerificationCodeButton addTarget:self action:@selector(respondsToGetVerificationCodeButton) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -362,7 +362,7 @@
         _surePasswordTextField.font = FONT(14);
         _surePasswordTextField.textColor = COLORFROM16(0x333333, 1);
         _surePasswordTextField.secureTextEntry = YES;
-        _surePasswordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Confirm input a password", nil);
+        _surePasswordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Confirm Password", nil);
     }
     return _surePasswordTextField;
 }
@@ -381,7 +381,7 @@
         _commitButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _commitButton.clipsToBounds = YES;
         
-        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Commit", nil) forState:UIControlStateNormal];
+        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;

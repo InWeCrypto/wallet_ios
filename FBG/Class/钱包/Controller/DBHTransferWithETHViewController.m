@@ -47,7 +47,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Transfer Accounts", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Transfer", nil);
     
     [self setUI];
     
@@ -356,7 +356,7 @@
     if (!_transferNumberLabel) {
         _transferNumberLabel = [[UILabel alloc] init];
         _transferNumberLabel.font = FONT(13);
-        _transferNumberLabel.text = [NSString stringWithFormat:@"%@:", DBHGetStringWithKeyFromTable(@"Transfer Number", nil)];
+        _transferNumberLabel.text = [NSString stringWithFormat:@"%@:", DBHGetStringWithKeyFromTable(@"Amount", nil)];
         _transferNumberLabel.textColor = COLORFROM16(0x000000, 1);
     }
     return _transferNumberLabel;
@@ -384,8 +384,8 @@
         _balanceLabel.textColor = COLORFROM16(0xA6A4A4, 1);
         
         NSString *balance = [NSString stringWithFormat:@"%.8lf", self.tokenModel.balance.floatValue];
-        NSMutableAttributedString *balanceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"（%@ %@：%@）", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Available Number", nil), balance]];
-        [balanceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xF9480E, 1) range:NSMakeRange([NSString stringWithFormat:@"%@ %@", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Available Number", nil)].length + 2, balance.length)];
+        NSMutableAttributedString *balanceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"（%@ %@：%@）", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Amount Available", nil), balance]];
+        [balanceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xF9480E, 1) range:NSMakeRange([NSString stringWithFormat:@"%@ %@", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Amount Available", nil)].length + 2, balance.length)];
         _balanceLabel.attributedText = balanceAttributedString;
     }
     return _balanceLabel;
@@ -440,7 +440,7 @@
     if (!_remarkLabel) {
         _remarkLabel = [[UILabel alloc] init];
         _remarkLabel.font = FONT(13);
-        _remarkLabel.text = [NSString stringWithFormat:@"%@:", DBHGetStringWithKeyFromTable(@"Remarks", nil)];
+        _remarkLabel.text = [NSString stringWithFormat:@"%@:", DBHGetStringWithKeyFromTable(@"Memo", nil)];
         _remarkLabel.textColor = COLORFROM16(0x000000, 1);
     }
     return _remarkLabel;
@@ -465,7 +465,7 @@
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
         _commitButton.titleLabel.font = FONT(14);
-        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Commit", nil) forState:UIControlStateNormal];
+        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;

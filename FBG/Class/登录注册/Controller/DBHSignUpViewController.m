@@ -102,7 +102,7 @@
         make.right.equalTo(weakSelf.getVerificationCodeButton.mas_left).offset(- AUTOLAYOUTSIZE(10));
     }];
     [self.getVerificationCodeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Get Verification Code", nil) fontSize:AUTOLAYOUTSIZE(14)]);
+        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Get", nil) fontSize:AUTOLAYOUTSIZE(14)]);
         make.right.equalTo(weakSelf.secondLineView);
         make.height.equalTo(weakSelf.verificationCodeTextField);
         make.centerY.equalTo(weakSelf.verificationCodeTextField);
@@ -156,12 +156,12 @@
 
 #pragma mark ------ UITextViewDelegate ------
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
-    if ([[URL scheme] isEqualToString:@"Service Agreement"]) {
+    if ([[URL scheme] isEqualToString:@"the Terms of Service"]) {
         // 服务协议
         
         return NO;
     }
-    if ([[URL scheme] isEqualToString:@"Privacy Policy"]) {
+    if ([[URL scheme] isEqualToString:@"the Privacy Policy"]) {
         // 隐私条款
         
         return NO;
@@ -175,7 +175,7 @@
  */
 - (void)getVerificationCode {
     WEAKSELF
-    [PPNetworkHelper POST:[NSString stringWithFormat:@"send_code/%@", self.accountTextField.text] baseUrlType:3 parameters:nil hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Get Verification Code", nil)] success:^(id responseObject) {
+    [PPNetworkHelper POST:[NSString stringWithFormat:@"send_code/%@", self.accountTextField.text] baseUrlType:3 parameters:nil hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Get", nil)] success:^(id responseObject) {
         [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"The verification code has been sent to your mailbox", nil)];
         [weakSelf keepTime];
     } failure:^(NSString *error) {
@@ -194,6 +194,12 @@
     
     WEAKSELF
     [PPNetworkHelper POST:@"register" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Sign Up", nil)] success:^(id responseObject) {
+        UserModel *user = [UserSignData share].user;
+        if (![UserSignData share].user) {
+            user = [[UserModel alloc] init];
+        }
+        user.isFirstRegister = YES;
+        [[UserSignData share] storageData:[UserSignData share].user];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -219,6 +225,7 @@
 - (void)respondsToShowPasswordButton:(UIButton *)button {
     button.selected = !button.selected;
     self.passwordTextField.secureTextEntry = !button.isSelected;
+    self.surePasswordTextField.secureTextEntry = !button.isSelected;
 }
 /**
  注册
@@ -229,7 +236,7 @@
         return;
     }
     if (!self.verificationCodeTextField.text.length) {
-        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please input a verification code", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Please enter verification code", nil)];
         return;
     }
     if (!self.passwordTextField.text.length) {
@@ -325,7 +332,7 @@
         _verificationCodeTextField = [[UITextField alloc] init];
         _verificationCodeTextField.font = FONT(14);
         _verificationCodeTextField.textColor = COLORFROM16(0x333333, 1);
-        _verificationCodeTextField.placeholder = DBHGetStringWithKeyFromTable(@"Please input a verification code", nil);
+        _verificationCodeTextField.placeholder = DBHGetStringWithKeyFromTable(@"Please enter verification code", nil);
     }
     return _verificationCodeTextField;
 }
@@ -340,7 +347,7 @@
     if (!_getVerificationCodeButton) {
         _getVerificationCodeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _getVerificationCodeButton.titleLabel.font = FONT(14);
-        [_getVerificationCodeButton setTitle:DBHGetStringWithKeyFromTable(@"Get Verification Code", nil) forState:UIControlStateNormal];
+        [_getVerificationCodeButton setTitle:DBHGetStringWithKeyFromTable(@"Get", nil) forState:UIControlStateNormal];
         [_getVerificationCodeButton setTitleColor:COLORFROM16(0x008C55, 1) forState:UIControlStateNormal];
         [_getVerificationCodeButton addTarget:self action:@selector(respondsToGetVerificationCodeButton) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -385,7 +392,7 @@
         _surePasswordTextField.font = FONT(14);
         _surePasswordTextField.textColor = COLORFROM16(0x333333, 1);
         _surePasswordTextField.secureTextEntry = YES;
-        _surePasswordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Confirm input a password", nil);
+        _surePasswordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Confirm Password", nil);
     }
     return _surePasswordTextField;
 }
@@ -404,7 +411,7 @@
         _signUpButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _signUpButton.clipsToBounds = YES;
         
-        [_signUpButton setTitle:DBHGetStringWithKeyFromTable(@"Register", nil) forState:UIControlStateNormal];
+        [_signUpButton setTitle:DBHGetStringWithKeyFromTable(@"Sign Up", nil) forState:UIControlStateNormal];
         [_signUpButton addTarget:self action:@selector(respondsToSignUpButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _signUpButton;
@@ -422,9 +429,9 @@
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.alignment = NSTextAlignmentCenter;
         
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@", DBHGetStringWithKeyFromTable(@"Registration means agreement", nil), DBHGetStringWithKeyFromTable(@"And", nil), DBHGetStringWithKeyFromTable(@"《Service Agreement》", nil), DBHGetStringWithKeyFromTable(@"《Privacy Policy》", nil)] attributes:@{NSForegroundColorAttributeName:COLORFROM16(0xE1E1E1, 1), NSParagraphStyleAttributeName:paragraphStyle}];
-        [attributedString addAttribute:NSLinkAttributeName value:@"Service Agreement" range:[[attributedString string] rangeOfString:DBHGetStringWithKeyFromTable(@"《Service Agreement》", nil)]];
-        [attributedString addAttribute:NSLinkAttributeName value:@"Privacy Policy" range:[[attributedString string] rangeOfString:DBHGetStringWithKeyFromTable(@"《Privacy Policy》", nil)]];
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@", DBHGetStringWithKeyFromTable(@"'Sign up' constitutes your acceptance and agreement to be bound by", nil), DBHGetStringWithKeyFromTable(@"And", nil), DBHGetStringWithKeyFromTable(@"《the Terms of Service》", nil), DBHGetStringWithKeyFromTable(@"《the Privacy Policy》", nil)] attributes:@{NSForegroundColorAttributeName:COLORFROM16(0xE1E1E1, 1), NSParagraphStyleAttributeName:paragraphStyle}];
+        [attributedString addAttribute:NSLinkAttributeName value:@"the Terms of Service" range:[[attributedString string] rangeOfString:DBHGetStringWithKeyFromTable(@"《the Terms of Service》", nil)]];
+        [attributedString addAttribute:NSLinkAttributeName value:@"the Privacy Policy" range:[[attributedString string] rangeOfString:DBHGetStringWithKeyFromTable(@"《the Privacy Policy》", nil)]];
         _protocolTextView.attributedText = attributedString;
         _protocolTextView.linkTextAttributes = @{NSForegroundColorAttributeName:COLORFROM16(0x008C55, 1)};
     }

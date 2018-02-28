@@ -41,7 +41,7 @@
         make.centerY.equalTo(weakSelf.contentView);
     }];
     [self.valueTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(AUTOLAYOUTSIZE(96));
+        make.left.offset(AUTOLAYOUTSIZE(140));
         make.right.offset(- AUTOLAYOUTSIZE(15));
         make.height.equalTo(weakSelf.contentView);
         make.centerY.equalTo(weakSelf.contentView);
@@ -78,14 +78,14 @@
     WEAKSELF
     if (self.showPasswordButton.hidden) {
         [self.valueTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.offset(AUTOLAYOUTSIZE(96));
+            make.left.offset(AUTOLAYOUTSIZE(140));
             make.right.offset(- AUTOLAYOUTSIZE(15));
             make.height.equalTo(weakSelf.contentView);
             make.centerY.equalTo(weakSelf.contentView);
         }];
     } else {
         [self.valueTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.offset(AUTOLAYOUTSIZE(96));
+            make.left.offset(AUTOLAYOUTSIZE(140));
             make.right.equalTo(weakSelf.showPasswordButton.mas_left);
             make.height.equalTo(weakSelf.contentView);
             make.centerY.equalTo(weakSelf.contentView);

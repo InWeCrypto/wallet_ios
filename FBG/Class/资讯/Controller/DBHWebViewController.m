@@ -84,6 +84,11 @@
     
     [self.webView loadHTMLString:_htmlString baseURL:nil];
 }
+- (void)setUrl:(NSString *)url {
+    _url = url;
+    
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url]]];
+}
 
 - (WKWebView *)webView {
     if (!_webView) {

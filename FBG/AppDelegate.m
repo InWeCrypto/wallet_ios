@@ -54,7 +54,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     if (!APP_APIEHEAD)
     {
-        [[NSUserDefaults standardUserDefaults] setObject:TESTAPIEHEAD1 forKey:@"appNetWorkApi"];
+        [[NSUserDefaults standardUserDefaults] setObject:APIEHEAD1 forKey:@"appNetWorkApi"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
@@ -78,7 +78,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     [self netNotification];
     
     //键盘处理
-    [self configureBoardManager];
+//    [self configureBoardManager];
     
     //白色导航
 //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
@@ -139,7 +139,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 //     {
 //     }];
     
-    if ([UserSignData share].user && [UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone) {
+    if ([UserSignData share].user.token.length && [UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone && ([UserSignData share].user.isOpenTouchId || [UserSignData share].user.isOpenFaceId)) {
         [self showThirdLogin];
     }
 

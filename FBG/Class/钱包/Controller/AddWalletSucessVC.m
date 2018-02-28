@@ -27,7 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Add Wallet", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Add Wallets", nil);
     
 //    if ([self.model.category_name isEqualToString:@"ETH"])
 //    {

@@ -152,7 +152,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         case 2: {
             DBHPersonalSettingForSwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHPersonalSettingForSwitchTableViewCellIdentifier forIndexPath:indexPath];
             cell.functionalUnitType = self.functionalUnitType;
-            cell.title = @"The project's website";
+            cell.title = @"Receive Follow-up Updates";
             
             [cell changeSwitchBlock:^(BOOL isOpen) {
                 
@@ -232,7 +232,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     if (!_titleArray) {
         _titleArray = @[@"InWe Hotspot",
                         @"Trading View",
-                        @"Exchange Announcement",
+                        @"Exchange",
                         @"Candybowl",
                         @"Trading Reminder",
                         @"Notice"];

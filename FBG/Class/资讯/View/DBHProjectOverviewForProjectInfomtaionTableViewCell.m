@@ -144,13 +144,13 @@
     } else {
         
     }
-    if ([[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"]) {
+    if ([[DBHLanguageTool sharedInstance].language isEqualToString:CNS]) {
         self.rankLabel.text = [NSString stringWithFormat:@"第%ld名", (NSInteger)_projectDetailModel.categoryScore.sort];
     } else {
-        self.rankLabel.text = [NSString stringWithFormat:@"%ld", (NSInteger)_projectDetailModel.categoryScore.sort];
+        self.rankLabel.text = [NSString stringWithFormat:@"No.%ld", (NSInteger)_projectDetailModel.categoryScore.sort];
     }
     self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
-    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf%@", _projectDetailModel.categoryScore.value, DBHGetStringWithKeyFromTable(@"Part", nil)];
+    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf%@", _projectDetailModel.categoryScore.value, DBHGetStringWithKeyFromTable(@"", nil)];
 }
 
 - (UIImageView *)iconImageView {
@@ -219,7 +219,7 @@
     if (!_hotAttentionLabel) {
         _hotAttentionLabel = [[UILabel alloc] init];
         _hotAttentionLabel.font = FONT(11);
-        _hotAttentionLabel.text = DBHGetStringWithKeyFromTable(@"Hot Attention", nil);
+        _hotAttentionLabel.text = DBHGetStringWithKeyFromTable(@"Rank", nil);
         _hotAttentionLabel.textColor = COLORFROM16(0xC5C5C5, 1);
         _hotAttentionLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -250,7 +250,7 @@
     if (!_userGradeLabel) {
         _userGradeLabel = [[UILabel alloc] init];
         _userGradeLabel.font = FONT(11);
-        _userGradeLabel.text = DBHGetStringWithKeyFromTable(@"User Grade", nil);
+        _userGradeLabel.text = DBHGetStringWithKeyFromTable(@"Rating", nil);
         _userGradeLabel.textColor = COLORFROM16(0xC5C5C5, 1);
         _userGradeLabel.textAlignment = NSTextAlignmentCenter;
     }

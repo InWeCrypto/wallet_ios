@@ -62,14 +62,14 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
     return 4;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return section == 1 ? 4 : 1;
+    return section == 1 ? 5 : 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!indexPath.section) {
         DBHMyForUserInfomationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyForUserInfomationTableViewCellIdentifier forIndexPath:indexPath];
         [cell.headImageView sdsetImageWithURL:[UserSignData share].user.img placeholderImage:[UIImage imageNamed:@"touxiang"]];
         cell.nameLabel.text = [UserSignData share].user.nickname;
-        cell.accountLabel.text = [NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Login Account", nil), [UserSignData share].user.email];
+        cell.accountLabel.text = [NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"My account", nil), [UserSignData share].user.email];
         
         return cell;
     } else {
@@ -93,23 +93,35 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
         case 1: {
             switch (indexPath.row) {
                 case 0: {
+                    // 邀请码
+                    if ([UserSignData share].user.invitationCode.length) {
+                        KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
+                        webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
+                        webView.isHiddenRefresh = NO;
+                        [self.navigationController pushViewController:webView animated:YES];
+                    } else {
+                        [self getInvitationCode];
+                    }
+                    break;
+                }
+                case 1: {
                     // 资产账本
                     [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
                     break;
                 }
-                case 1: {
+                case 2: {
                     // 通讯录
                     DBHAddressBookViewController *addressBookViewController = [[DBHAddressBookViewController alloc] init];
                     [self.navigationController pushViewController:addressBookViewController animated:YES];
                     break;
                 }
-                case 2: {
+                case 3: {
                     // 我的收藏
                     DBHMyFavoriteViewController *myFavoriteViewController = [[DBHMyFavoriteViewController alloc] init];
                     [self.navigationController pushViewController:myFavoriteViewController animated:YES];
                     break;
                 }
-                case 3: {
+                case 4: {
                     // 我的行情提醒
                     DBHMyQuotationReminderViewController *myQuotationReminderViewController = [[DBHMyQuotationReminderViewController alloc] init];
                     [self.navigationController pushViewController:myQuotationReminderViewController animated:YES];
@@ -145,6 +157,21 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
     return AUTOLAYOUTSIZE(11.5);
 }
 
+#pragma mark ------ Data ------
+- (void)getInvitationCode {
+    WEAKSELF
+    [PPNetworkHelper GET:@"user/ont_candy_bow" baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
+        [UserSignData share].user.invitationCode = [NSString stringWithFormat:@"%@", responseObject[@"code"]];
+        [[UserSignData share] storageData:[UserSignData share].user];
+        
+        KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
+        webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
+        [weakSelf.navigationController pushViewController:webView animated:YES];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+
 #pragma mark ------ Getters And Setters ------
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -166,13 +193,13 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
 
 - (NSArray *)iconImageNameArray {
     if (!_iconImageNameArray) {
-        _iconImageNameArray = @[@[@"wode_zichanzhangben", @"wode_tongxunlu", @"wode_shoucang", @"wode_tixing"], @[@"wode_shezhi"], @[@"wode_guanyuwo"]];
+        _iconImageNameArray = @[@[@"wode_yaoqingma", @"wode_zichanzhangben", @"wode_tongxunlu", @"wode_shoucang", @"wode_tixing"], @[@"wode_shezhi"], @[@"wode_guanyuwo"]];
     }
     return _iconImageNameArray;
 }
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@[@"Assets Book", @"Address Book", @"My Favorite", @"My Quotation Reminder"], @[@"Setting Up"], @[@"About Us"]];
+        _titleArray = @[@[@"Invitation Code", @"Book of Assets", @"Contacts", @"My Reserves", @"My notifications"], @[@"Settings"], @[@"About Us"]];
     }
     return _titleArray;
 }

@@ -17,4 +17,6 @@
  */
 @property (nonatomic, strong) DBHWalletManagerForNeoModelList *ethWalletModel;
 
+@property (nonatomic, assign) BOOL isTransform;
+
 @end

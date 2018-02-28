@@ -27,7 +27,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Network Switcher", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Network Settings", nil);
     self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
     self.currentSelectedRow = [APP_APIEHEAD isEqualToString:APIEHEAD1] ? 0 : 1;
     
@@ -106,7 +106,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
 
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@"Formal Network", @"Test Network"];
+        _titleArray = @[@"MainNet", @"TestNet"];
     }
     return _titleArray;
 }
