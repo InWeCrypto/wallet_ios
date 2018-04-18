@@ -152,7 +152,7 @@
     
     //record
     self.recordButton = [[UIButton alloc] initWithFrame:self.inputTextView.frame];
-    self.recordButton.accessibilityIdentifier = @"record";
+    self.recordButton.accessibilityIdentifier = RECORD;
     self.recordButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
     [self.recordButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [self.recordButton setBackgroundImage:[[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_recordBg"] stretchableImageWithLeftCapWidth:10 topCapHeight:10] forState:UIControlStateNormal];

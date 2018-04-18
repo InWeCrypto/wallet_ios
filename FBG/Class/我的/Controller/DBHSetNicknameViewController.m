@@ -25,7 +25,7 @@ static NSString *const kDBHSetNicknameTableViewCellIdentifier = @"kDBHSetNicknam
     [super viewDidLoad];
     
     self.title = DBHGetStringWithKeyFromTable(@"Setting your name", nil);
-    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+    self.view.backgroundColor = LIGHT_WHITE_BGCOLOR;
     
     [self setUI];
 }
@@ -65,10 +65,10 @@ static NSString *const kDBHSetNicknameTableViewCellIdentifier = @"kDBHSetNicknam
 - (void)updateNickname {
     DBHSetNicknameTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     NSDictionary *paramters = @{@"img":[UserSignData share].user.img,
-                                @"name":cell.nicknameTextField.text};
+                                NAME:cell.nicknameTextField.text};
     WEAKSELF
     [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Submit", nil)] success:^(id responseObject) {
-        [UserSignData share].user.nickname = responseObject[@"name"];
+        [UserSignData share].user.nickname = responseObject[NAME];
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Change Success", nil)];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {

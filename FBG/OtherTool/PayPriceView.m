@@ -51,12 +51,9 @@
         self.alertContView.alpha = 1;
         self.priceTF.text = @"";
         self.remarkTF.text = @"";
-        if ([UserSignData share].user.walletUnitType == 1)
-        {
+        if ([UserSignData share].user.walletUnitType == 1) {
             self.rmbPriceLB.text = @"≈￥0.00";
-        }
-        else
-        {
+        } else {
             self.rmbPriceLB.text = @"≈$0.00";
         }
         

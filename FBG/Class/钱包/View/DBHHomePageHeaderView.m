@@ -16,7 +16,6 @@
 @property (nonatomic, strong) UILabel *totalBalanceLabel;
 @property (nonatomic, strong) UILabel *totalBalanceValueLabel;
 @property (nonatomic, strong) UIButton *showTotalBalanceButton;
-@property (nonatomic, strong) UIButton *assetButton;
 
 @property (nonatomic, copy) ClickButtonBlock clickButtonBlock;
 
@@ -29,7 +28,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = WHITE_COLOR;
         self.clipsToBounds = YES;
         
         [self setUI];
@@ -67,16 +66,20 @@
         make.left.offset(AUTOLAYOUTSIZE(30.5));
         make.bottom.equalTo(weakSelf.totalBalanceValueLabel.mas_top);
     }];
+   
     [self.totalBalanceValueLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.totalBalanceLabel);
         make.bottom.equalTo(weakSelf.assetButton.mas_top).offset(- AUTOLAYOUTSIZE(22));
     }];
+    
     [self.showTotalBalanceButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.greaterThanOrEqualTo(weakSelf.totalBalanceValueLabel.mas_right);
         make.width.offset(AUTOLAYOUTSIZE(41.5));
         make.height.offset(AUTOLAYOUTSIZE(33));
         make.right.offset(- AUTOLAYOUTSIZE(17.5));
         make.centerY.equalTo(weakSelf.totalBalanceValueLabel);
     }];
+    
     [self.assetButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.offset(AUTOLAYOUTSIZE(52));
         make.centerX.equalTo(weakSelf);
@@ -104,8 +107,11 @@
  */
 - (void)respondsToShowTotalBalanceButton {
     self.showTotalBalanceButton.selected = !self.showTotalBalanceButton.selected;
-    [UserSignData share].user.isHideAsset = self.showTotalBalanceButton.isSelected;
-    self.totalBalanceValueLabel.text = [UserSignData share].user.isHideAsset ? [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"] : self.totalAsset;
+    UserModel *user = [UserSignData share].user;
+    user.isHideAsset = self.showTotalBalanceButton.isSelected;
+    
+    [[UserSignData share] storageData:user];
+    self.totalBalanceValueLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
     self.clickButtonBlock(3);
 }
 /**
@@ -121,7 +127,7 @@
 }
 - (void)refreshAsset {
     self.showTotalBalanceButton.selected = [UserSignData share].user.isHideAsset;
-    self.totalBalanceValueLabel.text = [UserSignData share].user.isHideAsset ? [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"] : self.totalAsset;
+    self.totalBalanceValueLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -129,7 +135,7 @@
     _totalAsset = totalAsset;
     
     self.showTotalBalanceButton.selected = [UserSignData share].user.isHideAsset;
-    self.totalBalanceValueLabel.text = [UserSignData share].user.isHideAsset ? [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"] : self.totalAsset;
+    self.totalBalanceValueLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
 }
 - (UIImageView *)backGroundImageView {
     if (!_backGroundImageView) {
@@ -171,6 +177,8 @@
         _totalBalanceValueLabel = [[UILabel alloc] init];
         _totalBalanceValueLabel.font = BOLDFONT(35);
         _totalBalanceValueLabel.textColor = COLORFROM16(0xFFFFFF, 1);
+        _totalBalanceValueLabel.adjustsFontSizeToFitWidth = YES;
+//        _totalBalanceValueLabel.minimumScaleFactor = 0.6;
     }
     return _totalBalanceValueLabel;
 }

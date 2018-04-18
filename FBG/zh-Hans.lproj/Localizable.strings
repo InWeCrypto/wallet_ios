@@ -8,7 +8,7 @@
 
 //中文
 
-"english" = "chainese";
+"english" = "chinese";
 
 /*
  导航
@@ -19,9 +19,19 @@
 "News" = "资讯";
 "Custom" = "定制";
 
+"info_guide_tip_en" = "info_guide_tip_zh";
+"info_guide_ikown_en" = "info_guide_ikown_zh";
+"add_wallet_guide_tip_en" = "add_wallet_guide_tip_zh";
+"wallet_detail_guide_tip_en" = "wallet_detail_guide_tip_zh";
+"wallet_guide_tip_en" = "wallet_guide_tip_zh";
+
 /*
  通用
  */
+"Favorite" = "自选";
+"Share successfully" = "分享成功";
+"Cancel share" = "取消分享";
+"Share failed" = "分享失败";
 "Log in" = "登录";
 "Hot Wallet" = "热钱包";
 "Cold Wallet" = "冷钱包";
@@ -37,32 +47,55 @@
 "Flashlight" = "手电";
 "Scan Result" = "扫描结果";
 "Only FBG related information can be scanned" = "只能扫描FBG相关信息";
-
+"The current network is not available, please check your network Settings." = "当前网络不可用,请检查你的网络设置";
+"Unknown network" = "未知网络";
+"The network of mobile" = "手机自带网络";
+"Request success" = "请求执行成功";
+"Share Picture" = "长图分享";
+"xiazaiyemian_en" = "xiazaiyemian";
+"Save " = "保存到本地";
+"Share" = "分享";
+"Creating Photo..." = "正在生成图片...";
 /*
  钱包
  */
+"Incorrect wallet address, please confirm and try again" = "该钱包的地址对比不正确,请确认后重试";
+"Failed to import wallet" = "钱包导入失败";
+"Please enter the correct wallet address" = "请输入正确的钱包地址";
+"It is already a monitoring wallet" = "已经是观察钱包了";
+"Incorrect password" = "钱包输入密码错误";
+"Successfully converted" = "转化成功";
+"Backup successfully" = "备份成功";
+"Backup failed" = "备份失败";
+"Prepare mnemonics for selecting records in order" = "准备按顺序选择记录的助记词";
+"All assets" = "所有资产";
+"Amount " = "数量";
+"Hide 0 Tokens" = "隐藏数量为0的代币";
 "Total Assets" = "总资产";
+" Add " = "添加钱包";
 "Add Wallet" = "添加钱包";
 "Scan" = "  扫一扫  ";
 "Import Wallet" = " 导入钱包";
 "Unbackup" = "未备份";
 "Observe" = "观察";
+"No Data " = "暂无";
 
 "ETH Wallet" = "ETH 钱包";
 "BTC Wallet" = "ETH 钱包";
 "Token Wallet" = "代币钱包";
 "Add New Wallet" = "添加新钱包";
 "Wallet Name" = "钱包名称";
-"Password Setting" = "设定密码";
+"Password " = "设定密码";
+"Input Wallet Name" = "请输入钱包名称";
 "Repeat Password" = "重复输入密码";
 "Case letters and numbers of not less than 8 digits are required" = "需包含不少于8位数的大小写字母及数字";
 "Confirm Add" = "确认添加";
 "Add Success" = "添加成功";
-"Please enter the wallet in time and backup the seed to ensure the safety of the wallet. Once the seed is backed up, it will disappear on the APP. It should be kept in mind, otherwise the wallet can not be retrieved" = "请及时进入钱包并备份助记词保障钱包的安全，助记词一经备份则会在APP上消失，需要牢记，否则钱包无法找回";
-
+"Please enter the wallet and back up your security code and Key Store to protect your wallet. Once the security code is backed up, it will disappear on the app. You need to keep it in mind. Otherwise, the wallet cannot be retrieved." = "请及时进入钱包并备份安全码以及Key Store保障钱包的安全，安全码一经备份则会在APP上消失，需要牢记，否则钱包无法找回";
+"No wallet, please go to 'Add Wallet' in the upper right corner to create wallet" = "暂无钱包，请至右上角'添加钱包'处创建钱包";
 
 "Mnemonic" = "助记词";
-"Private Key" = "私匙";
+"Private Key" = "私钥";
 "Watch1" = "查看";
 "Watch2" = "观察";
 "Seed" = "种子";
@@ -102,7 +135,7 @@
 "Transfer wallet address" = "转账钱包地址";
 "Please enter a transfer address" = "请输入转账地址";
 "Transfer amount" = "转账金额";
-"GAS Cost" = "GAS费用";
+"Pitman Cost" = "矿工费用";
 "Slow" = "慢";
 "Fast" = "快";
 "Memo" = "备注";
@@ -131,6 +164,7 @@
 "Failed Transaction" = "交易失败";
 "Packaging..." = "正在打包";
 "Confirmed" = "已经确认";
+"Project Information" = "项目资讯查看";
 
 /*
  行情
@@ -148,12 +182,17 @@
 "Home page" = "首页";
 "All the information" = "所有资讯";
 "Business Project" = "项目精品";
-"Bonbonniere" = "糖果盒";
 
 /*
  钱包
  */
-"Manager Wallets" = "钱包管理";
+"Get mnemonic failed, please retry later!" = "获取助记词失败，请稍后重试";
+"Successfully modified" = "修改成功";
+"Don't Back up, Enter wallet" = "暂不备份，直接进入钱包";
+"The wallet address is not correct." = "钱包地址不正确";
+"The password needs to contain at least 8 characters, with upper case, lower case and digits mixed. " = "密码需包含不少于8位数的大小写字母及数字";
+"Watch wallet doesn't support claim Gas" = "观察钱包不支持提取Gas";
+"Wallet List" = "钱包列表";
 "Add Wallets" = "新增钱包";
 "Create Wallet" = "创建钱包";
 "Start Import" = "导入";
@@ -166,12 +205,14 @@
 "Join" = "加入";
 "Available" = "可提取";
 "Claim" = "提取";
+" Unfreeze " = " 解冻 ";
+"The balance of NEO is 0!Unable to unfreeze!" = "暂未可解冻的Gas";
 "Total" = "全部提取";
 "Apply" = "申请提取";
 "Claim Gas Limit" = "最高可提取Gas";
-"Wallet QR Code" = "钱包二维码";
+"Wallet Address" = "收款地址";
 "Add Nep-5 asset" = "添加NEP-5资产";
-"Claim" = "提取Gas";
+"Claim Gas" = "提取Gas";
 "Transactions Records" = "最近交易记录";
 "Amount" = "转账数量";
 "To:" = "收款钱包地址";
@@ -183,13 +224,13 @@
 "Fees" = "手续费";
 "Original Fees" = "原手续费";
 "Total Balance" = "总资产";
-"Wallet Lists" = "钱包查看";
+"Wallet List " = "钱包查看";
 "Amount Available" = "可用数量";
 "Please select a token" = "请选择一种代币";
-"Transform Wallet" = "转化钱包";
+"Convert to Hot Wallet" = "转化钱包";
 "Transaction Details" = "交易详情";
 "Can Extracted" = "可提取";
-"Unfreeze" = "不可提取";
+"Frozen " = "不可提取";
 "In gas extraction, Please be patient" = "gas解冻中，请耐心等待";
 "In the validation..." = "验证中...";
 "Coming Soon" = "敬请期待";
@@ -197,11 +238,49 @@
 "Copy success, you can send it to friends" = "复制成功，可以发给朋友们了";
 "Transaction Number" = "交易单号";
 "Enter The Wallet And Start Backup" = "进入钱包开始备份";
+"Start Backup Mnemonics" = "开始备份助记词";
+"Transferring from cold wallet is not supported at the moment. Please Change to hot wallet" = "暂不支持冷钱包转账，请转化为热钱包";
+"The input cannot be empty" = "请确认信息是否完善";
+"Creating..." = "创建中...";
+"Need Backup" = "需要备份";
+"1. Back-up mnemonic words can help you recover quickly when you lose your wallet." = "1.备份助记词能让你在丢失钱包时快速找回。";
+"2. Be sure to transcribe the following mnemonic words and keep them in a safe place." = "2.请务必将以下助记词抄录下来，并且保存在安全的地方。";
+"3. Once the backup is successful, this backup step will not appear again." = "3.助记词一旦备份成功，此备份步骤不会再出现。";
+"Order successfully created" = "订单创建成功";
+"Deleting..." = "删除中...";
+"Delete successfully" = "删除成功";
+"Order list has not been loaded yet" = "订单列表尚未加载完成";
+ "You still have unfinished orders! Please try again later!" = "您还有未完成的订单!请稍后重试!";
+"Loading..." = "加载中...";
+"Saving..." = "保存中...";
+"Adding..." = "添加中...";
+"Transfer failed" = "转账失败";
+"Has Uncompleted Orders" = "存在尚未完成的订单！";
+"Transfer successfully" = "转账成功";
+"Transfer failed, please try again later" = "转账失败，请稍后重试";
+"The password is incorrect. Please try again later" = "密码错误，请稍后重试";
+"Wrong password, please re-enter" = "密码错误，请重新输入";
+"Saved successfully" = "保存成功";
+"Saved failed" = "保存失败";
+"Unfreeze successfully" = "解冻成功";
+"Claim successfully" = "提取成功";
+"Unfreeze failure, please try again later" = "解冻失败，请稍后重试";
+"Claim failure, please try again later" = "提取失败，请稍后重试";
+"You don't have a wallet yet." = "您暂时还没有钱包";
+"Add / Import wallet" = "添加 / 导入钱包";
+"Not Found" = "未搜索到代币";
+"Successfully modified" = "修改成功";
+"Modifying..." = "修改中...";
+"Please enter wallet name" = "请输入钱包名";
+"Please enter wallet address" = "请输入地址";
+"Please enter a password that has at least one uppercase, one lowercase, and no less than 8 digits" = "请输入至少存在一个大写、小写字母、数字8位数以上的密码";
 
+"W" = "万";
+"Y" = "亿";
 /*
  登录注册
  */
-"Profile" = "我的";
+"My Profile" = "我的";
 "Hello," = "嗨,";
 "Welcome Back!" = "欢迎回来!";
 "Email" = "邮箱";
@@ -233,33 +312,42 @@
 "Use" = "现在开启";
 "No Now" = "暂不开启";
 "use password to sign in" = "使用密码登录";
-"check" = "检查";
+"Check" = "检查";
 "Check Failed" = "验证失败";
 "The verification code has been sent to your mailbox" = "验证码已发送您的邮箱";
 "1 hour" = "1小时";
 "1 Day" = "天";
 "1 Week" = "周";
-
+"Face ID unavailable" = "Face ID不可用";
+"Face ID unauthorized" = "Face ID未授权";
 /*
  我的
  */
+"Functional" = "功能建议";
+"Content" = "内容建议";
+"Other " = "其他";
+"Feedback" = "意见反馈";
+"Help Center" = "帮助中心";
+"Help And Feedback" = "帮助与反馈";
 "Invitation Code" = "邀请码";
+"The event is over" = "活动已结束";
 "Book of Assets" = "资产账本";
 "Contacts" = "通讯录";
 "My Reserves" = "我的收藏";
 "Reserves" = "收藏";
 "Reserves Success" = "收藏成功";
 "Look Project" = "查找项目";
-"My notifications" = "我的行情提醒";
+"My Notifications" = "我的行情提醒";
 "Settings" = "设置";
 "About Us" = "关于我们";
+"Commented Project" = "我评论的项目";
 "Originality" = "原创";
 "Cancel Collection" = "取消收藏";
 "My account" = "登录账户";
 "Used for" = "用于";
 "Wallet 1" = "钱包1";
 "You have no wallet" = "您暂无钱包";
-"Current version：1.0.0" = "当前版本：1.0.0";
+"Current version:" = "当前版本：";
 "Service Policy" = "服务协议";
 "Privacy Policy" = "隐私条款";
 "Open Source Agreement" = "开源协议";
@@ -268,9 +356,12 @@
 /*
  资讯
  */
-"InWe Hotspot" = "InWe热点";
-"Trading View" = "交易观点";
+"News " = "新闻";
+"Dynamism" = "动态"; // 修改翻译需要修改对应的图片名称
+"Viewpoint" = "观点";
+"Expectation" = "期望";
 "Exchange" = "交易所公告";
+"Ranking" = "排行";
 "Candybowl" = "糖果盒";
 "Trading Reminder" = "交易提醒";
 "Notice" = "通知";
@@ -280,7 +371,9 @@
 "Ended" = "已结束";
 "Payment" = "收付款";
 "Please select a wallet" = "请选择一个钱包";
-
+"Hotspot" = "热点资讯";
+"24H News" = "24小时资讯";
+"Other" = "其它";
 /*
  交易所公告
  */
@@ -302,13 +395,15 @@
 "Exchanges" = "交易市场";
 "Project" = "项目";
 "Overview" = "项目概况";
+"Information" = "综合信息";
 "Follow-up" = "项目动态";
 "History" = "历史资讯";
 "Project Information" = "项目资讯";
 "Introduction" = "项目介绍";
 "Community" = "项目社区";
 "Rating" = "评分";
-"Rating" = "项目评分";
+" Rating " = "项目评分";
+"The project has been graded" = "该项目已评分";
 "Status" = "状态";
 "Offical website" = "项目官网";
 "Receive Follow-up Updates" = "实时资讯推送";
@@ -316,10 +411,8 @@
 "Has Score" = "已评分";
 "Not Score" = "未评分";
 "Explore" = "浏览器";
-"Token Holder" = "令牌持有人";
-"Volume" = "量";
+"Token Holder" = "代币分布图";
 "" = "分";
-"Rank" = "关注热度";
 "Rating" = "用户评分";
 "ICO Distribution" = "ICO 结构";
 "No CandyBowl" = "暂无空投";
@@ -328,12 +421,13 @@
 "No Data" = "暂无数据";
 "Reminder" = "提醒设置";
 "After setting the reminder, the system will push notifications at the Above/Below value of the quotation" = "设置提醒后，系统将于行情价格的最高值/最低值进行推送提醒";
-"Above" = "最高值";
-"Below" = "最低值";
+"Above" = "上限";
+"Below" = "下限";
 "Current Price" = "当前价格";
 "The highest value should be greater than the minimum" = "最高值应大于最低值";
 "Set Success" = "设置成功";
-"Rank" = "关注热度";
+"Rank" = "市值排名";
+"Attention" = "关注热度";
 "Market Cap" = "市值";
 "Circulating Supply" = "流通量";
 "Total Supply" = "总量";
@@ -345,8 +439,21 @@
 "High" = "24小时最高价";
 "Volume" = "24小时成交额";
 "Low" = "24小时最低价";
+"Volume (24h)" = "24小时交易量";
 "Detail" = "详情";
+"More " = "查看更多交易市场";
 
+"Open " = "开 ";
+"Close " = "关 ";
+"High " = "高 ";
+"Low " = "低 ";
+"Volume " = "量 ";
+
+"WeChat" = "微信";
+"Moments" = "朋友圈";
+
+"Setting..." = "设置中...";
+"Successfully set" = "设置成功";
 /*
  历史资讯
  */
@@ -357,7 +464,7 @@
 "Cooperation And Investors" = "合作及投资人";
 "Media Commentary" = "媒体评论";
 "Community Dynamic" = "社区动态";
-
+"Uninstalled Telegram" = "未安装Telegram客户端";
 /*
  个人设置
  */
@@ -374,7 +481,27 @@
 "Exit" = "退出登录";
 "Exit Success" = "退出登录成功";
 "Exit Failed" = "退出登录失败";
+"Login / Register" = "登录/注册";
+"Pay attention to the project of interest and check the progress of the project" = "关注感兴趣的项目，查看项目的进度";
 
+/*
+ 意见反馈
+ */
+"We hope to hear your valuable comments and feedback" = "我们希望倾听您宝贵的意见与反馈";
+"Contact" = "联系方式";
+"Phone / QQ / Email" = "可填写您的手机号码/QQ/邮箱等";
+"Content cannot be empty" = "内容不能为空";
+"Contact cannot be empty" = "联系方式不能为空";
+"Sending..." = "发送中...";
+"Send successfully" = "发送成功";
+"Send failed" = "发送失败";
+
+
+/*
+ 版本更新
+ */
+"Update" = "更新";
+"Update Tip" = "更新提示";
 /*
  修改密码
  */
@@ -401,4 +528,91 @@
 "MainNet" = "正式网络";
 "TestNet" = "测试网络";
 "简体中文" = "简体中文";
-"English(U.S.)" = "英文";
+"English(U.S.)" = "English(U.S.)";
+
+/*
+ 排行 TODO
+ */
+"Dapp" = "Dapp";
+"High (24h)" = "最高值(24H)";
+"Low (24h)" = "最低值(24H)";
+"Volume (24h) " = "交易量(24H)";
+"Information " = "基本信息";
+"Load failed" = "加载失败";
+
+" Market Cap" = "市值涨幅";
+" Exchange" = "交易所";
+"InWe Project Ranking" = "InWe项目排行";
+"Hot" = "热门资讯";
+
+"Name" = "名称";
+"Transaction Pair" = "交易对";
+"Transaction Type" = "交易类型";
+
+"Platform" = "平台名称";
+"Revenue Summary" = "收益汇总";
+"Daily Live Users" = "日活用户数";
+"Tx Volume(24H)" = "Tx量(24H)";
+
+"Project " = "项目名称";
+
+"Popular" = "关注热度";
+
+"Inwe Hot" = "Inwe热点";
+"Popularity" = "热度值";
+"Please install QQ mobile" = "请先安装手机QQ客户端";
+/*
+ 评价
+ */
+" Detail " = "评价详情";
+"Submitted" = "发布成功";
+"My Comment" = "我的评价";
+"My Rating" = "我的评分";
+"Recommend" = "推荐";
+"Joined" = " 参投过 ";
+"Valuable comment?" = "这条评论是否有价值?";
+"Amusing" = "有趣";
+"All Comments" = "全部评论";
+" Comment " = "评价一下";
+" Comment" = "写评价";
+"Evaluation" = "用户评价";
+"Very Bad" = "很不满意";
+"Bad" = "不满意";
+"Fair" = "一般";
+"Highly Recommend" = "非常推荐";
+"Circusee" = "围观";
+"Want to join" = "想参投";
+"Not required" = "非必选";
+"Your comment on the project" = "写下您对项目的评价";
+"  Comment  " = "评价";
+" Submit " = "发布";
+"Hide Chart" = "隐藏图表";
+"Show Chart" = "显示图表";
+"Zoom" = "图表显示范围";
+"Selected" = "已选择";
+"Day" = "日";
+"Week" = "周";
+"Comments should contain 10 to 200 characters " = "内容必须在 10 到 200 个字符之间";
+"Default Comment" = "默认评价";
+
+"Recommend " = "推荐/人";
+"Not Recommend" = "不推荐/人";
+"Not Recommend & Comment" = "不推荐评价";
+"Recommend & Comment" = "推荐评价";
+" " = "条";
+"To see the details of the evaluation" = "去查看评价详情";
+"Commented" = "人已评";
+"Change (24H)" = "涨跌幅(24H)";
+
+//"全部" = "全部";
+" Hot " = "热门";
+"Newest" = "最新";
+" Evaluation " = "最有价值";
+
+ "Recommendation Percent" = "项目推荐比例";
+ "Not Recommend " = "不推荐";
+ "Comment" = "人";
+/** 红包 */
+"Red Packet" = "红包";
+"Red  Packet" = "InWe红包";
+"redpacket_home_bg_en" = "redpacket_home_bg";

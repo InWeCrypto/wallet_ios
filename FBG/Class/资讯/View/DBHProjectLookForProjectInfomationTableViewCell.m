@@ -93,7 +93,7 @@
         make.centerY.equalTo(weakSelf.boxView);
     }];
     [self.iconImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOLAYOUTSIZE(25));
+        make.width.height.offset(AUTOLAYOUTSIZE(44));
         make.center.equalTo(weakSelf.iconBackView);
     }];
     [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -219,10 +219,17 @@
     [self.iconImageView sdsetImageWithURL:_projectDetailModel.img placeholderImage:nil];
     self.nameLabel.text = [NSString stringWithFormat:@"%@（%@）", _projectDetailModel.unit, _projectDetailModel.name];
     self.contentLabel.text = _projectDetailModel.industry;
-    self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
-    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf", _projectDetailModel.categoryScore.value/*, DBHGetStringWithKeyFromTable(_projectDetailModel.categoryUser.score.floatValue ? @"Has Score" : @"Not Score", nil)*/];
-    self.stateValueLabel.text = DBHGetStringWithKeyFromTable(self.menuArray[(NSInteger)_projectDetailModel.type - 1], nil);
+    self.gradeView.grade = _projectDetailModel.categoryScore.value;
+    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf", _projectDetailModel.categoryScore.value/*, DBHGetStringWithKeyFromTable(_projectDetailModel.categoryUser.score.doubleValue ? @"Has Score" : @"Not Score", nil)*/];
+    
+    int type = _projectDetailModel.type;
+    if (type > 0 && type <= self.menuArray.count) {
+        self.stateValueLabel.text = DBHGetStringWithKeyFromTable(self.menuArray[type - 1], nil);
+    }
+    
     self.projectSkypeValueLabel.text = _projectDetailModel.website;
+    
+    NSLog(@"线程%@", [NSThread currentThread]);
 }
 
 - (UIView *)boxView {

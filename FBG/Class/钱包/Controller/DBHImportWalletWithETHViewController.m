@@ -16,6 +16,8 @@
 #import "DBHInputPasswordPromptView.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
+#import "DBHWalletManagerForNeoModelCategory.h"
+#import "DBHInputPasswordNamePromptView.h"
 
 @interface DBHImportWalletWithETHViewController ()<UITextViewDelegate, ScanVCDelegate>
 
@@ -25,11 +27,17 @@
 @property (nonatomic, strong) UILabel *placeHolderLabel;
 @property (nonatomic, strong) UIButton *importButton;
 @property (nonatomic, strong) DBHInputPasswordPromptView *inputPasswordPromptView;
+@property (nonatomic, strong) DBHInputPasswordNamePromptView *inputPasswordNamePromptView;
 
 @property (nonatomic, strong) EthmobileWallet *ethWallet;
 @property (nonatomic, assign) NSInteger currentSelectedIndex; // 当前选中下标
 @property (nonatomic, copy) NSArray *placeHolderArray;
 @property (nonatomic, strong) NSMutableArray *typeArray;
+
+@property (nonatomic, copy) NSString *keystoneStr;
+@property (nonatomic, copy) NSString *zhujiStr;
+@property (nonatomic, copy) NSString *siyaoStr;
+@property (nonatomic, copy) NSString *watchStr;
 
 @end
 
@@ -39,13 +47,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = DBHGetStringWithKeyFromTable(self.isTransform ? @"Transform Wallet" : @"Import Wallet", nil);
+    self.title = DBHGetStringWithKeyFromTable(self.isTransform ? @"Convert to Hot Wallet" : @"Import Wallet", nil);
     
     if (self.isTransform) {
         [self.typeArray removeLastObject];
     }
     
     [self setUI];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
+    [super viewWillAppear:animated];
 }
 
 #pragma mark ------ UI ------
@@ -112,6 +126,24 @@
 #pragma mark ------ UITextViewDelegate ------
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     NSString *changeAfterString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    
+    switch (self.currentSelectedIndex) {
+        case 0:
+            self.keystoneStr = changeAfterString;
+            break;
+        case 1:
+            self.zhujiStr = changeAfterString;
+            break;
+        case 2:
+            self.siyaoStr = changeAfterString;
+            break;
+        case 3:
+            self.watchStr = changeAfterString;
+            break;
+        default:
+            break;
+    }
+    
     self.placeHolderLabel.hidden = changeAfterString.length;
     
     return YES;
@@ -146,30 +178,55 @@
  */
 - (void)respondsToImportButton {
     if (!self.contentTextView.text.length) {
-        [LCProgressHUD showMessage:@"请确认信息是否完善"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"The input cannot be empty", nil)];
         return;
     }
     
     WEAKSELF
+    self.inputPasswordPromptView.inputPsdType = self.currentSelectedIndex;
+    self.inputPasswordNamePromptView.inputPsdType = self.currentSelectedIndex;
     switch (self.currentSelectedIndex) {
         case 0: {
             // Keystore
-            [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [weakSelf.inputPasswordPromptView animationShow];
-            });
+            if (self.ethWalletModel) {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordNamePromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordNamePromptView animationShow];
+                });
+            } else {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordPromptView animationShow];
+                });
+            }
             break;
         }
         case 1: {
             // 助记词
-            [LCProgressHUD showLoading:@"验证中..."];
+            
+            if (self.ethWalletModel) {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordNamePromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordNamePromptView animationShow];
+                });
+            } else {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordPromptView animationShow];
+                });
+            }
+            /**
+            [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
             dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(globalQueue, ^
                            {
                                //子线程异步执行下载任务，防止主线程卡顿
                                NSError * error;
-                               self.ethWallet = EthmobileFromMnemonic(self.contentTextView.text, [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"] ? @"zh_CN" : @"en_US", &error);
+                               self.ethWallet = EthmobileFromMnemonic(self.contentTextView.text, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh_CN" : @"en_US", &error);
                                
                                dispatch_queue_t mainQueue = dispatch_get_main_queue();
                                //异步返回主线程，根据获取的数据，更新UI
@@ -192,7 +249,7 @@
                                                           }
                                                           else
                                                           {
-                                                              [LCProgressHUD showMessage:@"该钱包的地址对比不正确,请确认后重试"];
+                                                              [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
                                                           }
                                                       }
                                                       else
@@ -205,17 +262,32 @@
                                                   else
                                                   {
                                                       [LCProgressHUD hide];
-                                                      [LCProgressHUD showMessage:@"钱包导入失败"];
+                                                      [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Failed to import wallet", nil)];
                                                   }
                                               });
                                
-                           });
+                           });*/
             
             break;
         }
         case 2: {
             // 私钥
-            [LCProgressHUD showLoading:@"验证中..."];
+            
+            if (self.ethWalletModel) {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordNamePromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordNamePromptView animationShow];
+                });
+            } else {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordPromptView animationShow];
+                });
+            }
+            /**
+            [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
             dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(globalQueue, ^
                            {
@@ -233,7 +305,7 @@
                                                       //创建成功
                                                       if (self.ethWalletModel)
                                                       {
-                                                          //观察钱包升级 私匙
+                                                          //观察钱包升级 私钥
                                                           if ([[self.ethWallet address] isEqualToString:self.ethWalletModel.address])
                                                           {
                                                               DBHCreateWalletWithETHViewController *createWalletWithETHViewController = [[DBHCreateWalletWithETHViewController alloc] init];
@@ -243,7 +315,7 @@
                                                           }
                                                           else
                                                           {
-                                                              [LCProgressHUD showMessage:@"该钱包的地址对比不正确,请确认后重试"];
+                                                              [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
                                                           }
                                                       }
                                                       else
@@ -256,28 +328,29 @@
                                                   else
                                                   {
                                                       [LCProgressHUD hide];
-                                                      [LCProgressHUD showMessage:@"钱包导入失败"];
+                                                      [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Failed to import wallet", nil)];
                                                   }
                                               });
                                
-                           });
+                           });*/
             
             break;
         }
         case 3: {
             // 观察
-            if ([NSString isNEOAdress:[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+            if ([NSString isAdress:[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
             {
                 //创建成功
                 DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
                 createWalletWithNameViewController.walletType = 1;
+                createWalletWithNameViewController.from = (int)self.currentSelectedIndex;
                 createWalletWithNameViewController.address = [self.contentTextView.text
                                                               stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 [self.navigationController pushViewController:createWalletWithNameViewController animated:YES];
             }
             else
             {
-                [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
             }
             
             break;
@@ -296,7 +369,7 @@
     }
     
     if (self.ethWalletModel && sender.tag - 200 == 3) {
-        [LCProgressHUD showMessage:@"已经是观察钱包了"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"It is already a monitoring wallet", nil)];
         return;
     }
     
@@ -305,6 +378,24 @@
     
     sender.selected = YES;
     self.currentSelectedIndex = sender.tag - 200;
+    switch (self.currentSelectedIndex) {
+        case 0:
+            self.contentTextView.text = self.keystoneStr;
+            break;
+        case 1:
+            self.contentTextView.text = self.zhujiStr;
+            break;
+        case 2:
+            self.contentTextView.text = self.siyaoStr;
+            break;
+        case 3:
+            self.contentTextView.text = self.watchStr;
+            break;
+        default:
+            break;
+    }
+    
+    self.placeHolderLabel.hidden = self.contentTextView.text.length;
     
     self.placeHolderLabel.text = DBHGetStringWithKeyFromTable(self.placeHolderArray[sender.tag - 200], nil);
     
@@ -360,7 +451,7 @@
 - (UIButton *)importButton {
     if (!_importButton) {
         _importButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _importButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _importButton.backgroundColor = MAIN_ORANGE_COLOR;
         _importButton.titleLabel.font = BOLDFONT(14);
         _importButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         [_importButton setTitle:DBHGetStringWithKeyFromTable(@"Start Import", nil) forState:UIControlStateNormal];
@@ -375,63 +466,230 @@
         WEAKSELF
         [_inputPasswordPromptView commitBlock:^(NSString *password) {
             NSString *data = self.contentTextView.text;
-            [LCProgressHUD showLoading:@"验证中..."];
+            [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
+            NSInteger type = weakSelf.inputPasswordPromptView.inputPsdType;
             dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_async(globalQueue, ^
-                           {
-                               //子线程异步执行下载任务，防止主线程卡顿
-                               NSError * error;
-                               
-                               weakSelf.ethWallet = EthmobileFromKeyStore(data, password, &error);
-                               
-                               dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                               //异步返回主线程，根据获取的数据，更新UI
-                               dispatch_async(mainQueue, ^
-                                              {
-                                                  if (!error)
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      //创建成功
-                                                      if (self.ethWalletModel)
-                                                      {
-                                                          //观察钱包升级 keyStore
-                                                          if ([[self.ethWallet address] isEqualToString:self.ethWalletModel.address])
-                                                          {
-                                                              [LCProgressHUD showMessage:@"转化成功"];
-                                                              [PDKeyChain save:[self.ethWallet address] data:data];
-                                                              DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
-                                                              self.ethWalletModel.isLookWallet = NO;
-                                                              walletDetailWithETHViewController.ethWalletModel = self.ethWalletModel;
-                                                              walletDetailWithETHViewController.backIndex = 2;
-                                                              [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
-                                                          }
-                                                          else
-                                                          {
-                                                              [LCProgressHUD showMessage:@"该钱包的地址对比不正确,请确认后重试"];
-                                                          }
-                                                      }
-                                                      else
-                                                      {
-                                                          DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
-                                                          createWalletWithNameViewController.walletType = 1;
-                                                          createWalletWithNameViewController.address = self.ethWallet.address;
-                                                          [PDKeyChain save:[self.ethWallet address] data:data];
-                                                          [self.navigationController pushViewController:createWalletWithNameViewController animated:YES];
-                                                      }
-                                                  }
-                                                  else
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      [LCProgressHUD showMessage:@"钱包输入密码错误"];
-                                                  }
-                                              });
-                               
-                           });
+            dispatch_async(globalQueue, ^ {
+                //子线程异步执行下载任务，防止主线程卡顿
+                NSError * error;
+                switch (type) {
+                    case 0: { // keyStore
+                        weakSelf.ethWallet = EthmobileFromKeyStore(data, password, &error);
+                    }
+                        break;
+                    case 1: { // 助记词
+                        weakSelf.ethWallet = EthmobileFromMnemonic(data, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh_CN" : @"en_US", &error);
+                    }
+                        break;
+                    case 2: { // 私钥
+                        @try {
+                           const char *bytes = [data UTF8String];
+                            weakSelf.ethWallet = EthmobileFromPrivateKey([[NSData alloc] initWithBytes:bytes length:sizeof(bytes)], &error);
+                        } @catch (NSException *exception) {
+                            NSLog(@"@exception");
+                        } @finally {
+                            NSLog(@"@finally");
+                        }
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [LCProgressHUD hide];
+                    if (!error) { //创建成功
+                        if (weakSelf.ethWalletModel) { // 转化钱包
+                            if ([[weakSelf.ethWallet address] isEqualToString:weakSelf.ethWalletModel.address]) {
+                                if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Successfully converted", nil)];
+                                    [PDKeyChain save:KEYCHAIN_KEY([weakSelf.ethWalletModel address]) data:data];
+                                    DBHWalletDetailWithETHViewController *walletDetailViewController = [[DBHWalletDetailWithETHViewController alloc] init];
+                                    weakSelf.ethWalletModel.isLookWallet = NO;
+                                    walletDetailViewController.ethWalletModel = weakSelf.ethWalletModel;
+                                    walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                    [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                } else { // 助记词 私钥
+                                    NSError *error;
+                                    NSString *data = [weakSelf.ethWallet toKeyStore:password error:&error];
+                                    NSString * address = weakSelf.ethWallet.address;
+                                    [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
+                                    
+                                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Successfully converted", nil)];
+                                    NSArray *arr = self.navigationController.viewControllers;
+                                    if (arr.count >= 2) {
+                                        if ([arr[arr.count - 2] isKindOfClass:[DBHWalletDetailWithETHViewController class]]) {
+                                            DBHWalletDetailWithETHViewController *walletDetailViewController = (DBHWalletDetailWithETHViewController *)arr[arr.count - 2];
+                                            
+                                            weakSelf.ethWalletModel.isLookWallet = NO;
+                                            walletDetailViewController.ethWalletModel = weakSelf.ethWalletModel;
+                                            walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                            [weakSelf.navigationController popToViewController:walletDetailViewController animated:YES];
+                                        }
+                                    } else {
+                                        DBHWalletDetailWithETHViewController *walletDetailViewController = [[DBHWalletDetailWithETHViewController alloc] init];
+                                        
+                                        
+                                        weakSelf.ethWalletModel.isLookWallet = NO;
+                                        walletDetailViewController.ethWalletModel = weakSelf.ethWalletModel;
+                                        walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                        [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                    }
+                                    
+                                }
+                            } else {
+                                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
+                            }
+                        } else { // 导入钱包
+                            if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                                DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
+                                createWalletWithNameViewController.from = (int)weakSelf.inputPasswordPromptView.inputPsdType;
+                                createWalletWithNameViewController.walletType = 1;
+                                createWalletWithNameViewController.address = weakSelf.ethWallet.address;
+                                createWalletWithNameViewController.password = password;
+                                [PDKeyChain save:KEYCHAIN_KEY([weakSelf.ethWallet address]) data:data];
+                                [weakSelf.navigationController pushViewController:createWalletWithNameViewController animated:YES];
+                                
+                            } else { // 助记词 私钥
+                                DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
+                                createWalletWithNameViewController.from = (int)weakSelf.inputPasswordPromptView.inputPsdType;
+                                createWalletWithNameViewController.walletType = 1;
+                                createWalletWithNameViewController.address = weakSelf.ethWallet.address;
+                                createWalletWithNameViewController.ethWallet = weakSelf.ethWallet;
+                                createWalletWithNameViewController.password = password;
+                                [weakSelf.navigationController pushViewController:createWalletWithNameViewController animated:YES];
+                            }
+                            
+                        }
+                    } else {
+                        if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect password", nil)];
+                        } else {
+                            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Failed to import wallet", nil)];
+                        }
+                    }
+                });
+            });
         }];
     }
     return _inputPasswordPromptView;
 }
 
+- (DBHInputPasswordNamePromptView *)inputPasswordNamePromptView {
+    if (!_inputPasswordNamePromptView) {
+        _inputPasswordNamePromptView = [[DBHInputPasswordNamePromptView alloc] init];
+        WEAKSELF
+        [_inputPasswordNamePromptView commitBlock:^(NSString *password) {
+                NSString *data = self.contentTextView.text;
+                NSInteger type = weakSelf.inputPasswordNamePromptView.inputPsdType;
+                [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
+                dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                dispatch_async(globalQueue, ^ {
+                    //子线程异步执行下载任务，防止主线程卡顿
+                    NSError * error;
+                    switch (type) {
+                        case 0: { // keyStore
+                            weakSelf.ethWallet = EthmobileFromKeyStore(data, password, &error);
+                        }
+                            break;
+                        case 1: { // 助记词
+                            weakSelf.ethWallet = EthmobileFromMnemonic(data, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh_CN" : @"en_US", &error);
+                        }
+                            break;
+                        case 2: { // 私钥
+                            const char *bytes = [data UTF8String];
+                            weakSelf.ethWallet = EthmobileFromPrivateKey([[NSData alloc] initWithBytes:bytes length:sizeof(bytes)], &error);
+                        }
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [LCProgressHUD hide];
+                        if (!error) { //创建成功
+                            if (weakSelf.ethWalletModel) { // 转化钱包
+                                if ([[weakSelf.ethWallet address] isEqualToString:weakSelf.ethWalletModel.address]) {
+                                    if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                                        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Successfully converted", nil)];
+                                        [PDKeyChain save:KEYCHAIN_KEY([weakSelf.ethWalletModel address]) data:data];
+                                        DBHWalletDetailWithETHViewController *walletDetailViewController = [[DBHWalletDetailWithETHViewController alloc] init];
+                                        weakSelf.ethWalletModel.isLookWallet = NO;
+                                        walletDetailViewController.ethWalletModel = weakSelf.ethWalletModel;
+                                        walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                        [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                    } else { // 助记词 私钥
+                                        NSError *error;
+                                        NSString *data = [weakSelf.ethWallet toKeyStore:password error:&error];
+                                        NSString * address = weakSelf.ethWallet.address;
+                                        [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
+                                        
+                                        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Successfully converted", nil)];
+                                        NSArray *arr = self.navigationController.viewControllers;
+                                        if (arr.count >= 2) {
+                                            if ([arr[arr.count - 2] isKindOfClass:[DBHWalletDetailWithETHViewController class]]) {
+                                                DBHWalletDetailWithETHViewController *walletDetailViewController = (DBHWalletDetailWithETHViewController *)arr[arr.count - 2];
+                                                
+                                                weakSelf.ethWalletModel.isLookWallet = NO;
+                                                walletDetailViewController.ethWalletModel = weakSelf.ethWalletModel;
+                                                walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                                [weakSelf.navigationController popToViewController:walletDetailViewController animated:YES];
+                                            }
+                                        } else {
+                                            DBHWalletDetailWithETHViewController *walletDetailViewController = [[DBHWalletDetailWithETHViewController alloc] init];
+                                            
+                                            
+                                            weakSelf.ethWalletModel.isLookWallet = NO;
+                                            walletDetailViewController.ethWalletModel = weakSelf.ethWalletModel;
+                                            walletDetailViewController.backIndex = 2;
+                                            [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                        }
+                                        
+                                    }
+                                } else {
+                                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
+                                }
+                            } else { // 导入钱包
+                                if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                                    DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
+                                    createWalletWithNameViewController.from = (int)weakSelf.inputPasswordPromptView.inputPsdType;
+                                    createWalletWithNameViewController.walletType = 1;
+                                    createWalletWithNameViewController.address = weakSelf.ethWallet.address;
+                                    createWalletWithNameViewController.password = password;
+                                    [PDKeyChain save:KEYCHAIN_KEY([weakSelf.ethWallet address]) data:data];
+                                    [weakSelf.navigationController pushViewController:createWalletWithNameViewController animated:YES];
+                                    
+                                } else { // 助记词 私钥
+                                    DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
+                                    createWalletWithNameViewController.from = (int)weakSelf.inputPasswordPromptView.inputPsdType;
+                                    createWalletWithNameViewController.walletType = 1;
+                                    createWalletWithNameViewController.address = weakSelf.ethWallet.address;
+                                    createWalletWithNameViewController.ethWallet = weakSelf.ethWallet;
+                                    createWalletWithNameViewController.password = password;
+                                    [weakSelf.navigationController pushViewController:createWalletWithNameViewController animated:YES];
+                                }
+                                
+                            }
+                        } else {
+                            if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect password", nil)];
+                            } else {
+                                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Failed to import wallet", nil)];
+                            }
+                        }
+                    });
+                });
+            }];
+        }
+         
+    
+    if (self.ethWalletModel) {
+        _inputPasswordNamePromptView.name = self.ethWalletModel.name;
+    }
+    return _inputPasswordNamePromptView;
+}
 - (NSArray *)placeHolderArray {
     if (!_placeHolderArray) {
         _placeHolderArray = @[@"Copy and paste the content of the keystore file, or using the scanner at the right comer for the QR code",
@@ -446,7 +704,7 @@
         _typeArray = [@[@"Keystore",
                        @"Mnemonic",
                        @"Private Key",
-                       @"Watch"] mutableCopy];
+                       @"Watch2"] mutableCopy];
     }
     return _typeArray;
 }

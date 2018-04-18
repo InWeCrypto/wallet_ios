@@ -7,11 +7,13 @@
 //
 
 #import "DBHCreateWalletWithNameViewController.h"
+#import "DBHWalletManagerForNeoModelList.h"
 
 #import "DBHWalletDetailViewController.h"
 #import "DBHWalletDetailWithETHViewController.h"
 
 #import "DBHWalletManagerForNeoDataModels.h"
+#import "AddWalletSucessVC.h"
 
 @interface DBHCreateWalletWithNameViewController ()
 
@@ -60,51 +62,7 @@
 }
 
 #pragma mark ------ Data ------
-/**
- 钱包上传
- */
-- (void)uploadWallet {
-    NSMutableDictionary *paramters = [NSMutableDictionary dictionary];
-    [paramters setObject:@(self.walletType) forKey:@"category_id"];
-    [paramters setObject:self.nameTextField.text forKey:@"name"];
-    [paramters setObject:self.walletType == 1 ? @"ETH" : @"NEO" forKey:@"category_name"];
-    [paramters setObject:self.address forKey:@"address"];
-    if (self.walletType == 2) {
-        NSError *error;
-        NSString *address_hash160 = NeomobileDecodeAddress(self.address, &error);
-        
-        if (!error) {
-            [paramters setObject:address_hash160 forKey:@"address_hash160"];
-        } else {
-            [LCProgressHUD showFailure:@"生成hash160失败"];
-            return;
-        }
-    }
-    
-    WEAKSELF
-    [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:@"创建中..." success:^(id responseObject) {
-        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:[responseObject objectForKey:@"record"]];
-        model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
-        
-        if (weakSelf.walletType == 1) {
-            // ETH
-            model.category.categoryIdentifier = 1;
-            model.category.name = @"ETH";
-            DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
-            walletDetailWithETHViewController.ethWalletModel = model;
-            walletDetailWithETHViewController.backIndex = 2;
-            [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
-        } else {
-            // NEO
-            DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
-            walletDetailViewController.neoWalletModel = model;
-            walletDetailViewController.backIndex = 2;
-            [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
-        }
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
-}
+
 
 #pragma mark ------ Event Responds ------
 /**
@@ -112,11 +70,206 @@
  */
 - (void)respondsToCommitButton {
     if (!self.nameTextField.text.length) {
-        [LCProgressHUD showMessage:@"请输入钱包名称"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Input Wallet Name", nil)];
         return;
     }
     
-    [self uploadWallet];
+    if (self.walletType == 1) { //eth
+        switch (self.from) {
+            case CreateWalletFromKeyStore: {
+                [self uploadWallet];
+                break;
+            }
+            case CreateWalletFromZhuJiCi: {
+                [self importWalletETH];
+                break;
+            }
+            case CreateWalletFromSiYao: {//todo}
+                
+                // 导入钱包
+                [self importWalletETH];
+                break;
+            }
+            default: {
+                [self uploadWallet];
+                break;
+            }
+        }
+    } else { // NEO
+        switch (self.from) {
+            case CreateWalletFromKeyStore: {
+                [self uploadWallet];
+                break;
+            }
+            case CreateWalletFromZhuJiCi: {
+                [self importWallet];
+                break;
+            }
+            case CreateWalletFromSiYao: {
+                
+                // 导入钱包
+                [self importWallet];
+                break;
+            }
+            default: {
+                [self uploadWallet];
+                break;
+            }
+        }
+    }
+}
+#pragma mark ------ Private Methods ------
+- (void)importWalletETH {
+    NSError *error;
+    NSString *data = [self.ethWallet toKeyStore:self.password error:&error];
+//    NSString * address = self.ethWallet.address;
+    [PDKeyChain save:KEYCHAIN_KEY(self.address) data:data];
+    
+    [self uploadWalletETH];
+}
+
+- (void)uploadWalletETH {
+    NSDictionary *paramters = @{@"category_id":@"1",
+                                @"name":self.nameTextField.text,
+                                @"address":self.ethWallet.address};
+    
+    WEAKSELF
+    [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Creating...", nil) success:^(id responseObject) {
+        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:[responseObject objectForKey:@"record"]];
+        model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+        
+        NSInteger count = weakSelf.navigationController.viewControllers.count;
+        if (weakSelf.walletType == 1) {
+            // ETH
+            model.category.categoryIdentifier = 1;
+            model.category.name = @"ETH";
+            DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
+            walletDetailWithETHViewController.ethWalletModel = model;
+            
+            walletDetailWithETHViewController.backIndex = (count == 4) ? 2 : 1;
+            [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
+        } else {
+            // NEO
+            DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+            walletDetailViewController.neoWalletModel = model;
+            walletDetailViewController.backIndex = (count == 4) ? 2 : 1;
+            [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+        }
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+/**
+ 导入钱包
+ */
+- (void)importWallet {
+    NSError *error;
+    NSString *data = [self.neoWallet toKeyStore:self.password error:&error];
+    NSString * address = [self.neoWallet address];
+    [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
+    
+    [self uploadWallet1];
+}
+
+/**
+ 钱包上传
+ */
+- (void)uploadWallet {
+    NSMutableDictionary *paramters = [NSMutableDictionary dictionary];
+    [paramters setObject:@(self.walletType) forKey:@"category_id"];
+    [paramters setObject:self.nameTextField.text forKey:NAME];
+    [paramters setObject:self.walletType == 1 ? @"ETH" : @"NEO" forKey:@"category_name"];
+    [paramters setObject:self.address forKey:@"address"];
+    
+    if (self.walletType == 2) {
+        NSError *error;
+        NSString *address_hash160 = NeomobileDecodeAddress(self.address, &error);
+        
+        if (!error) {
+            [paramters setObject:address_hash160 forKey:@"address_hash160"];
+        } else {
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The wallet address is not correct.", nil)];
+            return;
+        }
+    }
+    
+    WEAKSELF
+    [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Creating...", nil) success:^(id responseObject) {
+        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:[responseObject objectForKey:RECORD]];
+        NSString *modelAddr = [PDKeyChain load:KEYCHAIN_KEY(model.address)];
+        NSLog(@"是否观察钱包  ---- adr = %@", modelAddr);
+        model.isLookWallet = (modelAddr == nil || [modelAddr isEqual:[NSNull null]] || [modelAddr isEqualToString:@""]);
+        
+        NSInteger count = weakSelf.navigationController.viewControllers.count;
+        if (weakSelf.walletType == 1) {
+            // ETH
+            model.category.categoryIdentifier = 1;
+            model.category.name = @"ETH";
+            DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
+            walletDetailWithETHViewController.ethWalletModel = model;
+            
+            walletDetailWithETHViewController.backIndex = (count == 4) ? 2 : 1;
+            [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
+        } else {
+            // NEO
+            DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+            walletDetailViewController.neoWalletModel = model;
+            walletDetailViewController.backIndex = (count == 4) ? 2 : 1;
+            [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+        }
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+}
+
+/**
+ 钱包上传
+ */
+- (void)uploadWallet1 {
+    NSError *error;
+    NSString *address_hash160 = NeomobileDecodeAddress(self.neoWallet.address, &error);
+    
+    if (error) {
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The wallet address is not correct.", nil)];
+        return;
+    }
+    
+    NSString *name = self.nameTextField.text;
+    if ([NSObject isNulllWithObject:name]) {
+        name = @"";
+    }
+    
+    
+    NSDictionary *paramters = @{@"category_id":@"2",
+                                @"name": name,
+                                @"address": self.address,
+                                @"address_hash160":address_hash160};
+    
+    WEAKSELF
+    [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Creating...", nil)  success:^(id responseObject) {
+        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:[responseObject objectForKey:RECORD]];
+        model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+        
+        NSInteger count = weakSelf.navigationController.viewControllers.count;
+        if (weakSelf.walletType == 1) {
+            // ETH
+            model.category.categoryIdentifier = 1;
+            model.category.name = @"ETH";
+            DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
+            walletDetailWithETHViewController.ethWalletModel = model;
+            
+            walletDetailWithETHViewController.backIndex = (count == 4) ? 2 : 1;
+            [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
+        } else {
+            // NEO
+            DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+            walletDetailViewController.neoWalletModel = model;
+            walletDetailViewController.backIndex = (count == 4) ? 2 : 1;
+            [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+        }
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -139,7 +292,7 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _commitButton.backgroundColor = MAIN_ORANGE_COLOR;
         _commitButton.titleLabel.font = BOLDFONT(14);
         _commitButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];

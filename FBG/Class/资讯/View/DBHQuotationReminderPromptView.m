@@ -177,7 +177,7 @@
  确定
  */
 - (void)respondsToCommitButton {
-    if (self.maxPriceTextField.text.floatValue <= self.minPriceTextField.text.floatValue) {
+    if (self.maxPriceTextField.text.doubleValue <= self.minPriceTextField.text.doubleValue) {
         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The highest value should be greater than the minimum", nil)];
         
         return;
@@ -229,14 +229,14 @@
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
     }
     return _boxView;
 }
 - (UIButton *)quitButton {
     if (!_quitButton) {
         _quitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_quitButton setImage:[UIImage imageNamed:@"关闭-3"] forState:UIControlStateNormal];
+        [_quitButton setImage:[UIImage imageNamed:@"login_close"] forState:UIControlStateNormal];
         [_quitButton addTarget:self action:@selector(respondsToQuitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _quitButton;
@@ -327,7 +327,7 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _commitButton.backgroundColor = MAIN_ORANGE_COLOR;
         _commitButton.titleLabel.font = BOLDFONT(14);
         [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Confirm", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];

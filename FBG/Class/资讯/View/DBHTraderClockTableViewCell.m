@@ -175,7 +175,7 @@
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIImageView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
         _boxView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
         _boxView.clipsToBounds = YES;
     }

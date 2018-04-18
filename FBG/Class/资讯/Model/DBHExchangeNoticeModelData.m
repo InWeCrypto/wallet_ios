@@ -11,7 +11,7 @@
 NSString *const kDBHExchangeNoticeModelDataId = @"id";
 NSString *const kDBHExchangeNoticeModelDataIsHot = @"is_hot";
 NSString *const kDBHExchangeNoticeModelDataIsTop = @"is_top";
-NSString *const kDBHExchangeNoticeModelDataCreatedAt = @"created_at";
+NSString *const kDBHExchangeNoticeModelDataCreatedAt = CREATED_AT;
 NSString *const kDBHExchangeNoticeModelDataUrl = @"url";
 NSString *const kDBHExchangeNoticeModelDataIsScroll = @"is_scroll";
 NSString *const kDBHExchangeNoticeModelDataDesc = @"desc";

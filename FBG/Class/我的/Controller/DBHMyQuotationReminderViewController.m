@@ -31,8 +31,8 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"My notifications", nil);
-    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+    self.title = DBHGetStringWithKeyFromTable(@"My Notifications", nil);
+    self.view.backgroundColor = LIGHT_WHITE_BGCOLOR;
     
     [self setUI];
 }
@@ -90,7 +90,7 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
         weakSelf.selectedRow = indexPath.row;
         [weakSelf remindSetWithMaxPrice:@"0" minPrice:@"0"];
     }];
-    deleteColletAction.backgroundColor = COLORFROM16(0xFF841C, 1);
+    deleteColletAction.backgroundColor = MAIN_ORANGE_COLOR;
     
     return @[deleteColletAction, editColletAction];
 }
@@ -123,16 +123,20 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
+    } specialBlock:^{
+        
     }];
 }
 /**
  行情提醒
  */
 - (void)remindSetWithMaxPrice:(NSString *)maxPrice minPrice:(NSString *)minPrice {
-    BOOL isReminder = maxPrice.floatValue || minPrice.floatValue;
+    BOOL isReminder = maxPrice.doubleValue || minPrice.doubleValue;
     NSMutableDictionary *paramters = [NSMutableDictionary dictionary];
     [paramters setObject:@(isReminder) forKey:@"is_market_follow"];
     if (isReminder) {
@@ -159,7 +163,7 @@ static NSString *const kDBHMyQuotationReminderTableViewCellIdentifier = @"kDBHMy
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         

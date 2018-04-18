@@ -10,6 +10,8 @@
 
 #import "DBHAddressBookMenuTableViewCell.h"
 
+#define CELL_HEIGHT 44.0f
+
 static NSString *const kDBHAddressBookMenuTableViewCellIdentifier = @"kDBHAddressBookMenuTableViewCellIdentifier";
 
 @interface DBHAddressBookMenuView ()<UITableViewDataSource, UITableViewDelegate>
@@ -109,7 +111,7 @@ static NSString *const kDBHAddressBookMenuTableViewCellIdentifier = @"kDBHAddres
     WEAKSELF
     [self.boxImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(95));
-        make.height.offset(AUTOLAYOUTSIZE(25) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
+        make.height.offset(AUTOLAYOUTSIZE(CELL_HEIGHT) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
         make.top.offset(STATUS_HEIGHT + 44);
         make.right.offset(- AUTOLAYOUTSIZE(15.5));
     }];
@@ -126,7 +128,8 @@ static NSString *const kDBHAddressBookMenuTableViewCellIdentifier = @"kDBHAddres
 
 - (UIImageView *)boxImageView {
     if (!_boxImageView) {
-        _boxImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group7"]];
+        UIImage *image = [UIImage imageNamed:@"Group7"];
+        _boxImageView = [[UIImageView alloc] initWithImage:image];
     }
     return _boxImageView;
 }
@@ -135,7 +138,7 @@ static NSString *const kDBHAddressBookMenuTableViewCellIdentifier = @"kDBHAddres
         _tableView = [[UITableView alloc] init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-        _tableView.rowHeight = AUTOLAYOUTSIZE(25);
+        _tableView.rowHeight = AUTOLAYOUTSIZE(CELL_HEIGHT);
         
         _tableView.dataSource = self;
         _tableView.delegate = self;

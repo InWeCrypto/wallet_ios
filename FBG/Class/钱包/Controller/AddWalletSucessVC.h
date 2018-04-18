@@ -13,6 +13,7 @@
 
 @interface AddWalletSucessVC : DBHBaseViewController
 
+@property (nonatomic, copy) NSString * mnemonic; // 助记词
 @property (nonatomic, strong) DBHWalletManagerForNeoModelList *neoWalletModel;
 
 @end

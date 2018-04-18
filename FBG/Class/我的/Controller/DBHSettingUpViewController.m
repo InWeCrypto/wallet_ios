@@ -32,7 +32,7 @@ static NSString *const kDBHSettingUpTableViewCellIdentifier = @"kDBHSettingUpTab
     [super viewDidLoad];
     
     self.title = DBHGetStringWithKeyFromTable(@"Settings", nil);
-    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+    self.view.backgroundColor = LIGHT_WHITE_BGCOLOR;
     
     [self setUI];
 }
@@ -76,8 +76,12 @@ static NSString *const kDBHSettingUpTableViewCellIdentifier = @"kDBHSettingUpTab
         }
         case 2: {
             // 语言设置
-            DBHLanguageSetViewController *languageSetViewController = [[DBHLanguageSetViewController alloc] init];
-            [self.navigationController pushViewController:languageSetViewController animated:YES];
+            if (![UserSignData share].user.isLogin) {
+                [[AppDelegate delegate] goToLoginVC:self];
+            }  else {
+                DBHLanguageSetViewController *languageSetViewController = [[DBHLanguageSetViewController alloc] init];
+                [self.navigationController pushViewController:languageSetViewController animated:YES];
+            }
             break;
         }
             

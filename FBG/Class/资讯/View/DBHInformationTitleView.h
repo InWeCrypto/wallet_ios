@@ -12,6 +12,8 @@ typedef void(^ClickButtonBlock)(NSInteger type);
 
 @interface DBHInformationTitleView : UIView
 
+@property (nonatomic, strong) UIButton *moreButton;
+
 /**
  点击按钮回调 0:搜索 1:+号
  */

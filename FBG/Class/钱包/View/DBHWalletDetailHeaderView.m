@@ -17,7 +17,8 @@
 @property (nonatomic, strong) UIImageView *boxImageView;
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
-@property (nonatomic, strong) UIButton *qrCodeButton;
+
+@property (nonatomic, strong) UIView *priceView;
 @property (nonatomic, strong) UILabel *priceLabel;
 @property (nonatomic, strong) UIButton *showPriceButton;
 @property (nonatomic, strong) UILabel *changeLabel;
@@ -26,14 +27,18 @@
 @property (nonatomic, strong) UILabel *propertyLabel;
 @property (nonatomic, strong) UIButton *addPropertyButton;
 @property (nonatomic, strong) UIView *firstLineView;
-@property (nonatomic, strong) UILabel *tokenSaleLabel;
-@property (nonatomic, strong) UIButton *joinButton;
-@property (nonatomic, strong) UIView *secondLineView;
+//@property (nonatomic, strong) UILabel *tokenSaleLabel;
+//@property (nonatomic, strong) UIButton *joinButton;
+//@property (nonatomic, strong) UIView *secondLineView;
 @property (nonatomic, strong) UILabel *informationLabel;
 @property (nonatomic, strong) UIButton *examineButton;
 @property (nonatomic, strong) UIView *bottomLineView;
 
 @property (nonatomic, copy) ClickButtonBlock clickButtonBlock;
+
+@property (nonatomic, strong) UILabel *allAssetsLabel;
+//@property (nonatomic, strong) UILabel *amountLabel;
+@property (nonatomic, strong) UIButton *hideZeroBtn;
 
 @end
 
@@ -57,25 +62,29 @@
     [self addSubview:self.iconImageView];
     [self addSubview:self.nameLabel];
     [self addSubview:self.qrCodeButton];
-    [self addSubview:self.priceLabel];
-    [self addSubview:self.showPriceButton];
+    
+    [self addSubview:self.priceView];
+    
+    [self.priceView addSubview:self.priceLabel];
+    [self.priceView addSubview:self.showPriceButton];
+    
     [self addSubview:self.changeLabel];
     [self addSubview:self.addressLabel];
     [self addSubview:self.stateLabel];
     [self addSubview:self.propertyLabel];
     [self addSubview:self.addPropertyButton];
     [self addSubview:self.firstLineView];
-    [self addSubview:self.tokenSaleLabel];
-    [self addSubview:self.joinButton];
-    [self addSubview:self.secondLineView];
+//    [self addSubview:self.tokenSaleLabel];
+//    [self addSubview:self.joinButton];
+//    [self addSubview:self.secondLineView];
     [self addSubview:self.informationLabel];
     [self addSubview:self.examineButton];
     [self addSubview:self.bottomLineView];
     
     WEAKSELF
     [self.backGroundImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(weakSelf);
-        make.center.equalTo(weakSelf);
+        make.width.top.centerX.equalTo(weakSelf);
+        make.height.equalTo(weakSelf).offset(-AUTOLAYOUTSIZE(30));
     }];
     [self.whiteView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf).offset(- AUTOLAYOUTSIZE(49));
@@ -101,16 +110,24 @@
         make.width.height.offset(AUTOLAYOUTSIZE(41));
         make.top.right.equalTo(weakSelf.whiteView);
     }];
-    [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(weakSelf.whiteView);
+    [self.priceView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.whiteView).offset(AUTOLAYOUTSIZE(60.5));
+        make.centerX.equalTo(weakSelf.whiteView);
+        make.left.greaterThanOrEqualTo(weakSelf.whiteView).offset(AUTOLAYOUTSIZE(12));
     }];
+    
+    [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.bottom.equalTo(weakSelf.priceView);
+    }];
+    
     [self.showPriceButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.priceLabel.mas_right);
+        make.right.equalTo(weakSelf.priceView);
         make.width.offset(AUTOLAYOUTSIZE(31.5));
         make.height.equalTo(weakSelf.priceLabel);
-        make.left.equalTo(weakSelf.priceLabel.mas_right);
         make.centerY.equalTo(weakSelf.priceLabel);
     }];
+    
     [self.changeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(weakSelf.whiteView);
         make.top.equalTo(weakSelf.priceLabel.mas_bottom).offset(AUTOLAYOUTSIZE(5));
@@ -130,32 +147,33 @@
         make.top.equalTo(weakSelf.firstLineView).offset(- AUTOLAYOUTSIZE(3));
     }];
     [self.addPropertyButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(97));
+//        make.width.offset(AUTOLAYOUTSIZE(97));
         make.height.offset(AUTOLAYOUTSIZE(28));
         make.right.equalTo(weakSelf.firstLineView.mas_left);
+        make.left.equalTo(weakSelf.whiteView);
         make.top.equalTo(weakSelf.propertyLabel.mas_bottom);
     }];
     [self.firstLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(0.5));
         make.height.offset(AUTOLAYOUTSIZE(32));
-        make.top.equalTo(weakSelf.whiteView.mas_bottom).offset(AUTOLAYOUTSIZE(24.5));
-        make.right.equalTo(weakSelf.joinButton.mas_left);
-    }];
-    [self.tokenSaleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf.propertyLabel);
-        make.centerX.equalTo(weakSelf.joinButton);
-    }];
-    [self.joinButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(129));
-        make.height.equalTo(weakSelf.addPropertyButton);
-        make.centerY.equalTo(weakSelf.addPropertyButton);
         make.centerX.equalTo(weakSelf.whiteView);
+        make.top.equalTo(weakSelf.whiteView.mas_bottom).offset(AUTOLAYOUTSIZE(24.5));
     }];
-    [self.secondLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(weakSelf.firstLineView);
-        make.centerY.equalTo(weakSelf.firstLineView);
-        make.left.equalTo(weakSelf.joinButton.mas_right);
-    }];
+//    [self.tokenSaleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(weakSelf.propertyLabel);
+//        make.centerX.equalTo(weakSelf.joinButton);
+//    }];
+//    [self.joinButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.offset(AUTOLAYOUTSIZE(129));
+//        make.height.equalTo(weakSelf.addPropertyButton);
+//        make.centerY.equalTo(weakSelf.addPropertyButton);
+//        make.centerX.equalTo(weakSelf.whiteView);
+//    }];
+//    [self.secondLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.size.equalTo(weakSelf.firstLineView);
+//        make.centerY.equalTo(weakSelf.firstLineView);
+//        make.left.equalTo(weakSelf.joinButton.mas_right);
+//    }];
     [self.informationLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.propertyLabel);
         make.centerX.equalTo(weakSelf.examineButton);
@@ -163,21 +181,53 @@
     [self.examineButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(weakSelf.addPropertyButton);
         make.centerY.equalTo(weakSelf.addPropertyButton);
-        make.left.equalTo(weakSelf.secondLineView.mas_right);
+        make.left.equalTo(weakSelf.firstLineView.mas_right);
+        make.right.equalTo(weakSelf.whiteView);
     }];
     [self.bottomLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf).offset(- AUTOLAYOUTSIZE(42));
         make.height.offset(AUTOLAYOUTSIZE(1));
         make.centerX.bottom.equalTo(weakSelf);
     }];
+    
+    [self addSubview:self.allAssetsLabel];
+    [self addSubview:self.hideZeroBtn];
+//    [self addSubview:self.amountLabel];
+    [self.allAssetsLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(AUTOLAYOUTSIZE(25));
+        make.top.equalTo(weakSelf.backGroundImageView.mas_bottom);
+        make.height.offset(AUTOLAYOUTSIZE(20));
+    }];
+    
+//    [self.amountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.right.offset(-AUTOLAYOUTSIZE(20));
+//        make.top.equalTo(weakSelf.backGroundImageView.mas_bottom);
+//        make.height.offset(AUTOLAYOUTSIZE(20));
+//    }];
+    
+    [self.hideZeroBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.right.offset(-AUTOLAYOUTSIZE(33));
+        make.top.equalTo(weakSelf.backGroundImageView.mas_bottom);
+        make.height.offset(AUTOLAYOUTSIZE(20));
+    }];
 }
 
 #pragma mark ------ Event Responds ------
+
+- (void)respondsToHideZeroBtn:(UIButton *)btn {
+    btn.selected = !btn.isSelected;
+    if (self.clickButtonBlock) {
+        self.clickButtonBlock(-2);
+    }
+}
+
 /**
  二维码
  */
 - (void)respondsToQrCodeButton {
-    self.clickButtonBlock(0);
+    if (self.clickButtonBlock) {
+        self.clickButtonBlock(0);
+    }
 }
 /**
  显示/隐藏资产
@@ -186,7 +236,9 @@
     self.showPriceButton.selected = !self.showPriceButton.selected;
     [UserSignData share].user.isHideAsset = self.showPriceButton.isSelected;
     self.priceLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.asset];
-    self.clickButtonBlock(-1);
+    if (self.clickButtonBlock) {
+        self.clickButtonBlock(-1);
+    }
 }
 /**
  长按地址复制
@@ -200,19 +252,25 @@
  添加资产
  */
 - (void)respondsToAddPropertyButton {
-    self.clickButtonBlock(1);
+    if (self.clickButtonBlock) {
+        self.clickButtonBlock(1);
+    }
 }
 /**
  加入
  */
 - (void)respondsToJoinButton {
-    self.clickButtonBlock(2);
+    if (self.clickButtonBlock) {
+        self.clickButtonBlock(2);
+    }
 }
 /**
  查看
  */
 - (void)respondsToExamineButton {
-    self.clickButtonBlock(3);
+    if (self.clickButtonBlock) {
+        self.clickButtonBlock(3);
+    }
 }
 
 #pragma mark ------ Public Methods ------
@@ -225,12 +283,27 @@
 }
 
 #pragma mark ------ Getters And Setters ------
+- (void)setIsHideZeroAsset:(BOOL)isHideZeroAsset {
+    _isHideZeroAsset = isHideZeroAsset;
+    
+    self.hideZeroBtn.selected = _isHideZeroAsset;
+}
+
 - (void)setNeoWalletModel:(DBHWalletManagerForNeoModelList *)neoWalletModel {
     _neoWalletModel = neoWalletModel;
     
     self.backGroundImageView.image = [UIImage imageNamed:_neoWalletModel.categoryId == 1 ? @"ethqianbaoxiangqing_bg" : @"Rectangle"];
     self.boxImageView.image = [UIImage imageNamed:_neoWalletModel.categoryId == 1 ? @"eth_bg" : @"Group 3"];
-    self.iconImageView.image = [UIImage imageNamed:_neoWalletModel.category.name];
+    
+    NSString *iconImgName = _neoWalletModel.category.name;
+    if (iconImgName.length == 0) {
+        if (neoWalletModel.categoryId == 1) {
+            iconImgName = ETH;
+        } else {
+            iconImgName = NEO;
+        }
+    }
+    self.iconImageView.image = [UIImage imageNamed:iconImgName];
     self.stateLabel.hidden = !_neoWalletModel.isLookWallet && _neoWalletModel.isBackUpMnemonnic;
     if (_neoWalletModel.isLookWallet) {
         self.stateLabel.text = [NSString stringWithFormat:@"%@", DBHGetStringWithKeyFromTable(@"Watch2", nil)];
@@ -245,7 +318,10 @@
     _asset = asset;
     
     self.showPriceButton.selected = [UserSignData share].user.isHideAsset;
-    self.priceLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.asset];
+    NSString *unitType = [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$";
+    NSString *assetStr = [UserSignData share].user.isHideAsset ? @"****" : asset;
+    
+    self.priceLabel.text = [unitType stringByAppendingString:assetStr];
 }
 
 - (UIImageView *)backGroundImageView {
@@ -298,9 +374,19 @@
         _priceLabel.font = FONT(40);
         _priceLabel.text = [NSString stringWithFormat:@"%@0.00", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"];
         _priceLabel.textColor = COLORFROM16(0x333333, 1);
+        _priceLabel.adjustsFontSizeToFitWidth = YES;
+        _priceLabel.minimumScaleFactor = 0.6;
     }
     return _priceLabel;
 }
+
+- (UIView *)priceView {
+    if (!_priceView) {
+        _priceView = [[UIView alloc] init];
+    }
+    return _priceView;
+}
+
 - (UIButton *)showPriceButton {
     if (!_showPriceButton) {
         _showPriceButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -324,7 +410,7 @@
         _addressLabel.font = FONT(11);
         _addressLabel.textColor = COLORFROM16(0xACACAC, 1);
         _addressLabel.userInteractionEnabled = YES;
-        
+        _addressLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToAddressLabel)];
         [_addressLabel addGestureRecognizer:longPressGR];
     }
@@ -334,7 +420,7 @@
     if (!_stateLabel) {
         _stateLabel = [[UILabel alloc] init];
         _stateLabel.font = BOLDFONT(10);
-        _stateLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _stateLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _stateLabel;
 }
@@ -363,31 +449,31 @@
     }
     return _firstLineView;
 }
-- (UILabel *)tokenSaleLabel {
-    if (!_tokenSaleLabel) {
-        _tokenSaleLabel = [[UILabel alloc] init];
-        _tokenSaleLabel.font = FONT(12);
-        _tokenSaleLabel.text = @"TokenSale";
-        _tokenSaleLabel.textColor = COLORFROM16(0x6DAD58, 1);
-    }
-    return _tokenSaleLabel;
-}
-- (UIButton *)joinButton {
-    if (!_joinButton) {
-        _joinButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _joinButton.titleLabel.font = FONT(14);
-        [_joinButton setTitle:DBHGetStringWithKeyFromTable(@"Join", nil) forState:UIControlStateNormal];
-        [_joinButton addTarget:self action:@selector(respondsToJoinButton) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _joinButton;
-}
-- (UIView *)secondLineView {
-    if (!_secondLineView) {
-        _secondLineView = [[UIView alloc] init];
-        _secondLineView.backgroundColor = COLORFROM16(0x3C8F79, 1);
-    }
-    return _secondLineView;
-}
+//- (UILabel *)tokenSaleLabel {
+//    if (!_tokenSaleLabel) {
+//        _tokenSaleLabel = [[UILabel alloc] init];
+//        _tokenSaleLabel.font = FONT(12);
+//        _tokenSaleLabel.text = @"TokenSale";
+//        _tokenSaleLabel.textColor = COLORFROM16(0x6DAD58, 1);
+//    }
+//    return _tokenSaleLabel;
+//}
+//- (UIButton *)joinButton {
+//    if (!_joinButton) {
+//        _joinButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        _joinButton.titleLabel.font = FONT(14);
+//        [_joinButton setTitle:DBHGetStringWithKeyFromTable(@"Join", nil) forState:UIControlStateNormal];
+//        [_joinButton addTarget:self action:@selector(respondsToJoinButton) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//    return _joinButton;
+//}
+//- (UIView *)secondLineView {
+//    if (!_secondLineView) {
+//        _secondLineView = [[UIView alloc] init];
+//        _secondLineView.backgroundColor = COLORFROM16(0x3C8F79, 1);
+//    }
+//    return _secondLineView;
+//}
 - (UILabel *)informationLabel {
     if (!_informationLabel) {
         _informationLabel = [[UILabel alloc] init];
@@ -412,6 +498,46 @@
         _bottomLineView.backgroundColor = COLORFROM16(0xF5F5F5, 1);
     }
     return _bottomLineView;
+}
+
+- (UILabel *)allAssetsLabel {
+    if (!_allAssetsLabel) {
+        _allAssetsLabel = [[UILabel alloc] init];
+        _allAssetsLabel.text = DBHGetStringWithKeyFromTable(@"All assets", nil);
+        _allAssetsLabel.textColor = COLORFROM16(0xC1BEBE, 1);
+        _allAssetsLabel.font = BOLDFONT(10);
+    }
+    return _allAssetsLabel;
+}
+
+//- (UILabel *)amountLabel {
+//    if (!_amountLabel) {
+//        _amountLabel = [[UILabel alloc] init];
+//        _amountLabel.text = DBHGetStringWithKeyFromTable(@"Hide 0 Tokens", nil);
+//        _amountLabel.textColor = COLORFROM16(0xC1BEBE, 1);
+//        _amountLabel.font = BOLDFONT(10);
+//    }
+//    return _amountLabel;
+//}
+- (UIButton *)hideZeroBtn {
+    if (!_hideZeroBtn) {
+        _hideZeroBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [_hideZeroBtn addTarget:self action:@selector(respondsToHideZeroBtn:) forControlEvents:UIControlEventTouchUpInside];
+        [_hideZeroBtn setImage:[UIImage imageNamed:@"hide_zero_selected"] forState:UIControlStateSelected];
+        [_hideZeroBtn setImage:[UIImage imageNamed:@"hide_zero_normal"] forState:UIControlStateNormal];
+        _hideZeroBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        [_hideZeroBtn setTitle:DBHGetStringWithKeyFromTable(@"Hide 0 Tokens", nil) forState:UIControlStateNormal];
+        [_hideZeroBtn setTitleColor:COLORFROM16(0xC1BEBE, 1) forState:UIControlStateNormal];
+        
+        _hideZeroBtn.titleLabel.font = BOLDFONT(10);
+        
+        CGFloat margin = AUTOLAYOUTSIZE(3);
+        [_hideZeroBtn setImageEdgeInsets:UIEdgeInsetsMake(margin, 0, margin, -margin)];
+        
+    }
+    return _hideZeroBtn;
 }
 
 @end

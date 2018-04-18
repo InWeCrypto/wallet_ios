@@ -34,6 +34,7 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _currentSelectedIndex = 1;
         [self setUI];
     }
     return self;
@@ -41,21 +42,23 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
 
 #pragma mark ------ UI ------
 - (void)setUI {
+    self.backgroundColor = LIGHT_WHITE_BGCOLOR;
     [self addSubview:self.collectionView];
     [self addSubview:self.topLineView];
     [self addSubview:self.bottomLineView];
     [self addSubview:self.refreshButton];
     
+    
     WEAKSELF
+    [self.topLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.centerX.top.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(1));
+    }];
     [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf);
-        make.height.offset(AUTOLAYOUTSIZE(125));
-        make.top.centerX.equalTo(weakSelf);
-    }];
-    [self.topLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf);
-        make.height.offset(AUTOLAYOUTSIZE(1));
-        make.centerX.bottom.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(100));
+        make.centerX.equalTo(weakSelf);
+        make.top.equalTo(weakSelf.topLineView.mas_bottom);
     }];
     [self.refreshButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.offset(AUTOLAYOUTSIZE(33));
@@ -63,35 +66,34 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
         make.bottom.equalTo(weakSelf);
     }];
     
-    for (NSInteger i = 0; i < self.menuArray.count + 1; i++) {
+    for (NSInteger i = 0; i < self.menuArray.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = 200 + i;
-        if (!i) {
+        if (i == 1) {
             button.selected = YES;
-            [button setImage:[UIImage imageNamed:@"xiangmugaikuang_xing1"] forState:UIControlStateNormal];
-            [button setImage:[UIImage imageNamed:@"xiangmugaikuang_xing_s1"] forState:UIControlStateSelected];
-        } else {
-            button.titleLabel.font = BOLDFONT(12);
-            [button setTitle:DBHGetStringWithKeyFromTable(self.menuArray[i - 1], nil) forState:UIControlStateNormal];
-            [button setTitleColor:COLORFROM16(0xD8D8D8, 1) forState:UIControlStateNormal];
-            [button setTitleColor:COLORFROM16(0xF46A00, 1) forState:UIControlStateSelected];
+//            [button setImage:[UIImage imageNamed:@"xiangmugaikuang_xing1"] forState:UIControlStateNormal];
+//            [button setImage:[UIImage imageNamed:@"xiangmugaikuang_xing_s1"] forState:UIControlStateSelected];
         }
+        [button setTitle:DBHGetStringWithKeyFromTable(self.menuArray[i], nil) forState:UIControlStateNormal];
+        button.titleLabel.font = BOLDFONT(14);
+        [button setTitleColor:COLORFROM16(0xD8D8D8, 1) forState:UIControlStateNormal];
+        [button setTitleColor:COLORFROM16(0xF46A00, 1) forState:UIControlStateSelected];
         [button addTarget:self action:@selector(respondsToMenuButton:) forControlEvents:UIControlEventTouchUpInside];
         
         [self addSubview:button];
         
         [button mas_remakeConstraints:^(MASConstraintMaker *make) {
             if (!i) {
-                make.width.offset(AUTOLAYOUTSIZE(27));
-                make.left.offset(AUTOLAYOUTSIZE(6));
+                make.left.offset(AUTOLAYOUTSIZE(12));
             } else {
-                make.width.offset([self.menuArray[i - 1] boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:BOLDFONT(12)} context:nil].size.width + AUTOLAYOUTSIZE(14));
-                make.left.equalTo([weakSelf viewWithTag:199 + i].mas_right);
+                make.left.equalTo([weakSelf viewWithTag:199 + i].mas_right).offset(AUTOLAYOUTSIZE(25));
             }
+            
+            make.width.offset([self.menuArray[i] boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:BOLDFONT(14)} context:nil].size.width + AUTOLAYOUTSIZE(14));
             make.height.offset(AUTOLAYOUTSIZE(32.5));
             make.bottom.equalTo(weakSelf);
         }];
-        if (!i) {
+        if (i == 1) {
             [self.bottomLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.width.offset(AUTOLAYOUTSIZE(10));
                 make.height.offset(AUTOLAYOUTSIZE(1.5));
@@ -108,13 +110,24 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     DBHFunctionalUnitCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kDBHFunctionalUnitCollectionViewCellIdentifier forIndexPath:indexPath];
-    cell.title = self.titleArray[indexPath.row];
+    if (indexPath.row < self.noReadArray.count) {
+        NSString *countStr = self.noReadArray[indexPath.row];
+        NSLog(@"未读消息数量 ------  %@", countStr);
+        cell.noReadMsgCount = countStr.intValue;
+    }
+    
+    if (indexPath.row < self.titleArray.count) {
+        cell.title = self.titleArray[indexPath.row];
+    }
 
     return cell;
 }
 
 #pragma mark ------ UICollectionViewDelegate ------
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < self.noReadArray.count) {
+        [self.noReadArray replaceObjectAtIndex:indexPath.row withObject:@"0"];
+    }
     self.clickFunctionalUnitBlock(indexPath.row);
 }
 
@@ -145,14 +158,13 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
         [weakSelf layoutIfNeeded];
     }];
     
-    self.selectTypeBlock();
+    self.selectTypeBlock(NO);
 }
 /**
  刷新
  */
 - (void)respondsToRefreshButton {
-    self.selectTypeBlock();
-    [self startAnimation];
+    self.selectTypeBlock(YES);
 }
 
 #pragma mark ------ Public Methods ------
@@ -176,10 +188,17 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
 }
 
 #pragma mark ------ Getters And Setters ------
+
+- (void)setNoReadArray:(NSMutableArray *)noReadArray {
+    _noReadArray = noReadArray;
+    
+    [self.collectionView reloadData];
+}
+
 - (UICollectionViewFlowLayout *)layout {
     if (!_layout) {
         _layout = [[UICollectionViewFlowLayout alloc] init];
-        _layout.itemSize = CGSizeMake(SCREENWIDTH * 0.25, AUTOLAYOUTSIZE(125));
+        _layout.itemSize = CGSizeMake(SCREENWIDTH * 0.2, AUTOLAYOUTSIZE(100));
         _layout.minimumLineSpacing = 0;
         _layout.minimumInteritemSpacing = 0;
         _layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -190,7 +209,7 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
-        _collectionView.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+        _collectionView.backgroundColor = WHITE_COLOR;
         _collectionView.showsVerticalScrollIndicator = NO;
         _collectionView.showsHorizontalScrollIndicator = NO;
         
@@ -201,6 +220,7 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
     }
     return _collectionView;
 }
+
 - (UIView *)topLineView {
     if (!_topLineView) {
         _topLineView = [[UIView alloc] init];
@@ -226,17 +246,18 @@ static NSString *const kDBHFunctionalUnitCollectionViewCellIdentifier = @"kDBHFu
 
 - (NSArray *)menuArray {
     if (!_menuArray) {
-        _menuArray = @[@"Trading", @"Active", @"Upcoming", @"Ended"];
+//        _menuArray = @[@"Favorite", @"Trading", @"Active", @"Upcoming", @"Ended"];
+        _menuArray = @[@"Favorite", @"Project"];
     }
     return _menuArray;
 }
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@"InWe Hotspot",
-                        @"Trading View",
-                        @"Exchange",
+        _titleArray = @[@"Dynamism",
+                        @"Viewpoint",
+                        @"Expectation",
 //                        @"Candybowl",
-                        @"Trading Reminder",
+                        @"Ranking",
                         @"Notice"];
     }
     return _titleArray;

@@ -54,7 +54,7 @@
 - (void)respondsToShowAssetButton {
     self.showAssetButton.selected = !self.showAssetButton.selected;
     [UserSignData share].user.isHideAsset = self.showAssetButton.isSelected;
-    self.assetLabel.text = [NSString stringWithFormat:@"%@：%@%@", DBHGetStringWithKeyFromTable(@"Total Balance", nil), [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
+    self.assetLabel.text = [NSString stringWithFormat:@"%@ %@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
     
     self.clickShowPriceBlock();
 }
@@ -65,7 +65,7 @@
 }
 - (void)refreshAsset {
     self.showAssetButton.selected = [UserSignData share].user.isHideAsset;
-    self.assetLabel.text = [NSString stringWithFormat:@"%@：%@%@", DBHGetStringWithKeyFromTable(@"Total Balance", nil), [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
+    self.assetLabel.text = [NSString stringWithFormat:@"%@ %@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -73,7 +73,7 @@
     _totalAsset = totalAsset;
     
     self.showAssetButton.selected = [UserSignData share].user.isHideAsset;
-    self.assetLabel.text = [NSString stringWithFormat:@"%@：%@%@", DBHGetStringWithKeyFromTable(@"Total Balance", nil), [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
+    self.assetLabel.text = [NSString stringWithFormat:@"%@ %@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
 }
 
 - (UILabel *)assetLabel {

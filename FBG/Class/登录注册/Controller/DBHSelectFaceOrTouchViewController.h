@@ -16,5 +16,6 @@ typedef enum : NSUInteger {
 @interface DBHSelectFaceOrTouchViewController : DBHBaseViewController
 
 @property (nonatomic, assign) DBHSelectFaceOrTouchViewControllerType faceOrTouchViewControllerType;
+@property (nonatomic, strong) id target;
 
 @end

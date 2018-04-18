@@ -151,12 +151,16 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
  评分
  */
 - (void)respondsToGradeButton {
-    [[UIApplication sharedApplication].keyWindow addSubview:self.gradePromptView];
+    if (![UserSignData share].user.isLogin) {
+        [[AppDelegate delegate] goToLoginVC:self];
+    } else {
+        [[UIApplication sharedApplication].keyWindow addSubview:self.gradePromptView];
     
-    WEAKSELF
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakSelf.gradePromptView animationShow];
-    });
+        WEAKSELF
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf.gradePromptView animationShow];
+        });
+    }
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -188,8 +192,8 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
 - (DBHInputView *)keyboardView {
     if (!_keyboardView) {
         _keyboardView = [[DBHInputView alloc] init];
-        _keyboardView.dataSource = @[@{@"value":@"Explore", @"isMore":@"1"},
-                                     @{@"value":@"Wallet", @"isMore":@"1"}];
+        _keyboardView.dataSource = @[@{VALUE:@"Explore", @"isMore":@"1"},
+                                     @{VALUE:@"Wallet", @"isMore":@"1"}];
         
         WEAKSELF
         [_keyboardView clickButtonBlock:^(NSInteger buttonType) {
@@ -299,6 +303,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
             DBHProjectDetailInformationModelCategoryExplorer *model = weakSelf.projectDetailModel.categoryExplorer[index];
             KKWebView *webView = [[KKWebView alloc] initWithUrl:model.url];
             webView.title = model.name;
+            webView.imageStr = weakSelf.projectDetailModel.img;
             [weakSelf.navigationController pushViewController:webView animated:YES];
         }];
     }
@@ -315,6 +320,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCellIdentifier = @"k
             DBHProjectDetailInformationModelCategoryWallet *model = weakSelf.projectDetailModel.categoryWallet[index];
             KKWebView *webView = [[KKWebView alloc] initWithUrl:model.url];
             webView.title = model.name;
+            webView.imageStr = weakSelf.projectDetailModel.img;
             [weakSelf.navigationController pushViewController:webView animated:YES];
         }];
     }

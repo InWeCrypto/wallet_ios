@@ -9,20 +9,20 @@
 
 
 NSString *const kDBHInformationModelIcoId = @"id";
-NSString *const kDBHInformationModelIcoPriceCny = @"price_cny";
+NSString *const kDBHInformationModelIcoPriceCny = PRICE_CNY;
 NSString *const kDBHInformationModelIcoMaxSupply = @"max_supply";
 NSString *const kDBHInformationModelIcoPercentChange24h = @"percent_change_24h";
 NSString *const kDBHInformationModelIcoSymbol = @"symbol";
 NSString *const kDBHInformationModelIcoLastUpdated = @"last_updated";
 NSString *const kDBHInformationModelIcoMarketCapUsd = @"market_cap_usd";
-NSString *const kDBHInformationModelIcoPriceUsd = @"price_usd";
+NSString *const kDBHInformationModelIcoPriceUsd = PRICE_USD;
 NSString *const kDBHInformationModelIcoPercentChange7d = @"percent_change_7d";
 NSString *const kDBHInformationModelIcoVolumeUsd24h = @"24h_volume_usd";
 NSString *const kDBHInformationModelIcoRank = @"rank";
 NSString *const kDBHInformationModelIcoPriceBtc = @"price_btc";
 NSString *const kDBHInformationModelIcoAvailableSupply = @"available_supply";
 NSString *const kDBHInformationModelIcoTotalSupply = @"total_supply";
-NSString *const kDBHInformationModelIcoName = @"name";
+NSString *const kDBHInformationModelIcoName = NAME;
 NSString *const kDBHInformationModelIcoPercentChange1h = @"percent_change_1h";
 
 

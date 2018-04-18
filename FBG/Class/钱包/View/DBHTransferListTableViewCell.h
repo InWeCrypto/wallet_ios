@@ -8,6 +8,7 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class DBHWalletManagerForNeoModelList;
 @class DBHTransferListModelList;
 
 @interface DBHTransferListTableViewCell : DBHBaseTableViewCell
@@ -16,5 +17,7 @@
  转账记录
  */
 @property (nonatomic, strong) DBHTransferListModelList *model;
+
+@property (nonatomic, strong) DBHWalletManagerForNeoModelList *neoWalletModel;
 
 @end

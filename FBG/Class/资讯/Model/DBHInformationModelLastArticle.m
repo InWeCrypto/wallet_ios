@@ -12,7 +12,7 @@ NSString *const kDBHInformationModelLastArticleImg = @"img";
 NSString *const kDBHInformationModelLastArticleId = @"id";
 NSString *const kDBHInformationModelLastArticleCategoryId = @"category_id";
 NSString *const kDBHInformationModelLastArticleTitle = @"title";
-NSString *const kDBHInformationModelLastArticleCreatedAt = @"created_at";
+NSString *const kDBHInformationModelLastArticleCreatedAt = CREATED_AT;
 NSString *const kDBHInformationModelLastArticleDesc = @"desc";
 NSString *const kDBHInformationModelLastArticleUrl = @"url";
 

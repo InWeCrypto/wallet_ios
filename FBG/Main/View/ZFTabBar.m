@@ -39,9 +39,15 @@
     [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchDown];
     
     // 4.默认选中第0个按钮
-    if (self.subviews.count == 1)
-    {
+    if (self.subviews.count == 1) {
         [self buttonClick:button];
+    }
+}
+
+- (void)setSelectedIndex:(NSInteger)selectedIndex {
+    _selectedIndex = selectedIndex;
+    if (selectedIndex < self.subviews.count) {
+        [self buttonClick:self.subviews[selectedIndex]];
     }
 }
 
@@ -75,7 +81,7 @@
     CGFloat buttonW = self.frame.size.width / self.subviews.count;
     CGFloat buttonY = 0;
     
-    for (int index = 0; index<self.subviews.count; index++) {
+    for (int index = 0; index < self.subviews.count; index ++) {
         // 1.取出按钮
         ZFTabBarButton *button = self.subviews[index];
         

@@ -58,7 +58,7 @@
     [nameAttributedString addAttribute:NSFontAttributeName value:FONT(13) range:NSMakeRange(0, [_model.source length])];
     self.nameLabel.attributedText = nameAttributedString;
     self.priceLabel.text = _model.pairce;
-    self.volumeLabel.text = [NSString stringWithFormat:@"Volume (24h)：%@", _model.volum24];
+    self.volumeLabel.text = [NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Volume (24h)", nil), _model.volum24];
 }
 
 - (UILabel *)nameLabel {

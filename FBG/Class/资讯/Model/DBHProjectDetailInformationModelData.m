@@ -27,7 +27,7 @@ NSString *const kDBHProjectDetailInformationModelDataCategoryExplorer = @"catego
 NSString *const kDBHProjectDetailInformationModelDataIndustry = @"industry";
 NSString *const kDBHProjectDetailInformationModelDataCategoryUser = @"category_user";
 NSString *const kDBHProjectDetailInformationModelDataCoverImg = @"cover_img";
-NSString *const kDBHProjectDetailInformationModelDataName = @"name";
+NSString *const kDBHProjectDetailInformationModelDataName = NAME;
 NSString *const kDBHProjectDetailInformationModelDataType = @"type";
 NSString *const kDBHProjectDetailInformationModelDataIsScroll = @"is_scroll";
 NSString *const kDBHProjectDetailInformationModelDataIsTop = @"is_top";
@@ -92,7 +92,6 @@ NSString *const kDBHProjectDetailInformationModelDataLongName = @"long_name";
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
-    
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if (self && [dict isKindOfClass:[NSDictionary class]]) {

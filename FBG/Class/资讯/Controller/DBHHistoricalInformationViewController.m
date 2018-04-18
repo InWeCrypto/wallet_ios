@@ -72,16 +72,31 @@ static const CGFloat scale = 1.3; // 选中形变倍数
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHMyFavoriteTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyFavoriteTableViewCellIdentifier forIndexPath:indexPath];
-    cell.model = self.dataSource[tableView.tag - 300][indexPath.row];
-    
+    NSInteger index = tableView.tag - 300;
+    if (index < self.dataSource.count) {
+        NSMutableArray *arr = self.dataSource[index];
+        NSInteger row = indexPath.row;
+        if (row < arr.count) {
+            cell.model = arr[row];
+        }
+    }
     return cell;
 }
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHHistoricalInformationModelData *model = self.dataSource[tableView.tag - 300][indexPath.row];
+    DBHHistoricalInformationModelData *model = nil;
+    NSInteger index = tableView.tag - 300;
+    if (index < self.dataSource.count) {
+        NSMutableArray *arr = self.dataSource[index];
+        NSInteger row = indexPath.row;
+        if (row < arr.count) {
+            model = arr[row];
+        }
+    }
     KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
+    webView.imageStr = model.img;
     webView.isHaveShare = YES;
         webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
     [self.navigationController pushViewController:webView animated:YES];
@@ -158,7 +173,7 @@ static const CGFloat scale = 1.3; // 选中形变倍数
         [tableView reloadData];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 /**
  获取标签
@@ -188,6 +203,10 @@ static const CGFloat scale = 1.3; // 选中形变倍数
         [weakSelf getInfomation];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
+    } specialBlock:^{
+        if (![UserSignData share].user.isLogin) {
+            return ;
+        }
     }];
 }
 
@@ -205,7 +224,7 @@ static const CGFloat scale = 1.3; // 选中形变倍数
  添加所有子控制器对应的标题
  */
 - (void)addTitleLabels {
-    self.contentScrollView.contentSize = CGSizeMake(SCREENWIDTH * self.titleArray.count, 0);
+    self.contentScrollView.contentSize = CGSizeMake(SCREENWIDTH * (self.titleArray.count + 1), 0);
     for (NSInteger i = 0; i < self.titleArray.count + 1; i++) {
         DBHHistoricalInformationForTagModelData *model = !i ? nil : self.titleArray[i - 1];
         UILabel *titleLabel = [[UILabel alloc] init];
@@ -250,7 +269,7 @@ static const CGFloat scale = 1.3; // 选中形变倍数
     for (NSInteger i = 0; i < self.titleArray.count + 1; i++) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(i * SCREENWIDTH, 0, SCREENWIDTH, SCREENHEIGHT - STATUS_HEIGHT - 44 - AUTOLAYOUTSIZE(62.5))];
         tableView.tag = 300 + i;
-        tableView.backgroundColor = [UIColor whiteColor];
+        tableView.backgroundColor = WHITE_COLOR;
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         tableView.rowHeight = AUTOLAYOUTSIZE(75.5);
@@ -325,7 +344,7 @@ static const CGFloat scale = 1.3; // 选中形变倍数
 - (UIScrollView *)contentScrollView {
     if (!_contentScrollView) {
         _contentScrollView = [[UIScrollView alloc] init];
-        _contentScrollView.contentSize = CGSizeMake(SCREENWIDTH * self.titleArray.count, 0);
+        _contentScrollView.contentSize = CGSizeMake(SCREENWIDTH * (self.titleArray.count + 1), 0);
         // 开启分页
         _contentScrollView.pagingEnabled = YES;
         // 关闭回弹

@@ -169,8 +169,10 @@
     
     WEAKSELF
     [PPNetworkHelper POST:@"forgot_password" baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
-        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Password reset successful", nil)];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Password reset successful", nil)];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
@@ -277,7 +279,7 @@
         _forgetPasswordLabel = [[UILabel alloc] init];
         _forgetPasswordLabel.font = BOLDFONT(25);
         _forgetPasswordLabel.text = DBHGetStringWithKeyFromTable(@"Forget Password", nil);
-        _forgetPasswordLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _forgetPasswordLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _forgetPasswordLabel;
 }
@@ -376,7 +378,7 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _commitButton.backgroundColor = MAIN_ORANGE_COLOR;
         _commitButton.titleLabel.font = BOLDFONT(14);
         _commitButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _commitButton.clipsToBounds = YES;

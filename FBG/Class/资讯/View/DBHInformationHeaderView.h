@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^SelectTypeBlock)();
+typedef void(^SelectTypeBlock)(BOOL isStartAnimation);
 typedef void(^ClickFunctionalUnitBlock)(NSInteger functionalUnitType);
 
 @interface DBHInformationHeaderView : UIView
+
+@property (nonatomic, strong) NSMutableArray *noReadArray; // 未读消息数的数组
 
 /**
  当前选中下标
@@ -32,5 +34,5 @@ typedef void(^ClickFunctionalUnitBlock)(NSInteger functionalUnitType);
  停止动画
  */
 - (void)stopAnimation;
-
+- (void)startAnimation;
 @end

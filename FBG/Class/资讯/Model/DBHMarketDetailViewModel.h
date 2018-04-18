@@ -38,6 +38,6 @@ typedef void(^RequestBlock)(NSArray *kLineDataArray);
 
  @param ico_type 货币类型
  */
-- (void)getMoneyRealTimePriceWithIco_type:(NSString *)ico_type;
-
+- (void)getMoneyRealTimePriceWithIco_type:(NSString *)ico_type isRunLoop:(BOOL)isLoop;
+- (void)setTimernil;
 @end

@@ -13,7 +13,6 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIButton *searchButton;
 @property (nonatomic, strong) UIImageView *searchImageView;
-@property (nonatomic, strong) UIButton *moreButton;
 
 @property (nonatomic, copy) ClickButtonBlock clickButtonBlock;
 
@@ -71,8 +70,10 @@
 - (UIButton *)searchButton {
     if (!_searchButton) {
         _searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _searchButton.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame) + AUTOLAYOUTSIZE(13), (CGRectGetHeight(self.frame) - AUTOLAYOUTSIZE(30)) * 0.5, CGRectGetMinX(self.moreButton.frame) - CGRectGetMaxX(self.titleLabel.frame) - AUTOLAYOUTSIZE(13), AUTOLAYOUTSIZE(30));
-        _searchButton.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+        _searchButton.frame = CGRectMake(CGRectGetMaxX(self.titleLabel.frame) + AUTOLAYOUTSIZE(13),
+                                         (CGRectGetHeight(self.frame) - AUTOLAYOUTSIZE(30)) * 0.5,
+                                         CGRectGetMinX(self.moreButton.frame) - CGRectGetMaxX(self.titleLabel.frame) - AUTOLAYOUTSIZE(13), AUTOLAYOUTSIZE(30));
+        _searchButton.backgroundColor = LIGHT_WHITE_BGCOLOR;
         _searchButton.layer.cornerRadius = AUTOLAYOUTSIZE(15);
         [_searchButton addTarget:self action:@selector(respondsToSearchButton) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -85,10 +86,24 @@
     }
     return _searchImageView;
 }
+
+- (BOOL)isReview {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:CHECK_STATUS];
+}
+
 - (UIButton *)moreButton {
     if (!_moreButton) {
         _moreButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _moreButton.frame = CGRectMake(CGRectGetWidth(self.frame) - AUTOLAYOUTSIZE(55), 0, AUTOLAYOUTSIZE(39), 40);
+        
+        CGFloat x = CGRectGetWidth(self.frame) - AUTOLAYOUTSIZE(55);
+        CGFloat width = AUTOLAYOUTSIZE(39);
+        if ([self isReview]) {
+            x = x + width - AUTOLAYOUTSIZE(7);
+            _moreButton.hidden = YES;
+        } else {
+            _moreButton.hidden = NO;
+        }
+        _moreButton.frame = CGRectMake(x, 0, width, 40);
         [_moreButton setImage:[UIImage imageNamed:@"zhuye_tianjia_ico"] forState:UIControlStateNormal];
         [_moreButton addTarget:self action:@selector(respondsToMoreButton) forControlEvents:UIControlEventTouchUpInside];
     }

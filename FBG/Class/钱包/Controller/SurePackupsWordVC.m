@@ -14,6 +14,9 @@
 #import "Masonry.h"
 
 #import "WalletLeftListModel.h"
+#import "DBHWalletDetailViewController.h"
+#import "DBHWalletDetailWithETHViewController.h"
+#import "DBHWalletManagerForNeoModelList.h"
 
 NSString *const kLabelSelectionCellIdentifier = @"kLabelSelectionCellIdentifier";
 NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentifier";
@@ -21,6 +24,7 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
 @interface SurePackupsWordVC () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate>
 
 @property(nonatomic,strong) UIVisualEffectView *effectView;
+@property (weak, nonatomic) IBOutlet UIButton *sureBtn;
 
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property(nonatomic,retain) NSMutableArray *dataArray;
@@ -36,8 +40,8 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"备份助记词";
-    
+    self.title = DBHGetStringWithKeyFromTable(@"Backup Mnemonic", nil);
+    [self.sureBtn setTitle:DBHGetStringWithKeyFromTable(@"Confirm", nil) forState:UIControlStateNormal];
     [self initializeComponent];
 }
 
@@ -46,26 +50,21 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
 
 #pragma mark - IBActions(xib响应方法)
 
-- (IBAction)sureButtonCilick:(id)sender
-{
+- (IBAction)sureButtonCilick:(id)sender {
     //确定
     NSString * string = @"";
-    for (SectionModel *s in _dataArray)
-    {
-        if ([s.userInfo isEqual:[NSNumber numberWithInt:0]])
-        {
+    for (SectionModel *s in _dataArray)  {
+        if ([s.userInfo isEqual:[NSNumber numberWithInt:0]]) {
             //已选
-            for (CCTagModel *tagModel in s.mutableCells)
-            {
+            for (CCTagModel *tagModel in s.mutableCells) {
                 string = [string stringByAppendingString:[NSString stringWithFormat:@"%@ ",tagModel.title]];
             }
         }
     }
     
-    if ([string containsString:self.mnemonic])
-    {
+    if ([string containsString:self.mnemonic])  {
         //选对了
-        [LCProgressHUD showMessage:@"备份成功"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Backup successfully", nil)];
         //本地记录备份了
         if ([NSString isNulllWithObject:[UserSignData share].user.walletIdsArray])
         {
@@ -88,14 +87,25 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
             [[UserSignData share] storageData:[UserSignData share].user];
         }
         
-        [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count - 3] animated:YES];
+        UIViewController *vc = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 3];
+        if ([vc isKindOfClass:[DBHWalletDetailViewController class]]) {
+            DBHWalletDetailViewController *detailVC = (DBHWalletDetailViewController *)vc;
+            detailVC.neoWalletModel.isBackUpMnemonnic = YES;
+            [self.navigationController popToViewController:vc animated:YES];
+        } else if ([vc isKindOfClass:[DBHWalletDetailWithETHViewController class]]) {
+            DBHWalletDetailWithETHViewController *detailVC = (DBHWalletDetailWithETHViewController *)vc;
+            detailVC.ethWalletModel.isBackUpMnemonnic = YES;
+            [self.navigationController popToViewController:vc animated:YES];
+        }
+        
+        
         //发送消息
 //        [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SurePackupsWordNotfi" object:@(YES) userInfo:nil]];
     }
     else
     {
         //选择错误
-        [LCProgressHUD showMessage:@"备份失败"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Backup failed", nil)];
     
 //        if ([NSString isNulllWithObject:[UserSignData share].user.walletIdsArray])
 //        {
@@ -130,10 +140,8 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
 
 #pragma mark - Private (.m 私有方法)
 
--(void)initializeComponent
-{
-    self.view.backgroundColor = [UIColor whiteColor];
-    
+- (void)initializeComponent {
+    self.view.backgroundColor = WHITE_COLOR;
     
     _dataArray = [NSMutableArray array];
     [self loaderData];
@@ -162,18 +170,17 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
 }
 
 
--(void)loaderData{
-    
+- (void)loaderData {
     //创建空的组模型;选中的标签
     SectionModel *section0 = [[SectionModel alloc] init];
     section0.userInfo = [NSNumber numberWithInteger:0];//选中的标签
-    section0.title = @"准确的按顺序选择记录的助记词";
+    section0.title = DBHGetStringWithKeyFromTable(@"Prepare mnemonics for selecting records in order", nil);
     section0.mutableCells = [NSMutableArray array];
     
     //全部标签
     SectionModel *section1 = [[SectionModel alloc] init];
     section1.userInfo = [NSNumber numberWithInteger:1];//全部标签
-    section1.title = @"待选助记词";
+    section1.title = @"";
     section1.mutableCells = [NSMutableArray array];
     
     [_dataArray addObject:section0];
@@ -225,38 +232,40 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
 #pragma mark - Deletate/DataSource (相关代理)
 
 #pragma -mark collectionView delegate
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return _dataArray.count;
 }
 
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     SectionModel *s = _dataArray[section];
     return s.mutableCells.count;
 }
 
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     SectionModel *s = _dataArray[indexPath.section];
     NSMutableArray *array = s.mutableCells;
     CCTagModel *tagModel = array[indexPath.row];
-    if(!tagModel.title)
-    {
+    if(!tagModel.title) {
         return CGSizeMake(1, 1);
     }
     
     CGFloat width = [tagModel.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}].width;
-    if(width > CGRectGetWidth(collectionView.frame) / 2)
-    {
+    if(width > CGRectGetWidth(collectionView.frame) / 2)  {
         width = CGRectGetWidth(collectionView.frame) / 2;
     }
-    return CGSizeMake(width + 10, 20);
+    
+    CGFloat wid = (SCREEN_WIDTH - 30 - 7 * 8) / 8;
+    
+    if (width < wid) {
+        return CGSizeMake(wid, wid);
+    }
+    return CGSizeMake(width + 10, wid);
 }
 
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    CGSize size = CGSizeMake(SCREEN_WIDTH - 30, 80);
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    CGSize size = CGSizeMake(SCREEN_WIDTH - 30, 120);
     return size;
 }
 
@@ -274,8 +283,7 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kLabelSelectionCellIdentifier forIndexPath:indexPath];
     UIView *backgroundView = cell.backgroundView;
-    if(!backgroundView)
-    {
+    if(!backgroundView) {
         UILabel *ltView = [[UILabel alloc] initWithFrame:cell.bounds];
         ltView.layer.masksToBounds = YES;
         
@@ -293,8 +301,11 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
     titleView.layer.cornerRadius = 3;
     titleView.textAlignment = NSTextAlignmentCenter;
     
-    titleView.textColor = [UIColor whiteColor];
-    titleView.backgroundColor = [UIColor colorWithHexString:@"008C55"];
+    titleView.textColor = COLORFROM16(0x333333, 1);
+    titleView.backgroundColor = WHITE_COLOR;
+ 
+    [titleView.layer setBorderWidth:AUTOLAYOUTSIZE(1.0)]; // 边框宽度
+    titleView.layer.borderColor = [UIColor colorWithHexString:@"008C55"].CGColor;
     
     return cell;
 }
@@ -305,12 +316,9 @@ NSString *const kLabelSelectionHeaderIdentifier = @"kLabelSelectionHeaderIdentif
     NSMutableArray *array = sectionModel.mutableCells;
     CCTagModel *tagModel = array[indexPath.row];
     
-    
-    if([sectionModel.userInfo isEqual:[NSNumber numberWithInteger:0]])
-    {
+    if([sectionModel.userInfo isEqual:[NSNumber numberWithInteger:0]]) {
         
-        if(tagModel.id && tagModel.title)
-        {
+        if(tagModel.id && tagModel.title) {
             SectionModel *s;
             NSIndexPath *targetIndexPath;
             

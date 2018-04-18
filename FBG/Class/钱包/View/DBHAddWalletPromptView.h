@@ -22,4 +22,6 @@ typedef void(^SelectedBlock)(NSInteger index);
  */
 - (void)selectedBlock:(SelectedBlock)selectedBlock;
 
+- (void)boxViewAtInit;
+- (void)animateFromLeftShow;
 @end

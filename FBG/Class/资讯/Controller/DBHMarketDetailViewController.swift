@@ -45,7 +45,7 @@ class DBHMarketDetailViewController: UIViewController {
     }()
     lazy var grayLineView: UIView = {
         let grayLineView = UIView()
-        grayLineView.backgroundColor = UIColor.ch_hex(0xDEDEDE)
+        grayLineView.backgroundColor = UIColor.ch_hex(0xEEEEEE)
         
         return grayLineView
     }()
@@ -113,9 +113,10 @@ class DBHMarketDetailViewController: UIViewController {
         
         return chartView
     }()
-    lazy var marketDetailViewModel: DBHMarketDetailViewModel = {
+    lazy var marketDetailViewModel: DBHMarketDetailViewModel = {[unowned self] in
         let marketDetailViewModel = DBHMarketDetailViewModel()
         
+
         marketDetailViewModel.requestMoneyRealTimePriceBlock { (moneyRealTimePriceModel) in
             self.marketDetailView.model = moneyRealTimePriceModel
             self.marketDetailView.projectId = self.projectId
@@ -128,6 +129,12 @@ class DBHMarketDetailViewController: UIViewController {
         return marketDetailViewModel
     }()
     var klineDatas = [AnyObject]()
+    
+    override func viewDidDisappear(_ animated: Bool) {
+         super.viewDidDisappear(animated)
+        self.marketDetailViewModel.setTimernil()
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,9 +177,9 @@ class DBHMarketDetailViewController: UIViewController {
 //            make.centerX.equalToSuperview()
 //            make.bottom.equalToSuperview()
 //        }
-    
-        self.marketDetailViewModel.getMoneyRealTimePrice(withIco_type: self.title)
-        self.marketDetailViewModel.getKLineData(withIco_type: self.title, interval: "1m")
+        
+        self.marketDetailViewModel.getMoneyRealTimePrice(withIco_type: self.title, isRunLoop: true)
+        self.marketDetailViewModel.getKLineData(withIco_type: self.title, interval: String(describing: self.timeSelectView.timeValueArray[self.timeSelectView.currentSelectedIndex]))
     }
     
     /// 你的观点

@@ -113,7 +113,7 @@
  */
 - (void)scanSucessWithObject:(id)object {
     if (![NSString isNEOAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
-        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
         return;
     }
     
@@ -214,7 +214,7 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _commitButton.backgroundColor = MAIN_ORANGE_COLOR;
         _commitButton.titleLabel.font = FONT(14);
         [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];

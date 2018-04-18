@@ -98,7 +98,7 @@ static NSString *const kDBHProjectHomeMenuTableViewCellIdentifier = @"kDBHProjec
     [UIView animateWithDuration:0.25 animations:^{
         [weakSelf layoutIfNeeded];
     } completion:^(BOOL finished) {
-        [self removeFromSuperview];
+        [weakSelf removeFromSuperview];
     }];
 }
 

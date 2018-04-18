@@ -59,7 +59,7 @@ typedef enum {
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didScrollToIndex:(NSInteger)index;
 
 
-
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView willScrollToIndex:(NSInteger)index;
 
 
 
@@ -102,10 +102,6 @@ typedef enum {
 /** 本地图片数组 */
 @property (nonatomic, strong) NSArray *localizationImageNamesGroup;
 
-
-
-
-
 //////////////////////  滚动控制API //////////////////////
 
 /** 自动滚动间隔时间,默认2s */
@@ -130,6 +126,13 @@ typedef enum {
 
 /** 解决viewWillAppear时出现时轮播图卡在一半的问题，在控制器viewWillAppear时调用此方法 */
 - (void)adjustWhenControllerViewWillAppera;
+- (int)pageControlIndexWithCurrentCellIndex:(NSInteger)index;
+/**
+ 手动滑动到指定index
+ 
+ @param index index
+ */
+- (void)manualScrollToIndex:(int)index;
 
 //////////////////////  自定义样式API  //////////////////////
 
@@ -201,5 +204,8 @@ typedef enum {
 
 /** 清除图片缓存（兼容旧版本方法） */
 - (void)clearCache;
+
+- (void)scrollToIndex:(int)targetIndex;
+- (void)invalidateTimer;
 
 @end

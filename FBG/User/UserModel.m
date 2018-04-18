@@ -37,6 +37,32 @@
 //    [self saveData];
 }
 
+- (void)setIsHideAsset:(BOOL)isHideAsset {
+    _isHideAsset = isHideAsset;
+}
+
+- (void)setIsLogin:(BOOL)isLogin {
+    _isLogin = isLogin;
+}
+
+- (void)setLanguage:(NSString *)language {
+    _language = language;
+    
+//    self.walletUnitType = 2;
+    if ([language isEqualToString:@"zh"]) {
+        language = CNS;
+//        self.walletUnitType = 1;
+    }
+    [[DBHLanguageTool sharedInstance] setNewLanguage:language];
+}
+
+- (NSArray *)sortedTokenFlags {
+    if (!_sortedTokenFlags) {
+        _sortedTokenFlags = [NSArray array];
+    }
+    return _sortedTokenFlags;
+}
+
 - (NSMutableArray *)functionalUnitArray {
     if (!_functionalUnitArray) {
         _functionalUnitArray = [NSMutableArray array];

@@ -64,4 +64,10 @@
 //180°旋转
 - (void) trans180DegreeAnimation;
 
+/** 这个方法通过响应者链条获取view所在的控制器 */
+- (UIViewController *)parentController;
+
+/** 这个方法通过响应者链条获取view所在的控制器 */
++ (UIViewController *)currentViewController;
+
 @end

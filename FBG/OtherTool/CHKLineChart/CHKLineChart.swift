@@ -289,7 +289,7 @@ open class CHKLineChartView: UIView {
         //点击手势操作
         let tap = UILongPressGestureRecognizer(target: self,
                                          action: #selector(doTapAction(_:)))
-        tap.minimumPressDuration = 0.5;
+        tap.minimumPressDuration = 0.1;
         tap.delegate = self
         self.addGestureRecognizer(tap)
         
@@ -528,8 +528,6 @@ extension CHKLineChartView {
             
             //重新显示点击选中的坐标
             self.setSelectedIndexByPoint(self.selectedPoint)
-            
-            self.delegate?.didFinishKLineChartRefresh?(chart: self)
         }
     }
     

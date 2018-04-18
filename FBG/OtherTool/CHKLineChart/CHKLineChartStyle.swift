@@ -167,8 +167,8 @@ public extension CHKLineChartStyle {
             isEMA: false,
             num: [5,10,30],
             colors: [
-                UIColor.ch_hex(0xDDDDDD),
-                UIColor.ch_hex(0xF9EE30),
+                UIColor.ch_hex(0x1AA2F6),
+                UIColor.ch_hex(0xFFE000),
                 UIColor.ch_hex(0xF600FF),
                 ],
             section: priceSection)
@@ -178,8 +178,8 @@ public extension CHKLineChartStyle {
             isEMA: true,
             num: [5,10,30],
             colors: [
-                UIColor.ch_hex(0xDDDDDD),
-                UIColor.ch_hex(0xF9EE30),
+                UIColor.ch_hex(0x1AA2F6),
+                UIColor.ch_hex(0xFFE000),
                 UIColor.ch_hex(0xF600FF),
                 ],
             section: priceSection)
@@ -199,8 +199,8 @@ public extension CHKLineChartStyle {
             isEMA: false,
             num: [5,10,30],
             colors: [
-                UIColor.ch_hex(0xDDDDDD),
-                UIColor.ch_hex(0xF9EE30),
+                UIColor.ch_hex(0x1AA2F6),
+                UIColor.ch_hex(0xFFE000),
                 UIColor.ch_hex(0xF600FF),
                 ],
             section: volumeSection)
@@ -209,8 +209,8 @@ public extension CHKLineChartStyle {
             isEMA: true,
             num: [5,10,30],
             colors: [
-                UIColor.ch_hex(0xDDDDDD),
-                UIColor.ch_hex(0xF9EE30),
+                UIColor.ch_hex(0x1AA2F6),
+                UIColor.ch_hex(0xFFE000),
                 UIColor.ch_hex(0xF600FF),
                 ],
             section: volumeSection)
@@ -226,15 +226,15 @@ public extension CHKLineChartStyle {
         trendSection.yAxis.tickInterval = 3
         trendSection.padding = UIEdgeInsets(top: 16, left: 0, bottom: 8, right: 0)
         let kdjSeries = CHSeries.getKDJ(
-            UIColor.ch_hex(0xDDDDDD),
-            dc: UIColor.ch_hex(0xF9EE30),
+            UIColor.ch_hex(0x1AA2F6),
+            dc: UIColor.ch_hex(0xFFE000),
             jc: UIColor.ch_hex(0xF600FF),
             section: trendSection)
         kdjSeries.title = "KDJ(9,3,3)"
         
         let macdSeries = CHSeries.getMACD(
-            UIColor.ch_hex(0xDDDDDD),
-            deac: UIColor.ch_hex(0xF9EE30),
+            UIColor.ch_hex(0x1AA2F6),
+            deac: UIColor.ch_hex(0xFFE000),
             barc: UIColor.ch_hex(0xF600FF),
             upColor: upcolor, downColor: downcolor,
             section: trendSection)

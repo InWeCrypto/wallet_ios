@@ -41,12 +41,14 @@
     [self.contentView addSubview:self.scanButton];
     
     WEAKSELF
+    CGFloat width = [NSString getWidthtWithString:weakSelf.nameLabel.text fontSize:13];
     [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(AUTOLAYOUTSIZE(15));
+        make.width.equalTo(@(AUTOLAYOUTSIZE(width)));
         make.centerY.equalTo(weakSelf.nameTextField);
     }];
     [self.nameTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(AUTOLAYOUTSIZE(60));
+        make.left.equalTo(weakSelf.nameLabel.mas_right).offset(AUTOLAYOUTSIZE(18));
         make.right.equalTo(weakSelf.firstLineView);
         make.height.offset(AUTOLAYOUTSIZE(48.5));
         make.bottom.equalTo(weakSelf.firstLineView.mas_top);
@@ -63,7 +65,7 @@
     [self.addressTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(weakSelf.nameTextField);
         make.left.equalTo(weakSelf.nameTextField);
-        make.right.equalTo(weakSelf.scanButton.mas_left);
+        make.right.equalTo(weakSelf.scanButton.mas_left).offset(-AUTOLAYOUTSIZE(10));
         make.bottom.offset(- AUTOLAYOUTSIZE(1));
     }];
     [self.scanButton mas_remakeConstraints:^(MASConstraintMaker *make) {

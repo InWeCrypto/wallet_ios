@@ -131,7 +131,8 @@
     }];
     [self.noPoundageLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.poundageLabel.mas_right);
-        make.centerY.equalTo(weakSelf.poundageLabel);
+        make.right.equalTo(weakSelf.firstLineView);
+        make.top.equalTo(weakSelf.poundageLabel);
     }];
     [self.commitButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(108));
@@ -160,7 +161,7 @@
  */
 - (void)scanSucessWithObject:(id)object {
     if (![NSString isNEOAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
-        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
         return;
     }
     
@@ -171,7 +172,7 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSString *changeAfterString = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
-    if (changeAfterString.length && changeAfterString.floatValue > 0) {
+    if (changeAfterString.length && changeAfterString.doubleValue > 0) {
         [self getPoundageWithAcount:changeAfterString];
     } else {
         self.poundageLabel.text = [NSString stringWithFormat:@"%@：0.00 Gas", DBHGetStringWithKeyFromTable(@"Transaction Fee", nil)];
@@ -188,13 +189,17 @@
     NSDictionary *paramters = @{@"treaty_address":[self.tokenModel.address substringFromIndex:2],
                                 @"from_address":NeomobileDecodeAddress(self.neoWalletModel.address, nil),
                                 @"to_address":NeomobileDecodeAddress(self.neoWalletModel.address, nil),
-                                @"amount":@"1"/*Acount*/};
+                                @"amount":@"1"/*Acount*/}; //TODO amount固定=1?
     
     WEAKSELF
     [PPNetworkHelper POST:@"extend/getNeoGasCost" baseUrlType:1 parameters:paramters hudString:nil success:^(id responseObject) {
         weakSelf.poundage = [NSString stringWithFormat:@"%@", responseObject[@"gas_consumed"]];
-        weakSelf.realityPoundage = weakSelf.poundage.floatValue < 10 ? @"0" : weakSelf.poundage;
-        weakSelf.poundageLabel.text = [NSString stringWithFormat:@"%@：%lf Gas", DBHGetStringWithKeyFromTable(@"Transaction Fee", nil), weakSelf.poundage.floatValue];
+        weakSelf.realityPoundage = weakSelf.poundage.doubleValue < 10 ? @"0" : weakSelf.poundage;
+        if (weakSelf.transferNumberTextField.text.doubleValue == 0.0f) {
+            weakSelf.poundageLabel.text = [NSString stringWithFormat:@"%@：0.00 Gas", DBHGetStringWithKeyFromTable(@"Transaction Fee", nil)];
+        } else {
+            weakSelf.poundageLabel.text = [NSString stringWithFormat:@"%@：%lf Gas", DBHGetStringWithKeyFromTable(@"Transaction Fee", nil), weakSelf.poundage.doubleValue];
+        }
         [weakSelf checkGasCanUse];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -230,7 +235,7 @@
 - (void)respondsToCommitButton {
     if (![NSString isNEOAdress:[self.walletAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
     {
-        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
         return;
     }
     if (self.transferNumberTextField.text.length == 0)
@@ -238,20 +243,24 @@
         [LCProgressHUD showMessage:@"请输入价格"];
         return;
     }
-    if (self.tokenModel.balance.floatValue < self.transferNumberTextField.text.floatValue)
+    if (self.tokenModel.balance.doubleValue < self.transferNumberTextField.text.doubleValue)
     {
         [LCProgressHUD showMessage:@"钱包余额不足"];
         return;
     }
     
+    NSString *numberStr = [NSString stringWithFormat:@"%@", @(self.transferNumberTextField.text.doubleValue)];
+    
     DBHTransferConfirmationViewController *transferConfirmationViewController = [[DBHTransferConfirmationViewController alloc] init];
     transferConfirmationViewController.tokenModel = self.tokenModel;
     transferConfirmationViewController.neoWalletModel = self.neoWalletModel;
-    transferConfirmationViewController.transferNumber = self.transferNumberTextField.text;
+    transferConfirmationViewController.transferNumber = numberStr;
     transferConfirmationViewController.poundage = self.poundage;
     transferConfirmationViewController.realityPoundage = self.realityPoundage;
     transferConfirmationViewController.address = self.walletAddressTextField.text;
     transferConfirmationViewController.remark = self.remarkTextField.text;
+    
+    NSLog(@"转账金额 ---- %@", numberStr);
     [self.navigationController pushViewController:transferConfirmationViewController animated:YES];
 }
 
@@ -260,8 +269,8 @@
  检查Gas是否够使用
  */
 - (void)checkGasCanUse {
-    self.commitButton.userInteractionEnabled = self.canUseGasBalance.floatValue && self.canUseGasBalance.floatValue >= self.realityPoundage.floatValue;
-    self.commitButton.backgroundColor = !self.commitButton.userInteractionEnabled ? COLORFROM16(0xDADADA, 1) : COLORFROM16(0xFF841C, 1);
+    self.commitButton.userInteractionEnabled = self.canUseGasBalance.doubleValue && self.canUseGasBalance.doubleValue >= self.realityPoundage.doubleValue;
+    self.commitButton.backgroundColor = !self.commitButton.userInteractionEnabled ? COLORFROM16(0xDADADA, 1) : MAIN_ORANGE_COLOR;
     [self.commitButton setTitle:DBHGetStringWithKeyFromTable(!self.commitButton.userInteractionEnabled ? @"The current wallet GAS balance is insufficient and cannot be submitted" : @"Submit", nil) forState:UIControlStateNormal];
 }
 
@@ -313,6 +322,7 @@
         _transferNumberTextField.font = FONT(13);
         _transferNumberTextField.textColor = COLORFROM16(0x000000, 1);
         _transferNumberTextField.delegate = self;
+        _transferNumberTextField.keyboardType = UIKeyboardTypeDecimalPad;
     }
     return _transferNumberTextField;
 }
@@ -329,7 +339,7 @@
         _balanceLabel.font = FONT(11);
         _balanceLabel.textColor = COLORFROM16(0xA6A4A4, 1);
         
-        NSString *balance = [NSString stringWithFormat:@"%.8lf", self.tokenModel.balance.floatValue];
+        NSString *balance = [NSString stringWithFormat:@"%.8lf", self.tokenModel.balance.doubleValue];
         NSMutableAttributedString *balanceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"（%@ %@：%@）", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Amount Available", nil), balance]];
         [balanceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xF9480E, 1) range:NSMakeRange([NSString stringWithFormat:@"%@ %@", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Amount Available", nil)].length + 2, balance.length)];
         _balanceLabel.attributedText = balanceAttributedString;
@@ -373,6 +383,7 @@
     if (!_noPoundageLabel) {
         _noPoundageLabel = [[UILabel alloc] init];
         _noPoundageLabel.font = FONT(11);
+        _noPoundageLabel.numberOfLines = 0;
         _noPoundageLabel.text = DBHGetStringWithKeyFromTable(@"（Free handling charge under 10Gas）", nil);
         _noPoundageLabel.textColor = COLORFROM16(0xA6A4A4, 1);
     }
@@ -381,7 +392,7 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _commitButton.backgroundColor = MAIN_ORANGE_COLOR;
         _commitButton.titleLabel.font = FONT(14);
         [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
@@ -394,7 +405,7 @@
         _canUseGasNumberLabel.font = FONT(11);
         _canUseGasNumberLabel.textColor = COLORFROM16(0xA6A4A4, 1);
         
-        NSString *balance = [NSString stringWithFormat:@"%.4lf", self.canUseGasBalance.floatValue];
+        NSString *balance = [NSString stringWithFormat:@"%.4lf", self.canUseGasBalance.doubleValue];
         NSMutableAttributedString *balanceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"（Gas %@：%@）", DBHGetStringWithKeyFromTable(@"Amount Available", nil), balance]];
         [balanceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xF9480E, 1) range:NSMakeRange([NSString stringWithFormat:@"Gas %@", DBHGetStringWithKeyFromTable(@"Amount Available", nil)].length + 2, balance.length)];
         _canUseGasNumberLabel.attributedText = balanceAttributedString;

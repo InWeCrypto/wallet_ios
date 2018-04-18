@@ -9,14 +9,14 @@
 
 
 NSString *const kDBHTransferListModelListFrom = @"from";
-NSString *const kDBHTransferListModelListRemark = @"remark";
+NSString *const kDBHTransferListModelListRemark = REMARK;
 NSString *const kDBHTransferListModelListAsset = @"asset";
 NSString *const kDBHTransferListModelListTx = @"tx";
 NSString *const kDBHTransferListModelListConfirmTime = @"confirmTime";
 NSString *const kDBHTransferListModelListContext = @"context";
-NSString *const kDBHTransferListModelListValue = @"value";
+NSString *const kDBHTransferListModelListValue = VALUE;
 NSString *const kDBHTransferListModelListIsToken = @"is_token";
-NSString *const kDBHTransferListModelListHandleFee = @"handle_fee";
+NSString *const kDBHTransferListModelListHandleFee = HANDLE_FEE;
 NSString *const kDBHTransferListModelListCreateTime = @"createTime";
 NSString *const kDBHTransferListModelListTo = @"to";
 
@@ -60,6 +60,9 @@ NSString *const kDBHTransferListModelListTo = @"to";
             self.context = [self objectOrNilForKey:kDBHTransferListModelListContext fromDictionary:dict];
             self.value = [self objectOrNilForKey:kDBHTransferListModelListValue fromDictionary:dict];
             self.isToken = [self objectOrNilForKey:kDBHTransferListModelListIsToken fromDictionary:dict];
+        
+            
+        
             self.handleFee = [self objectOrNilForKey:kDBHTransferListModelListHandleFee fromDictionary:dict];
             self.createTime = [self objectOrNilForKey:kDBHTransferListModelListCreateTime fromDictionary:dict];
             self.to = [self objectOrNilForKey:kDBHTransferListModelListTo fromDictionary:dict];

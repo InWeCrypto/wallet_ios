@@ -16,6 +16,51 @@
     return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlstring]]];
 }
 
+void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef endColor) {
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGFloat locations[] = { 0.0, 1.0 };
+    
+    NSArray *colors = @[(__bridge id) startColor, (__bridge id) endColor];
+    
+    CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
+    CGPoint startPoint = CGPointMake(rect.size.width/2, 0);
+    CGPoint endPoint = CGPointMake(rect.size.width/2, rect.size.height/1.5);
+    
+    CGContextSaveGState(context);
+    CGContextAddRect(context, rect);
+    CGContextClip(context);
+    CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
+    CGContextSetStrokeColorWithColor(context, [[UIColor clearColor] CGColor]);
+    CGColorSpaceRelease(colorSpace);
+    CGGradientRelease(gradient);
+}
+
++ (UIImage *)imageWithGradients:(NSArray *)colours {
+    CGRect rect = CGRectMake(0, 0, 1, 1);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    UIColor *beginColor = [colours objectAtIndex:0];
+    UIColor *endColor = [colours objectAtIndex:1];
+    drawLinearGradient(context, rect, beginColor.CGColor, endColor.CGColor);
+    CGContextRestoreGState(context);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
++ (void)setRoundForView:(UIView *)view borderColor:(UIColor *)color {
+    [view layoutIfNeeded];
+    [view.layer setCornerRadius:view.bounds.size.width * 0.5];
+    view.layer.masksToBounds = YES;
+    
+    if (color != nil) {
+        view.layer.borderColor = color.CGColor;
+        view.layer.borderWidth = 1;
+    }
+}
+
 + (UIImage*) imageWithColor:(UIColor *)color {
     CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
@@ -78,6 +123,26 @@
     
     //pop the context to get back to the default
     UIGraphicsEndImageContext();
+    return newImage;
+}
+
+//压缩图片
++ (UIImage*)imageWithImage:(UIImage*)image scaledToSize:(CGSize)newSize
+{
+    // Create a graphics image context
+    UIGraphicsBeginImageContext(newSize);
+    
+    // Tell the old image to draw in this new context, with the desired
+    // new size
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    
+    // Get the new image from the context
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // End the context
+    UIGraphicsEndImageContext();
+    
+    // Return the new image.
     return newImage;
 }
 

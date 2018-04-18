@@ -80,7 +80,9 @@
                                 @"password":password};
     
     [PPNetworkHelper POST:@"login" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Log in", nil)] success:^(id responseObject) {
-        [[AppDelegate delegate] goToTabbar];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AppDelegate delegate] goToTabbar];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
@@ -112,74 +114,79 @@
 - (void)startCheck {
     // Touch ID
     WEAKSELF
-    [self.context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:DBHGetStringWithKeyFromTable(@"check", nil) reply:^(BOOL success, NSError *error) {
-        if (success) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [[AppDelegate delegate] goToTabbar];
-            }];
-        } else {
-            switch (error.code) {
-                case LAErrorSystemCancel:
-                {
-                    NSLog(@"系统取消授权，如其他APP切入");
-                    break;
-                }
-                case LAErrorUserCancel:
-                {
-                    NSLog(@"用户取消验证Touch ID");
-                    break;
-                }
-                case LAErrorAuthenticationFailed:
-                {
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Check Failed", nil)];
-                    }];
-                    break;
-                }
-                case LAErrorPasscodeNotSet:
-                {
-                    NSLog(@"系统未设置密码");
-                    break;
-                }
-                case LAErrorTouchIDNotAvailable:
-                {
-                    NSLog(@"设备Touch ID不可用，例如未打开");
-                    break;
-                }
-                case LAErrorTouchIDNotEnrolled:
-                {
-                    NSLog(@"设备Touch ID不可用，用户未录入");
-                    break;
-                }
-                case LAErrorUserFallback: {
-                    NSLog(@"输入密码");
-                    break;
-                }
-                case LAErrorTouchIDLockout:
-                {
-                    // 指纹错误超过3次
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        [weakSelf passwordCheck];
-                    }];
-                    break;
-                }
-                default:
-                {
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        NSLog(@"其他情况，切换主线程处理");
-                    }];
-                    break;
+    @try {
+        [self.context evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:DBHGetStringWithKeyFromTable(@"Check", nil) reply:^(BOOL success, NSError *error) {
+            if (success) {
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [[AppDelegate delegate] goToTabbar];
+                }];
+            } else {
+                switch (error.code) {
+                    case LAErrorSystemCancel: {
+                        NSLog(@"系统取消授权，如其他APP切入");
+                        break;
+                    }
+                    case LAErrorUserCancel: { //Face ID未能识别达到两次
+                        NSLog(@"用户取消验证Touch ID");
+                        break;
+                    }
+                    case LAErrorAuthenticationFailed: {
+                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Check Failed", nil)];
+                        }];
+                        break;
+                    }
+                    case LAErrorPasscodeNotSet: {
+                        NSLog(@"系统未设置密码");
+                        break;
+                    }
+                    case LAErrorTouchIDNotAvailable: {
+                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Face ID unauthorized", nil)];
+                        }];
+                        NSLog(@"设备Touch ID不可用，例如未打开");
+                        break;
+                    }
+                    case LAErrorTouchIDNotEnrolled: {
+                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Face ID unavailable", nil)];
+                        }];
+                        NSLog(@"设备Touch ID不可用，用户未录入");
+                        break;
+                    }
+                    case LAErrorUserFallback: {
+                        NSLog(@"输入密码");
+                        break;
+                    }
+                    case LAErrorTouchIDLockout: {
+                        // 指纹错误超过3次
+                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                            [weakSelf passwordCheck];
+                        }];
+                        break;
+                    }
+                    default: {
+                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                            NSLog(@"其他情况，切换主线程处理");
+                        }];
+                        break;
+                    }
                 }
             }
-        }
-    }];
+        }];
+    } @catch (NSException *exception) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Face ID unavailable", nil)];
+        }];
+        NSLog(@"FaceId启用失败  exception = %@", exception);
+    }
 }
 /**
  密码检查
  */
 - (void)passwordCheck {
     WEAKSELF
-    [self.context evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:DBHGetStringWithKeyFromTable(@"check", nil) reply:^(BOOL success, NSError * _Nullable error) {
+    [self.context evaluatePolicy:LAPolicyDeviceOwnerAuthentication localizedReason:DBHGetStringWithKeyFromTable(@"Check", nil) reply:^(BOOL success, NSError * _Nullable error) {
         if (success) {
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [weakSelf.navigationController popViewControllerAnimated:NO];
@@ -202,7 +209,7 @@
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = BOLDFONT(30);
         _titleLabel.text = [NSString stringWithFormat:@"%@***%@", [[UserSignData share].user.email substringToIndex:2], [[UserSignData share].user.email substringFromIndex:[UserSignData share].user.email.length - 2]];
-        _titleLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _titleLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _titleLabel;
 }
@@ -249,7 +256,7 @@
 - (LAContext *)context {
     if (!_context) {
         _context = [[LAContext alloc] init];
-        _context.localizedFallbackTitle = @"";
+        _context.localizedFallbackTitle = DBHGetStringWithKeyFromTable(@"Password", nil);
     }
     return _context;
 }

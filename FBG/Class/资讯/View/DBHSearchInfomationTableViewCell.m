@@ -56,7 +56,7 @@
     NSAttributedString *titleAttributedString = [[NSAttributedString alloc] initWithString:_model.title attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
     
     self.titleLabel.attributedText = titleAttributedString;
-    self.timeLabel.text = _model.createdAt;
+    self.timeLabel.text = [NSString formatTimeDelayEight:_model.createdAt];
 }
 
 - (UILabel *)titleLabel {

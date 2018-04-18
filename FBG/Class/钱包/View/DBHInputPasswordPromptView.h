@@ -12,6 +12,8 @@ typedef void(^CommitBlock)(NSString *password);
 
 @interface DBHInputPasswordPromptView : UIView
 
+@property (nonatomic, assign) NSInteger inputPsdType;
+
 /**
  动画显示
  */
@@ -21,5 +23,6 @@ typedef void(^CommitBlock)(NSString *password);
  提交回调
  */
 - (void)commitBlock:(CommitBlock)commitBlock;
+
 
 @end

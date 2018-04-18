@@ -55,4 +55,14 @@
                            alpha:1.0f];
 }
 
++ (UIColor *)highLightedColor:(UIColor*)color {
+    const CGFloat *components1 = CGColorGetComponents(color.CGColor);
+    CGFloat value = 0.2;
+    
+    CGFloat r = components1[0] * value;
+    CGFloat g = components1[1] * value;
+    CGFloat b = components1[2] * value;
+    
+    return [UIColor colorWithRed:r green:g blue:b alpha:0.5];
+}
 @end

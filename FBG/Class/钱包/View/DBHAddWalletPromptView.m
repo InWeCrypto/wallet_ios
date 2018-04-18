@@ -9,7 +9,7 @@
 #import "DBHAddWalletPromptView.h"
 
 #import "DBHAddWalletPromptViewTableViewCell.h"
-
+#define ANIMATE_DURATION 0.5f
 static NSString *const kDBHAddWalletPromptViewTableViewCellIdentifier = @"kDBHAddWalletPromptViewTableViewCellIdentifier";
 
 @interface DBHAddWalletPromptView ()<UITableViewDataSource, UITableViewDelegate>
@@ -57,19 +57,17 @@ static NSString *const kDBHAddWalletPromptViewTableViewCellIdentifier = @"kDBHAd
     [self.boxView addSubview:self.tableView];
     
     WEAKSELF
-    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf);
-        make.height.offset(AUTOLAYOUTSIZE(373.5));
-        make.centerX.equalTo(weakSelf);
-        make.bottom.equalTo(weakSelf).offset(AUTOLAYOUTSIZE(373.5));
-    }];
+    [self boxViewAtInit];
     [self.quitButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(40));
         make.height.offset(AUTOLAYOUTSIZE(44));
         make.top.right.equalTo(weakSelf.boxView);
     }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(weakSelf);
+//        make.centerX.equalTo(weakSelf);
+        make.left.offset(0);
+        make.right.offset(0);
+        make.width.equalTo(weakSelf);
         make.top.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(15));
     }];
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -77,6 +75,16 @@ static NSString *const kDBHAddWalletPromptViewTableViewCellIdentifier = @"kDBHAd
         make.centerX.equalTo(weakSelf.boxView);
         make.top.equalTo(weakSelf.titleLabel.mas_bottom).offset(AUTOLAYOUTSIZE(27));
         make.bottom.equalTo(weakSelf.boxView);
+    }];
+}
+
+- (void)boxViewAtInit {
+    WEAKSELF
+    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(373.5));
+        make.centerX.equalTo(weakSelf);
+        make.bottom.equalTo(weakSelf).offset(AUTOLAYOUTSIZE(373.5));
     }];
 }
 
@@ -93,7 +101,16 @@ static NSString *const kDBHAddWalletPromptViewTableViewCellIdentifier = @"kDBHAd
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self respondsToQuitButton];
+//    [self respondsToQuitButton];
+    [self boxViewAtLeft];
+    self.alpha = 0.0f;
+    WEAKSELF
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
+        [weakSelf layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [weakSelf removeFromSuperview];
+    }];
+    
     self.selectedBlock(indexPath.row);
 }
 
@@ -109,11 +126,52 @@ static NSString *const kDBHAddWalletPromptViewTableViewCellIdentifier = @"kDBHAd
         make.centerX.equalTo(weakSelf);
         make.bottom.equalTo(weakSelf).offset(AUTOLAYOUTSIZE(373.5));
     }];
-    
-    [UIView animateWithDuration:0.25 animations:^{
+
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
         [weakSelf layoutIfNeeded];
     } completion:^(BOOL finished) {
-        [self removeFromSuperview];
+        [weakSelf removeFromSuperview];
+    }];
+}
+
+- (void)boxViewAtCenter {
+    WEAKSELF
+    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(373.5));
+        make.bottom.equalTo(weakSelf);
+        make.left.equalTo(weakSelf);
+    }];
+}
+
+- (void)boxViewAtRight {
+    WEAKSELF
+    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(373.5));
+        make.bottom.equalTo(weakSelf);
+        make.left.equalTo(weakSelf.mas_right);
+    }];
+}
+
+- (void)boxViewAtLeft {
+    WEAKSELF
+    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(373.5));
+        make.bottom.equalTo(weakSelf);
+        make.left.equalTo(weakSelf.mas_left).offset(-AUTOLAYOUTSIZE(weakSelf.width));
+    }];
+}
+
+- (void)animateFromLeftShow {
+    [self boxViewAtLeft];
+    [self boxViewAtCenter];
+    
+    self.alpha = 1.0f;
+    WEAKSELF
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
+        [weakSelf layoutIfNeeded];
     }];
 }
 
@@ -130,7 +188,8 @@ static NSString *const kDBHAddWalletPromptViewTableViewCellIdentifier = @"kDBHAd
         make.bottom.equalTo(weakSelf).offset(0);
     }];
     
-    [UIView animateWithDuration:0.25 animations:^{
+    self.alpha = 1.0f;
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
         [weakSelf layoutIfNeeded];
     }];
 }
@@ -142,14 +201,14 @@ static NSString *const kDBHAddWalletPromptViewTableViewCellIdentifier = @"kDBHAd
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
     }
     return _boxView;
 }
 - (UIButton *)quitButton {
     if (!_quitButton) {
         _quitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_quitButton setImage:[UIImage imageNamed:@"关闭-3"] forState:UIControlStateNormal];
+        [_quitButton setImage:[UIImage imageNamed:@"login_close"] forState:UIControlStateNormal];
         [_quitButton addTarget:self action:@selector(respondsToQuitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _quitButton;
@@ -160,6 +219,7 @@ static NSString *const kDBHAddWalletPromptViewTableViewCellIdentifier = @"kDBHAd
         _titleLabel.font = BOLDFONT(18);
         _titleLabel.text = DBHGetStringWithKeyFromTable(@"Add Wallets", nil);
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _titleLabel;
 }

@@ -28,7 +28,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 @property (nonatomic, strong) UIBarButtonItem *collectBarButtonItem;
 @property (nonatomic, strong) UITableView *tableView;
 
-@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;;
+@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;
 
 @end
 
@@ -74,7 +74,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
             return self.projectDetailModel.categoryMedia.count;
             break;
         case 2:
-            return self.projectModel.categoryUser.categoryId == 0 ? 0 : 1;
+            return 1;
             break;
             
         default:
@@ -87,7 +87,6 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         case 0: {
             DBHProjectLookForProjectInfomationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectLookForProjectInfomationTableViewCellIdentifier forIndexPath:indexPath];
             cell.projectDetailModel = self.projectDetailModel;
-            
             WEAKSELF
             [cell clickTypeButtonBlock:^(NSInteger type) {
                 if (!type) {
@@ -140,6 +139,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
         
         KKWebView *webView = [[KKWebView alloc] initWithUrl:model.url];
         webView.title = model.name;
+        webView.imageStr = model.img;
         [self.navigationController pushViewController:webView animated:YES];
     }
 }
@@ -159,24 +159,36 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
  */
 - (void)getProjectDetailInfomation {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"category/%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        if (weakSelf.projectDetailModel) {
-            return ;
-        }
-        
-        weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseCache];
-        
-        [weakSelf.tableView reloadData];
-    } success:^(id responseObject) {
-        weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseObject];
-        
-        weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:weakSelf.projectDetailModel.categoryUser.isFavorite ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
-        weakSelf.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
-        
-        [weakSelf.tableView reloadData];
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"category/%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+            if (weakSelf.projectDetailModel) {
+                return ;
+            }
+            
+            weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseCache];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView reloadData];
+            });
+        } success:^(id responseObject) {
+            weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseObject];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:weakSelf.projectDetailModel.categoryUser.isFavorite ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
+                weakSelf.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
+                
+                [weakSelf.tableView reloadData];
+            });
+        } failure:^(NSString *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [LCProgressHUD showFailure:error];
+            });
+        } specialBlock:^{
+            if (![UserSignData share].user.isLogin) {
+                return ;
+            }
+        }];
+    });
 }
 /**
  项目收藏
@@ -204,7 +216,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     [PPNetworkHelper PUT:[NSString stringWithFormat:@"category/%ld/set_top", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
         NSString *isTop = responseObject[@"is_top"];
         weakSelf.projectDetailModel.categoryUser.isTop = isTop.integerValue == 1 ? YES : NO;
-        [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+        //        [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];

@@ -44,15 +44,18 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
     
     [self setUI];
 }
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
+    
 }
 
 #pragma mark ------ UI ------
@@ -100,6 +103,7 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
         DBHProjectHomeNewsModelData *model = self.datasource[indexPath.row];
         KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
         webView.title = model.title;
+        webView.imageStr = model.img;
         webView.isHaveShare = YES;
         webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
         [self.navigationController pushViewController:webView animated:YES];
@@ -140,7 +144,9 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
             [weakSelf.datasource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } success:^(id responseObject) {
         [weakSelf.datasource removeAllObjects];
         
@@ -150,10 +156,12 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
             [weakSelf.datasource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 /**
  搜索项目
@@ -171,7 +179,9 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
             [weakSelf.datasource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } success:^(id responseObject) {
         [weakSelf.datasource removeAllObjects];
         
@@ -181,17 +191,19 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
             [weakSelf.datasource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 
 #pragma mark ------ Getters And Setters ------
 - (DBHSearchTitleView *)searchTitleView {
     if (!_searchTitleView) {
-        _searchTitleView = [[DBHSearchTitleView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, STATUS_HEIGHT + 44)];
-        
+        _searchTitleView = [[DBHSearchTitleView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, STATUS_HEIGHT + 44) isShowBtn:YES];
+        _searchTitleView.searchType = 0;
         WEAKSELF
         [_searchTitleView searchBlock:^(NSInteger type, NSString *searchString) {
             switch (type) {
@@ -239,7 +251,7 @@ static NSString *const kDBHSearchInfomationTableViewCellIdentifier = @"kDBHSearc
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.hidden = YES;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

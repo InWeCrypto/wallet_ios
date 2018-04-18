@@ -50,11 +50,9 @@
     }
 }
 
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     
-    if (self.viewControllers.count > 0)
-    {
+    if (self.viewControllers.count > 0) {
         viewController.hidesBottomBarWhenPushed = YES;
         // 非根控制器才需要设置返回按钮
         // 设置返回按钮

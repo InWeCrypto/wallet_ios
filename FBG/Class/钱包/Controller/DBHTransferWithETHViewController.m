@@ -176,7 +176,7 @@
  */
 - (void)scanSucessWithObject:(id)object {
     if (![NSString isAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
-        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
         return;
     }
     
@@ -194,34 +194,34 @@
         defautlGas = [NSString numberHexString:defautlGas];
         defautlGas = [NSString DecimalFuncWithOperatorType:2 first:defautlGas secend:@"90000" value:8];
         weakSelf.defaultGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"1000000000000000000" value:8];
-        if (weakSelf.defaultGas.floatValue < weakSelf.gasSlider.minimumValue) {
+        if (weakSelf.defaultGas.doubleValue < weakSelf.gasSlider.minimumValue) {
             weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.minimumValue];
             weakSelf.gasSlider.value = weakSelf.gasSlider.minimumValue;
-        } else if (weakSelf.defaultGas.floatValue > weakSelf.gasSlider.maximumValue) {
+        } else if (weakSelf.defaultGas.doubleValue > weakSelf.gasSlider.maximumValue) {
             weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.maximumValue];
             weakSelf.gasSlider.value = weakSelf.gasSlider.maximumValue;
         } else {
-            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.defaultGas.floatValue];
-            weakSelf.gasSlider.value = weakSelf.defaultGas.floatValue;
+            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.defaultGas.doubleValue];
+            weakSelf.gasSlider.value = weakSelf.defaultGas.doubleValue;
         }
     } success:^(id responseObject) {
         NSString *defautlGas = [NSString stringWithFormat:@"%@", responseObject[@"gasPrice"]];
         defautlGas = [NSString numberHexString:defautlGas];
         defautlGas = [NSString DecimalFuncWithOperatorType:2 first:defautlGas secend:@"90000" value:8];
         weakSelf.defaultGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"1000000000000000000" value:8];
-        if (weakSelf.defaultGas.floatValue < weakSelf.gasSlider.minimumValue) {
+        if (weakSelf.defaultGas.doubleValue < weakSelf.gasSlider.minimumValue) {
             weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.minimumValue];
             weakSelf.gasSlider.value = weakSelf.gasSlider.minimumValue;
-        } else if (weakSelf.defaultGas.floatValue > weakSelf.gasSlider.maximumValue) {
+        } else if (weakSelf.defaultGas.doubleValue > weakSelf.gasSlider.maximumValue) {
             weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.maximumValue];
             weakSelf.gasSlider.value = weakSelf.gasSlider.maximumValue;
         } else {
-            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.defaultGas.floatValue];
-            weakSelf.gasSlider.value = weakSelf.defaultGas.floatValue;
+            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.defaultGas.doubleValue];
+            weakSelf.gasSlider.value = weakSelf.defaultGas.doubleValue;
         }
     } failure:^(NSString *error) {
         
-    }];
+    } specialBlock:nil];
 }
 - (void)loadWalletData {
     //获取交易次数
@@ -270,7 +270,7 @@
 - (void)respondsToCommitButton {
     if (![NSString isAdress:[self.walletAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
     {
-        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
         return;
     }
     if (self.nonce.length == 0)
@@ -278,12 +278,12 @@
         [LCProgressHUD showMessage:@"暂未获取到交易次数。请稍后再试"];
         return;
     }
-    if (self.transferNumberTextField.text.length == 0)
+    if (self.transferNumberTextField.text.doubleValue == 0)
     {
         [LCProgressHUD showMessage:@"请输入价格"];
         return;
     }
-    if (self.tokenModel.balance.floatValue < self.transferNumberTextField.text.floatValue)
+    if (self.tokenModel.balance.doubleValue < self.transferNumberTextField.text.doubleValue)
     {
         [LCProgressHUD showMessage:@"钱包余额不足"];
         return;
@@ -292,7 +292,7 @@
     DBHTransferConfirmationViewController *transferConfirmationViewController = [[DBHTransferConfirmationViewController alloc] init];
     transferConfirmationViewController.tokenModel = self.tokenModel;
     transferConfirmationViewController.neoWalletModel = self.neoWalletModel;
-    transferConfirmationViewController.transferNumber = self.transferNumberTextField.text;
+    transferConfirmationViewController.transferNumber = @(self.transferNumberTextField.text.doubleValue);
     transferConfirmationViewController.poundage = [NSString stringWithFormat:@"%lf", self.gasSlider.value];
     transferConfirmationViewController.address = self.walletAddressTextField.text;
     transferConfirmationViewController.remark = self.remarkTextField.text;
@@ -315,9 +315,9 @@
     maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"21000"  value:8];
     maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"1000000000000000000" value:8];
     
-    self.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", minValue.floatValue];
-    self.gasSlider.minimumValue = minValue.floatValue;
-    self.gasSlider.maximumValue = maxValue.floatValue;
+    self.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", minValue.doubleValue];
+    self.gasSlider.minimumValue = minValue.doubleValue;
+    self.gasSlider.maximumValue = maxValue.doubleValue;
 }
 
 - (UILabel *)walletAddressLabel {
@@ -383,7 +383,7 @@
         _balanceLabel.font = FONT(11);
         _balanceLabel.textColor = COLORFROM16(0xA6A4A4, 1);
         
-        NSString *balance = [NSString stringWithFormat:@"%.8lf", self.tokenModel.balance.floatValue];
+        NSString *balance = [NSString stringWithFormat:@"%.8lf", self.tokenModel.balance.doubleValue];
         NSMutableAttributedString *balanceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"（%@ %@：%@）", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Amount Available", nil), balance]];
         [balanceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xF9480E, 1) range:NSMakeRange([NSString stringWithFormat:@"%@ %@", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Amount Available", nil)].length + 2, balance.length)];
         _balanceLabel.attributedText = balanceAttributedString;
@@ -394,7 +394,7 @@
     if (!_gasLabel) {
         _gasLabel = [[UILabel alloc] init];
         _gasLabel.font = FONT(13);
-        _gasLabel.text = DBHGetStringWithKeyFromTable(@"GAS Cost", nil);
+        _gasLabel.text = DBHGetStringWithKeyFromTable(@"Pitman Cost", nil);
         _gasLabel.textColor = COLORFROM16(0x000000, 1);
     }
     return _gasLabel;
@@ -404,7 +404,7 @@
         _gasValueLabel = [[UILabel alloc] init];
         _gasValueLabel.font = FONT(13);
         _gasValueLabel.text = @"0.00000000";
-        _gasValueLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _gasValueLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _gasValueLabel;
 }
@@ -420,9 +420,9 @@
 - (UISlider *)gasSlider {
     if (!_gasSlider) {
         _gasSlider = [[UISlider alloc] init];
-        _gasSlider.minimumTrackTintColor = COLORFROM16(0xFF841C, 1);
+        _gasSlider.minimumTrackTintColor = MAIN_ORANGE_COLOR;
         _gasSlider.maximumTrackTintColor = COLORFROM16(0x0A9234, 1);
-        _gasSlider.thumbTintColor = COLORFROM16(0xFF841C, 1);
+        _gasSlider.thumbTintColor = MAIN_ORANGE_COLOR;
         [_gasSlider addTarget:self action:@selector(respondsToGasSlider) forControlEvents:UIControlEventValueChanged];
     }
     return _gasSlider;
@@ -463,7 +463,7 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _commitButton.backgroundColor = MAIN_ORANGE_COLOR;
         _commitButton.titleLabel.font = FONT(14);
         [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];

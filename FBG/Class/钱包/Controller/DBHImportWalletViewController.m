@@ -16,6 +16,7 @@
 #import "DBHInputPasswordPromptView.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
+#import "DBHInputPasswordNamePromptView.h"
 
 @interface DBHImportWalletViewController ()<UITextViewDelegate, ScanVCDelegate>
 
@@ -25,11 +26,17 @@
 @property (nonatomic, strong) UILabel *placeHolderLabel;
 @property (nonatomic, strong) UIButton *importButton;
 @property (nonatomic, strong) DBHInputPasswordPromptView *inputPasswordPromptView;
+@property (nonatomic, strong) DBHInputPasswordNamePromptView *inputPasswordNamePromptView;
 
 @property (nonatomic, strong) NeomobileWallet *neoWallet;
 @property (nonatomic, assign) NSInteger currentSelectedIndex; // 当前选中下标
 @property (nonatomic, copy) NSArray *placeHolderArray;
 @property (nonatomic, strong) NSMutableArray *typeArray;
+
+@property (nonatomic, copy) NSString *keystoneStr;
+@property (nonatomic, copy) NSString *zhujiStr;
+@property (nonatomic, copy) NSString *siyaoStr;
+@property (nonatomic, copy) NSString *watchStr;
 
 @end
 
@@ -39,13 +46,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(self.isTransform ? @"Transform Wallet" : @"Import Wallet", nil);
+    self.title = DBHGetStringWithKeyFromTable(self.isTransform ? @"Convert to Hot Wallet" : @"Import Wallet", nil);
     
     if (self.isTransform) {
         [self.typeArray removeLastObject];
     }
     
     [self setUI];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
+    [super viewWillAppear:animated];
 }
 
 #pragma mark ------ UI ------
@@ -112,6 +125,24 @@
 #pragma mark ------ UITextViewDelegate ------
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     NSString *changeAfterString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    
+    switch (self.currentSelectedIndex) {
+        case 0:
+            self.keystoneStr = changeAfterString;
+            break;
+        case 1:
+            self.zhujiStr = changeAfterString;
+            break;
+        case 2:
+            self.siyaoStr = changeAfterString;
+            break;
+        case 3:
+            self.watchStr = changeAfterString;
+            break;
+        default:
+            break;
+    }
+  
     self.placeHolderLabel.hidden = changeAfterString.length;
     
     return YES;
@@ -151,71 +182,108 @@
     }
     
     WEAKSELF
+    self.inputPasswordNamePromptView.inputPsdType = self.currentSelectedIndex;
+    self.inputPasswordPromptView.inputPsdType = self.currentSelectedIndex;
     switch (self.currentSelectedIndex) {
         case 0: {
             // Keystore
-            [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [weakSelf.inputPasswordPromptView animationShow];
-            });
+            if (self.neoWalletModel) {
+                
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordNamePromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordNamePromptView animationShow];
+                });
+            } else {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordPromptView animationShow];
+                });
+            }
             break;
         }
         case 1: {
             // 助记词
-            [LCProgressHUD showLoading:@"验证中..."];
+            
+            if (self.neoWalletModel) {
+                
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordNamePromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordNamePromptView animationShow];
+                });
+            } else {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordPromptView animationShow];
+                });
+            }
+            
+            /**
+            [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
+            NSString *text = self.contentTextView.text;
             dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(globalQueue, ^
                            {
                                //子线程异步执行下载任务，防止主线程卡顿
                                NSError * error;
-                               self.neoWallet = NeomobileFromMnemonic(self.contentTextView.text, [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"] ? @"zh_CN" : @"en_US", &error);
+                               self.neoWallet = NeomobileFromMnemonic(text, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh_CN" : @"en_US", &error);
                                
                                dispatch_queue_t mainQueue = dispatch_get_main_queue();
                                //异步返回主线程，根据获取的数据，更新UI
-                               dispatch_async(mainQueue, ^
-                                              {
-                                                  if (!error)
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      
-//                                                      //创建成功
-                                                      if (self.neoWalletModel)
-                                                      {
-                                                          //观察钱包升级 助记词
-                                                          if ([[self.neoWallet address] isEqualToString:self.neoWalletModel.address])
-                                                          {
-                                                              DBHCreateWalletViewController *createWalletViewController = [[DBHCreateWalletViewController alloc] init];
-                                                              createWalletViewController.neoWalletModel = self.neoWalletModel;
-                                                              createWalletViewController.neoWallet = self.neoWallet;
-                                                              [self.navigationController pushViewController:createWalletViewController animated:YES];
-                                                          }
-                                                          else
-                                                          {
-                                                              [LCProgressHUD showMessage:@"该钱包的地址对比不正确,请确认后重试"];
-                                                          }
-                                                      }
-                                                      else
-                                                      {
-                                                          DBHCreateWalletViewController *createWalletViewController = [[DBHCreateWalletViewController alloc] init];
-                                                          createWalletViewController.neoWallet = self.neoWallet;
-                                                          [self.navigationController pushViewController:createWalletViewController animated:YES];
-                                                      }
-                                                  }
-                                                  else
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      [LCProgressHUD showMessage:@"钱包导入失败"];
-                                                  }
-                                              });
+                               dispatch_async(mainQueue, ^ {
+                                      if (!error) {
+                                          [LCProgressHUD hide];
+                                          
+//                                         //创建成功
+                                          if (self.neoWalletModel) {
+                                              //观察钱包升级 助记词
+                                              if ([[self.neoWallet address] isEqualToString:self.neoWalletModel.address]) {
+                                                  DBHCreateWalletViewController *createWalletViewController = [[DBHCreateWalletViewController alloc] init];
+                                                  createWalletViewController.neoWalletModel = self.neoWalletModel;
+                                                  createWalletViewController.neoWallet = self.neoWallet;
+                                                  [self.navigationController pushViewController:createWalletViewController animated:YES];
+                                              } else {
+                                                  [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
+                                              }
+                                          } else {
+                                              DBHCreateWalletViewController *createWalletViewController = [[DBHCreateWalletViewController alloc] init];
+                                              createWalletViewController.neoWallet = self.neoWallet;
+                                              [self.navigationController pushViewController:createWalletViewController animated:YES];
+                                              
+                                          }
+                                      } else {
+                                          [LCProgressHUD hide];
+                                          [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Failed to import wallet", nil)];
+                                      }
+                                  });
                                
                            });
+             */
             
             break;
         }
         case 2: {
             // 私钥
-            [LCProgressHUD showLoading:@"验证中..."];
+            
+            if (self.neoWalletModel) {
+                
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordNamePromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordNamePromptView animationShow];
+                });
+            } else {
+                [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf.inputPasswordPromptView animationShow];
+                });
+            }
+            /**
+            [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
             dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(globalQueue, ^
                            {
@@ -231,9 +299,9 @@
                                                   {
                                                       [LCProgressHUD hide];
                                                       //创建成功
-                                                      if (self.neoWalletModel)
+                                                      if (self.neoWalletModel) // 转化钱包
                                                       {
-                                                          //观察钱包升级 私匙
+                                                          //观察钱包升级 私钥
                                                           if ([[self.neoWallet address] isEqualToString:self.neoWalletModel.address])
                                                           {
                                                               DBHCreateWalletViewController *createWalletViewController = [[DBHCreateWalletViewController alloc] init];
@@ -243,7 +311,7 @@
                                                           }
                                                           else
                                                           {
-                                                              [LCProgressHUD showMessage:@"该钱包的地址对比不正确,请确认后重试"];
+                                                              [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
                                                           }
                                                       }
                                                       else
@@ -256,27 +324,26 @@
                                                   else
                                                   {
                                                       [LCProgressHUD hide];
-                                                      [LCProgressHUD showMessage:@"钱包导入失败"];
+                                                      [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Failed to import wallet", nil)];
                                                   }
                                               });
                                
                            });
+             */
             
             break;
         }
         case 3: {
             // 观察
-            if ([NSString isNEOAdress:[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
-            {
+            if ([NSString isNEOAdress:[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
                 //创建成功
                 DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
                 createWalletWithNameViewController.walletType = 2;
+                createWalletWithNameViewController.from = (int)self.currentSelectedIndex;
                 createWalletWithNameViewController.address = [self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 [self.navigationController pushViewController:createWalletWithNameViewController animated:YES];
-            }
-            else
-            {
-                [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+            } else {
+                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
             }
             
             break;
@@ -295,7 +362,7 @@
     }
     
     if (self.neoWalletModel && sender.tag - 200 == 3) {
-        [LCProgressHUD showMessage:@"已经是观察钱包了"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"It is already a monitoring wallet", nil)];
         return;
     }
     
@@ -305,6 +372,24 @@
     sender.selected = YES;
     self.currentSelectedIndex = sender.tag - 200;
     
+    switch (self.currentSelectedIndex) {
+        case 0:
+            self.contentTextView.text = self.keystoneStr;
+            break;
+        case 1:
+            self.contentTextView.text = self.zhujiStr;
+            break;
+        case 2:
+            self.contentTextView.text = self.siyaoStr;
+            break;
+        case 3:
+            self.contentTextView.text = self.watchStr;
+            break;
+        default:
+            break;
+    }
+    
+    self.placeHolderLabel.hidden = self.contentTextView.text.length;
     self.placeHolderLabel.text = DBHGetStringWithKeyFromTable(self.placeHolderArray[sender.tag - 200], nil);
     
     WEAKSELF
@@ -359,7 +444,7 @@
 - (UIButton *)importButton {
     if (!_importButton) {
         _importButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _importButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _importButton.backgroundColor = MAIN_ORANGE_COLOR;
         _importButton.titleLabel.font = BOLDFONT(14);
         _importButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         [_importButton setTitle:DBHGetStringWithKeyFromTable(@"Start Import", nil) forState:UIControlStateNormal];
@@ -373,62 +458,199 @@
         
         WEAKSELF
         [_inputPasswordPromptView commitBlock:^(NSString *password) {
-            NSString *data = self.contentTextView.text;
-            [LCProgressHUD showLoading:@"验证中..."];
+            NSString *data = weakSelf.contentTextView.text;
+            
+            [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
             dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_async(globalQueue, ^
-                           {
-                               //子线程异步执行下载任务，防止主线程卡顿
-                               NSError * error;
+            dispatch_async(globalQueue, ^ {
+                //子线程异步执行下载任务，防止主线程卡顿
+                NSError * error;
+                switch (weakSelf.inputPasswordPromptView.inputPsdType) {
+                    case 0: { // keyStore
+                        weakSelf.neoWallet = NeomobileFromKeyStore(data, password, &error);
+                    }
+                        break;
+                    case 1: { // 助记词
+                        weakSelf.neoWallet = NeomobileFromMnemonic(data, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh_CN" : @"en_US", &error);
+                    }
+                        break;
+                    case 2: { // 私钥
+                        weakSelf.neoWallet = NeomobileFromWIF(data, &error);
+                    }
+                        break;
+                       
+                    default:
+                        break;
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [LCProgressHUD hide];
+                    if (!error) { //创建成功
+                        if (weakSelf.neoWalletModel) { // 转化钱包
+                            if ([[weakSelf.neoWallet address] isEqualToString:weakSelf.neoWalletModel.address]) {
+                                if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Successfully converted", nil)];
+                                    [PDKeyChain save:KEYCHAIN_KEY([self.neoWallet address]) data:data];
+                                    DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+                                    weakSelf.neoWalletModel.isLookWallet = NO;
+                                    walletDetailViewController.neoWalletModel = self.neoWalletModel;
+                                    walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                    [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                } else { // 助记词 私钥
+                                    NSError *error;
+                                    NSString *data = [self.neoWallet toKeyStore:password error:&error];
+                                    NSString * address = [self.neoWallet address];
+                                    [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
+                                    
+                                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Successfully converted", nil)];
+                                    NSArray *arr = self.navigationController.viewControllers;
+                                    if (arr.count >= 2) {
+                                        if ([arr[arr.count - 2] isKindOfClass:[DBHWalletDetailViewController class]]) {
+                                            DBHWalletDetailViewController *walletDetailViewController = (DBHWalletDetailViewController *)arr[arr.count - 2];
+                                            
+                                            weakSelf.neoWalletModel.isLookWallet = NO;
+                                            walletDetailViewController.neoWalletModel = weakSelf.neoWalletModel;
+                                            walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                            [weakSelf.navigationController popToViewController:walletDetailViewController animated:YES];
+                                        }
+                                    } else {
+                                        DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+                                        
+                                        weakSelf.neoWalletModel.isLookWallet = NO;
+                                        walletDetailViewController.neoWalletModel = weakSelf.neoWalletModel;
+                                        walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                        [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                    }
+                                }
+                            } else {
+                                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
+                            }
+                       } else { // 导入钱包
+                           if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore钱包
+                               DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
+                               createWalletWithNameViewController.walletType = 2;
+                               createWalletWithNameViewController.from = (int)weakSelf.inputPasswordPromptView.inputPsdType;
+                               createWalletWithNameViewController.address = self.neoWallet.address;
+                               [PDKeyChain save:KEYCHAIN_KEY([self.neoWallet address]) data:data];
+                               createWalletWithNameViewController.password = password;
+                               [self.navigationController pushViewController:createWalletWithNameViewController animated:YES];
                                
-                               weakSelf.neoWallet = NeomobileFromKeyStore(data, password, &error);
-                               
-                               dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                               //异步返回主线程，根据获取的数据，更新UI
-                               dispatch_async(mainQueue, ^
-                                              {
-                                                  if (!error)
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      //创建成功
-                                                      if (self.neoWalletModel)
-                                                      {
-                                                          //观察钱包升级 keyStore
-                                                          if ([[self.neoWallet address] isEqualToString:self.neoWalletModel.address])
-                                                          {
-                                                              [LCProgressHUD showMessage:@"转化成功"];
-                                                              [PDKeyChain save:[self.neoWallet address] data:data];
-                                                              DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
-                                                              self.neoWalletModel.isLookWallet = NO;
-                                                              walletDetailViewController.neoWalletModel = self.neoWalletModel;
-                                                              walletDetailViewController.backIndex = 2;
-                                                              [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
-                                                          }
-                                                          else
-                                                          {
-                                                              [LCProgressHUD showMessage:@"该钱包的地址对比不正确,请确认后重试"];
-                                                          }
-                                                      }
-                                                      else
-                                                      {
-                                                          DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
-                                                          createWalletWithNameViewController.walletType = 2;
-                                                          createWalletWithNameViewController.address = self.neoWallet.address;
-                                                          [PDKeyChain save:[self.neoWallet address] data:data];
-                                                          [self.navigationController pushViewController:createWalletWithNameViewController animated:YES];
-                                                      }
-                                                  }
-                                                  else
-                                                  {
-                                                      [LCProgressHUD hide];
-                                                      [LCProgressHUD showMessage:@"钱包输入密码错误"];
-                                                  }
-                                              });
-                               
-                           });
+                           } else { // 助记词 私钥
+                               DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
+                               createWalletWithNameViewController.walletType = 2;
+                               createWalletWithNameViewController.from = (int)weakSelf.inputPasswordPromptView.inputPsdType;
+                               createWalletWithNameViewController.address = weakSelf.neoWallet.address;
+                               createWalletWithNameViewController.neoWallet = weakSelf.neoWallet;
+                               createWalletWithNameViewController.password = password;
+                               createWalletWithNameViewController.neoWalletModel = weakSelf.neoWalletModel;
+                               [weakSelf.navigationController pushViewController:createWalletWithNameViewController animated:YES];
+                           }
+                           
+                       }
+                   } else {
+                       if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                           [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect password", nil)];
+                       } else {
+                           [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Failed to import wallet", nil)];
+                       }
+                   }
+               });
+           });
         }];
     }
     return _inputPasswordPromptView;
+}
+
+- (DBHInputPasswordNamePromptView *)inputPasswordNamePromptView {
+    if (!_inputPasswordNamePromptView) {
+        _inputPasswordNamePromptView = [[DBHInputPasswordNamePromptView alloc] init];
+        WEAKSELF
+        [_inputPasswordNamePromptView commitBlock:^(NSString *password) {
+            NSString *data = weakSelf.contentTextView.text;
+            
+            [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
+            dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+            dispatch_async(globalQueue, ^ {
+                //子线程异步执行下载任务，防止主线程卡顿
+                NSError * error;
+                switch (weakSelf.inputPasswordPromptView.inputPsdType) {
+                    case 0: { // keyStore
+                        weakSelf.neoWallet = NeomobileFromKeyStore(data, password, &error);
+                    }
+                        break;
+                    case 1: { // 助记词
+                        weakSelf.neoWallet = NeomobileFromMnemonic(data, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh_CN" : @"en_US", &error);
+                    }
+                        break;
+                    case 2: { // 私钥
+                        weakSelf.neoWallet = NeomobileFromWIF(data, &error);
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [LCProgressHUD hide];
+                    if (!error) { //创建成功
+                        if (weakSelf.neoWalletModel) { // 转化钱包
+                            if ([[weakSelf.neoWallet address] isEqualToString:weakSelf.neoWalletModel.address]) {
+                                if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Successfully converted", nil)];
+                                    [PDKeyChain save:KEYCHAIN_KEY([self.neoWallet address]) data:data];
+                                    DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+                                    weakSelf.neoWalletModel.isLookWallet = NO;
+                                    walletDetailViewController.neoWalletModel = self.neoWalletModel;
+                                    walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                    [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                } else { // 助记词 私钥
+                                    NSError *error;
+                                    NSString *data = [self.neoWallet toKeyStore:password error:&error];
+                                    NSString * address = [self.neoWallet address];
+                                    [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
+                                    
+                                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Successfully converted", nil)];
+                                    NSArray *arr = self.navigationController.viewControllers;
+                                    if (arr.count >= 2) {
+                                        if ([arr[arr.count - 2] isKindOfClass:[DBHWalletDetailViewController class]]) {
+                                            DBHWalletDetailViewController *walletDetailViewController = (DBHWalletDetailViewController *)arr[arr.count - 2];
+                                            
+                                            weakSelf.neoWalletModel.isLookWallet = NO;
+                                            walletDetailViewController.neoWalletModel = weakSelf.neoWalletModel;
+                                            walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                            [weakSelf.navigationController popToViewController:walletDetailViewController animated:YES];
+                                        }
+                                    } else {
+                                        DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
+                                        
+                                        weakSelf.neoWalletModel.isLookWallet = NO;
+                                        walletDetailViewController.neoWalletModel = weakSelf.neoWalletModel;
+                                        walletDetailViewController.backIndex = (weakSelf.navigationController.viewControllers.count == 4) ? 2 : 1;
+                                        [weakSelf.navigationController pushViewController:walletDetailViewController animated:YES];
+                                    }
+                                }
+                            } else {
+                                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
+                            }
+                        }
+                            
+                    } else {
+                        if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
+                            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect password", nil)];
+                        } else {
+                            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Failed to import wallet", nil)];
+                        }
+                    }
+                });
+            });
+        }];
+    }
+    
+    if (self.neoWalletModel) {
+        _inputPasswordNamePromptView.name = self.neoWalletModel.name;
+    }
+    return _inputPasswordNamePromptView;
 }
 
 - (NSArray *)placeHolderArray {
@@ -445,7 +667,7 @@
         _typeArray = [@[@"Keystore",
                        @"Mnemonic",
                        @"Private Key",
-                       @"Watch"] mutableCopy];
+                       @"Watch2"] mutableCopy];
     }
     return _typeArray;
 }

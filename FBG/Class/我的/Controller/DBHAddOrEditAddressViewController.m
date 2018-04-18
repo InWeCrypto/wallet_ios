@@ -11,6 +11,7 @@
 #import "ScanVC.h"
 
 #import "DBHAddOrEditAddressTableViewCell.h"
+#import "DBHAddressBookViewController.h"
 
 #import "DBHAddressBookDataModels.h"
 
@@ -32,6 +33,14 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
     self.title = DBHGetStringWithKeyFromTable(self.addressViewControllerType == DBHAddressViewControllerAddType ? @"Add Contact" : @"Edit Contact", nil);
     
     [self setUI];
+}
+
+- (void)setAddAddressVC:(NSInteger)index {
+    UIViewController *vc = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
+    if ([vc isKindOfClass:[DBHAddressBookViewController class]]) {
+        DBHAddressBookViewController *detailVC = (DBHAddressBookViewController *)vc;
+        detailVC.currentSelectedItem = index;
+    }
 }
 
 #pragma mark ------ UI ------
@@ -80,12 +89,12 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
 - (void)scanSucessWithObject:(id)object {
     if ([self.icoId isEqualToString:@"1"]) {
         if (![NSString isAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
-            [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
             return;
         }
     } else {
         if (![NSString isNEOAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
-            [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
             return;
         }
     }
@@ -101,12 +110,13 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
 - (void)addContact {
     DBHAddOrEditAddressTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     NSDictionary *paramters = @{@"category_id":self.icoId,
-                                @"name":cell.nameTextField.text,
+                                NAME:cell.nameTextField.text,
                                 @"address":cell.addressTextField.text};
     
     WEAKSELF
-    [PPNetworkHelper POST:@"contact" baseUrlType:1 parameters:paramters hudString:@"保存中..." success:^(id responseObject) {
-        [LCProgressHUD showSuccess:@"保存成功"];
+    [PPNetworkHelper POST:@"contact" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Saving...", nil) success:^(id responseObject) {
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Saved successfully", nil)];
+        [weakSelf setAddAddressVC:self.icoId.intValue - 1];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -117,13 +127,13 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
  */
 - (void)updateContact {
     DBHAddOrEditAddressTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    NSDictionary *paramters = @{[APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"ico_id" : @"category_id":self.icoId,
-                                @"name":cell.nameTextField.text,
+    NSDictionary *paramters = @{@"category_id":self.icoId,
+                                NAME:cell.nameTextField.text,
                                 @"address":cell.addressTextField.text};
     
     WEAKSELF
-    [PPNetworkHelper PUT:[NSString stringWithFormat:@"contact/%ld", (NSInteger)self.model.listIdentifier] baseUrlType:1 parameters:paramters hudString:@"修改中..." success:^(id responseObject) {
-        [LCProgressHUD showSuccess:@"修改成功"];
+    [PPNetworkHelper PUT:[NSString stringWithFormat:@"contact/%ld", (NSInteger)self.model.listIdentifier] baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Modifying...", nil) success:^(id responseObject) {
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Successfully modified", nil)]; 
         [weakSelf.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -132,9 +142,9 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
 
 #pragma mark ------ Event Responds ------
 - (void)respondsToSureButton {
-    [PPNetworkHelper DELETE:[NSString stringWithFormat:@"contact/%ld", (NSInteger)self.model.listIdentifier] baseUrlType:1 parameters:nil hudString:@"删除中..." success:^(id responseObject)
+    [PPNetworkHelper DELETE:[NSString stringWithFormat:@"contact/%ld", (NSInteger)self.model.listIdentifier] baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Deleting...", nil) success:^(id responseObject)
      {
-         [LCProgressHUD showSuccess:@"删除成功"];
+         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Delete successfully", nil)];
          [self.navigationController popViewControllerAnimated:YES];
          
      } failure:^(NSString *error)
@@ -148,25 +158,25 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
 - (void)respondsToRightBarButtonItem {
     DBHAddOrEditAddressTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if (!cell.nameTextField.text.length) {
-        [LCProgressHUD showMessage:@"请输入钱包名"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter wallet name", nil)];
         return;
     }
     if (!cell.addressTextField.text.length) {
-        [LCProgressHUD showMessage:@"请输入地址"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter wallet address", nil)];
         return;
     }
     if ([self.icoId isEqualToString:@"1"]) {
         // ETH
         if (![NSString isAdress:[cell.addressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
         {
-            [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
             return;
         }
     } else {
         // NEO
         if (![NSString isNEOAdress:[cell.addressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
         {
-            [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
             return;
         }
     }
@@ -184,7 +194,7 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.rowHeight = AUTOLAYOUTSIZE(162);
@@ -198,10 +208,12 @@ static NSString *const kDBHAddOrEditAddressTableViewCellIdentifier = @"kDBHAddOr
 - (UIButton *)sureButton {
     if (!_sureButton) {
         _sureButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _sureButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _sureButton.backgroundColor = MAIN_ORANGE_COLOR;
         _sureButton.titleLabel.font = FONT(14);
         [_sureButton setTitle:DBHGetStringWithKeyFromTable(@"Delete", nil) forState:UIControlStateNormal];
         [_sureButton addTarget:self action:@selector(respondsToSureButton) forControlEvents:UIControlEventTouchUpInside];
+        
+        _sureButton.hidden = (self.addressViewControllerType == DBHAddressViewControllerAddType);
     }
     return _sureButton;
 }

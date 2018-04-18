@@ -11,6 +11,7 @@
 #import "DBHQuotationReminderPromptView.h"
 
 #import "DBHMarketDetailMoneyRealTimePriceModelData.h"
+#import "UIView+Tool.h"
 
 @interface DBHMarketDetailView ()
 
@@ -35,7 +36,7 @@
 {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = WHITE_COLOR;
         
         [self setUI];
         [self setData];
@@ -60,6 +61,7 @@
     [self.currentPriceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(AUTOLAYOUTSIZE(15));
         make.top.offset(AUTOLAYOUTSIZE(20));
+        make.height.offset(AUTOLAYOUTSIZE(25));
     }];
     [self.remindButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(44));
@@ -68,9 +70,10 @@
         make.right.equalTo(weakSelf);
     }];
     [self.changeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(weakSelf.currentPriceLabel.mas_bottom);
         make.width.equalTo(weakSelf).multipliedBy(0.24);
         make.left.equalTo(weakSelf.currentPriceLabel);
-        make.bottom.equalTo(weakSelf.volumeTransactionLabel.mas_top).offset(- AUTOLAYOUTSIZE(10));
+        make.height.equalTo(weakSelf.changeLabel);
     }];
     [self.maxPriceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(weakSelf.changeLabel);
@@ -78,9 +81,10 @@
         make.centerY.equalTo(weakSelf.changeLabel);
     }];
     [self.volumeTransactionLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(weakSelf.changeLabel.mas_bottom);
         make.size.equalTo(weakSelf.changeLabel);
         make.left.equalTo(weakSelf.changeLabel);
-        make.bottom.offset(- AUTOLAYOUTSIZE(18));
+        make.bottom.equalTo(weakSelf);
     }];
     [self.minPriceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(weakSelf.changeLabel);
@@ -110,7 +114,7 @@
  行情提醒
  */
 - (void)remindSetWithMaxPrice:(NSString *)maxPrice minPrice:(NSString *)minPrice {
-    BOOL isReminder = maxPrice.floatValue || minPrice.floatValue;
+    BOOL isReminder = maxPrice.doubleValue || minPrice.doubleValue;
     NSMutableDictionary *paramters = [NSMutableDictionary dictionary];
     [paramters setObject:@(isReminder) forKey:@"is_market_follow"];
     if (isReminder) {
@@ -134,16 +138,21 @@
  行情提醒
  */
 - (void)respondsToRemindButton {
-    NSString *usdPrice = [NSString stringWithFormat:@"$%.2lf", _model.price.floatValue];
-    self.quotationReminderPromptView.price = usdPrice;
-    self.quotationReminderPromptView.maxPrice = self.max;
-    self.quotationReminderPromptView.minPrice = self.min;
-    [[UIApplication sharedApplication].keyWindow addSubview:self.quotationReminderPromptView];
-    
-    WEAKSELF
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakSelf.quotationReminderPromptView animationShow];
-    });
+    if (![UserSignData share].user.isLogin) {
+        UIViewController *vc = [self parentController];
+        [[AppDelegate delegate] goToLoginVC:vc];
+    } else {
+        NSString *usdPrice = [NSString stringWithFormat:@"$%.2lf", _model.price.doubleValue];
+        self.quotationReminderPromptView.price = usdPrice;
+        self.quotationReminderPromptView.maxPrice = self.max;
+        self.quotationReminderPromptView.minPrice = self.min;
+        [[UIApplication sharedApplication].keyWindow addSubview:self.quotationReminderPromptView];
+        
+        WEAKSELF
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf.quotationReminderPromptView animationShow];
+        });
+    }
 }
 
 #pragma mark ------ Private Methods ------
@@ -168,26 +177,26 @@
 - (void)setModel:(DBHMarketDetailMoneyRealTimePriceModelData *)model {
     _model = model;
     
-    NSString *usdPrice = [NSString stringWithFormat:@"$%.2lf", _model.price.floatValue];
-    NSString *cnyPrice = [NSString stringWithFormat:@"￥%.2lf", _model.priceCny.floatValue];
+    NSString *usdPrice = [NSString stringWithFormat:@"$%.2lf", _model.price.doubleValue];
+    NSString *cnyPrice = [NSString stringWithFormat:@"￥%.2lf", _model.priceCny.doubleValue];
     self.quotationReminderPromptView.price = usdPrice;
     
     NSMutableAttributedString *currentPriceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", usdPrice, cnyPrice]];
     [currentPriceAttributedString addAttributes:@{NSFontAttributeName:BOLDFONT(20), NSForegroundColorAttributeName:COLORFROM16(0x333333, 1)} range:NSMakeRange(0, usdPrice.length)];
     self.currentPriceLabel.attributedText = currentPriceAttributedString;
     
-    NSString *change = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.changeCny24h.floatValue : _model.change24h.floatValue];
-    self.changeValueLabel.text = [NSString stringWithFormat:@"%@%@%%", change.floatValue > 0 ? @"+" : @"", change];
-    self.changeValueLabel.textColor = change.floatValue > 0 ? COLORFROM16(0x2D9518, 1) : COLORFROM16(0xFF680F, 1);
+    NSString *change = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.changeCny24h.doubleValue : _model.change24h.doubleValue];
+    self.changeValueLabel.text = [NSString stringWithFormat:@"%@%@%%", change.doubleValue > 0 ? @"+" : @"", change];
+    self.changeValueLabel.textColor = change.doubleValue > 0 ? COLORFROM16(0x2D9518, 1) : COLORFROM16(0xFF680F, 1);
     
     NSString *money = [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$";
-    NSString *maxPrice = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.maxPriceCny24h.floatValue : _model.maxPrice24h.floatValue];
+    NSString *maxPrice = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.maxPriceCny24h.doubleValue : _model.maxPrice24h.doubleValue];
     self.maxPriceValueLabel.text = [NSString stringWithFormat:@"%@%@", money, maxPrice];
     
-    NSString *volumeTransaction = [NSString getDealNumwithstring:[NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.volumeCny.floatValue : _model.volumeCny.floatValue]];
+    NSString *volumeTransaction = [NSString getDealNumwithstring:[NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.volumeCny.doubleValue : _model.volumeCny.doubleValue]];
     self.volumeTransactionValueLabel.text = [NSString stringWithFormat:@"%@%@", money, volumeTransaction];
     
-    NSString *minPrice = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.minPriceCny24h.floatValue : _model.minPrice24h.floatValue];
+    NSString *minPrice = [NSString stringWithFormat:@"%.2lf", [UserSignData share].user.walletUnitType == 1 ? _model.minPriceCny24h.doubleValue : _model.minPrice24h.doubleValue];
     self.minPriceValueLabel.text = [NSString stringWithFormat:@"%@%@", money, minPrice];
 }
 - (void)setIsMarketFollow:(NSString *)isMarketFollow {

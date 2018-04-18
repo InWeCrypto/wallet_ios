@@ -8,15 +8,18 @@
 #import "DBHWalletDetailTokenInfomationModelData.h"
 
 
-NSString *const kDBHWalletDetailTokenInfomationModelDataPriceCny = @"price_cny";
+NSString *const kDBHWalletDetailTokenInfomationModelDataPriceCny = PRICE_CNY;
 NSString *const kDBHWalletDetailTokenInfomationModelDataAddress = @"address";
-NSString *const kDBHWalletDetailTokenInfomationModelDataPriceUsd = @"price_usd";
+NSString *const kDBHWalletDetailTokenInfomationModelDataPriceUsd = PRICE_USD;
+NSString *const kDBHWalletDetailTokenInfomationModelDataSymbol = @"symbol";
 NSString *const kDBHWalletDetailTokenInfomationModelDataId = @"id";
-NSString *const kDBHWalletDetailTokenInfomationModelDataBalance = @"balance";
+NSString *const kDBHWalletDetailTokenInfomationModelDataBalance = BALANCE;
 NSString *const kDBHWalletDetailTokenInfomationModelDataFlag = @"flag";
 NSString *const kDBHWalletDetailTokenInfomationModelDataCanExtractbalance = @"canExtractbalance";
 NSString *const kDBHWalletDetailTokenInfomationModelDataIcon = @"icon";
-NSString *const kDBHWalletDetailTokenInfomationModelDataName = @"name";
+NSString *const kDBHWalletDetailTokenInfomationModelDataName = NAME;
+NSString *const kDBHWalletDetailTokenInfomationModelDataIsDB = @"isDB";
+NSString *const kDBHWalletDetailTokenInfomationModelDataTypeName = @"typeName";
 
 
 @interface DBHWalletDetailTokenInfomationModelData ()
@@ -36,7 +39,9 @@ NSString *const kDBHWalletDetailTokenInfomationModelDataName = @"name";
 @synthesize canExtractbalance = _canExtractbalance;
 @synthesize icon = _icon;
 @synthesize name = _name;
-
+@synthesize isDB = _isDB;
+@synthesize typeName = _typeName;
+@synthesize symbol = _symbol;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict {
     return [[self alloc] initWithDictionary:dict];
@@ -48,20 +53,30 @@ NSString *const kDBHWalletDetailTokenInfomationModelDataName = @"name";
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if (self && [dict isKindOfClass:[NSDictionary class]]) {
-            self.priceCny = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataPriceCny fromDictionary:dict];
-            self.address = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataAddress fromDictionary:dict];
-            self.priceUsd = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataPriceUsd fromDictionary:dict];
-            self.dataIdentifier = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataId fromDictionary:dict];
-            self.balance = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataBalance fromDictionary:dict];
-            self.flag = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataFlag fromDictionary:dict];
-            self.canExtractbalance = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataCanExtractbalance fromDictionary:dict];
-            self.icon = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataIcon fromDictionary:dict];
-            self.name = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataName fromDictionary:dict];
-
+        self.priceCny = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataPriceCny fromDictionary:dict];
+        self.address = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataAddress fromDictionary:dict];
+        self.priceUsd = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataPriceUsd fromDictionary:dict];
+        self.dataIdentifier = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataId fromDictionary:dict];
+        self.balance = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataBalance fromDictionary:dict];
+        self.flag = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataFlag fromDictionary:dict];
+        self.canExtractbalance = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataCanExtractbalance fromDictionary:dict];
+        self.icon = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataIcon fromDictionary:dict];
+        self.name = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataName fromDictionary:dict];
+        self.isDB = [[self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataIsDB fromDictionary:dict] boolValue];
+        self.typeName = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataTypeName fromDictionary:dict];
+        self.symbol = [self objectOrNilForKey:kDBHWalletDetailTokenInfomationModelDataSymbol fromDictionary:dict];
     }
     
     return self;
     
+}
+
+- (void)setTypeName:(NSString *)typeName {
+    if ([NSObject isNulllWithObject:typeName]) {
+        _typeName = @"";
+    } else {
+        _typeName = typeName;
+    }
 }
 
 - (NSDictionary *)dictionaryRepresentation {
@@ -75,7 +90,9 @@ NSString *const kDBHWalletDetailTokenInfomationModelDataName = @"name";
     [mutableDict setValue:self.canExtractbalance forKey:kDBHWalletDetailTokenInfomationModelDataCanExtractbalance];
     [mutableDict setValue:self.icon forKey:kDBHWalletDetailTokenInfomationModelDataIcon];
     [mutableDict setValue:self.name forKey:kDBHWalletDetailTokenInfomationModelDataName];
-
+    [mutableDict setValue:[NSNumber numberWithBool:self.isDB] forKey:kDBHWalletDetailTokenInfomationModelDataIsDB];
+    [mutableDict setValue:self.typeName forKey:kDBHWalletDetailTokenInfomationModelDataTypeName];
+    [mutableDict setValue:self.symbol forKey:kDBHWalletDetailTokenInfomationModelDataSymbol];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -104,6 +121,9 @@ NSString *const kDBHWalletDetailTokenInfomationModelDataName = @"name";
     self.canExtractbalance = [aDecoder decodeObjectForKey:kDBHWalletDetailTokenInfomationModelDataCanExtractbalance];
     self.icon = [aDecoder decodeObjectForKey:kDBHWalletDetailTokenInfomationModelDataIcon];
     self.name = [aDecoder decodeObjectForKey:kDBHWalletDetailTokenInfomationModelDataName];
+    self.isDB = [[aDecoder decodeObjectForKey:kDBHWalletDetailTokenInfomationModelDataIsDB] boolValue];
+    self.typeName = [aDecoder decodeObjectForKey:kDBHWalletDetailTokenInfomationModelDataTypeName];
+    self.symbol = [aDecoder decodeObjectForKey:kDBHWalletDetailTokenInfomationModelDataSymbol];
     return self;
 }
 
@@ -119,13 +139,13 @@ NSString *const kDBHWalletDetailTokenInfomationModelDataName = @"name";
     [aCoder encodeObject:_canExtractbalance forKey:kDBHWalletDetailTokenInfomationModelDataCanExtractbalance];
     [aCoder encodeObject:_icon forKey:kDBHWalletDetailTokenInfomationModelDataIcon];
     [aCoder encodeObject:_name forKey:kDBHWalletDetailTokenInfomationModelDataName];
+    [aCoder encodeObject:[NSNumber numberWithBool:_isDB] forKey:kDBHWalletDetailTokenInfomationModelDataIsDB];
+    [aCoder encodeObject:_typeName forKey:kDBHWalletDetailTokenInfomationModelDataTypeName];
+    [aCoder encodeObject:_symbol forKey:kDBHWalletDetailTokenInfomationModelDataSymbol];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
     DBHWalletDetailTokenInfomationModelData *copy = [[DBHWalletDetailTokenInfomationModelData alloc] init];
-    
-    
-    
     if (copy) {
 
         copy.priceCny = [self.priceCny copyWithZone:zone];
@@ -137,6 +157,10 @@ NSString *const kDBHWalletDetailTokenInfomationModelDataName = @"name";
         copy.canExtractbalance = [self.canExtractbalance copyWithZone:zone];
         copy.icon = [self.icon copyWithZone:zone];
         copy.name = [self.name copyWithZone:zone];
+        copy.isDB = self.isDB;
+        copy.typeName = [self.typeName copyWithZone:zone];
+        copy.symbol = [self.symbol copyWithZone:zone];
+        
     }
     
     return copy;

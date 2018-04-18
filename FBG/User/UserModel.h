@@ -26,7 +26,9 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString * nickname; //昵称
 @property (nonatomic, copy) NSString * sex;
 @property (nonatomic, copy) NSString * img;
+@property (nonatomic, copy) NSString * language; // 设置为cns或者en
 @property (nonatomic, copy) NSString *invitationCode; // 邀请码
+@property (nonatomic, assign) BOOL isLogin; // 是否登录
 @property (nonatomic, assign) BOOL isFirstRegister; // 首次注册
 @property (nonatomic, assign) BOOL isCode; //是不是从冷钱包进入
 @property (nonatomic, assign) int walletUnitType; // 1 = rmb  2 = usd
@@ -36,6 +38,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) DBHCanUseUnlockType canUseUnlockType; // 可以使用的第三方解锁方式
 @property (nonatomic, strong) NSMutableArray *functionalUnitArray; // 功能组件是否删除数组 0:未删除 1:删除
 @property (nonatomic, strong) NSMutableArray *realTimeDeliveryArray; // 功能组件是否开启实时资讯推送 0:未开启 1:开启
+
+@property (nonatomic, strong) NSArray *sortedTokenFlags; // 代币的排序数组
 
 @property (nonatomic, copy) NSString * API;
 @property (nonatomic, copy) NSString * IMAGE;

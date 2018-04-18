@@ -9,15 +9,15 @@
 #import "DBHAddressBookModelWallet.h"
 
 
-NSString *const kDBHAddressBookModelListRemark = @"remark";
+NSString *const kDBHAddressBookModelListRemark = REMARK;
 NSString *const kDBHAddressBookModelListWallet = @"wallet";
 NSString *const kDBHAddressBookModelListAddress = @"address";
 NSString *const kDBHAddressBookModelListId = @"id";
-NSString *const kDBHAddressBookModelListCreatedAt = @"created_at";
+NSString *const kDBHAddressBookModelListCreatedAt = CREATED_AT;
 NSString *const kDBHAddressBookModelListCategoryId = @"category_id";
 NSString *const kDBHAddressBookModelListUserId = @"user_id";
 NSString *const kDBHAddressBookModelListUpdatedAt = @"updated_at";
-NSString *const kDBHAddressBookModelListName = @"name";
+NSString *const kDBHAddressBookModelListName = NAME;
 
 
 @interface DBHAddressBookModelList ()

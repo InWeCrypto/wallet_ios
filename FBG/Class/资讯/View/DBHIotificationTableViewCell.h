@@ -8,14 +8,14 @@
 
 #import "DBHBaseTableViewCell.h"
 
-@class DBHExchangeNoticeModelData;
+@class DBHProjectHomeNewsModelData;
 
 @interface DBHIotificationTableViewCell : DBHBaseTableViewCell
 
 /**
  公告信息
  */
-@property (nonatomic, strong) DBHExchangeNoticeModelData *model;
+@property (nonatomic, strong) DBHProjectHomeNewsModelData *model;
 
 /**
  聊天消息

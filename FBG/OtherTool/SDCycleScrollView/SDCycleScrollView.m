@@ -28,7 +28,6 @@
  
  */
 
-
 #import "SDCycleScrollView.h"
 #import "SDCollectionViewCell.h"
 #import "UIView+SDExtension.h"
@@ -50,6 +49,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
 @property (nonatomic, assign) NSInteger totalItemsCount;
 @property (nonatomic, weak) UIControl *pageControl;
 
+@property (nonatomic, assign) BOOL isManualScroll;
 @property (nonatomic, strong) UIImageView *backgroundImageView; // 当imageURLs为空时的背景图
 
 @end
@@ -75,10 +75,10 @@ NSString * const ID = @"SDCycleScrollViewCell";
 - (void)initialization
 {
     _pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
-    _autoScrollTimeInterval = 2.0;
-    _titleLabelTextColor = [UIColor whiteColor];
-    _titleLabelTextFont= [UIFont systemFontOfSize:14];
-    _titleLabelBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    _autoScrollTimeInterval = 4.0;
+    _titleLabelTextColor = [UIColor lightGrayColor];
+    _titleLabelTextFont= [UIFont boldSystemFontOfSize:14];
+    _titleLabelBackgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
     _titleLabelHeight = 30;
     _titleLabelTextAlignment = NSTextAlignmentLeft;
     _autoScroll = YES;
@@ -91,9 +91,9 @@ NSString * const ID = @"SDCycleScrollViewCell";
     _hidesForSinglePage = YES;
     _currentPageDotColor = [UIColor whiteColor];
     _pageDotColor = [UIColor lightGrayColor];
-    _bannerImageViewContentMode = UIViewContentModeScaleToFill;
+    _bannerImageViewContentMode = UIViewContentModeScaleAspectFill;
     
-    self.backgroundColor = [UIColor lightGrayColor];
+//    self.backgroundColor = [UIColor lightGrayColor];
     
 }
 
@@ -168,7 +168,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     
     if (!self.backgroundImageView) {
         UIImageView *bgImageView = [UIImageView new];
-        bgImageView.contentMode = UIViewContentModeScaleAspectFit;
+        bgImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self insertSubview:bgImageView belowSubview:self.mainView];
         self.backgroundImageView = bgImageView;
     }
@@ -325,8 +325,12 @@ NSString * const ID = @"SDCycleScrollViewCell";
             NSURL *url = (NSURL *)obj;
             urlString = [url absoluteString];
         }
+        
+        urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         if (urlString) {
             [temp addObject:urlString];
+        } else {
+            [temp addObject:@"fenxiang_jietu"];
         }
     }];
     self.imagePathsGroup = [temp copy];
@@ -426,6 +430,20 @@ NSString * const ID = @"SDCycleScrollViewCell";
     }
 }
 
+/**
+ 手动滑动到指定index
+
+ @param index index
+ */
+- (void)manualScrollToIndex:(int)index {
+    if (self.autoScroll) {
+        [self invalidateTimer];
+        [self setupTimer];
+    }
+
+    [self scrollToIndex:index];
+}
+
 
 - (void)automaticScroll
 {
@@ -447,8 +465,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     [_mainView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:targetIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
 }
 
-- (int)currentIndex
-{
+- (int)currentIndex {
     if (_mainView.sd_width == 0 || _mainView.sd_height == 0) {
         return 0;
     }
@@ -496,7 +513,10 @@ NSString * const ID = @"SDCycleScrollViewCell";
         }else{
             targetIndex = 0;
         }
-        [_mainView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:targetIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+        
+        if (![self.timer isValid]) {
+            [_mainView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:targetIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+        }
     }
     
     CGSize size = CGSizeZero;
@@ -581,7 +601,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     
     if (!self.onlyDisplayText && [imagePath isKindOfClass:[NSString class]]) {
         if ([imagePath hasPrefix:@"http"]) {
-            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:Default_General_Image];
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
         } else {
             UIImage *image = [UIImage imageNamed:imagePath];
             if (!image) {
@@ -624,9 +644,8 @@ NSString * const ID = @"SDCycleScrollViewCell";
 
 
 #pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
+//当scrollView滚动的时候，不停调用（可以监听scrollView的contentOffset）
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (!self.imagePathsGroup.count) return; // 解决清除timer时偶尔会出现的问题
     int itemIndex = [self currentIndex];
     int indexOnPageControl = [self pageControlIndexWithCurrentCellIndex:itemIndex];
@@ -640,36 +659,44 @@ NSString * const ID = @"SDCycleScrollViewCell";
     }
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
+//开始拖动的时候调用
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    self.isManualScroll = YES;
     if (self.autoScroll) {
         [self invalidateTimer];
     }
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
+// 已经结束拖动
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (self.autoScroll) {
         [self setupTimer];
     }
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
+//减速完成（停止）
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self scrollViewDidEndScrollingAnimation:self.mainView];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
+// called when setContentOffset/scrollRectVisible:animated: finishes. not called if not animating
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     if (!self.imagePathsGroup.count) return; // 解决清除timer时偶尔会出现的问题
     int itemIndex = [self currentIndex];
     int indexOnPageControl = [self pageControlIndexWithCurrentCellIndex:itemIndex];
-    
     if ([self.delegate respondsToSelector:@selector(cycleScrollView:didScrollToIndex:)]) {
         [self.delegate cycleScrollView:self didScrollToIndex:indexOnPageControl];
     } else if (self.itemDidScrollOperationBlock) {
-        self.itemDidScrollOperationBlock(indexOnPageControl);
+        self.itemDidScrollOperationBlock(itemIndex);
     }
+//    if (self.isManualScroll) {
+//        if ([self.delegate respondsToSelector:@selector(cycleScrollView:didScrollToIndex:)]) {
+//            [self.delegate cycleScrollView:self didScrollToIndex:itemIndex];
+//        } else if (self.itemDidScrollOperationBlock) {
+//            self.itemDidScrollOperationBlock(itemIndex);
+//        }
+//        self.isManualScroll = NO;
+//    }
 }
 
 

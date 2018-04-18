@@ -12,6 +12,7 @@ typedef void(^ClickButtonBlock)(NSInteger type);
 
 @interface DBHHomePageHeaderView : UIView
 
+@property (nonatomic, strong) UIButton *assetButton;
 /**
  总资产
  */

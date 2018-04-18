@@ -12,6 +12,8 @@ typedef void(^SelectedAddressBlock)(NSString *address);
 
 @interface DBHAddressBookViewController : DBHBaseViewController
 
+
+@property (nonatomic, assign) NSInteger currentSelectedItem; // 当前选中的Item
 @property (nonatomic, assign) BOOL isSelected;
 
 - (void)selectedAddressBlock:(SelectedAddressBlock)selectedAddressBlock;

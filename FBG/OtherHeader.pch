@@ -9,6 +9,47 @@
 #ifndef OtherHeader_pch
 #define OtherHeader_pch
 
+#pragma mark - 常量字符串
+#define NEO                     @"NEO"
+#define ETH                     @"ETH"
+#define GAS                     @"Gas"
+
+
+#pragma mark - 字段名
+#define MIN_BLOCK_NUM           @"min_block_num"
+#define BPS                     @"bps"
+#define VALUE                   @"value"
+#define LIST                    @"list"
+#define NAME                    @"name"
+#define GNT_CATEGORY            @"gnt_category"
+#define CAP                     @"cap"
+#define PRICE_CNY               @"price_cny"
+#define PRICE_USD               @"price_usd"
+#define BALANCE                 @"balance"
+#define RECORD                  @"record"
+#define GNT                     @"gnt"
+#define DECIMALS                @"decimals"
+#define WALLET_ID               @"wallet_id"
+#define FLAG                    @"flag"
+#define PAGE                    @"page"
+#define ASSET_ID                @"asset_id"
+
+#define CONFIRM_AT              @"confirm_at"
+#define CREATED_AT              @"created_at"
+#define FEE                     @"fee"
+#define HANDLE_FEE              @"handle_fee"
+#define PAY_ADDRESS             @"pay_address"
+#define RECEIVE_ADDRESS         @"receive_address"
+#define REMARK                  @"remark"
+#define TRADE_NO                @"trade_no"
+#define BLOCK_NUMBER            @"block_number"
+#define CATEGORY_ID             @"category_id"
+#define CATEGORY                @"category"
+
+
+// 根据钱包地址存储密码
+#define KEYCHAIN_PWD(address) [NSString stringWithFormat:@"%@-password", address]
+
 /**
  *  简体中文
  */
@@ -22,7 +63,7 @@
 /**
  *  语言
  */
-#define LANGUAGE [[NSUserDefaults standardUserDefaults] objectForKey:@"language"]
+#define CURRENT_APP_LANGUAGE [[NSUserDefaults standardUserDefaults] objectForKey:@"language"]
 
 /**
  *  屏幕宽度
@@ -70,11 +111,6 @@
 #define LISTBOUNDARY COLORFROM16(0xe5e5e5, 1)
 
 /**
- *  主色调
- */
-#define MAINCOLOR COLORFROM16(0x038dbd, 1)
-
-/**
  *  分隔线
  */
 #define BORDERCOLOR COLORFROM16(0xebebeb, 1)
@@ -115,10 +151,12 @@
 // 获取当前版本号
 #define GETCURRENTVERSION [[UIDevice currentDevice].systemVersion floatValue]
 
+#pragma mark - 强/弱引用
 // block self
 #define WEAKSELF typeof(self) __weak weakSelf = self;
 #define STRONGSELF typeof(weakSelf) __strong strongSelf = weakSelf;
 
 #define NSEaseLocalizedString(key, comment) [[NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@"EaseUIResource" withExtension:@"bundle"]] localizedStringForKey:(key) value:@"" table:nil]
 
+#define IS_
 #endif /* OtherHeader_pch */

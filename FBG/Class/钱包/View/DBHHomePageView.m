@@ -25,7 +25,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = WHITE_COLOR;
         
         [self setUI];
     }
@@ -73,8 +73,12 @@
  */
 - (void)respondsToShowTotalBalanceButton {
     self.showTotalBalanceButton.selected = !self.showTotalBalanceButton.selected;
-    [UserSignData share].user.isHideAsset = self.showTotalBalanceButton.isSelected;
-    self.totalBalanceValueLabel.text = [UserSignData share].user.isHideAsset ? [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"] : self.totalAsset;
+    UserModel *user = [UserSignData share].user;
+    user.isHideAsset = self.showTotalBalanceButton.isSelected;
+    
+    [[UserSignData share] storageData:user];
+    
+    self.totalBalanceValueLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
     self.clickButtonBlock(3);
 }
 /**
@@ -90,7 +94,7 @@
 }
 - (void)refreshAsset {
     self.showTotalBalanceButton.selected = [UserSignData share].user.isHideAsset;
-    self.totalBalanceValueLabel.text = [UserSignData share].user.isHideAsset ? [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"] : self.totalAsset;
+    self.totalBalanceValueLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
 }
 
 #pragma mark ------ Getters And Setters ------
@@ -98,7 +102,7 @@
     _totalAsset = totalAsset;
     
     self.showTotalBalanceButton.selected = [UserSignData share].user.isHideAsset;
-    self.totalBalanceValueLabel.text = [UserSignData share].user.isHideAsset ? [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"] : self.totalAsset;
+    self.totalBalanceValueLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.isHideAsset ? @"****" : self.totalAsset];
 }
 
 - (UILabel *)totalBalanceLabel {

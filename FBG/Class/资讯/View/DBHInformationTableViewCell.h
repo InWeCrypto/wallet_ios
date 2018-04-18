@@ -18,6 +18,9 @@
  */
 @property (nonatomic, strong) DBHInformationModelData *model;
 
+/**
+ 实时行情数据
+ */
 @property (nonatomic, strong) DBHInformationModelIco *icoModel;
 
 /**
@@ -35,11 +38,15 @@
  */
 @property (nonatomic, copy) NSString *time;
 
+//@property (nonatomic, assign) BOOL isHasNum; // 圆点中是否有数字，如果没有 则小圆 否则大圆
+
 /**
  未读消息数量
  */
-@property (nonatomic, copy) NSString *noReadNumber;
+//@property (nonatomic, copy) NSString *noReadNumber;
 
 @property (nonatomic, assign) BOOL isNoRead;
+
+@property (nonatomic, assign) NSInteger currentSelectedTitleIndex;
 
 @end

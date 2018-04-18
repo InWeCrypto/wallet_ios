@@ -9,7 +9,7 @@
 #import "DBHWalletManagerForNeoModelList.h"
 
 
-NSString *const kDBHWalletManagerForNeoModelDataList = @"list";
+NSString *const kDBHWalletManagerForNeoModelDataList = LIST;
 
 
 @interface DBHWalletManagerForNeoModelData ()
@@ -39,11 +39,11 @@ NSString *const kDBHWalletManagerForNeoModelDataList = @"list";
     if ([receivedDBHWalletManagerForNeoModelList isKindOfClass:[NSArray class]]) {
         for (NSDictionary *item in (NSArray *)receivedDBHWalletManagerForNeoModelList) {
             if ([item isKindOfClass:[NSDictionary class]]) {
-                [parsedDBHWalletManagerForNeoModelList addObject:[DBHWalletManagerForNeoModelList modelObjectWithDictionary:item]];
+                [parsedDBHWalletManagerForNeoModelList addObject:[DBHWalletManagerForNeoModelList mj_objectWithKeyValues:item]];
             }
        }
     } else if ([receivedDBHWalletManagerForNeoModelList isKindOfClass:[NSDictionary class]]) {
-       [parsedDBHWalletManagerForNeoModelList addObject:[DBHWalletManagerForNeoModelList modelObjectWithDictionary:(NSDictionary *)receivedDBHWalletManagerForNeoModelList]];
+       [parsedDBHWalletManagerForNeoModelList addObject:[DBHWalletManagerForNeoModelList mj_objectWithKeyValues:(NSDictionary *)receivedDBHWalletManagerForNeoModelList]];
     }
 
     self.list = [NSArray arrayWithArray:parsedDBHWalletManagerForNeoModelList];

@@ -27,6 +27,11 @@
     [super viewDidLoad];
     
     [self setUI];
+    self.navigationController.navigationItem.hidesBackButton = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
 }
 
 #pragma mark ------ UI ------
@@ -83,6 +88,7 @@
  现在开启
  */
 - (void)respondsToNowOpenButton {
+    [self.target dismissViewControllerAnimated:YES completion:nil];
     [UserSignData share].user.isOpenFaceId = self.faceOrTouchViewControllerType == DBHFaceViewControllerType;
     [UserSignData share].user.isOpenTouchId = self.faceOrTouchViewControllerType == DBHTouchViewControllerType;
     [[UserSignData share] storageData:[UserSignData share].user];
@@ -92,6 +98,7 @@
  暂不开启
  */
 - (void)respondsToNoOpenButton {
+    [self.target dismissViewControllerAnimated:YES completion:nil];
     [[AppDelegate delegate] goToTabbar];
 }
 
@@ -113,7 +120,7 @@
     if (!_typeLabel) {
         _typeLabel = [[UILabel alloc] init];
         _typeLabel.font = BOLDFONT(25);
-        _typeLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _typeLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _typeLabel;
 }
@@ -122,7 +129,7 @@
         _shortcutLoginLabel = [[UILabel alloc] init];
         _shortcutLoginLabel.font = BOLDFONT(25);
         _shortcutLoginLabel.text = DBHGetStringWithKeyFromTable(@"Quick Unlock", nil);
-        _shortcutLoginLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _shortcutLoginLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _shortcutLoginLabel;
 }
@@ -141,7 +148,7 @@
 - (UIButton *)nowOpenButton {
     if (!_nowOpenButton) {
         _nowOpenButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _nowOpenButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _nowOpenButton.backgroundColor = MAIN_ORANGE_COLOR;
         _nowOpenButton.titleLabel.font = BOLDFONT(14);
         _nowOpenButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _nowOpenButton.clipsToBounds = YES;

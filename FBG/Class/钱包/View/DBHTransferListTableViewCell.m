@@ -9,6 +9,7 @@
 #import "DBHTransferListTableViewCell.h"
 
 #import "DBHTransferListModelList.h"
+#import "DBHWalletManagerForNeoModelList.h"
 
 @interface DBHTransferListTableViewCell ()
 
@@ -58,6 +59,7 @@
     }];
     [self.numberLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.right.offset(- AUTOLAYOUTSIZE(24));
+        make.left.equalTo(weakSelf.addressLabel.mas_right).offset(AUTOLAYOUTSIZE(4));
         make.centerY.equalTo(weakSelf.addressLabel);
     }];
     [self.timeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -81,11 +83,11 @@
     
     if (!_model.transferType) {
         self.stateImageView.image = [UIImage imageNamed:@"自转"];
-        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.value.floatValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.value.doubleValue];
         self.numberLabel.textColor = COLORFROM16(0x232772, 1);
     } else {
         self.stateImageView.image = [UIImage imageNamed:_model.transferType == 1 ? @"转出" : @"转入"];
-        self.numberLabel.text = [NSString stringWithFormat:@"%@%.8lf", _model.transferType == 1 ? @"-" : @"+", _model.value.floatValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%@%.8lf", _model.transferType == 1 ? @"-" : @"+", _model.value.doubleValue];
         self.numberLabel.textColor = _model.transferType == 1 ? [UIColor redColor] : COLORFROM16(0x232772, 1);
     }
     self.addressLabel.text = _model.tx;
@@ -94,27 +96,24 @@
     
     //（当前块高-订单里的块高 + 1）/最小块高
     int number;
-    if ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1 < 0)
-    {
+    if ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1 < 0) {
         //小于0 置为0
         number = 0;
-    }
-    else
-    {
+    } else {
         number = ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1);
     }
     
     self.slider.hidden = NO;
-    if ([_model.flag isEqualToString:@"NEO"] || [_model.flag isEqualToString:@"Gas"] || [_model.flag isEqualToString:@"TNC"]) {
+    if (self.neoWalletModel.categoryId == 2) { //neo gas 代币
         self.slider.hidden = YES;
         if ([NSObject isNulllWithObject:model.confirmTime]) {
             self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Processing...", nil);
-        } else {
+        } else { // eth 代币
             self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Successful Transaction", nil);
         }
     } else {
         if ([NSObject isNulllWithObject:model.confirmTime]) {
-            if (number >= model.minBlockNumber.floatValue) {
+            if (number >= model.minBlockNumber.doubleValue) {
                 // 交易失败
                 self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Failed Transaction", nil);
                 self.slider.hidden = YES;
@@ -124,7 +123,7 @@
                 self.slider.value = 0;
             }
         } else {
-            if (number >= model.minBlockNumber.floatValue) {
+            if (number >= model.minBlockNumber.doubleValue) {
                 // 交易成功
                 self.slider.hidden = YES;
                 self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Successful Transaction", nil);
@@ -156,6 +155,7 @@
         _numberLabel = [[UILabel alloc] init];
         _numberLabel.font = FONT(13);
         _numberLabel.textColor = COLORFROM16(0xFE1C1C, 1);
+        _numberLabel.textAlignment = NSTextAlignmentRight;
     }
     return _numberLabel;
 }

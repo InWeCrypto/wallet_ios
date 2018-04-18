@@ -106,10 +106,26 @@ static NSString *const kDBHMenuViewTableViewCellIdentifier = @"kDBHMenuViewTable
  动画显示
  */
 - (void)animationShow {
+    __block CGFloat width = 0;
+    if (_dataSource) {
+        [_dataSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSString *str = DBHGetStringWithKeyFromTable(obj, nil);
+            
+            NSDictionary *attributes = @{NSFontAttributeName:FONT(13)};
+            CGSize textSize = [str boundingRectWithSize:CGSizeMake(200, 0) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil].size;
+          
+            CGFloat value = textSize.width;
+            if (value > width) {
+                width = value;
+            }
+        }];
+    }
+    
     WEAKSELF
+    [self layoutIfNeeded];
     [self.boxImageView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(AUTOLAYOUTSIZE(140));
-        make.height.offset(AUTOLAYOUTSIZE(35) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
+        make.width.offset(AUTOLAYOUTSIZE(width + 10 * 3 + 15));
+        make.height.offset(AUTOLAYOUTSIZE(44) * weakSelf.dataSource.count + AUTOLAYOUTSIZE(5));
         make.top.offset(STATUS_HEIGHT + 44);
         make.right.offset(- AUTOLAYOUTSIZE(15.5));
     }];
@@ -140,7 +156,7 @@ static NSString *const kDBHMenuViewTableViewCellIdentifier = @"kDBHMenuViewTable
         _tableView = [[UITableView alloc] init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-        _tableView.rowHeight = AUTOLAYOUTSIZE(35);
+        _tableView.rowHeight = AUTOLAYOUTSIZE(44);
         
         _tableView.dataSource = self;
         _tableView.delegate = self;

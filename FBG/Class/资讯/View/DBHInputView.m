@@ -65,7 +65,7 @@
     for (NSInteger i = 0; i < _dataSource.count; i++) {
         DBHInputMenuButton *menuButton = [DBHInputMenuButton buttonWithType:UIButtonTypeCustom];
         menuButton.tag = 201 + i;
-        menuButton.value = _dataSource[i][@"value"];
+        menuButton.value = _dataSource[i][VALUE];
         menuButton.isMore = [_dataSource[i][@"isMore"] isEqualToString:@"1"];
         [menuButton addTarget:self action:@selector(respondsToTypeButton:) forControlEvents:UIControlEventTouchUpInside];
         

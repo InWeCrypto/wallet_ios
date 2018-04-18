@@ -9,7 +9,7 @@
 #import "DBHSelectWalletTypeOnePromptView.h"
 
 #import "DBHWalletManagerTableViewCell.h"
-
+#define ANIMATE_DURATION 0.5f
 static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletManagerTableViewCellIdentifier";
 
 @interface DBHSelectWalletTypeOnePromptView ()<UITableViewDataSource, UITableViewDelegate>
@@ -45,7 +45,8 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
     
     UITouch *touch = [touches anyObject];
     if (![touch.view isEqual:self.boxView]) {
-        [self respondsToQuitButton];
+        self.selectedBlock(-2);
+        [self clickEmptyZone];
     }
 }
 
@@ -57,12 +58,7 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
     [self.boxView addSubview:self.tableView];
     
     WEAKSELF
-    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf);
-        make.height.offset(AUTOLAYOUTSIZE(373.5));
-        make.centerX.equalTo(weakSelf);
-        make.bottom.equalTo(weakSelf).offset(AUTOLAYOUTSIZE(373.5));
-    }];
+    [self boxViewAtInit];
     [self.quitButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(40));
         make.height.offset(AUTOLAYOUTSIZE(44));
@@ -70,7 +66,10 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
         make.centerY.equalTo(weakSelf.titleLabel);
     }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(weakSelf);
+//        make.centerX.equalTo(weakSelf);
+        make.width.equalTo(weakSelf);
+        make.right.offset(0);
+        make.left.offset(0);
         make.top.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(15));
     }];
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -94,7 +93,17 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self respondsToQuitButton];
+//    [self respondsToQuitButton];
+    [self boxViewAtLeft];
+    
+    self.alpha = 0.0f;
+    WEAKSELF         
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
+        [weakSelf layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [weakSelf removeFromSuperview];
+    }];
+    
     self.selectedBlock(indexPath.row);
 }
 
@@ -103,7 +112,17 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
  返回
  */
 - (void)respondsToBackButton {
-    [self respondsToQuitButton];
+//    [self respondsToQuitButton];
+    
+    [self boxViewAtRight];
+    
+    self.alpha = 0.0f;
+    WEAKSELF
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
+        [weakSelf layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [weakSelf removeFromSuperview];
+    }];
     self.selectedBlock(-1);
 }
 /**
@@ -118,10 +137,74 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
         make.bottom.equalTo(weakSelf).offset(AUTOLAYOUTSIZE(373.5));
     }];
     
-    [UIView animateWithDuration:0.25 animations:^{
+    self.alpha = 0.0f;
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
         [weakSelf layoutIfNeeded];
     } completion:^(BOOL finished) {
-        [self removeFromSuperview];
+        [weakSelf removeFromSuperview];
+    }];
+}
+
+- (void)clickEmptyZone {
+    WEAKSELF
+    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(373.5));
+        make.centerX.equalTo(weakSelf);
+        make.bottom.equalTo(weakSelf).offset(AUTOLAYOUTSIZE(373.5));
+    }];
+    
+    self.alpha = 0.0f;
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
+        [weakSelf layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [weakSelf boxViewAtInit];
+        [weakSelf removeFromSuperview];
+    }];
+}
+
+- (void)boxViewAtCenter {
+    WEAKSELF
+    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(373.5));
+        make.bottom.equalTo(weakSelf);
+        make.left.equalTo(weakSelf);
+    }];
+}
+
+- (void)boxViewAtRight {
+    WEAKSELF
+    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(373.5));
+        make.bottom.equalTo(weakSelf);
+        make.left.equalTo(weakSelf.mas_right);
+    }];
+}
+
+- (void)boxViewAtLeft {
+    WEAKSELF
+    [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf);
+        make.height.offset(AUTOLAYOUTSIZE(373.5));
+        make.bottom.equalTo(weakSelf);
+        make.left.equalTo(weakSelf.mas_left).offset(-AUTOLAYOUTSIZE(weakSelf.width));
+    }];
+}
+
+- (void)boxViewAtInit {
+    [self boxViewAtRight];
+}
+
+- (void)animateFromLeftShow {
+    [self boxViewAtLeft];
+    [self boxViewAtCenter];
+    
+    self.alpha = 1.0f;
+    WEAKSELF
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
+        [weakSelf layoutIfNeeded];
     }];
 }
 
@@ -131,14 +214,11 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
  */
 - (void)animationShow {
     WEAKSELF
-    [self.boxView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf);
-        make.height.offset(AUTOLAYOUTSIZE(373.5));
-        make.centerX.equalTo(weakSelf);
-        make.bottom.equalTo(weakSelf).offset(0);
-    }];
+    [self boxViewAtRight];
+    [self boxViewAtCenter];
     
-    [UIView animateWithDuration:0.25 animations:^{
+    self.alpha = 1.0f;
+    [UIView animateWithDuration:ANIMATE_DURATION animations:^{
         [weakSelf layoutIfNeeded];
     }];
 }
@@ -150,7 +230,7 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
     }
     return _boxView;
 }
@@ -168,6 +248,7 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
         _titleLabel.font = BOLDFONT(18);
         _titleLabel.text = DBHGetStringWithKeyFromTable(@"Select Wallet Type", nil);
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _titleLabel;
 }
@@ -197,3 +278,4 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
 }
 
 @end
+

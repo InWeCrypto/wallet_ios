@@ -11,7 +11,6 @@
 
 @interface DBHMyForUserInfomationTableViewCell ()
 
-@property (nonatomic, strong) UIImageView *moreImageView;
 
 @end
 
@@ -35,6 +34,7 @@
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.accountLabel];
     [self.contentView addSubview:self.moreImageView];
+    [self.contentView addSubview:self.tipLoginLabel];
     
     WEAKSELF
     [self.headImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -55,6 +55,10 @@
         make.height.offset(AUTOLAYOUTSIZE(8.5));
         make.right.offset(- AUTOLAYOUTSIZE(15));
         make.centerY.equalTo(weakSelf.contentView);
+    }];
+    [self.tipLoginLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(weakSelf.moreImageView);
+        make.left.equalTo(weakSelf.nameLabel);
     }];
 }
 
@@ -83,6 +87,15 @@
         _accountLabel.textColor = COLORFROM16(0xB9B9B9, 1);
     }
     return _accountLabel;
+}
+- (UILabel *)tipLoginLabel {
+    if (!_tipLoginLabel) {
+        _tipLoginLabel = [[UILabel alloc] init];
+        _tipLoginLabel.font = FONT(13);
+        _tipLoginLabel.textColor = COLORFROM16(0xB9B9B9, 1);
+        [_tipLoginLabel sizeToFit];
+    }
+    return _tipLoginLabel;
 }
 - (UIImageView *)moreImageView {
     if (!_moreImageView) {

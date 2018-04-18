@@ -31,7 +31,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     [super viewDidLoad];
     
     self.title = DBHGetStringWithKeyFromTable(@"My Reserves", nil);
-    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+    self.view.backgroundColor = LIGHT_WHITE_BGCOLOR;
     
     [self setUI];
     [self addRefresh];
@@ -59,7 +59,13 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHMyFavoriteTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyFavoriteTableViewCellIdentifier forIndexPath:indexPath];
-    cell.model = self.dataSource[indexPath.row];
+    
+    NSInteger row = indexPath.row;
+    if (row < self.dataSource.count) {
+        DBHInfomationModelData *data = self.dataSource[row];
+        cell.isNoImage = (data.type == 1);
+        cell.articleModel = data;
+    }
     
     return cell;
 }
@@ -69,6 +75,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     DBHInfomationModelData *model = self.dataSource[indexPath.row];
     KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
+    webView.imageStr = model.img;
     webView.isHaveShare = YES;
     webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
     [self.navigationController pushViewController:webView animated:YES];
@@ -78,12 +85,12 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     // 取消收藏
     WEAKSELF
     UITableViewRowAction *cancelColletAction = [UITableViewRowAction rowActionWithStyle:(UITableViewRowActionStyleDestructive) title:DBHGetStringWithKeyFromTable(@"Cancel Collection", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-        [weakSelf cancelColletWithRow:indexPath.row];
+        [weakSelf cancelColletWithRow:indexPath];
 //        tableView.editing = NO;
     }];
     //删除按钮颜色
     
-    cancelColletAction.backgroundColor = COLORFROM16(0xFF841C, 1);
+    cancelColletAction.backgroundColor = MAIN_ORANGE_COLOR;
     
     return @[cancelColletAction];
 }
@@ -112,7 +119,9 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } success:^(id responseObject) {
         [weakSelf endRefresh];
         
@@ -131,26 +140,35 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
-        [weakSelf endRefresh];
-        [LCProgressHUD showFailure:error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf endRefresh];
+            [LCProgressHUD showFailure:error];;
+        });
+    } specialBlock:^{
+        
     }];
 }
 /**
  取消收藏
  */
-- (void)cancelColletWithRow:(NSInteger)row {
-    DBHInfomationModelData *projectModel = self.dataSource[row];
-    NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:false]};
-    
-    WEAKSELF
-    [PPNetworkHelper PUT:[NSString stringWithFormat:@"article/%ld/collect", (NSInteger)projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
-        [weakSelf.dataSource removeObjectAtIndex:row];
-        [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
+- (void)cancelColletWithRow:(NSIndexPath *)indexPath {
+    NSInteger row = indexPath.row;
+    if (row < self.dataSource.count) {
+        DBHInfomationModelData *projectModel = self.dataSource[row];
+        NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:false]};
+        
+        WEAKSELF
+        [PPNetworkHelper PUT:[NSString stringWithFormat:@"article/%ld/collect", (NSInteger)projectModel.dataIdentifier] baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
+            [weakSelf.dataSource removeObjectAtIndex:row];
+            [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        } failure:^(NSString *error) {
+            [LCProgressHUD showFailure:error];
+        }];
+    }
 }
 
 #pragma mark ------ Private Methods ------
@@ -182,7 +200,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         

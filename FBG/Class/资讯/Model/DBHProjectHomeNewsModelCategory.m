@@ -10,7 +10,7 @@
 
 NSString *const kDBHProjectHomeNewsModelCategoryId = @"id";
 NSString *const kDBHProjectHomeNewsModelCategoryImg = @"img";
-NSString *const kDBHProjectHomeNewsModelCategoryName = @"name";
+NSString *const kDBHProjectHomeNewsModelCategoryName = NAME;
 NSString *const kDBHProjectHomeNewsModelCategoryType = @"type";
 
 

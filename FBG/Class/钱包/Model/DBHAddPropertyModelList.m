@@ -11,11 +11,11 @@
 NSString *const kDBHAddPropertyModelListAddress = @"address";
 NSString *const kDBHAddPropertyModelListIcon = @"icon";
 NSString *const kDBHAddPropertyModelListId = @"id";
-NSString *const kDBHAddPropertyModelListCreatedAt = @"created_at";
+NSString *const kDBHAddPropertyModelListCreatedAt = CREATED_AT;
 NSString *const kDBHAddPropertyModelListCategoryId = @"category_id";
 NSString *const kDBHAddPropertyModelListUpdatedAt = @"updated_at";
 NSString *const kDBHAddPropertyModelListGas = @"gas";
-NSString *const kDBHAddPropertyModelListName = @"name";
+NSString *const kDBHAddPropertyModelListName = NAME;
 
 
 @interface DBHAddPropertyModelList ()

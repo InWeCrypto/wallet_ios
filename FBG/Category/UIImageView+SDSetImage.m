@@ -25,16 +25,16 @@
 
 - (void)sdsetImageWithURL:(NSString *)url placeholderImage:(UIImage *)placeholder
 {
-    if (![url isKindOfClass:[NSString class]]) {
+    if (url != nil && ![url isKindOfClass:[NSString class]]) {
         return;
     }
-    if ([url containsString:@"http"])
-    {
-        [self sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:placeholder];
-    }
-    else
-    {
-        [self sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGEHEAD,url]] placeholderImage:placeholder];
+    
+    NSString *tempUrl = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    if ([tempUrl containsString:@"http"]) {
+        [self sd_setImageWithURL:[NSURL URLWithString:tempUrl] placeholderImage:placeholder];
+    } else {
+        [self sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGEHEAD,tempUrl]] placeholderImage:placeholder];
     }
 }
 

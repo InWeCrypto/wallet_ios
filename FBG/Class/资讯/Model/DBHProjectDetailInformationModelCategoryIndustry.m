@@ -8,7 +8,7 @@
 #import "DBHProjectDetailInformationModelCategoryIndustry.h"
 
 
-NSString *const kDBHProjectDetailInformationModelCategoryIndustryName = @"name";
+NSString *const kDBHProjectDetailInformationModelCategoryIndustryName = NAME;
 
 
 @interface DBHProjectDetailInformationModelCategoryIndustry ()

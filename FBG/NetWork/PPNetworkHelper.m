@@ -18,12 +18,35 @@
 #define PPLog(...)
 #endif
 
-
 @implementation PPNetworkHelper
 static AFHTTPSessionManager *_manager = nil;
 static NetworkStatus _status;
 
 #pragma mark - 开始监听网络
+
++ (BOOL)hasConnectedNetwork {
+   AFNetworkReachabilityStatus status = [AFNetworkReachabilityManager sharedManager].networkReachabilityStatus;
+    BOOL result = NO;
+    switch (status) {
+        case AFNetworkReachabilityStatusUnknown:
+            NSLog(@"未知网络");
+            result = YES;
+            break;
+        case AFNetworkReachabilityStatusNotReachable:
+            NSLog(@"未连接");
+            break;
+        case AFNetworkReachabilityStatusReachableViaWWAN:
+            NSLog(@"4G");
+            result = YES;
+            break;
+        case AFNetworkReachabilityStatusReachableViaWiFi:
+            NSLog(@"WIFI");
+            result = YES;
+            break;
+    }
+    return result;
+}
+
 + (void)startMonitoringNetwork
 {
     AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
@@ -32,7 +55,8 @@ static NetworkStatus _status;
     static UILabel *_warningLabel = nil;
     _warningLabel = [[UILabel alloc]initWithFrame:CGRectMake(-MainScreenW, 64, MainScreenW, 44)];
     _warningLabel.backgroundColor = [UIColor colorWithRed:0.996f green:0.973f blue:0.718f alpha:1.00f];
-    _warningLabel.text = @"当前网络不可用,请检查你的网络设置";
+    _warningLabel.text = DBHGetStringWithKeyFromTable(@"The current network is not available, please check your network Settings.", nil);
+    _warningLabel.numberOfLines = 0;
     _warningLabel.textAlignment = NSTextAlignmentCenter;
     _warningLabel.font = [UIFont systemFontOfSize:14];
     [[[UIApplication sharedApplication] keyWindow]addSubview:_warningLabel];
@@ -42,16 +66,16 @@ static NetworkStatus _status;
         {
             case AFNetworkReachabilityStatusUnknown:
                 _status(PPNetworkStatusUnknown);
-                [self showMsg:@"未知网络" forStatus:YES warningLabel:_warningLabel];
+                [self showMsg:DBHGetStringWithKeyFromTable(@"Unknown network", nil) forStatus:YES warningLabel:_warningLabel];
                 break;
             case AFNetworkReachabilityStatusNotReachable:
                 _status(PPNetworkStatusNotReachable);
-                [self showMsg:@"当前网络不可用,请检查你的网络设置" forStatus:NO warningLabel:_warningLabel];
+                [self showMsg:DBHGetStringWithKeyFromTable(@"The current network is not available, please check your network Settings.", nil) forStatus:NO warningLabel:_warningLabel];
                 
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
                 _status(PPNetworkStatusReachableViaWWAN);
-                [self showMsg:@"手机自带网络" forStatus:YES warningLabel:_warningLabel];
+                [self showMsg:DBHGetStringWithKeyFromTable(@"The network of mobile", nil) forStatus:YES warningLabel:_warningLabel];
                 
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
@@ -101,145 +125,182 @@ static NetworkStatus _status;
     _status = status;
 }
 
++ (void)gotoLoginVC {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIViewController *targetVC = [UIView currentViewController];
+        [[AppDelegate delegate] goToLoginVC:targetVC];
+    });
+}
+
 #pragma mark - GET请求无缓存
-+ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
-{
-    if (![NSString isNulllWithObject:hudString])
-    {
-        [LCProgressHUD showLoading:hudString];
-    }
++ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![NSString isNulllWithObject:hudString]) {
+            [LCProgressHUD showLoading:hudString];
+        }
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    });
     
-    PPLog(@"❤️GET URL❤️ = %@",URL);
+    PPLog(@"❤️GET URL❤️ = %@ -+++❤️+++- %@", URL, [NSThread currentThread]);
     PPLog(@"⚽️GET 数据⚽️ = %@",parameters);
+    WEAKSELF
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:baseUrlType];
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        if ([[responseObject objectForKey:@"code"] intValue] == 4000)
-        {
-            success([responseObject objectForKey:@"data"]);
-            PPLog(@"responseObject = %@",responseObject);
-        }
-        else if ([[responseObject objectForKey:@"code"] intValue] == 4007)
-        {
-            success([responseObject objectForKey:@"url"]);
-        }
-        else
-        {
-            NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
-            {
-                if (![UserSignData share].user.token.length) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+          
+            if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
+                success([responseObject objectForKey:@"data"]);
+                PPLog(@"responseObject = %@",responseObject);
+            } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
+                success([responseObject objectForKey:@"url"]);
+            } else {
+                NSString *code = responseObject[@"code"];
+                if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
+                    // 需要先登录
+                    [weakSelf gotoLoginVC];
+                    
+                    [UserSignData share].user.token = nil;
+                    [[UserSignData share] storageData:[UserSignData share].user];
                     return ;
                 }
-                [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
-                [[AppDelegate delegate] showLoginController];
+                
+                if (![UserSignData share].user.token.length) {
+                    [weakSelf gotoLoginVC];
+                    return ;
+                }
+                
+                failure([responseObject objectForKey:@"msg"]);
             }
-            if (![UserSignData share].user.token.length) {
-                return ;
+        });
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
             }
-            failure([responseObject objectForKey:@"msg"]);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        failure ? failure(error.localizedDescription) : nil;
-        PPLog(@"error = %@",error.localizedFailureReason);
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            failure ? failure(error.localizedDescription) : nil;
+            PPLog(@"error = %@",error.localizedFailureReason);
+        });
     }];
 }
 
 #pragma mark - GET请求自动缓存
-+ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
-{
-    if (![NSString isNulllWithObject:hudString])
-    {
-        [LCProgressHUD showLoading:hudString];
++ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure specialBlock:(HttpRequestSpecial)special {
+    if ([URL isEqualToString:@"wallet"]) {
+        NSLog(@"");
     }
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![NSString isNulllWithObject:hudString]) {
+            [LCProgressHUD showLoading:hudString];
+        }
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    });
     
-    PPLog(@"❤️GET URL❤️ = %@",URL);
+    PPLog(@"❤️GET URL❤️ = %@ -+++❤️+++- %@", URL, [NSThread currentThread]);
     PPLog(@"⚽️GET 数据⚽️ = %@",parameters);
     //读取缓存
-    responseCache([PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]]);
+    id cache = [PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]];
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        responseCache(cache);
+    });
+    
+    if (![self hasConnectedNetwork]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        });
+        return nil;
+    }
+    
+    WEAKSELF
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:baseUrlType];
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        if ([[responseObject objectForKey:@"code"] intValue] == 4000)
-        {
-            success([responseObject objectForKey:@"data"]);
-            [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]];
-            PPLog(@"responseObject = %@",responseObject);
-        }
-        else if ([[responseObject objectForKey:@"code"] intValue] == 4007)
-        {
-            success([responseObject objectForKey:@"url"]);
-        }
-        else
-        {
-            NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
-            {
-                if (![UserSignData share].user.token.length) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
+                if (success) {
+                    success([responseObject objectForKey:@"data"]);
+                }
+                NSString *key = [NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]];
+                [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:key];
+                PPLog(@"responseObject = %@", responseObject);
+            } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
+                if (success) {
+                    success([responseObject objectForKey:@"url"]);
+                }
+            } else {
+                NSString *code = responseObject[@"code"];
+                if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
+                    if (special) {
+                        special();
+                    } else {
+                        // 需要先登录
+                        [weakSelf gotoLoginVC];
+                        
+                        [UserSignData share].user.token = nil;
+                        [[UserSignData share] storageData:[UserSignData share].user];
+                    }
                     return ;
                 }
-                [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
-                [[AppDelegate delegate] showLoginController];
+                
+                if (![UserSignData share].user.token.length) {
+                    if (special) {
+                        special();
+                    } else {
+                        [weakSelf gotoLoginVC];
+                    }
+                    return ;
+                }
+                
+                if (failure) {
+                    failure([responseObject objectForKey:@"msg"]);
+                }
             }
-            if (![UserSignData share].user.token.length) {
-                return ;
+        
+        });
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
             }
-            failure([responseObject objectForKey:@"msg"]);
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             
-        }
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        failure ? failure(error.localizedDescription) : nil;
-        PPLog(@"error = %@",error.localizedDescription);
+            failure ? failure(error.localizedDescription) : nil;
+            PPLog(@"error = %@",error.localizedDescription);
+        });
     }];
 }
 
 #pragma mark - POST请求无缓存
-+ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
-{
-    if (![NSString isNulllWithObject:hudString])
-    {
-        [LCProgressHUD showLoading:hudString];
-    }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
++ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![NSString isNulllWithObject:hudString]) {
+            [LCProgressHUD showLoading:hudString];
+        }
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    });
     
     
 //    NSString * requestUrl;
@@ -252,69 +313,72 @@ static NetworkStatus _status;
     PPLog(@"❤️POST URL❤️ = %@",URL);
     PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
     
+    WEAKSELF
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        if ([URL containsString:@"http"]) {
-            success([responseObject objectForKey:@"result"]);
-            return ;
-        }
-        if ([[responseObject objectForKey:@"code"] intValue] == 4000 || [URL containsString:@"http"])
-        {
-            success([responseObject objectForKey:@"data"]);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
             PPLog(@"responseObject = %@",responseObject);
-        }
-        else if ([[responseObject objectForKey:@"code"] intValue] == 4007)
-        {
-            success([responseObject objectForKey:@"url"]);
-        }
-        else
-        {
-            NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4009|| code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
-            {
-                if (![UserSignData share].user.token.length) {
-                    return ;
-                }
-                if (![UserSignData share].user.token.length) {
-                    return ;
-                }
-                [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
-                [[AppDelegate delegate] showLoginController];
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
             }
-            failure([responseObject objectForKey:@"msg"]);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            if ([URL containsString:@"http"]) {
+                success([responseObject objectForKey:@"result"]);
+                return ;
+            }
+            if ([[responseObject objectForKey:@"code"] intValue] == 4000 || [URL containsString:@"http"]) {
+                success([responseObject objectForKey:@"data"]);
+            } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
+                success([responseObject objectForKey:@"url"]);
+            }  else {
+                NSString *code = responseObject[@"code"];
+                if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
+                    // 需要先登录
+                    [weakSelf gotoLoginVC];
+                    
+                    [UserSignData share].user.token = nil;
+                    [[UserSignData share] storageData:[UserSignData share].user];
+                    return ;
+                }
+                
+                if (![URL isEqualToString:@"login"] && ![UserSignData share].user.token.length) {
+                    [weakSelf gotoLoginVC];
+                    return ;
+                }
+                
+                NSString *error = [responseObject objectForKey:@"msg"];
+                if ([URL isEqualToString:@"wallet-order"] && code.integerValue == 4006) {
+                    error = DBHGetStringWithKeyFromTable(@"Has Uncompleted Orders", nil);
+                }
+                
+                failure(error);
+            }
+        });
         
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        failure ? failure(error.localizedDescription) : nil;
-        PPLog(@"error = %@",error.localizedDescription);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            failure ? failure(error.localizedDescription) : nil;
+            PPLog(@"error = %@",error.localizedDescription);
+        });
     }];
     
 }
-+ (PPURLSessionTask *)POSTOtherURL:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
-{
-    if (![NSString isNulllWithObject:hudString])
-    {
-        [LCProgressHUD showLoading:hudString];
-    }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
++ (PPURLSessionTask *)POSTOtherURL:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![NSString isNulllWithObject:hudString]) {
+            [LCProgressHUD showLoading:hudString];
+        }
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    });
     
     
     //    NSString * requestUrl;
@@ -327,181 +391,207 @@ static NetworkStatus _status;
     PPLog(@"❤️POST URL❤️ = %@",URL);
     PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
     
+    WEAKSELF
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
             {
-                if (![NSString isNulllWithObject:hudString])
-                {
-                    [LCProgressHUD hide];
-                }
-                
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                
-                if ([URL containsString:@"http"]) {
-                    success([responseObject objectForKey:@"result"]);
-                    return ;
-                }
-                if ([[responseObject objectForKey:@"code"] intValue] == 4000 || [URL containsString:@"http"])
-                {
-                    success([responseObject objectForKey:@"data"]);
-                    PPLog(@"responseObject = %@",responseObject);
-                }
-                else if ([[responseObject objectForKey:@"code"] intValue] == 4007)
-                {
-                    success([responseObject objectForKey:@"url"]);
-                }
-                else
-                {
-                    NSString *code = responseObject[@"code"];
-                    if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (![NSString isNulllWithObject:hudString])
                     {
-                        [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
-                        [[AppDelegate delegate] showLoginController];
+                        [LCProgressHUD hide];
                     }
-                    failure([responseObject objectForKey:@"msg"]);
-                }
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
-            {
-                if (![NSString isNulllWithObject:hudString])
-                {
-                    [LCProgressHUD hide];
-                }
-                
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                
-                failure ? failure(error.localizedDescription) : nil;
-                PPLog(@"error = %@",error.localizedDescription);
+                    
+                    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                    
+                    if ([URL containsString:@"http"]) {
+                        success([responseObject objectForKey:@"result"]);
+                        return ;
+                    }
+                    if ([[responseObject objectForKey:@"code"] intValue] == 4000 || [URL containsString:@"http"]) {
+                        success([responseObject objectForKey:@"data"]);
+                        PPLog(@"responseObject = %@",responseObject);
+                    } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
+                        success([responseObject objectForKey:@"url"]);
+                    } else {
+                        NSString *code = responseObject[@"code"];
+                        if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
+                            // 需要先登录
+                            [weakSelf gotoLoginVC];
+                            
+                            [UserSignData share].user.token = nil;
+                            [[UserSignData share] storageData:[UserSignData share].user];
+                            return ;
+                        }
+                      
+                        if (![UserSignData share].user.token.length) {
+                            [weakSelf gotoLoginVC];
+                            return ;
+                        }
+                        
+                        failure([responseObject objectForKey:@"msg"]);
+                    }
+                });
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (![NSString isNulllWithObject:hudString]) {
+                        [LCProgressHUD hide];
+                    }
+                    
+                    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                    
+                    failure ? failure(error.localizedDescription) : nil;
+                    PPLog(@"error = %@",error.localizedDescription);
+                });
             }];
     
 }
 
 #pragma mark - POST请求自动缓存
-+ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
-{
-    if (![NSString isNulllWithObject:hudString])
-    {
-        [LCProgressHUD showLoading:hudString];
-    }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
++ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure special:(HttpRequestSpecial)special {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![NSString isNulllWithObject:hudString]) {
+            [LCProgressHUD showLoading:hudString];
+        }
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    });
     
     PPLog(@"❤️POST URL❤️ = %@",URL);
     PPLog(@"⚽️POST 数据⚽️ = %@",parameters);
     //读取缓存
-    responseCache([PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]]);
+    id cache = [PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        responseCache(cache);
+    });
+    
+    if (![self hasConnectedNetwork]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        });
+        return nil;
+    }
+    WEAKSELF
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:baseUrlType];
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        if ([[responseObject objectForKey:@"code"] intValue] == 4000)
-        {
-            success([responseObject objectForKey:@"data"]);
-            [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]];
-            PPLog(@"responseObject = %@",responseObject);
-        }
-        else if ([[responseObject objectForKey:@"code"] intValue] == 4007)
-        {
-            success([responseObject objectForKey:@"url"]);
-        }
-        else
-        {
-            NSString *code = responseObject[@"code"];
-            if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001)
-            {
-                if (![UserSignData share].user.token.length) {
+            if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
+                success([responseObject objectForKey:@"data"]);
+                [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]];
+                PPLog(@"responseObject = %@",responseObject);
+            } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
+                success([responseObject objectForKey:@"url"]);
+            } else {
+                NSString *code = responseObject[@"code"];
+                if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
+                    if (special) {
+                        special();
+                    } else {
+                        // 需要先登录
+                        [weakSelf gotoLoginVC];
+                        
+                        [UserSignData share].user.token = nil;
+                        [[UserSignData share] storageData:[UserSignData share].user];
+                    }
                     return ;
                 }
-                [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
-                [[AppDelegate delegate] showLoginController];
+                
+                if (![UserSignData share].user.token.length) {
+                    if (special) {
+                        special();
+                    } else {
+                        // 需要先登录
+                        [weakSelf gotoLoginVC];
+                    }
+                    return ;
+                }
+                
+                failure([responseObject objectForKey:@"msg"]);
             }
-            if (![UserSignData share].user.token.length) {
-                return ;
+        });
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
             }
-            failure([responseObject objectForKey:@"msg"]);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        failure ? failure(error.localizedDescription) : nil;
-        PPLog(@"error = %@",error.localizedDescription);
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            failure ? failure(error.localizedDescription) : nil;
+            PPLog(@"error = %@",error.localizedDescription);
+        });
     }];
     
 }
 
-+ (PPURLSessionTask *)PUT:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
-{
-    if (![NSString isNulllWithObject:hudString])
-    {
-        [LCProgressHUD showLoading:hudString];
-    }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
++ (PPURLSessionTask *)PUT:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![NSString isNulllWithObject:hudString]) {
+            [LCProgressHUD showLoading:hudString];
+        }
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    });
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:baseUrlType];
     PPLog(@"❤️PUT URL❤️ = %@",URL);
     PPLog(@"⚽️PUT 数据⚽️ = %@",parameters);
     
-    return [manager PUT:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
+    return [manager PUT:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
+                success([responseObject objectForKey:@"data"]);
+                PPLog(@"responseObject = %@",responseObject);
+            } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
+                success([responseObject objectForKey:@"url"]);
+            } else {
+                failure([responseObject objectForKey:@"msg"]);
+            }
+        });
         
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        if ([[responseObject objectForKey:@"code"] intValue] == 4000)
-        {
-            success([responseObject objectForKey:@"data"]);
-            PPLog(@"responseObject = %@",responseObject);
-        }
-        else if ([[responseObject objectForKey:@"code"] intValue] == 4007)
-        {
-            success([responseObject objectForKey:@"url"]);
-        }
-        else
-        {
-            failure([responseObject objectForKey:@"msg"]);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        failure ? failure(error.localizedDescription) : nil;
-        PPLog(@"error = %@",error.localizedDescription);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            failure ? failure(error.localizedDescription) : nil;
+            PPLog(@"error = %@",error.localizedDescription);
+        });
     }];
 }
 
 + (PPURLSessionTask *)DELETE:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
 {
-    if (![NSString isNulllWithObject:hudString])
-    {
-        [LCProgressHUD showLoading:hudString];
-    }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![NSString isNulllWithObject:hudString])
+        {
+            [LCProgressHUD showLoading:hudString];
+        }
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    });
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:baseUrlType];
     PPLog(@"❤️DELETE URL❤️ = %@",URL);
@@ -509,50 +599,48 @@ static NetworkStatus _status;
     
     return [manager DELETE:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
             {
-                if (![NSString isNulllWithObject:hudString])
-                {
-                    [LCProgressHUD hide];
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (![NSString isNulllWithObject:hudString]) {
+                            [LCProgressHUD hide];
+                    }
+                    
+                    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                 
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                
-                if ([[responseObject objectForKey:@"code"] intValue] == 4000)
-                {
-                    success([responseObject objectForKey:@"data"]);
-                    PPLog(@"responseObject = %@",responseObject);
-                }
-                else if ([[responseObject objectForKey:@"code"] intValue] == 4007)
-                {
-                    success([responseObject objectForKey:@"url"]);
-                }
-                else
-                {
-                    failure([responseObject objectForKey:@"msg"]);
-                }
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
-            {
-                if (![NSString isNulllWithObject:hudString])
-                {
-                    [LCProgressHUD hide];
-                }
-                
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                
-                failure ? failure(error.localizedDescription) : nil;
-                PPLog(@"error = %@",error.localizedDescription);
+                    if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
+                        success([responseObject objectForKey:@"data"]);
+                        PPLog(@"responseObject = %@",responseObject);
+                    } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
+                        success([responseObject objectForKey:@"url"]);
+                    } else {
+                        failure([responseObject objectForKey:@"msg"]);
+                    }
+                });
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (![NSString isNulllWithObject:hudString]) {
+                        [LCProgressHUD hide];
+                    }
+                    
+                    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                    
+                    failure ? failure(error.localizedDescription) : nil;
+                    PPLog(@"error = %@",error.localizedDescription);
+                });
             }];
 }
 
 
 #pragma mark - 上传图片文件
 + (PPURLSessionTask *)uploadWithURL:(NSString *)URL parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images name:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType hudString:(NSString *)hudString progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
-{   
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    if (![NSString isNulllWithObject:hudString])
-    {
-        [LCProgressHUD showLoading:@"上传中..."];
-    }
+        if (![NSString isNulllWithObject:hudString])
+        {
+                [LCProgressHUD showLoading:@"上传中..."];
+        }
+    });
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:1];
     return [manager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
@@ -563,31 +651,34 @@ static NetworkStatus _status;
             
         }];
     } progress:^(NSProgress * _Nonnull uploadProgress) {
-        //上传进度
-        progress ? progress(uploadProgress) : nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //上传进度
+            progress ? progress(uploadProgress) : nil;
+        });
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString]) {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            success(responseObject);
+            PPLog(@"responseObject = %@",responseObject);
+        });
         
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        success(responseObject);
-        PPLog(@"responseObject = %@",responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
-    {
-        if (![NSString isNulllWithObject:hudString])
-        {
-            [LCProgressHUD hide];
-        }
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        failure ? failure(error.localizedDescription) : nil;
-        PPLog(@"error = %@",error.localizedDescription);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)  {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![NSString isNulllWithObject:hudString])
+            {
+                [LCProgressHUD hide];
+            }
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            failure ? failure(error.localizedDescription) : nil;
+            PPLog(@"error = %@",error.localizedDescription);
+        });
     }];
 }
 
@@ -599,9 +690,11 @@ static NetworkStatus _status;
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:1];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        //下载进度
-        progress ? progress(downloadProgress) : nil;
-        PPLog(@"下载进度:%.2f%%",100.0*downloadProgress.completedUnitCount/downloadProgress.totalUnitCount);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //下载进度
+            progress ? progress(downloadProgress) : nil;
+            PPLog(@"下载进度:%.2f%%",100.0*downloadProgress.completedUnitCount/downloadProgress.totalUnitCount);
+        });
         
     } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
         
@@ -622,10 +715,12 @@ static NetworkStatus _status;
         return [NSURL fileURLWithPath:filePath];
         
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        success ? success(filePath.absoluteString /** NSURL->NSString*/) : nil;
-        failure && error ? failure(error.localizedDescription) : nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            success ? success(filePath.absoluteString /** NSURL->NSString*/) : nil;
+            failure && error ? failure(error.localizedDescription) : nil;
+        });
         
     }];
     
@@ -649,9 +744,11 @@ static NetworkStatus _status;
         case 2:
             baseUrl = [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD2 : TESTAPIEHEAD2;
             break;
-            
-        default:
+        case 3:
             baseUrl = [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD3 : TESTAPIEHEAD3;
+            break;
+        case 4:
+            baseUrl = CHECKVERSION;
             break;
     }
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:baseUrl]];
@@ -664,8 +761,8 @@ static NetworkStatus _status;
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"application/x-www-form-urlencoded", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
     [manager.requestSerializer setValue:[[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en" forHTTPHeaderField:@"lang"];
-    if ([UserSignData share].user.token.length > 0)
-    {
+    NSLog(@"request ---- %d ---- %@", [UserSignData share].user.token.length > 0, url);
+    if ([UserSignData share].user.token.length > 0) {
         [manager.requestSerializer setValue:[UserSignData share].user.token forHTTPHeaderField:@"Authorization"];
         [manager.requestSerializer setValue:@"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" forHTTPHeaderField:@"neo-asset-id"];
         [manager.requestSerializer setValue:@"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7" forHTTPHeaderField:@"neo-gas-asset-id"];
@@ -687,8 +784,9 @@ static NetworkStatus _status;
      4008    未注册
      4009    token过期
      */
+    
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-    [dic setObject:@"请求执行成功" forKey:@"4000"];
+    [dic setObject:DBHGetStringWithKeyFromTable(@"Request success", nil) forKey:@"4000"];
     [dic setObject:@"未登陆" forKey:@"4010"];
     [dic setObject:@"无权限" forKey:@"4002"];
     [dic setObject:@"路由不存在" forKey:@"4003"];

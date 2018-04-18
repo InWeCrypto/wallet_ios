@@ -20,6 +20,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
 
 @interface DBHAddressBookViewController ()<UITableViewDataSource, UITableViewDelegate>
 
+
 @property (nonatomic, strong) DBHAddressBookHeaderView *addressBookHeaderView;
 @property (nonatomic, strong) UIScrollView *contentScrollView;
 @property (nonatomic, strong) UITableView *ethTableView;
@@ -42,20 +43,32 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
     
     self.title = DBHGetStringWithKeyFromTable(@"Contacts", nil);
     
+    _currentSelectedItem = 0;
     [self setUI];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    switch (self.addressBookHeaderView.currentSelectedIndex) {
-        case 0:
-            [self loadDataWithIcoId:@"1"];
+    WEAKSELF
+    switch (_currentSelectedItem) {
+        case 0: {
+            [self loadDataWithIcoId:@"1" completion:^{
+                [weakSelf.addressBookHeaderView selectedType:weakSelf.currentSelectedItem];
+                [weakSelf.contentScrollView setContentOffset:CGPointMake(SCREENWIDTH * _currentSelectedItem, 0) animated:YES];
+            }];
+        }
             break;
-        case 1:
-            [self loadDataWithIcoId:@"2"];
+        case 1: {
+            [self loadDataWithIcoId:@"2" completion:^{
+                [weakSelf.addressBookHeaderView selectedType:weakSelf.currentSelectedItem];
+                [weakSelf.contentScrollView setContentOffset:CGPointMake(SCREENWIDTH * _currentSelectedItem, 0) animated:YES];
+            }];
+        }
             break;
             
-        default:
+        default: {
+            [self loadDataWithIcoId:@"1" completion:nil];
+        }
             break;
     }
 }
@@ -166,12 +179,13 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
 #pragma mark ------ UIScrollViewDelegate ------
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if ([scrollView isEqual:self.contentScrollView]) {
+        _currentSelectedItem = scrollView.contentOffset.x / SCREENWIDTH;
         [self.addressBookHeaderView selectedType:scrollView.contentOffset.x / SCREENWIDTH];
     }
 }
 
 #pragma mark ------ Data ------
-- (void)loadDataWithIcoId:(NSString *)icoId {
+- (void)loadDataWithIcoId:(NSString *)icoId completion:(void(^)(void))completion {
     WEAKSELF
     [PPNetworkHelper GET:[NSString stringWithFormat:@"contact?%@=%@", @"category_id", icoId] baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
         NSInteger type = icoId.integerValue - 1;
@@ -188,7 +202,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
                 break;
         }
         
-        for (NSDictionary *dic in responseCache[@"list"]) {
+        for (NSDictionary *dic in responseCache[LIST]) {
             DBHAddressBookModelList *model = [DBHAddressBookModelList modelObjectWithDictionary:dic];
             
             switch (type) {
@@ -216,6 +230,9 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
             default:
                 [weakSelf.btcTableView reloadData];
                 break;
+        }
+        if (completion) {
+            completion();
         }
     } success:^(id responseObject) {
         NSInteger type = icoId.integerValue - 1;
@@ -232,7 +249,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
                 break;
         }
         
-        for (NSDictionary *dic in responseObject[@"list"]) {
+        for (NSDictionary *dic in responseObject[LIST]) {
             DBHAddressBookModelList *model = [DBHAddressBookModelList modelObjectWithDictionary:dic];
             
             switch (type) {
@@ -261,9 +278,12 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
                 [weakSelf.btcTableView reloadData];
                 break;
         }
+        if (completion) {
+            completion();
+        }
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 
 #pragma mark ------ Event Responds ------
@@ -291,6 +311,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
         
         WEAKSELF
         [_addressBookHeaderView selectedTypeBlock:^(NSInteger type) {
+//            _currentSelectedItem = type;
             // 选择代币类型
             [weakSelf.contentScrollView setContentOffset:CGPointMake(SCREENWIDTH * type, 0) animated:YES];
             
@@ -300,7 +321,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
             }
             
             // ETH:6 NEO:7
-            [weakSelf loadDataWithIcoId:!type ? @"1" : @"2"];
+            [weakSelf loadDataWithIcoId:!type ? @"1" : @"2" completion:nil];
         }];
     }
     return _addressBookHeaderView;
@@ -324,7 +345,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
     if (!_ethTableView) {
         _ethTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT - STATUS_HEIGHT - 44 - AUTOLAYOUTSIZE(62.5))];
         _ethTableView.tag = 300;
-        _ethTableView.backgroundColor = [UIColor whiteColor];
+        _ethTableView.backgroundColor = WHITE_COLOR;
         _ethTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _ethTableView.sectionIndexColor = COLORFROM16(0x333333, 1);
         
@@ -341,7 +362,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
     if (!_neoTableView) {
         _neoTableView = [[UITableView alloc] initWithFrame:CGRectMake(SCREENWIDTH, 0, SCREENWIDTH, SCREENHEIGHT - STATUS_HEIGHT - 44 - AUTOLAYOUTSIZE(62.5))];
         _neoTableView.tag = 301;
-        _neoTableView.backgroundColor = [UIColor whiteColor];
+        _neoTableView.backgroundColor = WHITE_COLOR;
         _neoTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _neoTableView.sectionIndexColor = COLORFROM16(0x333333, 1);
         
@@ -358,7 +379,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
     if (!_btcTableView) {
         _btcTableView = [[UITableView alloc] initWithFrame:CGRectMake(SCREENWIDTH * 2, 0, SCREENWIDTH, SCREENHEIGHT - STATUS_HEIGHT - 44 - AUTOLAYOUTSIZE(62.5))];
         _btcTableView.tag = 302;
-        _btcTableView.backgroundColor = [UIColor whiteColor];
+        _btcTableView.backgroundColor = WHITE_COLOR;
         _btcTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _btcTableView.sectionIndexColor = COLORFROM16(0x333333, 1);
         
@@ -382,6 +403,7 @@ static NSString *const kDBHAddressBookTableViewCellIdentifier = @"kDBHAddressBoo
                 [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
                 return ;
             }
+            weakSelf.currentSelectedItem = index;
             // 添加联系人
             DBHAddOrEditAddressViewController *addAddressViewController = [[DBHAddOrEditAddressViewController alloc] init];
             addAddressViewController.addressViewControllerType = DBHAddressViewControllerAddType;

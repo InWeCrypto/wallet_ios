@@ -9,12 +9,13 @@
 #import "DBHPaymentReceivedViewController.h"
 
 #import "PPNetworkCache.h"
-
+#import "LYShareMenuView.h"
+#import "WXApi.h"
 #import "DBHSelectWalletViewController.h"
-
+#import <TencentOpenApi/QQApiInterface.h>
 #import "DBHWalletManagerForNeoDataModels.h"
 
-@interface DBHPaymentReceivedViewController ()
+@interface DBHPaymentReceivedViewController ()<LYShareMenuViewDelegate>
 
 @property (nonatomic, strong) UIImageView *backGroundImageView;
 @property (nonatomic, strong) UIView *boxView;
@@ -29,6 +30,8 @@
 
 @property (nonatomic, assign) NSInteger currentSelectedRow; // 当前选中行数
 @property (nonatomic, strong) NSMutableArray *dataSource;
+
+@property (nonatomic, strong) LYShareMenuView *sharedMenuView;
 
 @end
 
@@ -60,7 +63,11 @@
     [super viewWillDisappear:animated];
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : COLORFROM16(0x333333, 1)}];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:[UIColor whiteColor] Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
+    
+    if (_sharedMenuView.delegate) {
+        _sharedMenuView.delegate = nil;
+    }
 }
 
 #pragma mark ------ UI ------
@@ -140,10 +147,10 @@
     WEAKSELF
     [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
         [weakSelf.dataSource removeAllObjects];
-        for (NSDictionary *dic in responseCache[@"list"]) {
-            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
+        for (NSDictionary *dic in responseCache[LIST]) {
+            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
             
-            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
+            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
         }
@@ -151,17 +158,23 @@
         [weakSelf refreshData];
     } success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
-        for (NSDictionary *dic in responseObject[@"list"]) {
-            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
+        for (NSDictionary *dic in responseObject[LIST]) {
+            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
             
-            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
+            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf refreshData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf refreshData];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure: error];
+    } specialBlock:^{
+        if (![UserSignData share].user.isLogin) {
+            return ;
+        }
     }];
 }
 
@@ -174,6 +187,11 @@
         return;
     }
     
+    [self activityCustomShare];
+//    [self activityOriginalShare];
+}
+
+- (void)activityOriginalShare {
     DBHWalletManagerForNeoModelList *model = self.dataSource.firstObject;
     
     NSArray* activityItems = [[NSArray alloc] initWithObjects:model.address, nil];
@@ -231,7 +249,7 @@
     [self createQrCodeImage];
 }
 - (void)createQrCodeImage {
-    DBHWalletManagerForNeoModelList *model = self.dataSource.firstObject;
+    DBHWalletManagerForNeoModelList *model = self.dataSource[self.currentSelectedRow];
     
     // 1.创建过滤器，这里的@"CIQRCodeGenerator"是固定的
     CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
@@ -274,6 +292,131 @@
     return [UIImage imageWithCGImage:scaledImage];
 }
 
+- (void)activityCustomShare {
+    [[UIApplication sharedApplication].keyWindow addSubview:self.sharedMenuView];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.sharedMenuView show];
+    });
+}
+
+- (LYShareMenuView *)sharedMenuView {
+    if (!_sharedMenuView) {
+        _sharedMenuView = [[LYShareMenuView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        
+        LYShareMenuItem *friendItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"friend_pr" itemTitle:DBHGetStringWithKeyFromTable(@"Moments", nil)];
+        LYShareMenuItem *weixinItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"weixin_pr" itemTitle:DBHGetStringWithKeyFromTable(@"WeChat", nil)];
+        LYShareMenuItem *qqItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"qq_pr" itemTitle:@"QQ"];
+        
+        _sharedMenuView.shareMenuItems = [NSMutableArray arrayWithObjects:friendItem, weixinItem, qqItem, nil];
+    }
+    if (!_sharedMenuView.delegate) {
+        _sharedMenuView.delegate = self;
+    }
+    return _sharedMenuView;
+}
+
+#pragma mark ----- Share Delegate ------
+- (void)shareMenuView:(LYShareMenuView *)shareMenuView didSelecteShareMenuItem:(LYShareMenuItem *)shareMenuItem atIndex:(NSInteger)index {
+    switch (index) {
+        case 2: { // QQ
+            [self shareToQQ];
+            break;
+        }
+        default: {
+            [WXApi sendReq:[self shareToWX:index]];
+            break;
+        }
+            
+    }
+}
+
+- (void)shareSuccess:(BOOL)isSuccess {
+    if (isSuccess) {
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Share successfully", nil)];
+    } else {
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Share failed", nil)];
+    }
+}
+
+- (void)shareToQQ {
+    WEAKSELF
+    [[AppDelegate delegate] setQqResultBlock:^(QQBaseResp *res) {
+        if ([res isKindOfClass:[SendMessageToQQResp class]]) {
+            if (res.type == ESENDMESSAGETOQQRESPTYPE) { // 手Q->第三方
+                if ([res.result intValue] == 0) { // 没有错误
+                    [weakSelf shareSuccess:YES];
+                } else {
+                    if (res.result.intValue == -4) { // 取消分享
+                        [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Cancel share", nil)];
+                    } else {
+                        [weakSelf shareSuccess:NO];
+                    }
+                }
+            }
+        }
+    }];
+    
+    DBHWalletManagerForNeoModelList *model = self.dataSource.firstObject;
+    QQApiTextObject *textObj = [QQApiTextObject objectWithText:model.address];
+    
+    SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:textObj];
+    QQApiSendResultCode send = [QQApiInterface sendReq:req];
+    [self handleSendResult:send];
+}
+
+- (void)handleSendResult:(QQApiSendResultCode)code {
+    switch (code) {
+        case EQQAPIAPPNOTREGISTED: // 未注册
+            NSLog(@"未注册");
+            break;
+        case EQQAPIQQNOTINSTALLED:
+            [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Please install QQ mobile", nil)]; // todo
+            break;
+        case EQQAPISENDFAILD:
+            [self shareSuccess:NO];
+            break;
+        default:
+            break;
+    }
+}
+
+/**
+ 发送消息到微信
+ 
+ @param index 0-朋友圈  1-好友
+ @return 消息
+ */
+- (SendMessageToWXReq *)shareToWX:(NSInteger)index {
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    WEAKSELF
+    [appDelegate setResultBlock:^(BaseResp *res) {
+        if ([res isKindOfClass:[SendMessageToWXResp class]]) {
+            if (res.errCode == 0) { // 没有错误
+                [weakSelf shareSuccess:YES];
+            } else {
+                if (res.errCode == -2) {
+                    // cancel
+                    [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Cancel share", nil)];
+                } else {
+                    [weakSelf shareSuccess:NO];
+                }
+            }
+        }
+    }];
+    
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+    req.bText = YES;           // 指定为发送文本
+    
+    DBHWalletManagerForNeoModelList *model = self.dataSource.firstObject;
+    req.text = model.address;
+    
+    if (index == 0) {
+        req.scene = WXSceneTimeline;
+    } else {
+        req.scene =  WXSceneSession;
+    }
+    return req;
+}
 #pragma mark ------ Getters And Setters ------
 - (UIImageView *)backGroundImageView {
     if (!_backGroundImageView) {
@@ -284,7 +427,7 @@
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
     }
     return _boxView;
 }

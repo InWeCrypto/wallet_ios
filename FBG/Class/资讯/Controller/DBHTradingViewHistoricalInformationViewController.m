@@ -65,6 +65,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.row];
     KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
+    webView.imageStr = model.img;
     webView.isHaveShare = YES;
         webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
     [self.navigationController pushViewController:webView animated:YES];
@@ -76,7 +77,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
  */
 - (void)getInfomation {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?type=4&per_page=10&page=%ld", self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?type=[4,7]&per_page=10&page=%ld", self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         if (weakSelf.dataSource.count) {
             return ;
         }
@@ -89,7 +90,9 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf scrollViewToBottom:NO];
         });
@@ -114,18 +117,21 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
             [weakSelf.dataSource insertObjects:dataArray atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataArray.count)]];
         }
         
-        [weakSelf.tableView reloadData];
-        if (weakSelf.currentPage == 1) {
-            if (weakSelf.dataSource.count > 2) {
-                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[weakSelf.dataSource count] - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+            if (weakSelf.currentPage == 1) {
+                if (weakSelf.dataSource.count > 2) {
+                    [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[weakSelf.dataSource count] - 1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                }
+            } else if (dataArray.count) {
+                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:dataArray.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
             }
-        } else if (dataArray.count) {
-            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:dataArray.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
+            
+        });
     } failure:^(NSString *error) {
         [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 
 #pragma mark ------ Private Methods ------
@@ -172,7 +178,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.rowHeight = AUTOLAYOUTSIZE(75.5);

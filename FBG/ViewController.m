@@ -7,6 +7,9 @@
 //
 
 #import "ViewController.h"
+#import "DBHSelectScrollView.h"
+
+#define kCollectionViewHeight 54
 
 @interface ViewController ()
 
@@ -16,15 +19,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor backgroudColor];
+//    self.view.backgroundColor = [UIColor backgroudColor];
     
-    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(100, 100, 100, 100);
-    [button setTitle:@"新添加的按钮" forState: UIControlStateNormal];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    button.backgroundColor = [UIColor clearColor];
-    [button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
+    [self test];
+    
+}
+
+- (void)test {
+    DBHSelectScrollView *select = [[DBHSelectScrollView alloc] initWithTitles:[NSMutableArray arrayWithObjects:@" Market Cap", @" Exchange", @"Dapp", @"InWe Project Ranking", @"项目资产", nil] currentSelectedIndex:2];
+    [self.view addSubview:select];
+    WEAKSELF
+    [select mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.centerX.equalTo(weakSelf.view);
+        make.top.equalTo(weakSelf.view).offset(AUTOLAYOUTSIZE(STATUSBARHEIGHT + 44));
+        make.height.offset(AUTOLAYOUTSIZE(kCollectionViewHeight));
+    }];
 }
 
 - (void)buttonClicked

@@ -12,7 +12,6 @@
 
 @interface DBHProjectOverviewNoTradingForRelevantInformationTableViewCell ()
 
-@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIImageView *dateImageView;
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) UILabel *contentLabel;
@@ -33,21 +32,16 @@
 
 #pragma mark ------ UI ------
 - (void)setUI {
-    [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.dateImageView];
     [self.contentView addSubview:self.dateLabel];
     [self.contentView addSubview:self.contentLabel];
     
     WEAKSELF
-    [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(AUTOLAYOUTSIZE(15));
-        make.top.offset(AUTOLAYOUTSIZE(16));
-    }];
     [self.dateImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(10));
         make.height.offset(AUTOLAYOUTSIZE(10.5));
-        make.left.equalTo(weakSelf.titleLabel);
-        make.top.equalTo(weakSelf.titleLabel.mas_bottom).offset(AUTOLAYOUTSIZE(22.5));
+        make.left.offset(AUTOLAYOUTSIZE(16));
+        make.top.offset(AUTOLAYOUTSIZE(15));
     }];
     [self.dateLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.dateImageView.mas_right).offset(AUTOLAYOUTSIZE(5));
@@ -70,15 +64,6 @@
     self.contentLabel.attributedText = htmlString;
 }
 
-- (UILabel *)titleLabel {
-    if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = BOLDFONT(15);
-        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Related Information", nil);
-        _titleLabel.textColor = COLORFROM16(0x000000, 1);
-    }
-    return _titleLabel;
-}
 - (UIImageView *)dateImageView {
     if (!_dateImageView) {
         _dateImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"xiangmugaikuang_shijian"]];
@@ -88,7 +73,7 @@
 - (UILabel *)dateLabel {
     if (!_dateLabel) {
         _dateLabel = [[UILabel alloc] init];
-        _dateLabel.font = BOLDFONT(13);
+        _dateLabel.font = BOLDFONT(14);
         _dateLabel.textColor = COLORFROM16(0xFF571F, 1);
     }
     return _dateLabel;

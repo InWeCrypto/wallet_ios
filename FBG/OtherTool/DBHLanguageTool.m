@@ -43,16 +43,16 @@ static DBHLanguageTool *sharedModel;
 
 -(void)initLanguage
 {
-    NSString *tmp = LANGUAGE;
+    NSString *tmp = CURRENT_APP_LANGUAGE;
     NSString *path;
     //默认是系统语言
     if (!tmp)
     {
         tmp = [[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"] ? CNS : EN;
     }
-    else
+    else 
     {
-        tmp = LANGUAGE;
+        tmp = CURRENT_APP_LANGUAGE;
     }
     
     self.language = tmp;
@@ -70,27 +70,24 @@ static DBHLanguageTool *sharedModel;
     return NSLocalizedStringFromTable(key, table, @"");
 }
 
--(void)changeNowLanguage
-{
-    if ([self.language isEqualToString:EN])
-    {
-        [self setNewLanguage:CNS];
-    }
-    else
-    {
-        [self setNewLanguage:EN];
-    }
-}
+//-(void)changeNowLanguage
+//{
+//    if ([self.language isEqualToString:EN])
+//    {
+//        [self setNewLanguage:CNS];
+//    }
+//    else
+//    {
+//        [self setNewLanguage:EN];
+//    }
+//}
 
--(void)setNewLanguage:(NSString *)language
-{
-    if ([language isEqualToString:LANGUAGE])
-    {
+-(void)setNewLanguage:(NSString *)language {
+    if ([language isEqualToString:CURRENT_APP_LANGUAGE])  {
         return;
     }
     
-    if ([language isEqualToString:EN] || [language isEqualToString:CNS])
-    {
+    if ([language isEqualToString:EN] || [language isEqualToString:CNS]) {
         NSString *path = [[NSBundle mainBundle]pathForResource:language ofType:@"lproj"];
         self.bundle = [NSBundle bundleWithPath:path];
     }
@@ -98,12 +95,12 @@ static DBHLanguageTool *sharedModel;
     self.language = language;
     [[NSUserDefaults standardUserDefaults] setObject:language forKey:@"language"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [self resetRootViewController];
+//    [self resetRootViewController];
 }
 
 //重新设置
--(void)resetRootViewController {
-    [[AppDelegate delegate] goToTabbar];
-}
+//-(void)resetRootViewController {
+//    [[AppDelegate delegate] goToTabbar];
+//}
 
 @end

@@ -211,7 +211,7 @@
 #pragma mark - - - 移除定时器
 - (void)removeTimer {
     [self.timer invalidate];
-    self.timer = nil;
+    _timer = nil;
     [self.scanningline removeFromSuperview];
     self.scanningline = nil;
 }

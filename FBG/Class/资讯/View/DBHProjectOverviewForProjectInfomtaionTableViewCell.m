@@ -11,6 +11,7 @@
 #import "DBHGradeView.h"
 
 #import "DBHProjectDetailInformationDataModels.h"
+#import "YYEvaluateSynthesisModel.h"
 
 @interface DBHProjectOverviewForProjectInfomtaionTableViewCell ()
 
@@ -66,13 +67,16 @@
     }];
     [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.iconImageView.mas_right).offset(AUTOLAYOUTSIZE(8));
+        make.width.lessThanOrEqualTo(@(AUTOLAYOUTSIZE(180)));
         make.top.offset(AUTOLAYOUTSIZE(18));
     }];
     [self.tagLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.nameLabel);
         make.top.equalTo(weakSelf.nameLabel.mas_bottom);
+        make.width.lessThanOrEqualTo(@(AUTOLAYOUTSIZE(160)));
     }];
     [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.greaterThanOrEqualTo(weakSelf.nameLabel.mas_right).offset(AUTOLAYOUTSIZE(6));
         make.centerY.equalTo(weakSelf.nameLabel);
         make.right.offset(- AUTOLAYOUTSIZE(21));
     }];
@@ -96,7 +100,7 @@
     }];
     [self.hotAttentionLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.rankLabel.mas_bottom).offset(AUTOLAYOUTSIZE(2));
-        make.left.equalTo(weakSelf);
+        make.left.equalTo(weakSelf.contentView);
         make.right.equalTo(weakSelf.centerGrayLineView.mas_left);
     }];
     [self.centerGrayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -122,13 +126,27 @@
     }];
 }
 
+
 #pragma mark ------ Getters And Setters ------
+- (void)setModel:(YYEvaluateSynthesisModel *)model {
+    if (_model.score_avg == model.score_avg) {
+        return;
+    }
+    
+    _model = model;
+    
+    self.gradeView.grade = model.score_avg;
+    self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf%@", model.score_avg, DBHGetStringWithKeyFromTable(@"", nil)];
+    
+    self.projectDetailModel.categoryScore.value = model.score_avg;
+}
+
 - (void)setProjectDetailModel:(DBHProjectDetailInformationModelData *)projectDetailModel {
     _projectDetailModel = projectDetailModel;
     
     [self.iconImageView sdsetImageWithURL:_projectDetailModel.img placeholderImage:nil];
     
-    NSMutableAttributedString *nameAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@（%@）", _projectDetailModel.unit, _projectDetailModel.name]];
+    NSMutableAttributedString *nameAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@（%@）", _projectDetailModel.unit, _projectDetailModel.longName]];
     [nameAttributedString addAttributes:@{NSFontAttributeName:BOLDFONT(16)} range:NSMakeRange(0, _projectDetailModel.unit.length)];
     self.nameLabel.attributedText = nameAttributedString;
     self.tagLabel.text = _projectDetailModel.industry;
@@ -137,10 +155,20 @@
     self.changeLabel.hidden = _projectDetailModel.type != 1;
     self.volumeLabel.hidden = _projectDetailModel.type != 1;
     if (_projectDetailModel.type == 1) {
-        NSString *price = [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.priceCny : _projectDetailModel.ico.priceUsd;
-        self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-        self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", _projectDetailModel.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _projectDetailModel.ico.percentChange24h.floatValue];
-        self.volumeLabel.text = [NSString stringWithFormat:@"%@ (24h)：%@%@%@", DBHGetStringWithKeyFromTable(@"Volume", nil), [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.walletUnitType == 1 ? _projectDetailModel.ico.volumeCny24h : _projectDetailModel.ico.volumeUsd24h, [UserSignData share].user.walletUnitType == 1 ? @"CNY" : @"USD"];
+        BOOL isZhUnit = [UserSignData share].user.walletUnitType == 1;
+        NSString *price = isZhUnit ? _projectDetailModel.ico.priceCny : _projectDetailModel.ico.priceUsd;
+        price = [NSString stringWithFormat:@"%@%.2lf", isZhUnit ? @"¥" : @"$", price.doubleValue];
+        self.priceLabel.text =  price;
+        
+        self.volumeLabel.text = [NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Volume (24h)", nil), isZhUnit ? _projectDetailModel.ico.volumeCny24h : _projectDetailModel.ico.volumeUsd24h];
+        
+        if (_projectDetailModel.ico.percentChange24h.doubleValue >= 0) {
+            self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", @"+", _projectDetailModel.ico.percentChange24h.doubleValue];
+            self.changeLabel.textColor = COLORFROM16(0x3CA316, 1);
+        } else {
+            self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", @"", _projectDetailModel.ico.percentChange24h.doubleValue];
+            self.changeLabel.textColor = MAIN_ORANGE_COLOR;
+        }
     } else {
         
     }
@@ -149,8 +177,9 @@
     } else {
         self.rankLabel.text = [NSString stringWithFormat:@"No.%ld", (NSInteger)_projectDetailModel.categoryScore.sort];
     }
-    self.gradeView.grade = (NSInteger)_projectDetailModel.categoryScore.value;
+    self.gradeView.grade = _projectDetailModel.categoryScore.value;
     self.gradeLabel.text = [NSString stringWithFormat:@"%.1lf%@", _projectDetailModel.categoryScore.value, DBHGetStringWithKeyFromTable(@"", nil)];
+    
 }
 
 - (UIImageView *)iconImageView {

@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UITextField *surePasswordTextField;
 @property (nonatomic, strong) UIView *thirdLineView;
 @property (nonatomic, strong) UIButton *commitButton;
+@property (nonatomic, strong) UILabel *passTipLabel;
 
 @property (nonatomic, copy) NSString * mnemonic; // 助记词
 
@@ -46,6 +47,7 @@
     [self.view addSubview:self.passwordTextField];
     [self.view addSubview:self.showPasswordButton];
     [self.view addSubview:self.secondLineView];
+    [self.view addSubview:self.passTipLabel];
     [self.view addSubview:self.surePasswordTextField];
     [self.view addSubview:self.thirdLineView];
     [self.view addSubview:self.commitButton];
@@ -80,6 +82,13 @@
         make.centerX.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.firstLineView.mas_bottom).offset(AUTOLAYOUTSIZE(73));
     }];
+    
+    [self.passTipLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.secondLineView);
+        make.width.lessThanOrEqualTo(weakSelf.secondLineView);
+        make.top.equalTo(weakSelf.secondLineView.mas_bottom).offset(AUTOLAYOUTSIZE(4));
+    }];
+
     [self.surePasswordTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(weakSelf.nameTextField);
         make.centerX.equalTo(weakSelf.view);
@@ -88,7 +97,7 @@
     [self.thirdLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(weakSelf.firstLineView);
         make.centerX.equalTo(weakSelf.view);
-        make.top.equalTo(weakSelf.secondLineView.mas_bottom).offset(AUTOLAYOUTSIZE(73));
+        make.top.equalTo(weakSelf.passTipLabel.mas_bottom).offset(AUTOLAYOUTSIZE(73));
     }];
     [self.commitButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(108));
@@ -104,17 +113,18 @@
  */
 - (void)uploadWallet {
     NSDictionary *paramters = @{@"category_id":@"1",
-                                @"name":self.nameTextField.text,
+                                NAME:self.nameTextField.text,
                                 @"address":self.ethWallet.address};
 
     WEAKSELF
-    [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:@"创建中..." success:^(id responseObject) {
-        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:[responseObject objectForKey:@"record"]];
+    [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Creating...", nil) success:^(id responseObject) {
+        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:[responseObject objectForKey:RECORD]];
         model.category.categoryIdentifier = 1;
         model.category.name = @"ETH";
         AddWalletSucessVC *addWalletSucessVC = [[AddWalletSucessVC alloc] init];
         addWalletSucessVC.neoWalletModel = model;
-        addWalletSucessVC.backIndex = 2;
+        addWalletSucessVC.mnemonic = weakSelf.mnemonic;
+        addWalletSucessVC.backIndex = 1;
         [weakSelf.navigationController pushViewController:addWalletSucessVC animated:YES];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
@@ -135,16 +145,16 @@
  */
 - (void)respondsToCommitButton {
     if (!self.nameTextField.text.length) {
-        [LCProgressHUD showMessage:@"请输入钱包名称"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Input Wallet Name", nil)];
         return;
     }
 
     if (![NSString isPassword:self.passwordTextField.text]) {
-        [LCProgressHUD showMessage:@"请输入至少存在一个大写、小写字母、数字8位数以上的密码"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter a password that has at least one uppercase, one lowercase, and no less than 8 digits", nil)];
         return;
     }
     if (![self.passwordTextField.text isEqualToString:self.surePasswordTextField.text]) {
-        [LCProgressHUD showMessage:@"两次密码不一致"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"The two passwords differ", nil)];
         return;
     }
 
@@ -165,7 +175,7 @@
     NSError *error;
     NSString *data = [self.ethWallet toKeyStore:self.passwordTextField.text error:&error];
     NSString * address = self.ethWallet.address;
-    [PDKeyChain save:address data:data];
+    [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
 
     [self uploadWallet];
 }
@@ -173,14 +183,14 @@
  生成新钱包
  */
 - (void)createNewWallet {
-    [LCProgressHUD showLoading:@"创建中..."];
+    [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"Creating...", nil)];
 
     NSError * error;
     self.ethWallet = EthmobileNew(&error);
 
     if (!error) {
         NSError *error;
-        self.mnemonic = [self.ethWallet mnemonic:[[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] isEqualToString:@"zh"] ? @"zh_CN" : @"en_US" error:&error];
+        self.mnemonic = [self.ethWallet mnemonic:[[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh_CN" : @"en_US" error:&error];
 
         if (!error) {
             NSError * error;
@@ -190,7 +200,7 @@
                 // 获取钱包地址
                 NSString * address = [self.ethWallet address];
                 // 存入keyChain
-                [PDKeyChain save:address data:data];
+                [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
 
                 [self uploadWallet];
             } else {
@@ -227,7 +237,7 @@
         _passwordTextField.font = FONT(13);
         _passwordTextField.secureTextEntry = YES;
         _passwordTextField.textColor = COLORFROM16(0x333333, 1);
-        _passwordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Password Setting", nil);
+        _passwordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Password ", nil);
     }
     return _passwordTextField;
 }
@@ -267,13 +277,24 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _commitButton.backgroundColor = MAIN_ORANGE_COLOR;
         _commitButton.titleLabel.font = BOLDFONT(14);
         _commitButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;
+}
+
+- (UILabel *)passTipLabel {
+    if (!_passTipLabel) {
+        _passTipLabel = [[UILabel alloc] init];
+        _passTipLabel.text = DBHGetStringWithKeyFromTable(@"The password needs to contain at least 8 characters, with upper case, lower case and digits mixed. ", nil);
+        _passTipLabel.textColor = COLORFROM16(0xC1BEBE, 1);
+        _passTipLabel.font = FONT(10);
+        _passTipLabel.numberOfLines = 0;
+    }
+    return _passTipLabel;
 }
 
 @end

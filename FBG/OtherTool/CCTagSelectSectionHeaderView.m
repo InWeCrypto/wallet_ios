@@ -31,12 +31,14 @@
     _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _titleLabel.textColor = [UIColor blackColor];
+    _titleLabel.numberOfLines = 0;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_titleLabel];
     
     [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);
         make.centerY.equalTo(self.mas_centerY);
+        make.width.equalTo(self);
     }];
 }
 

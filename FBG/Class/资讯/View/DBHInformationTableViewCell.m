@@ -54,7 +54,7 @@
         make.centerY.equalTo(weakSelf.contentView);
     }];
     [self.noReadLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.offset(AUTOLAYOUTSIZE(14));
+        make.width.height.offset(AUTOLAYOUTSIZE(8));
         make.centerX.equalTo(weakSelf.iconBackImageView.mas_right);
         make.centerY.equalTo(weakSelf.iconBackImageView.mas_top);
     }];
@@ -65,6 +65,7 @@
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.iconBackImageView.mas_right).offset(AUTOLAYOUTSIZE(10));
         make.top.offset(AUTOLAYOUTSIZE(10));
+        make.width.lessThanOrEqualTo(@(AUTOLAYOUTSIZE(180)));
     }];
     [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.titleLabel);
@@ -72,6 +73,7 @@
         make.bottom.offset(- AUTOLAYOUTSIZE(10.5));
     }];
     [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.greaterThanOrEqualTo(weakSelf.titleLabel.mas_right).offset(AUTOLAYOUTSIZE(2));
         make.centerY.equalTo(weakSelf.titleLabel);
         make.right.equalTo(weakSelf.changeLabel.mas_left).offset(- AUTOLAYOUTSIZE(10));
     }];
@@ -112,26 +114,38 @@
 }
 
 #pragma mark ------ Getters And Setters ------
+
 - (void)setModel:(DBHInformationModelData *)model {
     _model = model;
     
     self.iconBackImageView.image = nil;
     self.iconImageView.hidden = NO;
-    [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@""]];
-    self.titleLabel.text = [NSString stringWithFormat:@"%@（%@）", _model.unit, _model.longName];
+    [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageWithColor:WHITE_COLOR]];
+    self.titleLabel.text = [NSString stringWithFormat:@"%@（%@）", _model.name, _model.longName];
     self.contentLabel.text = _model.lastArticle.title;
-    self.timeLabel.text = _model.lastArticle.createdAt;
+    self.timeLabel.text = [NSString formatTimeDelayEight:_model.lastArticle.createdAt];
     self.priceLabel.hidden = _model.type != 1;
     self.changeLabel.hidden = _model.type != 1;
-    self.isNoRead = _model.categoryUser.isFavoriteDot;
+
+    if (self.currentSelectedTitleIndex == 0) { // 自选如果有未读消息才显示
+        self.isNoRead = _model.categoryUser.isFavoriteDot;
+    } else { // 项目不会显示
+        self.isNoRead = NO;
+    }
 }
 - (void)setIcoModel:(DBHInformationModelIco *)icoModel {
     _icoModel = icoModel;
     
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _icoModel.priceCny : _icoModel.priceUsd;
-    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-    self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", _icoModel.percentChange24h.floatValue >= 0 ? @"+" : @"", _icoModel.percentChange24h.floatValue];
-    self.changeLabel.backgroundColor = _icoModel.percentChange24h.floatValue >= 0 ? COLORFROM16(0x008C55, 1) : COLORFROM16(0xFF841C, 1);
+    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.doubleValue];
+    
+    float percentChange24h = _icoModel.percentChange24h.doubleValue;
+    if (percentChange24h == 0) { // -0的情况
+        percentChange24h = 0;
+    }
+    self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", percentChange24h >= 0 ? @"+" : @"", percentChange24h];
+    self.changeLabel.backgroundColor = percentChange24h >= 0 ? COLORFROM16(0x008C55, 1) : MAIN_ORANGE_COLOR;
+    
 }
 - (void)setFunctionalUnitTitle:(NSString *)functionalUnitTitle {
     _functionalUnitTitle = functionalUnitTitle;
@@ -142,22 +156,19 @@
     self.priceLabel.hidden = YES;
     self.changeLabel.hidden = YES;
 }
+
 - (void)setContent:(NSString *)content {
     _content = content;
     
     self.contentLabel.text = _content;
 }
+
 - (void)setTime:(NSString *)time {
     _time = time;
     
     self.timeLabel.text = _time;
 }
-- (void)setNoReadNumber:(NSString *)noReadNumber {
-    _noReadNumber = noReadNumber;
-    
-    self.noReadLabel.hidden = !_noReadNumber.integerValue;
-    self.noReadLabel.text = _noReadNumber;
-}
+
 - (void)setIsNoRead:(BOOL)isNoRead {
     _isNoRead = isNoRead;
     
@@ -169,7 +180,7 @@
     if (!_iconBackImageView) {
         _iconBackImageView = [[UIImageView alloc] init];
         _iconBackImageView.backgroundColor = COLORFROM16(0xF8F4F4, 1);
-        _iconBackImageView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
+        _iconBackImageView.layer.cornerRadius = AUTOLAYOUTSIZE(6);
     }
     return _iconBackImageView;
 }
@@ -178,10 +189,10 @@
         _noReadLabel = [[UILabel alloc] init];
         _noReadLabel.hidden = YES;
         _noReadLabel.backgroundColor = [UIColor redColor];
-        _noReadLabel.layer.cornerRadius = AUTOLAYOUTSIZE(7);
+        _noReadLabel.layer.cornerRadius = AUTOLAYOUTSIZE(4);
         _noReadLabel.clipsToBounds = YES;
         _noReadLabel.font = FONT(10);
-        _noReadLabel.textColor = [UIColor whiteColor];
+        _noReadLabel.textColor = WHITE_COLOR;
         _noReadLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _noReadLabel;

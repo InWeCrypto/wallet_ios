@@ -82,4 +82,23 @@
  */
 + (NSString *)deviceType;
 
+/**
+ 处理URL中含有空格和中文的情况
+ 
+ @return 处理后的str
+ */
+- (NSString *)URLEncodedString;
+
++ (NSString *)stringFromHexStr:(NSString *)hexStr;
+/**
+ 替换标签
+
+ @param html html
+ @return str
+ */
++ (NSString *)flattenHTML:(NSString *)html;
+
++ (NSString *)formatTimeDelayEight:(NSString *)timeStr;
+
 @end
+

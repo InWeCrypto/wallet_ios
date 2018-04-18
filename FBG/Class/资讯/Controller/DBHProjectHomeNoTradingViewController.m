@@ -7,7 +7,7 @@
 //
 
 #import "DBHProjectHomeNoTradingViewController.h"
-
+#import "DBHProjectSurveyViewController.h"
 #import "DBHProjectLookViewController.h"
 #import "DBHProjectOverviewNoTradingViewController.h"
 #import "DBHHistoricalInformationViewController.h"
@@ -21,6 +21,7 @@
 #import "DBHInformationDataModels.h"
 #import "DBHProjectHomeNewsDataModels.h"
 #import "DBHProjectDetailInformationDataModels.h"
+#import "DBHProjectNewOverviewViewController.h"
 
 static NSString *const kDBHProjectHomeNoTradingTableViewCellIdentifier = @"kDBHProjectHomeNoTradingTableViewCellIdentifier";
 static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHProjectHomeTypeTwoTableViewCellIdentifier";
@@ -36,6 +37,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 @property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
+@property (nonatomic, assign) BOOL isScrollBottom;
 @end
 
 @implementation DBHProjectHomeNoTradingViewController
@@ -48,6 +50,7 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     
     [self setUI];
     [self addRefresh];
+    self.isScrollBottom = NO;
     
     self.currentPage = 1;
     [self getInfomation];
@@ -70,17 +73,21 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         make.width.equalTo(weakSelf.view);
         make.centerX.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.view);
+        make.bottom.equalTo(weakSelf.keyboardView.mas_top);
     }];
     [self.keyboardView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
         make.height.offset(AUTOLAYOUTSIZE(47));
         make.centerX.bottom.equalTo(weakSelf.view);
     }];
+    
 }
 
 #pragma mark ------ UITableViewDataSource ------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+//    if (self.dataSource.count > 0) {
+//        [tableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+//    }
     return self.dataSource.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -88,16 +95,30 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
-    cell.model = self.dataSource[indexPath.section];
+    
+    if (indexPath.section < self.dataSource.count) {
+        cell.model = self.dataSource[indexPath.section];
+    }
     
     return cell;
 }
 
 #pragma mark ------ UITableViewDelegate ------
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isScrollBottom == NO) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.dataSource.count - 1] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        
+        if (indexPath.section == self.dataSource.count - 1) {
+            self.isScrollBottom = YES;
+        }
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
     KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
+    webView.imageStr = model.img;
     webView.isHaveShare = YES;
         webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
     [self.navigationController pushViewController:webView animated:YES];
@@ -122,81 +143,100 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
  */
 - (void)getInfomation {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%ld&per_page=5&page=%ld", (NSInteger)self.projectModel.dataIdentifier, self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        if (weakSelf.dataSource.count) {
-            return ;
-        }
-        
-        [weakSelf.dataSource removeAllObjects];
-        NSArray *dataArray = responseCache[@"data"];
-        for (NSInteger i = dataArray.count - 1; i >= 0; i--) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray[i]];
-            
-            [weakSelf.dataSource addObject:model];
-        }
-        
-        [weakSelf.tableView reloadData];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf scrollViewToBottom:NO];
-        });
-    } success:^(id responseObject) {
-        [weakSelf endRefresh];
-        
-        if (weakSelf.currentPage == 1) {
-            [weakSelf.dataSource removeAllObjects];
-        }
-        
-        NSMutableArray *dataArray = [NSMutableArray array];
-        NSArray *array = responseObject[@"data"];
-        for (NSInteger i = array.count - 1; i >= 0; i--) {
-            DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:array[i]];
-            
-            [dataArray addObject:model];
-        }
-        
-        if (weakSelf.currentPage == 1) {
-            [weakSelf.dataSource addObjectsFromArray:dataArray];
-        } else if (dataArray.count) {
-            [weakSelf.dataSource insertObjects:dataArray atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataArray.count)]];
-        }
-        
-        [weakSelf.tableView reloadData];
-        if (weakSelf.currentPage == 1) {
-            if (weakSelf.dataSource.count > 2) {
-                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"article?cid=%ld&per_page=5&page=%ld", (NSInteger)self.projectModel.dataIdentifier, self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+            [weakSelf endRefresh];
+            if (weakSelf.dataSource.count) {
+                return ;
             }
-        } else if (dataArray.count) {
-            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
-    } failure:^(NSString *error) {
-        [weakSelf endRefresh];
-        [LCProgressHUD showFailure:error];
-    }];
+            
+            [weakSelf.dataSource removeAllObjects];
+            NSArray *dataArray = responseCache[@"data"];
+            for (NSInteger i = dataArray.count - 1; i >= 0; i--) {
+                DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:dataArray[i]];
+                
+                [weakSelf.dataSource addObject:model];
+            }
+            
+            [weakSelf.tableView reloadData];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf scrollViewToBottom:NO];
+            });
+        } success:^(id responseObject) {
+            [weakSelf endRefresh];
+            
+            if (weakSelf.currentPage == 1) {
+                [weakSelf.dataSource removeAllObjects];
+            }
+            
+            NSMutableArray *dataArray = [NSMutableArray array];
+            NSArray *array = responseObject[@"data"];
+            for (NSInteger i = array.count - 1; i >= 0; i--) {
+                DBHProjectHomeNewsModelData *model = [DBHProjectHomeNewsModelData modelObjectWithDictionary:array[i]];
+                
+                [dataArray addObject:model];
+            }
+            
+            if (weakSelf.currentPage == 1) {
+                [weakSelf.dataSource addObjectsFromArray:dataArray];
+            } else if (dataArray.count) {
+                [weakSelf.dataSource insertObjects:dataArray atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataArray.count)]];
+            }
+            
+            [weakSelf.tableView reloadData];
+            if (weakSelf.dataSource.count > 0) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (weakSelf.currentPage == 1) {
+                        [weakSelf scrollViewToBottom:NO];
+                    } else if (dataArray.count) {
+                        [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                    }
+                });
+            }
+        } failure:^(NSString *error) {
+            [weakSelf endRefresh];
+            [LCProgressHUD showFailure:error];
+        } specialBlock:nil];
+    });
 }
 /**
  获取项目详细信息
  */
 - (void)getProjectDetailInfomation {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"category/%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        if (weakSelf.projectDetailModel) {
-            return ;
-        }
-        
-        weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseCache];
-        
-        [weakSelf.tableView reloadData];
-    } success:^(id responseObject) {
-        weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseObject];
-        
-        weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:weakSelf.projectDetailModel.categoryUser.isFavorite ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
-        weakSelf.navigationItem.rightBarButtonItems = @[self.personBarButtonItem, self.collectBarButtonItem];
-        
-        [weakSelf.tableView reloadData];
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"category/%ld", (NSInteger)self.projectModel.dataIdentifier] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+            [weakSelf endRefresh];
+            if (weakSelf.projectDetailModel) {
+                return ;
+            }
+            
+            weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseCache];
+            
+            //         dispatch_async(dispatch_get_main_queue(), ^{
+            //            [weakSelf.tableView reloadData];
+            //        });
+        } success:^(id responseObject) {
+            weakSelf.projectDetailModel = [DBHProjectDetailInformationModelData modelObjectWithDictionary:responseObject];
+            
+            weakSelf.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:weakSelf.projectDetailModel.categoryUser.isFavorite ? @"xiangmugaikuang_xing_s" : @"xiangmugaikuang_xing"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToCollectBarButtonItem)];
+            weakSelf.navigationItem.rightBarButtonItems = @[self.personBarButtonItem, self.collectBarButtonItem];
+            
+            //         dispatch_async(dispatch_get_main_queue(), ^{
+            //            [weakSelf.tableView reloadData];
+            //        });
+        } failure:^(NSString *error) {
+            //        [LCProgressHUD showFailure:error];
+        } specialBlock:^{
+            if (![UserSignData share].user.isLogin) {
+                return ;
+            }
+        }];
+    });
 }
 /**
  项目收藏
@@ -235,11 +275,10 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
 /**
  滑动到底部
  */
-- (void)scrollViewToBottom:(BOOL)animated
-{
-    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
-    {
-        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+- (void)scrollViewToBottom:(BOOL)animated {
+    if (self.tableView.contentSize.height > self.tableView.frame.size.height) {
+        NSLog(@"height:%lf %lf", self.tableView.contentSize.height, self.tableView.frame.size.height);
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height + self.tableView.contentInset.bottom);
         [self.tableView setContentOffset:offset animated:animated];
     }
 }
@@ -291,10 +330,16 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.001)];
-        _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(47))];
+        _tableView.tableFooterView = nil; //[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(47))];
         
         _tableView.sectionHeaderHeight = 0;
         _tableView.sectionFooterHeight = 0;
+        
+        _tableView.estimatedRowHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
+        
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, AUTOLAYOUTSIZE(140), 0);
         
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -304,12 +349,14 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
     }
     return _tableView;
 }
+
 - (DBHInputView *)keyboardView {
     if (!_keyboardView) {
         _keyboardView = [[DBHInputView alloc] init];
-        _keyboardView.dataSource = @[@{@"value":@"Overview", @"isMore":@"0"},
-                                     @{@"value":@"Follow-up", @"isMore":@"0"},
-                                     @{@"value":@"Introduction", @"isMore":@"0"}];
+        _keyboardView.dataSource = @[@{VALUE:@"Overview", @"isMore":@"0"},
+//                                     @{VALUE:@"Follow-up", @"isMore":@"0"},
+//                                     @{VALUE:@"Introduction", @"isMore":@"0"}];
+                                     @{VALUE:@"History", @"isMore":@"0"}];
         
         WEAKSELF
         [_keyboardView clickButtonBlock:^(NSInteger buttonType) {
@@ -328,25 +375,30 @@ static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHPro
                 }
                 case 1: {
                     // 项目概况
-                    DBHProjectOverviewNoTradingViewController *projectOverviewNoTradingViewController = [[DBHProjectOverviewNoTradingViewController alloc] init];
+//                    DBHProjectOverviewNoTradingViewController *projectOverviewNoTradingViewController = [[DBHProjectOverviewNoTradingViewController alloc] init];
+                    DBHProjectSurveyViewController *projectOverviewNoTradingViewController = [[DBHProjectSurveyViewController alloc] init];
+//                    DBHProjectNewOverviewViewController *projectOverviewNoTradingViewController = [[DBHProjectNewOverviewViewController alloc] init];
                     projectOverviewNoTradingViewController.projectDetailModel = self.projectDetailModel;
                     [weakSelf.navigationController pushViewController:projectOverviewNoTradingViewController animated:YES];
                     break;
                 }
                 case 2: {
-                    // 项目资讯
+                    // 项目资讯  历史资讯
                     DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
                     historicalInformationViewController.projevtId = [NSString stringWithFormat:@"%ld", (NSInteger) weakSelf.projectModel.dataIdentifier];
                     [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
+//                    DBHHistoricalInformationViewController *historicalInformationViewController = [[DBHHistoricalInformationViewController alloc] init];
+//                    historicalInformationViewController.projevtId = [NSString stringWithFormat:@"%ld", (NSInteger) weakSelf.projectModel.dataIdentifier];
+//                    [weakSelf.navigationController pushViewController:historicalInformationViewController animated:YES];
                     break;
                 }
                 case 3: {
                     // 项目介绍
-                    DBHWebViewController *webViewController = [[DBHWebViewController alloc] init];
-                    webViewController.isHiddenYourOpinion = YES;
-                    webViewController.title = self.projectDetailModel.unit;
-                    webViewController.htmlString = self.projectDetailModel.categoryPresentation.content;
-                    [weakSelf.navigationController pushViewController:webViewController animated:YES];
+//                    DBHWebViewController *webViewController = [[DBHWebViewController alloc] init];
+//                    webViewController.isHiddenYourOpinion = YES;
+//                    webViewController.title = self.projectDetailModel.unit;
+//                    webViewController.htmlString = self.projectDetailModel.categoryPresentation.content;
+//                    [weakSelf.navigationController pushViewController:webViewController animated:YES];
                     break;
                 }
                     

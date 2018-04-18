@@ -87,7 +87,7 @@
     
     UILabel * introudctionLB= [[UILabel alloc] initWithFrame:CGRectMake(50, imageView.bottom + 20, SCREEN_WIDTH - 100, 30)];
     introudctionLB.backgroundColor = [UIColor clearColor];
-    introudctionLB.textColor=[UIColor whiteColor];
+    introudctionLB.textColor=WHITE_COLOR;
     introudctionLB.font = [UIFont systemFontOfSize:13];
     introudctionLB.textAlignment = NSTextAlignmentCenter;
     introudctionLB.text=DBHGetStringWithKeyFromTable(@"The viewfinder frame is aligned with the two-dimensional code and automatically scans", nil);

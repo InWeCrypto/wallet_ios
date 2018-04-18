@@ -18,7 +18,7 @@ NSString *const kDBHCandyBowlModelDataMonth = @"month";
 NSString *const kDBHCandyBowlModelDataIsScroll = @"is_scroll";
 NSString *const kDBHCandyBowlModelDataYear = @"year";
 NSString *const kDBHCandyBowlModelDataDesc = @"desc";
-NSString *const kDBHCandyBowlModelDataName = @"name";
+NSString *const kDBHCandyBowlModelDataName = NAME;
 
 
 @interface DBHCandyBowlModelData ()

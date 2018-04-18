@@ -8,8 +8,6 @@
 
 #import "DBHWalletManagerViewController.h"
 
-#import "DBHImportWalletViewController.h"
-#import "DBHImportWalletWithETHViewController.h"
 #import "DBHCreateWalletViewController.h"
 #import "DBHCreateWalletWithETHViewController.h"
 #import "DBHWalletDetailViewController.h"
@@ -18,11 +16,15 @@
 #import "DBHAddWalletPromptView.h"
 #import "DBHSelectWalletTypeOnePromptView.h"
 #import "DBHSelectWalletTypeTwoPromptView.h"
-#import "DBHWalletManagerTableViewCell.h"
+#import "DBHImportWalletViewController.h"
+#import "DBHImportWalletWithETHViewController.h"
+#import "DBHWalletManageListTableViewCell.h"
 
 #import "DBHWalletManagerForNeoDataModels.h"
+#import "DBHShowAddWalletViewController.h"
+#import "MyNavigationController.h"
 
-static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletManagerTableViewCellIdentifier";
+static NSString *const kDBHWalletManageListTableViewCellIdentifier = @"kDBHWalletManageListTableViewCellIdentifier";
 
 @interface DBHWalletManagerViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -35,6 +37,12 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
 @property (nonatomic, assign) NSInteger walletType; // 0:NEO 1:ETH
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
+@property (nonatomic, strong) UIView *grayLineView;
+
+@property (nonatomic, strong) UIView *noWalletView;
+@property (nonatomic, strong) UIImageView *noWalletImgView;
+@property (nonatomic, strong) UILabel *noWalletTipLabel;
+
 @end
 
 @implementation DBHWalletManagerViewController
@@ -43,7 +51,7 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Manager Wallets", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Wallet List", nil);
     
     [self setUI];
     
@@ -52,22 +60,117 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:[UIColor whiteColor] Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
-    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
     [self getWalletList];
 }
 
 #pragma mark ------ UI ------
 - (void)setUI {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add Wallet"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToAddWalletBarButtonItem)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@" Add ", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToAddWalletBarButtonItem)];
+    //[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add Wallet"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToAddWalletBarButtonItem)];
     
+    [self.view addSubview:self.grayLineView];
     [self.view addSubview:self.tableView];
     
+    [self.view addSubview:self.noWalletView];
+    [self.noWalletView addSubview:self.noWalletImgView];
+    [self.noWalletView addSubview:self.noWalletTipLabel];
+    
     WEAKSELF
-    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(weakSelf.view);
-        make.center.equalTo(weakSelf.view);
+    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view);
+        make.height.offset(AUTOLAYOUTSIZE(1));
+        make.centerX.equalTo(weakSelf.view);
+        make.bottom.equalTo(weakSelf.tableView.mas_top).offset(-AUTOLAYOUTSIZE(9));
     }];
+    
+    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(AUTOLAYOUTSIZE(10));
+        make.width.centerX.equalTo(weakSelf.view);
+        make.bottom.equalTo(weakSelf.view);
+    }];
+    
+    [self.noWalletView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(weakSelf.tableView);
+        make.center.equalTo(weakSelf.tableView);
+    }];
+    
+    [self.noWalletImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(AUTOLAYOUTSIZE(88));
+        make.top.offset(AUTOLAYOUTSIZE(5));
+        make.centerX.equalTo(weakSelf.noWalletView);
+    }];
+    
+    [self.noWalletTipLabel  mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.noWalletView).offset(- AUTOLAYOUTSIZE(30));
+        make.top.equalTo(weakSelf.noWalletImgView.mas_bottom).offset(AUTOLAYOUTSIZE(5));
+        make.centerX.equalTo(weakSelf.noWalletView);
+    }];
+    
+    [self judgeIsShowGuide];
+    
+}
+
+- (void)judgeIsShowGuide {
+    BOOL isShow = [[NSUserDefaults standardUserDefaults] boolForKey:IS_SHOW_ADD_WALLET_GUIDE];
+    if (!isShow) {
+        [self addGuideView];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:IS_SHOW_ADD_WALLET_GUIDE];
+    }
+}
+
+- (void)addGuideView {
+    [self.view layoutIfNeeded];
+    
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    CGRect frame = [UIScreen mainScreen].bounds;
+    UIView *bgView = [[UIView alloc] initWithFrame:frame];
+    
+    bgView.backgroundColor = COLORFROM16(0x323232, 0.8);
+    
+    UIImageView *circleImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"add_wallet_guide_circle"]];
+    CGFloat width = AUTOLAYOUTSIZE(76);
+    circleImg.contentMode = UIViewContentModeScaleAspectFit;
+    
+    circleImg.frame = CGRectMake(CGRectGetWidth(frame) - width - AUTOLAYOUTSIZE(4), STATUSBARHEIGHT - AUTOLAYOUTSIZE(6), width, AUTOLAYOUTSIZE(60));
+    circleImg.contentMode = UIViewContentModeScaleAspectFit;
+    [bgView addSubview:circleImg];
+    
+    UIImageView *arrowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info_guide_arrow"]];
+    
+    arrowImg.contentMode = UIViewContentModeScaleAspectFit;
+    
+    arrowImg.frame = CGRectMake(CGRectGetMinX(circleImg.frame) - width / 2, CGRectGetMaxY(circleImg.frame) - 6, width, 30);
+    [bgView addSubview:arrowImg];
+    
+    UIImageView *tipImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:DBHGetStringWithKeyFromTable(@"add_wallet_guide_tip_en", nil)]];
+    
+    tipImg.contentMode = UIViewContentModeScaleAspectFit;
+    width = AUTOLAYOUTSIZE(180);
+    tipImg.frame = CGRectMake(CGRectGetMidX(frame) - width / 4, CGRectGetMaxY(arrowImg.frame) + 6, width, 40);
+    [bgView addSubview:tipImg];
+    
+    UIButton *iKownBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    width = AUTOLAYOUTSIZE(100);
+    
+    CGRect btnFrame = iKownBtn.frame;
+    btnFrame.origin.x = CGRectGetMidX(tipImg.frame) - width / 2;
+    btnFrame.origin.y = CGRectGetMaxY(tipImg.frame) + 38;
+    btnFrame.size.width = width;
+    btnFrame.size.height = 36;
+    
+    iKownBtn.frame = btnFrame;
+    
+    iKownBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [iKownBtn setImage:[UIImage imageNamed:DBHGetStringWithKeyFromTable(@"info_guide_ikown_en", nil)] forState:UIControlStateNormal];
+    [iKownBtn addTarget:self action:@selector(iKownClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [bgView addSubview:iKownBtn];
+    [keyWindow addSubview:bgView];
+}
+
+- (void)iKownClicked:(UIButton *)btn {
+    [btn.superview removeFromSuperview];
 }
 
 #pragma mark ------ UITableViewDataSource ------
@@ -75,8 +178,10 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
     return self.dataSource.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHWalletManagerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHWalletManagerTableViewCellIdentifier forIndexPath:indexPath];
-    cell.model = self.dataSource[indexPath.row];
+    DBHWalletManageListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHWalletManageListTableViewCellIdentifier forIndexPath:indexPath];
+    if (indexPath.row < self.dataSource.count) {
+        cell.model = self.dataSource[indexPath.row];
+    }
     
     return cell;
 }
@@ -106,32 +211,52 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
 - (void)getWalletList {
     WEAKSELF
     [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        [weakSelf endRefresh];
+        weakSelf.noWalletView.hidden = YES;
         [weakSelf.dataSource removeAllObjects];
-        for (NSDictionary *dic in responseCache[@"list"]) {
-            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
+        for (NSDictionary *dic in responseCache[LIST]) {
+            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
             
-            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
+            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (weakSelf.dataSource.count == 0) {
+                weakSelf.noWalletView.hidden = NO;
+            } else {
+                [weakSelf.tableView reloadData];
+            }
+        });
     } success:^(id responseObject) {
         [weakSelf endRefresh];
         
+        weakSelf.noWalletView.hidden = YES;
         [weakSelf.dataSource removeAllObjects];
-        for (NSDictionary *dic in responseObject[@"list"]) {
-            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
+        for (NSDictionary *dic in responseObject[LIST]) {
+            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
             
-            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
+            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
         }
-        
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (weakSelf.dataSource.count == 0) {
+                weakSelf.noWalletView.hidden = NO;
+            } else {
+                [weakSelf.tableView reloadData];
+            }
+        });
     } failure:^(NSString *error) {
-        [weakSelf endRefresh];
-        [LCProgressHUD showFailure: error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf endRefresh];
+            [LCProgressHUD showFailure: error];
+        });
+    } specialBlock:^{
+        if (![UserSignData share].user.isLogin) {
+            return;
+        }
     }];
 }
 
@@ -140,12 +265,24 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
  添加钱包
  */
 - (void)respondsToAddWalletBarButtonItem {
-    [[UIApplication sharedApplication].keyWindow addSubview:self.addWalletPromptView];
-    
-    WEAKSELF
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakSelf.addWalletPromptView animationShow];
-    });
+    if (![UserSignData share].user.isLogin) {
+        [[AppDelegate delegate] goToLoginVC:self];
+        return;
+    }
+    DBHShowAddWalletViewController *vc = [[DBHShowAddWalletViewController alloc] init];
+    vc.nc = self.navigationController;
+
+    MyNavigationController *naviVC = [[MyNavigationController alloc] initWithRootViewController:vc];
+    naviVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    [self presentViewController:naviVC animated:NO completion:^{
+        [vc animateShow:YES completion:nil];
+    }];
+//    [[UIApplication sharedApplication].keyWindow addSubview:self.addWalletPromptView];
+//
+//    WEAKSELF
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [weakSelf.addWalletPromptView animationShow];
+//    });
 }
 
 #pragma mark ------ Private Methods ------
@@ -177,12 +314,12 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
         _tableView.backgroundColor = BACKGROUNDCOLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-        _tableView.rowHeight = AUTOLAYOUTSIZE(70);
+        _tableView.rowHeight = AUTOLAYOUTSIZE(90);
         
         _tableView.dataSource = self;
         _tableView.delegate = self;
         
-        [_tableView registerClass:[DBHWalletManagerTableViewCell class] forCellReuseIdentifier:kDBHWalletManagerTableViewCellIdentifier];
+        [_tableView registerClass:[DBHWalletManageListTableViewCell class] forCellReuseIdentifier:kDBHWalletManageListTableViewCellIdentifier];
     }
     return _tableView;
 }
@@ -195,7 +332,7 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
             if (!index) {
                 // 添加新钱包
                 weakSelf.type = 0;
-                [[UIApplication sharedApplication].keyWindow addSubview:self.selectWalletTypeOnePromptView];
+                [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.selectWalletTypeOnePromptView];
                 
                 WEAKSELF
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -204,7 +341,7 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
             } else {
                 // 导入钱包
                 weakSelf.type = 1;
-                [[UIApplication sharedApplication].keyWindow addSubview:self.selectWalletTypeOnePromptView];
+                [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.selectWalletTypeOnePromptView];
                 
                 WEAKSELF
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -223,21 +360,25 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
         [_selectWalletTypeOnePromptView selectedBlock:^(NSInteger index) {
             if (index == - 1) {
                 // 返回
-                [[UIApplication sharedApplication].keyWindow addSubview:self.addWalletPromptView];
+                [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.addWalletPromptView];
                 
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [weakSelf.addWalletPromptView animationShow];
+                    [weakSelf.addWalletPromptView animateFromLeftShow]; //look
                 });
+            } else if (index == -2) {
+                [weakSelf.addWalletPromptView boxViewAtInit];
             } else if (!index) {
                 if (!weakSelf.type) {
                     // 添加NEO
                     weakSelf.walletType = 0;
-                    [[UIApplication sharedApplication].keyWindow addSubview:self.selectWalletTypeTwoPromptView];
+                    [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.selectWalletTypeTwoPromptView];
                     
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [weakSelf.selectWalletTypeTwoPromptView animationShow];
                     });
                 } else {
+                    [weakSelf.addWalletPromptView boxViewAtInit];
+                    [weakSelf.selectWalletTypeOnePromptView boxViewAtInit];
                     // 导入NEO
                     DBHImportWalletViewController *importWalletViewController = [[DBHImportWalletViewController alloc] init];
                     [weakSelf.navigationController pushViewController:importWalletViewController animated:YES];
@@ -246,12 +387,14 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
                 if (!weakSelf.type) {
                     // 添加ETH
                     weakSelf.walletType = 1;
-                    [[UIApplication sharedApplication].keyWindow addSubview:self.selectWalletTypeTwoPromptView];
+                    [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.selectWalletTypeTwoPromptView];
                     
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [weakSelf.selectWalletTypeTwoPromptView animationShow];
                     });
                 } else {
+                    [weakSelf.addWalletPromptView boxViewAtInit];
+                    [weakSelf.selectWalletTypeOnePromptView boxViewAtInit];
                     // 导入ETH
                     DBHImportWalletWithETHViewController *importWalletWithETHViewController = [[DBHImportWalletWithETHViewController alloc] init];
                     [weakSelf.navigationController pushViewController:importWalletWithETHViewController animated:YES];
@@ -269,12 +412,17 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
         [_selectWalletTypeTwoPromptView selectedBlock:^(NSInteger index) {
             if (index == - 1) {
                 // 返回
-                [[UIApplication sharedApplication].keyWindow addSubview:self.selectWalletTypeOnePromptView];
+                [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.selectWalletTypeOnePromptView];
                 
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [weakSelf.selectWalletTypeOnePromptView animationShow];
+                    [weakSelf.selectWalletTypeOnePromptView animateFromLeftShow];
                 });
+            } else if (index == -2) {
+                [weakSelf.addWalletPromptView boxViewAtInit];
+                [weakSelf.selectWalletTypeOnePromptView boxViewAtInit];
             } else {
+                [weakSelf.addWalletPromptView boxViewAtInit];
+                [weakSelf.selectWalletTypeOnePromptView boxViewAtInit];
                 if (!index) {
                     // 热钱包
                     if (!self.walletType) {
@@ -301,6 +449,42 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
         _dataSource = [NSMutableArray array];
     }
     return _dataSource;
+}
+
+- (UIView *)noWalletView {
+    if (!_noWalletView) {
+        _noWalletView = [[UIView alloc] init];
+        _noWalletView.backgroundColor = WHITE_COLOR;
+    }
+    return _noWalletView;
+}
+
+- (UIImageView *)noWalletImgView {
+    if (!_noWalletImgView) {
+        _noWalletImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"no_wallet_tip"]];
+        _noWalletImgView.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    return _noWalletImgView;
+}
+
+- (UILabel *)noWalletTipLabel {
+    if (!_noWalletTipLabel) {
+        _noWalletTipLabel = [[UILabel alloc] init];
+        _noWalletTipLabel.numberOfLines = 0;
+        _noWalletTipLabel.text = DBHGetStringWithKeyFromTable(@"No wallet, please go to 'Add Wallet' in the upper right corner to create wallet", nil);
+        _noWalletTipLabel.font = FONT(12);
+        _noWalletTipLabel.textColor = COLORFROM16(0xC1BEBE, 1);
+        _noWalletTipLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _noWalletTipLabel;
+}
+
+- (UIView *)grayLineView {
+    if (!_grayLineView) {
+        _grayLineView = [[UIView alloc] init];
+        _grayLineView.backgroundColor = COLORFROM16(0xEEEEEE, 1);
+    }
+    return _grayLineView;
 }
 
 @end

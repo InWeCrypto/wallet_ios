@@ -42,7 +42,7 @@
         make.centerY.equalTo(weakSelf.contentView);
     }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.menuImageView.mas_right).offset(AUTOLAYOUTSIZE(3));
+        make.left.equalTo(weakSelf.menuImageView.mas_right).offset(AUTOLAYOUTSIZE(10));
         make.centerY.equalTo(weakSelf.contentView);
     }];
 }
@@ -65,7 +65,7 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = FONT(15);
+        _titleLabel.font = FONT(13);
         _titleLabel.textColor = COLORFROM16(0x3D3D3D, 1 );
     }
     return _titleLabel;

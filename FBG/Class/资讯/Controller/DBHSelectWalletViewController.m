@@ -29,7 +29,7 @@ static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWal
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Manager Wallets", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Wallet List", nil);
     
     [self setUI];
     
@@ -85,32 +85,41 @@ static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWal
 - (void)getWalletList {
     WEAKSELF
     [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        [weakSelf endRefresh];
         [weakSelf.dataSource removeAllObjects];
-        for (NSDictionary *dic in responseCache[@"list"]) {
-            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
+        for (NSDictionary *dic in responseCache[LIST]) {
+            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
             
-            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
+            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+         dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } success:^(id responseObject) {
         [weakSelf endRefresh];
         
         [weakSelf.dataSource removeAllObjects];
-        for (NSDictionary *dic in responseObject[@"list"]) {
-            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList modelObjectWithDictionary:dic];
+        for (NSDictionary *dic in responseObject[LIST]) {
+            DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
             
-            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:model.address]];
+            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [weakSelf endRefresh];
         [LCProgressHUD showFailure: error];
+    } specialBlock:^{
+        if (![UserSignData share].user.isLogin) {
+            return ;
+        }
     }];
 }
 

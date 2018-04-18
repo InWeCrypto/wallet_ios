@@ -10,7 +10,7 @@
 
 NSString *const kDBHProjectDetailInformationModelCategoryMediaImg = @"img";
 NSString *const kDBHProjectDetailInformationModelCategoryMediaQrImg = @"qr_img";
-NSString *const kDBHProjectDetailInformationModelCategoryMediaName = @"name";
+NSString *const kDBHProjectDetailInformationModelCategoryMediaName = NAME;
 NSString *const kDBHProjectDetailInformationModelCategoryMediaDesc = @"desc";
 NSString *const kDBHProjectDetailInformationModelCategoryMediaUrl = @"url";
 

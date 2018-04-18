@@ -18,6 +18,9 @@
 @end
 
 @interface ZFTabBar : UIView
+
+@property (nonatomic, assign) NSInteger selectedIndex;
+
 - (void)addTabBarButtonWithItem:(UITabBarItem *)item;
 
 @property (nonatomic, weak) id<ZFTabBarDelegate> delegate;

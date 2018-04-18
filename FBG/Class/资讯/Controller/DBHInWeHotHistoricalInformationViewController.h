@@ -7,7 +7,10 @@
 //
 
 #import "DBHBaseViewController.h"
+@class DBHProjectDetailInformationModelData;
 
 @interface DBHInWeHotHistoricalInformationViewController : DBHBaseViewController
+
+@property (nonatomic, assign) NSInteger functionalUnitType; // 功能组件类型
 
 @end

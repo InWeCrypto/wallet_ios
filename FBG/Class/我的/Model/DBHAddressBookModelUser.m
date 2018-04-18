@@ -12,7 +12,7 @@ NSString *const kDBHAddressBookModelUserEmail = @"email";
 NSString *const kDBHAddressBookModelUserId = @"id";
 NSString *const kDBHAddressBookModelUserImg = @"img";
 NSString *const kDBHAddressBookModelUserLang = @"lang";
-NSString *const kDBHAddressBookModelUserName = @"name";
+NSString *const kDBHAddressBookModelUserName = NAME;
 
 
 @interface DBHAddressBookModelUser ()

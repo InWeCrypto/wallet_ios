@@ -8,7 +8,7 @@
 #import "DBHProjectDetailInformationModelCategoryWallet.h"
 
 
-NSString *const kDBHProjectDetailInformationModelCategoryWalletName = @"name";
+NSString *const kDBHProjectDetailInformationModelCategoryWalletName = NAME;
 NSString *const kDBHProjectDetailInformationModelCategoryWalletDesc = @"desc";
 NSString *const kDBHProjectDetailInformationModelCategoryWalletUrl = @"url";
 

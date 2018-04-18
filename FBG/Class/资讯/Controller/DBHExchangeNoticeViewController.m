@@ -38,7 +38,9 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
     [self addRefresh];
     
     self.currentPage = 1;
-    [self getExchangeNotice];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self getExchangeNotice];
+    });
 }
 
 #pragma mark ------ UI ------
@@ -87,10 +89,13 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHExchangeNoticeModelData *model = self.dataSource[indexPath.section];
+    
     KKWebView *webView = [[KKWebView alloc] initWithUrl:model.sourceUrl];
     webView.title = model.desc;
+    
     [self.navigationController pushViewController:webView animated:YES];
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     DBHExchangeNoticeModelData *model = self.dataSource[section];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
@@ -98,6 +103,7 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
     headerView.time = model.createdAt;
     return headerView;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return AUTOLAYOUTSIZE(42);
 }
@@ -121,12 +127,17 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        weakSelf.dataSource = [NSArray arraySortedByArr:weakSelf.dataSource];
+         dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf scrollViewToBottom:NO];
         });
     } success:^(id responseObject) {
-        [weakSelf endRefresh];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf endRefresh];
+        });
         
         if (weakSelf.currentPage == 1) {
             [weakSelf.dataSource removeAllObjects];
@@ -147,18 +158,22 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
             [weakSelf.dataSource insertObjects:dataArray atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataArray.count)]];
         }
         
-        [weakSelf.tableView reloadData];
+        weakSelf.dataSource = [NSArray arraySortedByArr:weakSelf.dataSource];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [weakSelf.tableView reloadData];
+             if (weakSelf.currentPage == 1) {
+                 if (weakSelf.dataSource.count > 2) {
+                     [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                 }
+             } else if (dataArray.count) {
+                 [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+             }
+        });
         
-        if (weakSelf.currentPage == 1) {
-            if (weakSelf.dataSource.count > 2) {
-                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-            }
-        } else if (dataArray.count) {
-            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
+        
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 
 #pragma mark ------ Event Responds ------
@@ -204,7 +219,7 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
 {
     if (self.tableView.contentSize.height > self.tableView.frame.size.height)
     {
-        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height + self.tableView.contentInset.bottom);
         [self.tableView setContentOffset:offset animated:animated];
     }
 }
@@ -248,6 +263,7 @@ static NSString *const kDBHIotificationTableViewCellIdentifier = @"kDBHIotificat
         _tableView.sectionFooterHeight = 0;
         
         _tableView.rowHeight = AUTOLAYOUTSIZE(150);
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, AUTOLAYOUTSIZE(30), 0);
         
         _tableView.dataSource = self;
         _tableView.delegate = self;

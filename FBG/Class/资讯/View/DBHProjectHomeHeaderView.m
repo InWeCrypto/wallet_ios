@@ -44,13 +44,7 @@
     _time = time;
     
     if (self.isAdd) {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        NSDate *date = [dateFormatter dateFromString:_time];
-        
-        NSDate *newDate = [NSDate dateWithTimeInterval:8 * 60 * 60 sinceDate:date];
-        
-        self.timeLabel.text = [dateFormatter stringFromDate:newDate];
+        self.timeLabel.text = [NSString formatTimeDelayEight:_time];
     } else {
         self.timeLabel.text = _time;
     }
@@ -69,7 +63,7 @@
         _timeLabel = [[UILabel alloc] init];
         _timeLabel.backgroundColor = COLORFROM10(202, 202, 202, 1);
         _timeLabel.font = FONT(9);
-        _timeLabel.textColor = [UIColor whiteColor];
+        _timeLabel.textColor = WHITE_COLOR;
         _timeLabel.textAlignment = NSTextAlignmentCenter;
         _timeLabel.layer.cornerRadius = AUTOLAYOUTSIZE(2.5);
         _timeLabel.clipsToBounds = YES;

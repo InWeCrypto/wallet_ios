@@ -59,7 +59,7 @@
         make.bottom.offset(- AUTOLAYOUTSIZE(22.5));
     }];
     [self.originalLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Originality", nil) fontSize:AUTOLAYOUTSIZE(6)] + AUTOLAYOUTSIZE(5));
+        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Originality", nil) fontSize:AUTOLAYOUTSIZE(10)] + AUTOLAYOUTSIZE(5));
         make.height.offset(AUTOLAYOUTSIZE(10));
         make.left.equalTo(weakSelf.timeLabel.mas_right).offset(AUTOLAYOUTSIZE(7));
         make.centerY.equalTo(weakSelf.timeLabel);
@@ -96,7 +96,8 @@
     
     [self.pictureImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
     self.titleLabel.text = _model.title;
-    self.timeLabel.text = _model.updatedAt;
+    
+    self.timeLabel.text = [NSString formatTimeDelayEight:_model.updatedAt];
     self.originalLabel.hidden = !_model.isSole;
 }
 - (void)setInfomationModel:(DBHProjectHomeNewsModelData *)infomationModel {
@@ -104,14 +105,14 @@
     
     [self.pictureImageView sdsetImageWithURL:_infomationModel.img placeholderImage:[UIImage imageNamed:@"fenxiang_jietu"]];
     self.titleLabel.text = _infomationModel.title;
-    self.timeLabel.text = _infomationModel.updatedAt;
+    self.timeLabel.text = [NSString formatTimeDelayEight:_infomationModel.updatedAt];
     self.originalLabel.hidden = !_infomationModel.isSole;
 }
 - (void)setExchangeNoticeModel:(DBHExchangeNoticeModelData *)exchangeNoticeModel {
     _exchangeNoticeModel = exchangeNoticeModel;
     
     self.titleLabel.text = _exchangeNoticeModel.sourceName;
-    self.timeLabel.text = _exchangeNoticeModel.updatedAt;
+    self.timeLabel.text = [NSString formatTimeDelayEight:_exchangeNoticeModel.updatedAt];
     self.originalLabel.hidden = YES;
 }
 - (void)setCandyBowlModel:(DBHCandyBowlModelData *)candyBowlModel {
@@ -127,7 +128,7 @@
     
     [self.pictureImageView sdsetImageWithURL:_articleModel.img placeholderImage:nil];
     self.titleLabel.text = _articleModel.title;
-    self.timeLabel.text = _articleModel.createdAt;
+    self.timeLabel.text = [NSString formatTimeDelayEight:_articleModel.createdAt];
     self.originalLabel.hidden = !_articleModel.isSole;
 }
 - (void)setMessage:(EMMessage *)message {
@@ -139,11 +140,18 @@
 - (void)setIsNoImage:(BOOL)isNoImage {
     _isNoImage = isNoImage;
     
+    self.pictureImageView.hidden = _isNoImage;
+    [self.pictureImageView sdsetImageWithURL:_model.img placeholderImage:nil];
     if (_isNoImage) {
-        self.pictureImageView.hidden = YES;
-        
         [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(AUTOLAYOUTSIZE(15));
+            make.right.offset(- AUTOLAYOUTSIZE(15));
+            make.top.offset(AUTOLAYOUTSIZE(13));
+        }];
+    } else {
+        WEAKSELF
+        [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(weakSelf.pictureImageView.mas_right).offset(AUTOLAYOUTSIZE(12));
             make.right.offset(- AUTOLAYOUTSIZE(15));
             make.top.offset(AUTOLAYOUTSIZE(13));
         }];
@@ -177,7 +185,7 @@
 - (UILabel *)originalLabel {
     if (!_originalLabel) {
         _originalLabel = [[UILabel alloc] init];
-        _originalLabel.font = FONT(6);
+        _originalLabel.font = FONT(10);
         _originalLabel.hidden = YES;
         _originalLabel.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _originalLabel.layer.borderWidth = AUTOLAYOUTSIZE(0.5);

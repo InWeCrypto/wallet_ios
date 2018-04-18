@@ -14,8 +14,7 @@ static NSString *const NetworkResponseCache = @"FBGNetworkResponseCache";
 static YYCache *_dataCache;
 
 
-+ (void)initialize
-{
++ (void)initialize {
     _dataCache = [YYCache cacheWithName:NetworkResponseCache];
 }
 
@@ -25,8 +24,7 @@ static YYCache *_dataCache;
     [_dataCache setObject:responseCache forKey:key withBlock:nil];
 }
 
-+ (id)getResponseCacheForKey:(NSString *)key
-{
++ (id)getResponseCacheForKey:(NSString *)key {
     return [_dataCache objectForKey:key];
 }
 

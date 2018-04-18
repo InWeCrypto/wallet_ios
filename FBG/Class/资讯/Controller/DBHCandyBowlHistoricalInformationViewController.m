@@ -79,33 +79,37 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     [PPNetworkHelper GET:@"candy_bow" baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         [weakSelf.dataSource removeAllObjects];
         
-        for (NSDictionary *dic in responseCache[@"list"][@"data"]) {
+        for (NSDictionary *dic in responseCache[LIST][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
             
             [weakSelf.dataSource addObject:model];
         }
 
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
         
-        for (NSDictionary *dic in responseObject[@"list"][@"data"]) {
+        for (NSDictionary *dic in responseObject[LIST][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
             
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 
 #pragma mark ------ Getters And Setters ------
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.rowHeight = AUTOLAYOUTSIZE(75.5);

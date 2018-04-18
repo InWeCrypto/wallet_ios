@@ -12,6 +12,7 @@
 
 #import "DBHWalletManagerForNeoModelList.h"
 #import "DBHAddPropertyDataModels.h"
+#import "DBHSearchTitleView.h"
 
 static NSString *const kDBHAddPropertyTableViewCellIdentifier = @"kDBHAddPropertyTableViewCellIdentifier";
 
@@ -21,6 +22,10 @@ static NSString *const kDBHAddPropertyTableViewCellIdentifier = @"kDBHAddPropert
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSMutableArray *selectedTokenIdArray;
+@property (nonatomic, strong) DBHSearchTitleView *searchView;
+
+@property (nonatomic, strong) NSMutableArray *showDataSource;
+
 
 @end
 
@@ -45,22 +50,25 @@ static NSString *const kDBHAddPropertyTableViewCellIdentifier = @"kDBHAddPropert
 - (void)setUI {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Confirm", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToFinishBarButtonItem)];
     
+    [self.view addSubview:self.searchView];
     [self.view addSubview:self.tableView];
     
     WEAKSELF
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(weakSelf.view);
-        make.center.equalTo(weakSelf.view);
+        make.width.equalTo(weakSelf.view);
+        make.top.equalTo(weakSelf.searchView.mas_bottom);
+        make.bottom.equalTo(weakSelf.view);
+        make.centerX.equalTo(weakSelf.view);
     }];
 }
 
 #pragma mark ------ UITableViewDataSource ------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.dataSource.count;
+    return self.showDataSource.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHAddPropertyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHAddPropertyTableViewCellIdentifier forIndexPath:indexPath];
-    DBHAddPropertyModelList *model = self.dataSource[indexPath.row];
+    DBHAddPropertyModelList *model = self.showDataSource[indexPath.row];
     cell.model = model;
     cell.isSelected = [self.selectedTokenIdArray containsObject:@(model.listIdentifier)];
     
@@ -70,7 +78,7 @@ static NSString *const kDBHAddPropertyTableViewCellIdentifier = @"kDBHAddPropert
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHAddPropertyTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    DBHAddPropertyModelList *model = self.dataSource[indexPath.row];
+    DBHAddPropertyModelList *model = self.showDataSource[indexPath.row];
     if (cell.isSelected) {
         [self.selectedTokenIdArray removeObject:@(model.listIdentifier)];
     } else {
@@ -88,20 +96,37 @@ static NSString *const kDBHAddPropertyTableViewCellIdentifier = @"kDBHAddPropert
                                 @"wallet_id":@(self.walletModel.listIdentifier)};
     
     WEAKSELF
-    [PPNetworkHelper GET:@"gnt-category" baseUrlType:1 parameters:paramters hudString:@"加载中..." success:^(id responseObject) {
+    [PPNetworkHelper GET:@"gnt-category" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) responseCache:^(id responseCache) {
         [weakSelf endRefresh];
         [weakSelf.dataSource removeAllObjects];
         [weakSelf.selectedTokenIdArray removeAllObjects];
         
-        for (NSDictionary *dic in responseObject[@"list"]) {
+        for (NSDictionary *dic in responseCache[LIST]) {
             DBHAddPropertyModelList *model = [DBHAddPropertyModelList modelObjectWithDictionary:dic];
             [weakSelf.dataSource addObject:model];
         }
         
+        weakSelf.showDataSource = weakSelf.dataSource;
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
+        [weakSelf endRefresh];
+        [weakSelf.dataSource removeAllObjects];
+        [weakSelf.selectedTokenIdArray removeAllObjects];
+        
+        for (NSDictionary *dic in responseObject[LIST]) {
+            DBHAddPropertyModelList *model = [DBHAddPropertyModelList modelObjectWithDictionary:dic];
+            [weakSelf.dataSource addObject:model];
+        }
+        
+        weakSelf.showDataSource = weakSelf.dataSource;
         [weakSelf.tableView reloadData];
     } failure:^(NSString *error) {
         [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
+    } specialBlock:^{
+        if (![UserSignData share].user.isLogin) {
+            return ;
+        }
     }];
 }
 /**
@@ -111,12 +136,9 @@ static NSString *const kDBHAddPropertyTableViewCellIdentifier = @"kDBHAddPropert
     NSDictionary *paramters = @{@"wallet_id":@(self.walletModel.listIdentifier), @"gnt_category_ids":[self.selectedTokenIdArray toJSONStringForArray]};
     
     WEAKSELF
-    [PPNetworkHelper POST:@"user-gnt" baseUrlType:1 parameters:paramters hudString:@"添加中..." success:^(id responseObject)
-     {
+    [PPNetworkHelper POST:@"user-gnt" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Adding...", nil) success:^(id responseObject) {
          [weakSelf.navigationController popViewControllerAnimated:YES];
-         
-     } failure:^(NSString *error)
-     {
+    } failure:^(NSString *error) {
          [LCProgressHUD showFailure:error];
      }];
 }
@@ -180,11 +202,80 @@ static NSString *const kDBHAddPropertyTableViewCellIdentifier = @"kDBHAddPropert
     }
     return _dataSource;
 }
+
+- (NSMutableArray *)showDataSource {
+    if (!_showDataSource) {
+        _showDataSource = [NSMutableArray array];
+    }
+    return _showDataSource;
+}
+
 - (NSMutableArray *)selectedTokenIdArray {
     if (!_selectedTokenIdArray) {
         _selectedTokenIdArray = [NSMutableArray array];
     }
     return _selectedTokenIdArray;
+}
+
+- (DBHSearchTitleView *)searchView {
+    if (!_searchView) {
+        _searchView = [[DBHSearchTitleView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, STATUS_HEIGHT + 44) isShowBtn:NO];
+        WEAKSELF
+        [_searchView searchBlock:^(NSInteger type, NSString *searchString) {
+            switch (type) {
+                case -1: { // 清空
+                    weakSelf.showDataSource = weakSelf.dataSource;
+                    [weakSelf.tableView reloadData];
+                }
+                    break;
+                    
+                case 1:
+                    // 搜索
+                    if (searchString.length) {
+                        [weakSelf searchDBFromDatasource:searchString];
+                    }
+                    break;
+                case 2:
+                    if (searchString.length) {
+                        [weakSelf searchDBFromDatasource:searchString];
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }];
+    }
+    return _searchView;
+}
+
+- (void)searchDBFromDatasource:(NSString *)searchStr {
+    __block BOOL isSearch = NO;
+    __block NSString *desStr = [[searchStr componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsJoinedByString:@""];
+    __block NSMutableArray *resultArr = [NSMutableArray array];
+    [self.dataSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        DBHAddPropertyModelList *model = (DBHAddPropertyModelList *)obj;
+        NSString *dbName = model.name;
+        
+        if ([dbName containsString:desStr] ||
+            [dbName containsString:[desStr lowercaseString]] ||
+            [dbName containsString:[desStr uppercaseString]]) {
+            
+            [resultArr addObject:model];
+        
+            isSearch = YES;
+//            *stop = YES;
+        }
+    }];
+    
+    self.showDataSource = resultArr;
+    [self.tableView reloadData];
+    
+//    if (!isSearch) {
+//        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Not Found", nil)];
+//        self.searchView.searchTextField.text = searchStr;
+//        [self.view endEditing:YES];
+//    }
 }
 
 @end

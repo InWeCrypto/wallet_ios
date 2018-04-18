@@ -9,8 +9,9 @@
 #import "DBHWebViewController.h"
 
 #import <WebKit/WKWebView.h>
+#import <WebKit/WKNavigationDelegate.h>
 
-@interface DBHWebViewController ()
+@interface DBHWebViewController ()<WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) UIView *grayLineView;
@@ -79,9 +80,17 @@
         }];
     }
 }
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    [self.webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '250%'" completionHandler:nil];
+}
+
 - (void)setHtmlString:(NSString *)htmlString {
     _htmlString = htmlString;
     
+    if (!_htmlString) {
+        return;
+    }
     [self.webView loadHTMLString:_htmlString baseURL:nil];
 }
 - (void)setUrl:(NSString *)url {
@@ -93,6 +102,7 @@
 - (WKWebView *)webView {
     if (!_webView) {
         _webView = [[WKWebView alloc] init];
+        _webView.navigationDelegate = self;
     }
     return _webView;
 }

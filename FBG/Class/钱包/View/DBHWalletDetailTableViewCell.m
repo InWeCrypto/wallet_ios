@@ -63,13 +63,13 @@
     }];
     [self.canExtractGasLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.iconImageView);
-        make.centerY.equalTo(weakSelf.extractButton);
+        make.bottom.equalTo(weakSelf.priceLabel);
     }];
     [self.extractButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Claim", nil) fontSize:AUTOLAYOUTSIZE(6)] + AUTOLAYOUTSIZE(6));
-        make.height.offset(AUTOLAYOUTSIZE(9));
+        make.width.offset(AUTOLAYOUTSIZE([NSString getWidthtWithString:DBHGetStringWithKeyFromTable(@"Claim", nil) fontSize:AUTOLAYOUTSIZE(10)]) + AUTOLAYOUTSIZE(12));
+        make.height.offset(AUTOLAYOUTSIZE(20));
         make.left.equalTo(weakSelf.canExtractGasLabel.mas_right);
-        make.top.equalTo(weakSelf.nameLabel.mas_bottom);
+        make.centerY.equalTo(weakSelf.canExtractGasLabel);
     }];
     [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(weakSelf.numberLabel);
@@ -96,13 +96,13 @@
     
     if ([_model.flag isEqualToString:@"NEO"] || [_model.flag isEqualToString:@"Gas"]) {
         if ([_model.flag isEqualToString:@"NEO"]) {
-            self.numberLabel.text = [NSString stringWithFormat:@"%.0lf", _model.balance.floatValue];
+            self.numberLabel.text = [NSString stringWithFormat:@"%.0lf", _model.balance.doubleValue];
         } else {
-            self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.floatValue];
+            self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.doubleValue];
         }
-        self.iconImageView.image = [UIImage imageNamed:_model.icon];
+        self.iconImageView.image = [UIImage imageNamed:![_model.icon isEqual:[NSNull null]] ? _model.icon : @""];
     } else {
-        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.floatValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.doubleValue];
         if ([_model.icon containsString:@"http"]) {
             [self.iconImageView sdsetImageWithURL:_model.icon placeholderImage:[UIImage imageNamed:@"NEO_add"]];
         } else {
@@ -113,13 +113,13 @@
     if ([UserSignData share].user.isHideAsset) {
         self.priceLabel.text = [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"];
     } else {
-        self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.walletUnitType == 1 ? _model.priceCny.floatValue : _model.priceUsd.floatValue];
+        self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.walletUnitType == 1 ? _model.priceCny.doubleValue : _model.priceUsd.doubleValue];
     }
     
     self.canExtractGasLabel.hidden = !_model.canExtractbalance;
     self.extractButton.hidden = !_model.canExtractbalance;
     if (_model.canExtractbalance) {
-        self.canExtractGasLabel.text = [NSString stringWithFormat:@"（%.8lfGas %@）", _model.canExtractbalance.floatValue, DBHGetStringWithKeyFromTable(@"Available", nil)];
+        self.canExtractGasLabel.text = [NSString stringWithFormat:@"（%.8lfGas %@）", _model.canExtractbalance.doubleValue, DBHGetStringWithKeyFromTable(@"Available", nil)];
     }
 }
 
@@ -133,7 +133,7 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.font = FONT(13);
+        _nameLabel.font = FONT(14);
         _nameLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _nameLabel;
@@ -141,7 +141,7 @@
 - (UILabel *)numberLabel {
     if (!_numberLabel) {
         _numberLabel = [[UILabel alloc] init];
-        _numberLabel.font = FONT(11);
+        _numberLabel.font = FONT(13);
         _numberLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _numberLabel;
@@ -149,7 +149,7 @@
 - (UILabel *)canExtractGasLabel {
     if (!_canExtractGasLabel) {
         _canExtractGasLabel = [[UILabel alloc] init];
-        _canExtractGasLabel.font = FONT(7);
+        _canExtractGasLabel.font = FONT(8);
         _canExtractGasLabel.textColor = COLORFROM16(0xC0C0C0, 1);
     }
     return _canExtractGasLabel;
@@ -157,8 +157,8 @@
 - (UIButton *)extractButton {
     if (!_extractButton) {
         _extractButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _extractButton.backgroundColor = COLORFROM16(0xFF841C, 1);
-        _extractButton.titleLabel.font = FONT(6);
+        _extractButton.backgroundColor = MAIN_ORANGE_COLOR;
+        _extractButton.titleLabel.font = FONT(10);
         [_extractButton setTitle:DBHGetStringWithKeyFromTable(@"Claim", nil) forState:UIControlStateNormal];
         [_extractButton addTarget:self action:@selector(respondsToExtractButton) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -167,7 +167,7 @@
 - (UILabel *)priceLabel {
     if (!_priceLabel) {
         _priceLabel = [[UILabel alloc] init];
-        _priceLabel.font = FONT(11);
+        _priceLabel.font = FONT(12);
         _priceLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _priceLabel;

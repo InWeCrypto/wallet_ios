@@ -9,7 +9,7 @@
 
 
 NSString *const kDBHProjectDetailInformationModelIcoId = @"id";
-NSString *const kDBHProjectDetailInformationModelIcoPriceCny = @"price_cny";
+NSString *const kDBHProjectDetailInformationModelIcoPriceCny = PRICE_CNY;
 NSString *const kDBHProjectDetailInformationModelIcoMaxSupply = @"max_supply";
 NSString *const kDBHProjectDetailInformationModelIcoMarketCapCny = @"market_cap_cny";
 NSString *const kDBHProjectDetailInformationModelIcoPercentChange24h = @"percent_change_24h";
@@ -17,14 +17,14 @@ NSString *const kDBHProjectDetailInformationModelIcoSymbol = @"symbol";
 NSString *const kDBHProjectDetailInformationModelIcoLastUpdated = @"last_updated";
 NSString *const kDBHProjectDetailInformationModelIcoMarketCapUsd = @"market_cap_usd";
 NSString *const kDBHProjectDetailInformationModelIcoTotalSupply = @"total_supply";
-NSString *const kDBHProjectDetailInformationModelIcoPriceUsd = @"price_usd";
+NSString *const kDBHProjectDetailInformationModelIcoPriceUsd = PRICE_USD;
 NSString *const kDBHProjectDetailInformationModelIcoVolumeUsd24h = @"24h_volume_usd";
 NSString *const kDBHProjectDetailInformationModelIcoPercentChange7d = @"percent_change_7d";
 NSString *const kDBHProjectDetailInformationModelIcoRank = @"rank";
 NSString *const kDBHProjectDetailInformationModelIcoPriceBtc = @"price_btc";
 NSString *const kDBHProjectDetailInformationModelIcoVolumeCny24h = @"24h_volume_cny";
 NSString *const kDBHProjectDetailInformationModelIcoAvailableSupply = @"available_supply";
-NSString *const kDBHProjectDetailInformationModelIcoName = @"name";
+NSString *const kDBHProjectDetailInformationModelIcoName = NAME;
 NSString *const kDBHProjectDetailInformationModelIcoPercentChange1h = @"percent_change_1h";
 
 
@@ -55,6 +55,25 @@ NSString *const kDBHProjectDetailInformationModelIcoPercentChange1h = @"percent_
 @synthesize name = _name;
 @synthesize percentChange1h = _percentChange1h;
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{
+             @"icoIdentifier" : @"id",
+             @"volumeUsd24h" : @"24h_volume_usd",
+             @"volumeCny24h" : @"24h_volume_cny",
+             @"availableSupply" : @"available_supply",
+             @"lastUpdated" : @"last_updated",
+             @"marketCapCny" : @"market_cap_cny",
+             @"marketCapUsd" : @"market_cap_usd",
+             @"maxSupply" : @"max_supply",
+             @"percentChange1h" : @"percent_change_1h",
+             @"percentChange24h" : @"percent_change_24h",
+             @"percentChange7d" : @"percent_change_7d",
+             @"priceBtc" : @"price_btc",
+             @"priceCny" : @"price_cny",
+             @"priceUsd" : @"price_usd",
+             @"totalSupply" : @"total_supply"
+             };
+}
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict {
     return [[self alloc] initWithDictionary:dict];

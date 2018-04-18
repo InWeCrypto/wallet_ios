@@ -10,7 +10,7 @@
 
 @interface DBHSearchTitleView ()<UITextFieldDelegate>
 
-@property (nonatomic, strong) UITextField *searchTextField;
+@property (nonatomic, assign) BOOL isShowCancelBtn;
 @property (nonatomic, strong) UIButton *cancelButton;
 
 @property (nonatomic, copy) SearchBlock searchBlock;
@@ -20,10 +20,19 @@
 @implementation DBHSearchTitleView
 
 #pragma mark ------ Lifecycle ------
-- (instancetype)initWithFrame:(CGRect)frame
-{
+//- (instancetype)initWithFrame:(CGRect)frame
+//{
+//    self = [super initWithFrame:frame];
+//    if (self) {
+//        [self setUI];
+//    }
+//    return self;
+//}
+
+- (instancetype)initWithFrame:(CGRect)frame isShowBtn:(BOOL)isShowCancelBtn {
     self = [super initWithFrame:frame];
     if (self) {
+        self.isShowCancelBtn = isShowCancelBtn;
         [self setUI];
     }
     return self;
@@ -32,20 +41,30 @@
 #pragma mark ------ UI ------
 - (void)setUI {
     [self addSubview:self.searchTextField];
-    [self addSubview:self.cancelButton];
+    
+    if (self.isShowCancelBtn) {
+        [self addSubview:self.cancelButton];
+    }
     
     WEAKSELF
     [self.searchTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(AUTOLAYOUTSIZE(15));
-        make.right.equalTo(weakSelf.cancelButton.mas_left);
+        if (weakSelf.isShowCancelBtn) {
+            make.right.equalTo(weakSelf.cancelButton.mas_left);
+        } else {
+            make.right.offset(- AUTOLAYOUTSIZE(15));
+        }
         make.height.offset(40);
         make.bottom.offset(- AUTOLAYOUTSIZE(2));
     }];
-    [self.cancelButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.height.equalTo(weakSelf.searchTextField);
-        make.width.offset(AUTOLAYOUTSIZE(66));
-        make.right.equalTo(weakSelf);
-    }];
+    
+    if (self.isShowCancelBtn) {
+        [self.cancelButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.height.equalTo(weakSelf.searchTextField);
+            make.width.offset(AUTOLAYOUTSIZE(66));
+            make.right.equalTo(weakSelf);
+        }];
+    }
 }
 
 #pragma mark ------ UITextFieldDelegate ------
@@ -53,6 +72,8 @@
     NSString *changeAfterString = [textField.text stringByReplacingCharactersInRange:range withString:string];
     if (!changeAfterString.length) {
         self.searchBlock(-1, nil);
+    } else /**if (![string isEqualToString:@"\n"] && string.length != 0)*/ { //不是删除 和回车
+        self.searchBlock(2, changeAfterString);
     }
     
     return YES;
@@ -84,7 +105,19 @@
 - (void)setSearchType:(NSInteger)searchType {
     _searchType = searchType;
     
-    self.searchTextField.placeholder = DBHGetStringWithKeyFromTable(!_searchType ? @"Information" : @"Project", nil);
+    NSString *placeHolder = @"";
+    switch (_searchType) {
+        case 0:
+            placeHolder = DBHGetStringWithKeyFromTable(@"News", nil);
+            break;
+        case 1:
+            placeHolder = DBHGetStringWithKeyFromTable(@"Project", nil);
+            break;
+            
+        default:
+            break;
+    }
+    self.searchTextField.placeholder = placeHolder;
 }
 
 - (UITextField *)searchTextField {
@@ -93,7 +126,7 @@
         _searchTextField.backgroundColor = COLORFROM16(0xF6F6F6, 1);
         _searchTextField.layer.cornerRadius = 20;
         _searchTextField.font = FONT(13);
-        _searchTextField.placeholder = DBHGetStringWithKeyFromTable(@"News", nil);
+        _searchTextField.placeholder = @"";
         _searchTextField.textColor = COLORFROM16(0x333333, 1);
         
         UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, AUTOLAYOUTSIZE(40), AUTOLAYOUTSIZE(40))];

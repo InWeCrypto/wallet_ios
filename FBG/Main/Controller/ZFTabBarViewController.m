@@ -15,11 +15,14 @@
 #import "DBHHomePageViewController.h"
 #import "DBHMyViewController.h"
 
+#import "DBHWalletPageViewController.h"
+#import "DBHCheckVersionModel.h"
+
+
 @interface ZFTabBarViewController () <ZFTabBarDelegate>
-/**
- *  自定义的tabbar
- */
-@property (nonatomic, weak) ZFTabBar *customTabBar;
+
+@property (nonatomic, assign) BOOL isReview;
+
 @end
 
 @implementation ZFTabBarViewController
@@ -27,18 +30,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.tabBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
+    [self.tabBar setBackgroundImage:[UIImage imageWithColor:WHITE_COLOR]];
     // 初始化tabbar
     [self setupTabbar];
     
     // 初始化所有的子控制器
     [self setupAllChildViewControllers];
-    
-//    [self setStatusBarBackgroundColor:[TESTAPIEHEAD1 isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"appNetWorkApi"]] ? [UIColor redColor] : [UIColor whiteColor]];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     // 删除系统自动生成的UITabBarButton
@@ -47,40 +47,14 @@
             [child removeFromSuperview];
         }
     }
+    
     if ([UserSignData share].user.isFirstRegister) {
         [UserSignData share].user.isFirstRegister = NO;
         [[UserSignData share] storageData:[UserSignData share].user];
-//        if ([UserSignData share].user.invitationCode.length) {
-//            KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
-//            webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
-//            webView.isHiddenRefresh = NO;
-//            UINavigationController *currentNav = (UINavigationController *)self.selectedViewController;
-//            [currentNav pushViewController:webView animated:YES];
-//        } else {
-            [self getInvitationCode];
-//        }
     }
 }
 
-#pragma mark ------ Data ------
-- (void)getInvitationCode {
-    [PPNetworkHelper GET:@"user/ont_candy_bow" baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
-        NSString *start = [NSString stringWithFormat:@"%@", responseObject[@"candy_bow_stat"]];
-        if ([start isEqualToString:@"0"]) {
-            return ;
-        }
-        
-        [UserSignData share].user.invitationCode = [NSString stringWithFormat:@"%@", responseObject[@"code"]];
-        [[UserSignData share] storageData:[UserSignData share].user];
-        
-        KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@&token=%@", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD5 : TESTAPIEHEAD5, [UserSignData share].user.invitationCode, [[UserSignData share].user.token stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
-        webView.title = DBHGetStringWithKeyFromTable(@"Invitation Code", nil);
-        UINavigationController *currentNav = (UINavigationController *)self.selectedViewController;
-        [currentNav pushViewController:webView animated:YES];
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
-}
+#pragma mark ------ set ui ------
 
 /**
  *  初始化tabbar
@@ -99,8 +73,7 @@
  *  @param from   原来选中的位置
  *  @param to     最新选中的位置
  */
-- (void)tabBar:(ZFTabBar *)tabBar didSelectedButtonFrom:(NSInteger)from to:(NSInteger)to
-{
+- (void)tabBar:(ZFTabBar *)tabBar didSelectedButtonFrom:(NSInteger)from to:(NSInteger)to {
     if ([UserSignData share].user.isCode && to != 0)
     {
         //冷钱包进入
@@ -117,22 +90,26 @@
 /**
  *  初始化所有的子控制器
  */
-- (void)setupAllChildViewControllers
-{
+- (void)setupAllChildViewControllers {
     // 1.资讯
     DBHInformationViewController *informationViewController = [[DBHInformationViewController alloc] init];
     informationViewController.tabBarItem.badgeValue = @"";
     [self setupChildViewController:informationViewController title:DBHGetStringWithKeyFromTable(@"News", nil) imageName:@"zixun_ico_s" selectedImageName:@"zixun_ico"];
     
-    // 2.钱包
-    DBHHomePageViewController *homePageViewController = [[DBHHomePageViewController alloc] init];
-    homePageViewController.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:homePageViewController title:DBHGetStringWithKeyFromTable(@"Wallet", nil) imageName:@"qianbao_ico_s" selectedImageName:@"qianbao_ico"];
+    if (!self.isReview) { // 不在审核中
+        // 2.钱包
+//        DBHHomePageViewController *homePageViewController = [[DBHHomePageViewController alloc] init];
+        
+        DBHWalletPageViewController *homePageViewController = [[DBHWalletPageViewController alloc] init];
+        
+        homePageViewController.tabBarItem.badgeValue = @"";
+        [self setupChildViewController:homePageViewController title:DBHGetStringWithKeyFromTable(@"Wallet", nil) imageName:@"qianbao_ico_s" selectedImageName:@"qianbao_ico"];
+    }
     
     // 3.我的
     DBHMyViewController * my = [[DBHMyViewController alloc] init];
     my.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:my title:DBHGetStringWithKeyFromTable(@"Profile", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
+    [self setupChildViewController:my title:DBHGetStringWithKeyFromTable(@"My Profile", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
 }
 
 /**
@@ -145,8 +122,10 @@
  */
 - (void)setupChildViewController:(UIViewController *)childVc title:(NSString *)title imageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName
 {
+    
+    NSLog(@"title  语言 -- %@", title);
     // 1.设置控制器的属性
-    if ([title isEqualToString:DBHGetStringWithKeyFromTable(@"Profile", nil)]) {
+    if ([title isEqualToString:DBHGetStringWithKeyFromTable(@"My Profile", nil)]) {
         childVc.title = title;
     } else {
         childVc.tabBarItem.title = title;
@@ -170,6 +149,9 @@
     [self.customTabBar addTabBarButtonWithItem:childVc.tabBarItem];
 }
 
+- (BOOL)isReview {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:CHECK_STATUS];
+}
 
 /**
  设置状态栏颜色

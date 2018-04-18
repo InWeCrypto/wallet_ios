@@ -78,7 +78,14 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    NSInteger row = indexPath.row;
+    if (row < self.dataSource.count) {
+        DBHTradingMarketModelData *data = self.dataSource[row];
+        
+        KKWebView *webView = [[KKWebView alloc] initWithUrl:data.url];
+        webView.title = data.pair;
+        [self.navigationController pushViewController:webView animated:YES];
+    }
 }
 
 #pragma mark ------ Data ------
@@ -100,7 +107,9 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
         
@@ -110,9 +119,13 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
+    } specialBlock:^{
+        
     }];
 }
 

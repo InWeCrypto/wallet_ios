@@ -55,16 +55,21 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHMyFavoriteTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMyFavoriteTableViewCellIdentifier forIndexPath:indexPath];
-    cell.infomationModel = self.dataSource[indexPath.row];
+    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.row];
+    if (model.type == 16 || model.type == 1 || model.type == 12) {
+        cell.isNoImage = YES;
+    }
+    cell.infomationModel = model;
     
     return cell;
 }
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
+    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.row];
     KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
+    webView.imageStr = model.img;
     webView.isHaveShare = YES;
         webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
     [self.navigationController pushViewController:webView animated:YES];
@@ -75,8 +80,13 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
  获取Inwe热点数据
  */
 - (void)getInfomation {
+    NSString *param = @"is_not_category&type=[1,2,3,6,16]";
+    if (self.functionalUnitType == 1) {
+        param = @"type=[12,13,14,15]";
+    }
+    
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?is_scroll&per_page=5&page=%ld", self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?%@&per_page=20&page=%ld", param, self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         if (weakSelf.dataSource.count) {
             return ;
         }
@@ -89,12 +99,16 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
             [weakSelf.dataSource addObject:model];
         }
         
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf scrollViewToBottom:NO];
         });
     } success:^(id responseObject) {
-        [weakSelf endRefresh];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf endRefresh];
+        });
         
         if (weakSelf.currentPage == 1) {
             [weakSelf.dataSource removeAllObjects];
@@ -125,7 +139,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     } failure:^(NSString *error) {
         [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 
 #pragma mark ------ Private Methods ------
@@ -153,7 +167,12 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
         }
         
         weakSelf.currentPage += 1;
-        [weakSelf getInfomation];
+        dispatch_async(dispatch_get_global_queue(
+                                                 DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                                 0), ^{
+            
+            [weakSelf getInfomation];
+        });
     }];
 }
 /**
@@ -172,7 +191,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.rowHeight = AUTOLAYOUTSIZE(75.5);

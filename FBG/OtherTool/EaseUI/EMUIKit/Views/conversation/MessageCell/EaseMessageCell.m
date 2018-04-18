@@ -789,7 +789,7 @@ NSString *const EaseMessageCellIdentifierSendFile = @"EaseMessageCellSendFile";
     
     EaseMessageCell *cell = [self appearance];
     CGFloat bubbleMaxWidth = cell.bubbleMaxWidth;
-    if ([UIDevice currentDevice].systemVersion.floatValue == 7.0) {
+    if ([UIDevice currentDevice].systemVersion.doubleValue == 7.0) {
         bubbleMaxWidth = 200;
     }
     bubbleMaxWidth -= (cell.leftBubbleMargin.left + cell.leftBubbleMargin.right + cell.rightBubbleMargin.left + cell.rightBubbleMargin.right)/2;

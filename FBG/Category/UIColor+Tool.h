@@ -31,4 +31,5 @@
 //
 + (UIColor *)colorWithHexString:(NSString *)stringToConvert;
 
++ (UIColor *)highLightedColor:(UIColor*)color;
 @end

@@ -25,11 +25,15 @@
     [super viewDidLoad];
     
     self.title = DBHGetStringWithKeyFromTable(@"About Us", nil);
-    self.version.text = DBHGetStringWithKeyFromTable(@"Current version：1.0.0", nil);
+    self.version.text = [NSString stringWithFormat:@"%@%@", DBHGetStringWithKeyFromTable(@"Current version:", nil), [self currentVersion]];
     self.label1.text = DBHGetStringWithKeyFromTable(@"Service Policy", nil);
     self.label2.text = DBHGetStringWithKeyFromTable(@"Privacy Policy", nil);
     self.label3.text = DBHGetStringWithKeyFromTable(@"Open Source Agreement", nil);
     self.label4.text = DBHGetStringWithKeyFromTable(@"Development Team", nil);
+}
+
+- (NSString *)currentVersion {
+    return [NSString stringWithFormat:@"%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
 }
 
 - (IBAction)userRuleButtonCilick:(id)sender

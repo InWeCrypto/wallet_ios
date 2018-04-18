@@ -111,7 +111,9 @@ static EaseSDKHelper *helper = nil;
     
 #if !TARGET_IPHONE_SIMULATOR
     if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
-        [application registerForRemoteNotifications];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [application registerForRemoteNotifications];
+        });
     }else{
         UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
         UIRemoteNotificationTypeSound |

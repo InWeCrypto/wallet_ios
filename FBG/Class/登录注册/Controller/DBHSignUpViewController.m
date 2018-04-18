@@ -8,6 +8,7 @@
 //
 
 #import "DBHSignUpViewController.h"
+#import "UserLogin.h"
 
 @interface DBHSignUpViewController ()<UITextViewDelegate> {
     dispatch_source_t _timer;
@@ -188,7 +189,7 @@
 - (void)signUp {
     NSDictionary *paramters = @{@"code":self.verificationCodeTextField.text,
                                 @"email":self.accountTextField.text,
-                                @"name":self.accountTextField.text,
+                                NAME:self.accountTextField.text,
                                 @"password":self.passwordTextField.text,
                                 @"password_confirmation":self.surePasswordTextField.text};
     
@@ -200,10 +201,16 @@
         }
         user.isFirstRegister = YES;
         [[UserSignData share] storageData:[UserSignData share].user];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
+//        [weakSelf.navigationController popViewControllerAnimated:YES];
+
+        [weakSelf login];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
+}
+
+- (void)login {
+    [UserLogin userLogin:self.accountTextField.text password:self.passwordTextField.text target:self];
 }
 
 #pragma mark ------ Event Responds ------
@@ -307,7 +314,7 @@
         _signUpLabel = [[UILabel alloc] init];
         _signUpLabel.font = BOLDFONT(25);
         _signUpLabel.text = DBHGetStringWithKeyFromTable(@"Sign Up", nil);
-        _signUpLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _signUpLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _signUpLabel;
 }
@@ -406,7 +413,7 @@
 - (UIButton *)signUpButton {
     if (!_signUpButton) {
         _signUpButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _signUpButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _signUpButton.backgroundColor = MAIN_ORANGE_COLOR;
         _signUpButton.titleLabel.font = BOLDFONT(14);
         _signUpButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _signUpButton.clipsToBounds = YES;

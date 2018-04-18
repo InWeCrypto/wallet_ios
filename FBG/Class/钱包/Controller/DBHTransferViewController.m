@@ -129,7 +129,7 @@
  */
 - (void)scanSucessWithObject:(id)object {
     if (![NSString isNEOAdress:[object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
-        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
         return;
     }
     
@@ -165,7 +165,7 @@
 - (void)respondsToCommitButton {
     if (![NSString isNEOAdress:[self.walletAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
     {
-        [LCProgressHUD showMessage:@"请输入正确的钱包地址"];
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
         return;
     }
     if (self.transferNumberTextField.text.length == 0)
@@ -173,16 +173,18 @@
         [LCProgressHUD showMessage:@"请输入价格"];
         return;
     }
-    if (self.tokenModel.balance.floatValue < self.transferNumberTextField.text.floatValue)
+    if (self.tokenModel.balance.doubleValue < self.transferNumberTextField.text.doubleValue)
     {
         [LCProgressHUD showMessage:@"钱包余额不足"];
         return;
     }
     
+    NSString *numberStr = [NSString stringWithFormat:@"%@", @(self.transferNumberTextField.text.doubleValue)];
+    
     DBHTransferConfirmationViewController *transferConfirmationViewController = [[DBHTransferConfirmationViewController alloc] init];
     transferConfirmationViewController.tokenModel = self.tokenModel;
     transferConfirmationViewController.neoWalletModel = self.neoWalletModel;
-    transferConfirmationViewController.transferNumber = self.transferNumberTextField.text;
+    transferConfirmationViewController.transferNumber = numberStr;
     transferConfirmationViewController.poundage = @"0";
     transferConfirmationViewController.address = self.walletAddressTextField.text;
     transferConfirmationViewController.remark = self.remarkTextField.text;
@@ -253,7 +255,7 @@
         _balanceLabel.font = FONT(11);
         _balanceLabel.textColor = COLORFROM16(0xA6A4A4, 1);
         
-        NSString *balance = [NSString stringWithFormat:@"%.8lf", self.tokenModel.balance.floatValue];
+        NSString *balance = [NSString stringWithFormat:@"%.8lf", self.tokenModel.balance.doubleValue];
         NSMutableAttributedString *balanceAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"（%@ %@：%@）", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Amount Available", nil), balance]];
         [balanceAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xF9480E, 1) range:NSMakeRange([NSString stringWithFormat:@"%@ %@", self.tokenModel.flag, DBHGetStringWithKeyFromTable(@"Amount Available", nil)].length + 2, balance.length)];
         _balanceLabel.attributedText = balanceAttributedString;
@@ -287,7 +289,7 @@
 - (UIButton *)commitButton {
     if (!_commitButton) {
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _commitButton.backgroundColor = MAIN_ORANGE_COLOR;
         _commitButton.titleLabel.font = FONT(14);
         [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];

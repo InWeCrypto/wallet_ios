@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 //#import "ICOListModel.h"
+#import <WebKit/WebKit.h>
 
 @interface KKWebView : UIViewController
 
-@property(nonatomic,copy)NSString *urlStr;
+@property(nonatomic,copy) NSString *urlStr;
+@property (nonatomic, copy) NSString *imageStr;
 
 //@property (nonatomic, strong) ICOListModel * icoModel;
 

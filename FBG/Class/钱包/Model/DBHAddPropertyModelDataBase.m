@@ -9,7 +9,7 @@
 #import "DBHAddPropertyModelList.h"
 
 
-NSString *const kDBHAddPropertyModelDataBaseList = @"list";
+NSString *const kDBHAddPropertyModelDataBaseList = LIST;
 
 
 @interface DBHAddPropertyModelDataBase ()

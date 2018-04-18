@@ -7,16 +7,19 @@
 //
 
 #import "DBHQrCodeViewController.h"
-
+#import "WXApi.h"
+#import "LYShareMenuView.h"
 #import "DBHWalletManagerForNeoDataModels.h"
+#import <TencentOpenAPI/QQApiInterface.h>
 
-@interface DBHQrCodeViewController ()
+@interface DBHQrCodeViewController ()<LYShareMenuViewDelegate>
 
 @property (nonatomic, strong) UIImageView *backGroundImageView;
 @property (nonatomic, strong) UIView *boxView;
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UIImageView *qrCodeImageView;
 @property (nonatomic, strong) UILabel *addressLabel;
+@property (nonatomic, strong) LYShareMenuView *sharedMenuView;
 
 @end
 
@@ -26,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Wallet QR Code", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Wallet Address", nil);
     
     [self setUI];
     [self createQrCodeImage];
@@ -47,7 +50,11 @@
     [super viewWillDisappear:animated];
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : COLORFROM16(0x333333, 1)}];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:[UIColor whiteColor] Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
+    if (_sharedMenuView.delegate) {
+        _sharedMenuView.delegate = nil;
+    }
+
 }
 
 #pragma mark ------ UI ------
@@ -94,6 +101,11 @@
  分享
  */
 - (void)respondsToShareBarButtonItem {
+    [self activityCustomShare];
+//    [self activityOriginalShare];
+}
+
+- (void)activityOriginalShare {
     NSArray* activityItems = [[NSArray alloc] initWithObjects:self.walletModel.address, nil];
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
@@ -121,6 +133,129 @@
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = self.walletModel.address;
     [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Copy success, you can send it to friends", nil)];
+}
+
+- (void)activityCustomShare {
+    [[UIApplication sharedApplication].keyWindow addSubview:self.sharedMenuView];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.sharedMenuView show];
+    });
+}
+
+- (LYShareMenuView *)sharedMenuView {
+    if (!_sharedMenuView) {
+        _sharedMenuView = [[LYShareMenuView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        
+        LYShareMenuItem *friendItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"friend_pr" itemTitle:DBHGetStringWithKeyFromTable(@"Moments", nil)];
+        LYShareMenuItem *weixinItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"weixin_pr" itemTitle:DBHGetStringWithKeyFromTable(@"WeChat", nil)];
+        LYShareMenuItem *qqItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"qq_pr" itemTitle:@"QQ"];
+        
+        _sharedMenuView.shareMenuItems = [NSMutableArray arrayWithObjects:friendItem, weixinItem, qqItem, nil];
+    }
+    if (!_sharedMenuView.delegate) {
+        _sharedMenuView.delegate = self;
+    }
+    return _sharedMenuView;
+}
+
+#pragma mark ----- Share Delegate ------
+- (void)shareMenuView:(LYShareMenuView *)shareMenuView didSelecteShareMenuItem:(LYShareMenuItem *)shareMenuItem atIndex:(NSInteger)index {
+    switch (index) {
+        case 2: { // QQ
+            [self shareToQQ];
+            break;
+        }
+        default: {
+            [WXApi sendReq:[self shareToWX:index]];
+            break;
+        }
+            
+    }
+}
+
+- (void)shareSuccess:(BOOL)isSuccess {
+    if (isSuccess) {
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Share successfully", nil)];
+    } else {
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Share failed", nil)];
+    }
+}
+
+- (void)shareToQQ {
+    WEAKSELF
+    [[AppDelegate delegate] setQqResultBlock:^(QQBaseResp *res) {
+        if ([res isKindOfClass:[SendMessageToQQResp class]]) {
+            if (res.type == ESENDMESSAGETOQQRESPTYPE) { // 手Q->第三方
+                if ([res.result intValue] == 0) { // 没有错误
+                    [weakSelf shareSuccess:YES];
+                } else {
+                    if (res.result.intValue == -4) { // 取消分享
+                        [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Cancel share", nil)];
+                    } else {
+                        [weakSelf shareSuccess:NO];
+                    }
+                }
+            }
+        }
+    }];
+    
+    QQApiTextObject *textObj = [QQApiTextObject objectWithText:self.walletModel.address];
+    
+    SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:textObj];
+    QQApiSendResultCode send = [QQApiInterface sendReq:req];
+    [self handleSendResult:send];
+}
+
+- (void)handleSendResult:(QQApiSendResultCode)code {
+    switch (code) {
+        case EQQAPIAPPNOTREGISTED: // 未注册
+            NSLog(@"未注册");
+            break;
+        case EQQAPIQQNOTINSTALLED:
+            [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Please install QQ mobile", nil)]; // todo
+            break;
+        case EQQAPISENDFAILD:
+            [self shareSuccess:NO];
+            break;
+        default:
+            break;
+    }
+}
+
+/**
+ 发送消息到微信
+ 
+ @param index 0-朋友圈  1-好友
+ @return 消息
+ */
+- (SendMessageToWXReq *)shareToWX:(NSInteger)index {
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    WEAKSELF
+    [appDelegate setResultBlock:^(BaseResp *res) {
+        if ([res isKindOfClass:[SendMessageToWXResp class]]) {
+            if (res.errCode == 0) { // 没有错误
+                [weakSelf shareSuccess:YES];
+            } else {
+                if (res.errCode == -2) {
+                    // cancel
+                    [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Cancel share", nil)];
+                } else {
+                    [weakSelf shareSuccess:NO];
+                }
+            }
+        }
+    }];
+    
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+    req.bText = YES;           // 指定为发送文本
+    req.text = self.walletModel.address;
+    
+    if (index == 0) {
+        req.scene = WXSceneTimeline;
+    } else {
+        req.scene =  WXSceneSession;
+    }
+    return req;
 }
 
 #pragma mark ------ Private Methods ------
@@ -184,7 +319,7 @@
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
     }
     return _boxView;
 }

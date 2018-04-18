@@ -114,7 +114,7 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
     [PPNetworkHelper GET:@"candy_bow" baseUrlType:3 parameters:paramters hudString:nil responseCache:^(id responseCache) {
         [weakSelf.monthDataSource removeAllObjects];
         
-        for (NSDictionary *dic in responseCache[@"list"][@"data"]) {
+        for (NSDictionary *dic in responseCache[LIST][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
             
             [weakSelf.monthDataSource addObject:[NSString stringWithFormat:@"%ld", (NSInteger)model.day]];
@@ -124,7 +124,7 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
     } success:^(id responseObject) {
         [weakSelf.monthDataSource removeAllObjects];
         
-        for (NSDictionary *dic in responseObject[@"list"][@"data"]) {
+        for (NSDictionary *dic in responseObject[LIST][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
             
             [weakSelf.monthDataSource addObject:[NSString stringWithFormat:@"%ld", (NSInteger)model.day]];
@@ -133,7 +133,7 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
         weakSelf.candyBowlHeaderView.monthArray = [weakSelf.monthDataSource copy];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 /**
  获取CandyBowl
@@ -146,28 +146,32 @@ static NSString *const kDBHCandyBowlTableViewCellIdentifier = @"kDBHCandyBowlTab
     [PPNetworkHelper GET:@"candy_bow" baseUrlType:3 parameters:paramters hudString:nil responseCache:^(id responseCache) {
         [weakSelf.dataSource removeAllObjects];
 
-        for (NSDictionary *dic in responseCache[@"list"][@"data"]) {
+        for (NSDictionary *dic in responseCache[LIST][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
 
             [weakSelf.dataSource addObject:model];
         }
 
-        weakSelf.candyBowlHeaderView.isNoData = !weakSelf.dataSource.count;
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.candyBowlHeaderView.isNoData = !weakSelf.dataSource.count;
+            [weakSelf.tableView reloadData];
+        });
     } success:^(id responseObject) {
         [weakSelf.dataSource removeAllObjects];
 
-        for (NSDictionary *dic in responseObject[@"list"][@"data"]) {
+        for (NSDictionary *dic in responseObject[LIST][@"data"]) {
             DBHCandyBowlModelData *model = [DBHCandyBowlModelData modelObjectWithDictionary:dic];
 
             [weakSelf.dataSource addObject:model];
         }
-
-        weakSelf.candyBowlHeaderView.isNoData = !weakSelf.dataSource.count;
-        [weakSelf.tableView reloadData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.candyBowlHeaderView.isNoData = !weakSelf.dataSource.count;
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 
 #pragma mark ------ Event Responds ------

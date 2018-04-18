@@ -29,6 +29,9 @@ typedef void(^HttpRequestFailed)(NSString *error);
 /** 缓存的Block */
 typedef void(^HttpRequestCache)(id responseCache);
 
+/** 特殊处理Block */
+typedef void(^HttpRequestSpecial)(void);
+
 /** 上传或者下载的进度, Progress.completedUnitCount:当前大小 - Progress.totalUnitCount:总大小*/
 typedef void (^HttpProgress)(NSProgress *progress);
 
@@ -76,7 +79,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure specialBlock:(HttpRequestSpecial)sepecial;
 
 /**
  *  POST请求,无缓存
@@ -103,7 +106,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure special:(HttpRequestSpecial)special;
 
 // PUT 请求
 + (PPURLSessionTask *)PUT:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
@@ -140,7 +143,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
  */
 + (PPURLSessionTask *)downloadWithURL:(NSString *)URL fileDir:(NSString *)fileDir progress:(HttpProgress)progress success:(void(^)(NSString *filePath))success failure:(HttpRequestFailed)failure;
-
++ (BOOL)hasConnectedNetwork;
 
 
 #pragma mark -- 根据项目需求更改

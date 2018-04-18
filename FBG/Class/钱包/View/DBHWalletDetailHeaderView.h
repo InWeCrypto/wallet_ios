@@ -14,6 +14,8 @@ typedef void(^ClickButtonBlock)(NSInteger index);
 
 @interface DBHWalletDetailHeaderView : UIView
 
+@property (nonatomic, strong) UIButton *qrCodeButton;
+
 /**
  Neo钱包
  */
@@ -25,6 +27,8 @@ typedef void(^ClickButtonBlock)(NSInteger index);
 @property (nonatomic, copy) NSString *asset;
 
 - (void)refreshAsset;
+
+@property (nonatomic, assign) BOOL isHideZeroAsset;
 
 /**
  点击按钮回调

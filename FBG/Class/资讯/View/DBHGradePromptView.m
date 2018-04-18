@@ -106,6 +106,7 @@
  */
 - (void)respondsToCommitButton {
     if (!self.commitButton.isSelected) {
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"The project has been graded", nil)];
         return;
     }
     
@@ -124,6 +125,7 @@
  */
 - (void)respondsToStartButton:(UIButton *)startButton {
     if (!self.canGrade) {
+        [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"The project has been graded", nil)];
         return;
     }
     
@@ -196,14 +198,14 @@
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
     }
     return _boxView;
 }
 - (UIButton *)quitButton {
     if (!_quitButton) {
         _quitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_quitButton setImage:[UIImage imageNamed:@"关闭-3"] forState:UIControlStateNormal];
+        [_quitButton setImage:[UIImage imageNamed:@"login_close"] forState:UIControlStateNormal];
         [_quitButton addTarget:self action:@selector(respondsToQuitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _quitButton;
@@ -231,8 +233,8 @@
         _commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _commitButton.titleLabel.font = BOLDFONT(14);
         [_commitButton setBackgroundImage:[UIImage getImageFromColor:COLORFROM16(0xDADADA, 1) Rect:CGRectMake(0, 0, AUTOLAYOUTSIZE(400), AUTOLAYOUTSIZE(200))] forState:UIControlStateNormal];
-        [_commitButton setBackgroundImage:[UIImage getImageFromColor:COLORFROM16(0xFF841C, 1) Rect:CGRectMake(0, 0, AUTOLAYOUTSIZE(400), AUTOLAYOUTSIZE(200))] forState:UIControlStateSelected];
-        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Confirm", nil) forState:UIControlStateNormal];
+        [_commitButton setBackgroundImage:[UIImage getImageFromColor:MAIN_ORANGE_COLOR Rect:CGRectMake(0, 0, AUTOLAYOUTSIZE(400), AUTOLAYOUTSIZE(200))] forState:UIControlStateSelected];
+        [_commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_commitButton addTarget:self action:@selector(respondsToCommitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitButton;

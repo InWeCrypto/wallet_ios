@@ -10,10 +10,13 @@
 
 @implementation NSDecimalNumber (Addtion)
 +(NSDecimalNumber *)aDecimalNumberWithStringOrNumberOrDecimalNumber:(id)stringOrNumber1 type:(calculationType)type anotherDecimalNumberWithStringOrNumberOrDecimalNumber:(id)stringOrNumber2 andDecimalNumberHandler:(NSDecimalNumberHandler *)handler{
-    if (!stringOrNumber2 || !stringOrNumber1) {
-        NSLog(@"输入正确类型");
-        return nil;
+    if ([NSObject isNulllWithObject:stringOrNumber1]) {
+        stringOrNumber1 = @"0";
     }
+    if ([NSObject isNulllWithObject:stringOrNumber2]) {
+        stringOrNumber2 = @"0";
+    }
+    
     NSDecimalNumber *one;
     NSDecimalNumber *another;
     NSDecimalNumber *returnNum;
@@ -66,10 +69,13 @@
 }
 
 +(NSComparisonResult)aDecimalNumberWithStringOrNumberOrDecimalNumber:(id)stringOrNumber1 compareAnotherDecimalNumberWithStringOrNumberOrDecimalNumber:(id)stringOrNumber2{
-    if (!stringOrNumber2 || !stringOrNumber1) {
-        NSLog(@"输入正确类型");
-        return -404;
+    if ([NSObject isNulllWithObject:stringOrNumber1]) {
+        stringOrNumber1 = @"0";
     }
+    if ([NSObject isNulllWithObject:stringOrNumber2]) {
+        stringOrNumber2 = @"0";
+    }
+    
     NSDecimalNumber *one;
     NSDecimalNumber *another;
     if ([stringOrNumber1 isKindOfClass:[NSString class]]) {
@@ -97,7 +103,8 @@
 }
 
 +(NSString *)stringWithDecimalNumber:(NSDecimalNumber *)str1 scale:(NSInteger)scale{
-    if (!str1) {
+    if ([NSObject isNulllWithObject:str1]) {
+        NSLog(@"输入正确类型");
         return @"";
     }
     NSString *str = [NSString stringWithFormat:@"%@",str1];
@@ -137,25 +144,28 @@ NSComparisonResult StrNumCompare(id str1,id str2){
 }
 
 NSDecimalNumber *handlerDecimalNumber(id strOrNum,NSRoundingMode mode,int scale){
-    if (!strOrNum) {
-        NSLog(@"输入正确类型");
-        return nil;
-    }else{
-        NSDecimalNumber *one;
-        if ([strOrNum isKindOfClass:[NSString class]]) {
-            one = [NSDecimalNumber decimalNumberWithString:strOrNum];
-        }else if([strOrNum isKindOfClass:[NSDecimalNumber class]]){
-            one = strOrNum;
-        }else if ([strOrNum isKindOfClass:[NSNumber class]]){
-            one = [NSDecimalNumber decimalNumberWithDecimal:[strOrNum decimalValue]];
-        }else{
-            NSLog(@"输入正确的类型");
+    if (![strOrNum isKindOfClass:[NSNumber class]]) {
+        if ([NSObject isNulllWithObject:strOrNum]) {
+            NSLog(@"%@  输入正确类型 %@", strOrNum, [strOrNum class]);
             return nil;
         }
-        
-        NSDecimalNumberHandler *handler = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:mode scale:scale raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
-        return  [one decimalNumberByRoundingAccordingToBehavior:handler];
     }
+    
+    NSDecimalNumber *one;
+    if ([strOrNum isKindOfClass:[NSString class]]) {
+        one = [NSDecimalNumber decimalNumberWithString:strOrNum];
+    }else if([strOrNum isKindOfClass:[NSDecimalNumber class]]){
+        one = strOrNum;
+    }else if ([strOrNum isKindOfClass:[NSNumber class]]){
+        one = [NSDecimalNumber decimalNumberWithDecimal:[strOrNum decimalValue]];
+    }else{
+        NSLog(@"输入正确的类型");
+        return nil;
+    }
+    
+    NSDecimalNumberHandler *handler = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:mode scale:scale raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+    return  [one decimalNumberByRoundingAccordingToBehavior:handler];
+    
 }
 
 

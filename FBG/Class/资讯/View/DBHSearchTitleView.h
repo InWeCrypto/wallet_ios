@@ -17,6 +17,8 @@ typedef void(^SearchBlock)(NSInteger type, NSString *searchString);
  */
 @property (nonatomic, assign) NSInteger searchType;
 
+@property (nonatomic, strong) UITextField *searchTextField;
+- (instancetype)initWithFrame:(CGRect)frame isShowBtn:(BOOL)isShowCancelBtn;
 - (void)searchBlock:(SearchBlock)searchBlock;
 
 @end

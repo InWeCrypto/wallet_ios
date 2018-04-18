@@ -48,10 +48,10 @@ static char leftNameKey;
     NSNumber *bottomEdge = objc_getAssociatedObject(self, &bottomNameKey);
     NSNumber *leftEdge = objc_getAssociatedObject(self, &leftNameKey);
     if (topEdge && rightEdge && bottomEdge && leftEdge) {
-        return CGRectMake(self.bounds.origin.x - leftEdge.floatValue,
-                          self.bounds.origin.y - topEdge.floatValue,
-                          self.bounds.size.width + leftEdge.floatValue + rightEdge.floatValue,
-                          self.bounds.size.height + topEdge.floatValue + bottomEdge.floatValue);
+        return CGRectMake(self.bounds.origin.x - leftEdge.doubleValue,
+                          self.bounds.origin.y - topEdge.doubleValue,
+                          self.bounds.size.width + leftEdge.doubleValue + rightEdge.doubleValue,
+                          self.bounds.size.height + topEdge.doubleValue + bottomEdge.doubleValue);
     }
     else
     {

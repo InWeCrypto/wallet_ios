@@ -12,8 +12,34 @@
 #import "NSDecimalNumber+Addtion.h"
 #import <sys/utsname.h>
 #import "NSDateFormatter+Category.h"
+#import "JKBigDecimal.h"
 
 @implementation NSString (Tool)
+
+/**
+ 处理URL中含有空格和中文的情况
+
+ @return 处理后的str
+ */
+- (NSString *)URLEncodedString {
+    NSCharacterSet *encodeUrlSet = [NSCharacterSet URLQueryAllowedCharacterSet];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//    NSString *encodedString = (__bridge NSString *)
+//    CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+//                                            (CFStringRef)self,
+//                                            (CFStringRef)@"!$&'()*+,-./:;=?@_~%#[]",
+//                                            NULL,
+//                                            kCFStringEncodingUTF8);
+//    return encodedString;
+//    NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+//                                                                                                    (CFStringRef)self,
+//                                                                                                    NULL,
+//                                                                                                    (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+//                                                                                                    kCFStringEncodingUTF8));
+//    NSString *encodedString = [self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    return encodedString;
+}
+
 
 //当前时间
 + (NSString *)nowDate
@@ -231,12 +257,11 @@ yy-MM-dd HH:mm:ss
     JKBigInteger *int1 = [[JKBigInteger alloc] initWithString:[NSString stringWithFormat:@"%ld",(long)decimal]];
     return [int1 stringValueWithRadix:16];
     
-    /*
+   /*
     NSString *hex =@"";
     NSString *letter;
-    NSInteger number;
-    for (int i = 0; i<9; i++) {
-        
+    long long number;
+    for (int i = 0; i < 9; i++) {
         number = decimal % 16;
         decimal = decimal / 16;
         switch (number) {
@@ -254,7 +279,7 @@ yy-MM-dd HH:mm:ss
             case 15:
                 letter =@"F"; break;
             default:
-                letter = [NSString stringWithFormat:@"%ld", number];
+                letter = [NSString stringWithFormat:@"%lld", number];
         }
         hex = [letter stringByAppendingString:hex];
         if (decimal == 0) {
@@ -263,8 +288,86 @@ yy-MM-dd HH:mm:ss
         }
     }
     return hex;
-     */
+    */
 }
+
++ (NSString *)stringFromHexStr:(NSString *)hexStr {
+    if ([NSObject isNulllWithObject:hexStr]) {
+        return @"0";
+    }
+    
+    JKBigDecimal *resultDecimal = [[JKBigDecimal alloc] init];
+    NSString *upperHex = hexStr.uppercaseString;
+    
+    if ([upperHex containsString:@" "]) {
+        upperHex = [upperHex stringByReplacingOccurrencesOfString:@" " withString:@""];
+    }
+ 
+    if (upperHex.length > 2) {
+        if ([upperHex hasPrefix:@"0X"]) {
+            upperHex = [upperHex substringFromIndex:2];
+        }
+    }
+    
+    int strLen = (int)upperHex.length;
+    for (int i = 0; i < strLen; ++ i) {
+        @autoreleasepool {
+            unichar ch = [upperHex characterAtIndex:strLen - 1 - i];
+            @try {
+                NSString *cStr = [NSString stringWithFormat:@"%c", ch];
+                JKBigInteger *bigInteger = [[JKBigInteger alloc] initWithString:cStr andRadix:16];
+                JKBigDecimal *tempDecimal = [[JKBigDecimal alloc] initWithBigInteger:bigInteger figure:0];
+                
+                double value = pow(16, i);
+                NSString *valueStr = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%@", @(value)]].stringValue;
+                
+                JKBigInteger *sixteen = [[JKBigInteger alloc] initWithString:valueStr];
+                JKBigDecimal *sixteenDecimal = [[JKBigDecimal alloc] initWithBigInteger:sixteen figure:0];
+                
+                resultDecimal = [resultDecimal add:[tempDecimal multiply:sixteenDecimal]];
+                //            NSLog(@"result = %@---temp %@ * six %@ + before %@  = %@", resultDecimal.stringValue, tempDecimal.stringValue, sixteenDecimal.stringValue, @(beforeValue), @(tempDecimal.stringValue.doubleValue * sixteenDecimal.stringValue.doubleValue + beforeValue));
+                //            NSLog(@"");
+            } @catch (NSException *e) {
+                //            NSLog(@"e = %@", e.description);
+            }
+        }
+    }
+    return resultDecimal.stringValue;
+}
+
+-(NSString *)ToHex:(long long int)tmpid
+{
+    NSString *nLetterValue;
+    NSString *str =@"";
+    long long int ttmpig;
+    for (int i = 0; i<9; i++) {
+        ttmpig=tmpid%16;
+        tmpid=tmpid/16;
+        switch (ttmpig)
+        {
+            case 10:
+                nLetterValue =@"A";break;
+            case 11:
+                nLetterValue =@"B";break;
+            case 12:
+                nLetterValue =@"C";break;
+            case 13:
+                nLetterValue =@"D";break;
+            case 14:
+                nLetterValue =@"E";break;
+            case 15:
+                nLetterValue =@"F";break;
+            default:nLetterValue=[[NSString alloc]initWithFormat:@"%i",ttmpig];
+                
+        }
+        str = [nLetterValue stringByAppendingString:str];
+        if (tmpid == 0) {
+            break;
+        }
+        
+    }
+    return str;
+} 
 
 // data 转 json字符串
 + (NSString *)convertDataToHexStr:(NSData *)data {
@@ -353,6 +456,10 @@ yy-MM-dd HH:mm:ss
      */
     
     NSDecimalNumber *resultNumber = [[NSDecimalNumber alloc]initWithString:@"0"];
+    if ([NSObject isNulllWithObject:secend]) {
+        secend = @"0";
+    }
+    
     switch (operatorType)
     {
         case 0:
@@ -369,7 +476,7 @@ yy-MM-dd HH:mm:ss
             break;
     }
      
-    return [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",resultNumber]];
+    return [NSString stringWithFormat:@"%@", @(resultNumber.doubleValue)];
 
 }
 
@@ -387,17 +494,22 @@ yy-MM-dd HH:mm:ss
     NSString *numberString = [NSString stringWithFormat:@"%@", string];
     NSDecimalNumber *numberA = [NSDecimalNumber decimalNumberWithString:numberString];
     NSDecimalNumber *numberB ;
-    if ([string intValue] < 10000)
-    {
+    BOOL isEn = ![[DBHLanguageTool sharedInstance].language isEqualToString:CNS];
+    if ([string intValue] < 10000) {
         numberB =  [NSDecimalNumber decimalNumberWithString:@"1"];
-    }
-    else if ([string intValue] >= 10000 && [string intValue] < 100000000)
-    {
-        numberB =  [NSDecimalNumber decimalNumberWithString:@"10000"];
-    }
-    else
-    {
-        numberB =  [NSDecimalNumber decimalNumberWithString:@"100000000"];
+    } else if ([string intValue] >= 10000 && [string intValue] < 100000000) {
+        if (isEn) {
+            numberB =  [NSDecimalNumber decimalNumberWithString:@"1000000"];
+        } else {
+            numberB =  [NSDecimalNumber decimalNumberWithString:@"10000"];
+        }
+        
+    } else {
+        if (isEn) {
+            numberB =  [NSDecimalNumber decimalNumberWithString:@"1000000000"]; // 10亿
+        } else {
+            numberB =  [NSDecimalNumber decimalNumberWithString:@"100000000"];
+        }
     }
     //NSDecimalNumberBehaviors对象的创建  参数 1.RoundingMode 一个取舍枚举值 2.scale 处理范围 3.raiseOnExactness  精确出现异常是否抛出原因 4.raiseOnOverflow  上溢出是否抛出原因  4.raiseOnUnderflow  下溢出是否抛出原因  5.raiseOnDivideByZero  除以0是否抛出原因。
     NSDecimalNumberHandler *roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:2 raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
@@ -406,17 +518,20 @@ yy-MM-dd HH:mm:ss
     NSDecimalNumber *numResult = [numberA decimalNumberByDividingBy:numberB withBehavior:roundingBehavior];
     NSString *strResult = [numResult stringValue];
     
-    if ([string intValue] < 10000)
-    {
+    if ([string intValue] < 10000) {
         return strResult;
-    }
-    else if ([string intValue] >= 10000 && [string intValue] < 100000000)
-    {
-        return [NSString stringWithFormat:@"%@万",strResult];
-    }
-    else
-    {
-        return [NSString stringWithFormat:@"%@亿",strResult];
+    } else if ([string intValue] >= 10000 && [string intValue] < 100000000) {
+        if (isEn) {
+            return [NSString stringWithFormat:@"%@Million", strResult];
+        } else {
+            return [NSString stringWithFormat:@"%@万", strResult];
+        }
+    } else {
+        if (isEn) {
+            return [NSString stringWithFormat:@"%@Billion", strResult];
+        } else {
+            return [NSString stringWithFormat:@"%@亿", strResult];
+        }
     }
     
 }
@@ -474,4 +589,32 @@ yy-MM-dd HH:mm:ss
     return deviceString;
 }
 
+//去掉html标签
++ (NSString *)flattenHTML:(NSString *)html {
+    if (html.length <= 0) {
+        return nil;
+    }
+    
+    NSRegularExpression *regularExpretion = [NSRegularExpression regularExpressionWithPattern:@"<[^>]*>|" options:0 error:nil];
+    NSString *str = [regularExpretion stringByReplacingMatchesInString:html options:NSMatchingReportProgress range:NSMakeRange(0, html.length) withTemplate:@""];//替换所有html和换行匹配元素为"-"
+    
+//    regularExpretion = [NSRegularExpression regularExpressionWithPattern:@"-{1,}" options:0 error:nil] ;
+//    str = [regularExpretion stringByReplacingMatchesInString:str options:NSMatchingReportProgress range:NSMakeRange(0, str.length) withTemplate:@"-"];//把多个"-"匹配为一个"-"
+    
+    return str;
+}
+
++ (NSString *)formatTimeDelayEight:(NSString *)timeStr {
+    if ([NSObject isNulllWithObject:timeStr]) {
+        return @"";
+    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *date = [dateFormatter dateFromString:timeStr];
+    
+    NSDate *newDate = [NSDate dateWithTimeInterval:8 * 60 * 60 sinceDate:date];
+    
+    return [dateFormatter stringFromDate:newDate];
+
+}
 @end

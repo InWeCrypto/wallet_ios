@@ -10,6 +10,7 @@
 
 @interface DBHFunctionalUnitCollectionViewCell : UICollectionViewCell
 
+@property (nonatomic, assign) NSInteger noReadMsgCount; // 未读消息数
 /**
  标题
  */

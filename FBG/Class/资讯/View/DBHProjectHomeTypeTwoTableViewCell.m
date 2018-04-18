@@ -64,7 +64,7 @@
 - (void)setModel:(DBHProjectHomeNewsModelData *)model {
     _model = model;
     
-    if (!_model.img.length) {
+    if (!_model.img.length) { // 长度为0
         self.coverImageView.image = [UIImage imageNamed:@"fenxiang_jietu"];
     }
     
@@ -91,7 +91,7 @@
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIImageView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
         _boxView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
         _boxView.clipsToBounds = YES;
     }

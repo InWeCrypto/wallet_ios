@@ -119,7 +119,12 @@
     self.marketValueLabel.text = [NSString stringWithFormat:@"$%@", _projectDetailModel.ico.marketCapUsd];
     self.turnoverValueLabel.text = _projectDetailModel.ico.availableSupply;
     self.grossValueLabel.text = _projectDetailModel.ico.totalSupply;
-    self.icoPriceValueLabel.text = [NSString stringWithFormat:@"$%@", _projectDetailModel.icoPrice];
+    
+    NSString *icoPrice = _projectDetailModel.icoPrice;
+    if (![icoPrice containsString:@"-"]) {
+        icoPrice = [NSString stringWithFormat:@"$%@", icoPrice];
+    }
+    self.icoPriceValueLabel.text = icoPrice;
 }
 
 - (UILabel *)titleLabel {

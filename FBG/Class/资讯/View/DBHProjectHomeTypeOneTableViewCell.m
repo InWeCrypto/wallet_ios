@@ -173,14 +173,14 @@
     
     self.contentLabel.text = _projectModel.industry;
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _projectModel.ico.priceCny : _projectModel.ico.priceUsd;
-    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.floatValue];
-    self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", _projectModel.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _projectModel.ico.percentChange24h.floatValue];
+    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.doubleValue];
+    self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", _projectModel.ico.percentChange24h.doubleValue >= 0 ? @"+" : @"", _projectModel.ico.percentChange24h.doubleValue];
 }
 
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIImageView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
         _boxView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
         _boxView.clipsToBounds = YES;
         _boxView.userInteractionEnabled = YES;

@@ -25,4 +25,14 @@
  */
 @property (nonatomic, strong) UILabel *accountLabel;
 
+/**
+ 箭头
+ */
+@property (nonatomic, strong) UIImageView *moreImageView;
+
+/**
+提示登录
+ */
+@property (nonatomic, strong) UILabel *tipLoginLabel;
+
 @end

@@ -72,7 +72,10 @@
 - (void)setAsset:(NSString *)asset {
     _asset = asset;
     
-    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", _asset.floatValue];
+    if ([NSObject isNulllWithObject:_asset]) {
+        _asset = @"0.00";
+    }
+    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", _asset.doubleValue];
 }
 - (void)setHeadImageUrl:(NSString *)headImageUrl {
     _headImageUrl = headImageUrl;

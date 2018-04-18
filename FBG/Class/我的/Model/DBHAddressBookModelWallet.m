@@ -13,11 +13,11 @@ NSString *const kDBHAddressBookModelWalletAddress = @"address";
 NSString *const kDBHAddressBookModelWalletId = @"id";
 NSString *const kDBHAddressBookModelWalletDeletedAt = @"deleted_at";
 NSString *const kDBHAddressBookModelWalletAddressHash160 = @"address_hash160";
-NSString *const kDBHAddressBookModelWalletCreatedAt = @"created_at";
+NSString *const kDBHAddressBookModelWalletCreatedAt = CREATED_AT;
 NSString *const kDBHAddressBookModelWalletCategoryId = @"category_id";
 NSString *const kDBHAddressBookModelWalletUserId = @"user_id";
 NSString *const kDBHAddressBookModelWalletUpdatedAt = @"updated_at";
-NSString *const kDBHAddressBookModelWalletName = @"name";
+NSString *const kDBHAddressBookModelWalletName = NAME;
 NSString *const kDBHAddressBookModelWalletUser = @"user";
 
 

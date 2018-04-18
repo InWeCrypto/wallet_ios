@@ -14,6 +14,7 @@
 
 #import "DBHSetNicknameViewController.h"
 #import "DBHChangePasswordViewController.h"
+#import "ZFTabBarViewController.h"
 
 #import "DBHPersonalSettingForHeadTableViewCell.h"
 #import "DBHPersonalSettingForTitleTableViewCell.h"
@@ -39,7 +40,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     [super viewDidLoad];
     
     self.title = DBHGetStringWithKeyFromTable(@"Personal Setting", nil);
-    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+    self.view.backgroundColor = LIGHT_WHITE_BGCOLOR;
     
     [self setUI];
 }
@@ -252,12 +253,14 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
  */
 - (void)uploadHeadImageWithHeadImageUrl:(NSString *)headImageUrl {
     NSDictionary *paramters = @{@"img":headImageUrl,
-                                @"name":[UserSignData share].user.nickname};
+                                NAME:[UserSignData share].user.nickname};
     WEAKSELF
     [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Submit", nil)] success:^(id responseObject) {
         [UserSignData share].user.img = responseObject[@"img"];
-        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Change Success", nil)];
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Change Success", nil)];
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];
@@ -271,10 +274,27 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
     EMError *error = [[EMClient sharedClient] logout:YES];
     if (!error) {
         [[UserSignData share] storageData:nil];
-        [[AppDelegate delegate] showLoginController];
+        
+        UserModel *user = [UserSignData share].user;
+        // 货币单位跟随语言
+        user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+        [[UserSignData share] storageData:user];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:IS_LOGIN_KEY];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[EMClient sharedClient].options setIsAutoLogin:NO];
+//        [[AppDelegate delegate] showLoginController];
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Exit Success", nil)];
+//        [self.navigationController popViewControllerAnimated:YES];
+        
+        ZFTabBarViewController * tab = [[ZFTabBarViewController alloc] init];
+        UIWindow *window = [AppDelegate delegate].window;
+        window.rootViewController = tab;
+        [window makeKeyAndVisible];
+        
     } else {
-        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Exit Failed", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Exit Failed", nil)];
     }
 }
 
@@ -282,7 +302,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-        _tableView.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+        _tableView.backgroundColor = LIGHT_WHITE_BGCOLOR;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
@@ -301,7 +321,7 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 - (UIButton *)quitLoginButton {
     if (!_quitLoginButton) {
         _quitLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _quitLoginButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _quitLoginButton.backgroundColor = MAIN_ORANGE_COLOR;
         _quitLoginButton.titleLabel.font = FONT(14);
         [_quitLoginButton setTitle:DBHGetStringWithKeyFromTable(@"Exit", nil) forState:UIControlStateNormal];
         [_quitLoginButton addTarget:self action:@selector(respondsToQuitLoginButton) forControlEvents:UIControlEventTouchUpInside];

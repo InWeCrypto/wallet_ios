@@ -6,29 +6,33 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "YYWalletRecordGntModel.h"
 
 @class DBHWalletManagerForNeoModelCategory;
+@class DBHProjectDetailInformationModelIco;
 
-@interface DBHWalletManagerForNeoModelList : NSObject <NSCoding, NSCopying>
+@interface DBHWalletManagerForNeoModelList : NSObject
 
 @property (nonatomic, strong) DBHWalletManagerForNeoModelCategory *category;
+@property (nonatomic, strong) DBHProjectDetailInformationModelIco *cap;
+
 @property (nonatomic, strong) NSString *address;
-@property (nonatomic, assign) double listIdentifier;
+@property (nonatomic, assign) NSInteger listIdentifier;
 @property (nonatomic, strong) NSString *createdAt;
-@property (nonatomic, assign) id deletedAt;
-@property (nonatomic, assign) id addressHash160;
-@property (nonatomic, assign) double categoryId;
-@property (nonatomic, assign) double userId;
+@property (nonatomic, strong) NSString *deletedAt;
+@property (nonatomic, strong) NSString *addressHash160;
+@property (nonatomic, assign) NSInteger categoryId;
+@property (nonatomic, assign) NSInteger userId;
 @property (nonatomic, strong) NSString *updatedAt;
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, assign) NSInteger sort;
+@property (nonatomic, strong) NSString *balance; // 数量
+@property (nonatomic, strong) NSArray *gnt; // 数量
 
 @property (nonatomic, strong) NSMutableDictionary *tokenStatistics; // 代币统计
-@property (nonatomic, strong) NSString *balance; // 数量
 @property (nonatomic, assign) BOOL isLookWallet; // 是否观察钱包
 @property (nonatomic, assign) BOOL isBackUpMnemonnic; // 是否备份助记词
-
-+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+@property (nonatomic, strong) NeomobileWallet *neoWallet;
+@property (nonatomic, strong) EthmobileWallet *ethWallet;
 
 @end

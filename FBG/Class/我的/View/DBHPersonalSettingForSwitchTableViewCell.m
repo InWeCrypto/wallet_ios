@@ -54,8 +54,12 @@
         [UserSignData share].user.realTimeDeliveryArray[_functionalUnitType] = self.onSwitch.isOn ? @"1" : @"0";
         [[UserSignData share] storageData:[UserSignData share].user];        
     }
-    
-    self.changeSwitchBlock(self.onSwitch.isOn);
+    if (![UserSignData share].user.isLogin) {
+        self.onSwitch.on = NO;
+        [[AppDelegate delegate] goToLoginVC:[self parentController]];
+    } else {
+        self.changeSwitchBlock(self.onSwitch.isOn);
+    }
 }
 
 #pragma mark ------ Public Methods ------

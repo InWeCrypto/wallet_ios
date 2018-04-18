@@ -19,16 +19,15 @@ PODS:
   - Charts/Core (3.0.2)
   - CHKLineChart (1.6.0)
   - Daysquare (0.1.0)
-  - HyphenateLite (3.3.6)
+  - HyphenateLite (3.3.9)
   - IQKeyboardManager (4.0.13)
   - JKBigInteger (0.0.1)
   - JSONModel (1.7.0)
   - Masonry (1.1.0)
   - MBProgressHUD (1.0.0)
-  - MJRefresh (3.1.15)
+  - MJExtension (3.0.13)
+  - MJRefresh (3.1.15.3)
   - QBImagePickerController (3.4.0)
-  - SDCycleScrollView (1.65):
-    - SDWebImage (~> 3.7)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -50,10 +49,10 @@ DEPENDENCIES:
   - JSONModel (~> 1.7.0)
   - Masonry (~> 1.1.0)
   - MBProgressHUD (~> 1.0.0)
+  - MJExtension (~> 3.0.13)
   - MJRefresh (~> 3.1.12)
   - QBImagePickerController (~> 3.4.0)
-  - SDCycleScrollView (~> 1.65)
-  - SDWebImage (~> 3.8.2)
+  - SDWebImage (~> 3.7)
   - SnapKit (~> 4.0.0)
   - TTTAttributedLabel
   - TZImagePickerController (~> 1.7.9)
@@ -66,15 +65,15 @@ SPEC CHECKSUMS:
   Charts: 236d6ccdd0ce6feae151d89e829a7397381a21fd
   CHKLineChart: 0c03b07af330c4fbc67ca6501d6d9144cc76ece9
   Daysquare: 682586c9b2a96958633e2f967a43054a718d1a09
-  HyphenateLite: 43dca95d4469c82643e52b7ed0f9069a37c73c7d
+  HyphenateLite: ea4401abe02101c627e4adc989b01ae21ca63f27
   IQKeyboardManager: 8eab4d8111418414619d1df8e4779ce5d0f8d7e2
   JKBigInteger: 7f3894ca331bf271a8e2ee0d5329707ca6eda6e0
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  MJRefresh: 9af70f5f9327a2cf87f0fb5929f35fcc2fa638ea
+  MJExtension: 5932755f451458eefa24239358817f8d291240c7
+  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
@@ -83,6 +82,6 @@ SPEC CHECKSUMS:
   YUSegment: 6e527a2e4ad60404ef67bd766b4dcf6d59419c9c
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
-PODFILE CHECKSUM: 12ca618c0b5d9138d22c8672378f459f5a262cfc
+PODFILE CHECKSUM: 923a3274fb33c8831bc60019a3ff7141b2ba2786
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

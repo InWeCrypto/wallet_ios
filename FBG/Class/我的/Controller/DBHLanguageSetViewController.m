@@ -9,6 +9,7 @@
 #import "DBHLanguageSetViewController.h"
 
 #import "DBHMonetaryUnitTableViewCell.h"
+#import "ZFTabBarViewController.h"
 
 static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryUnitTableViewCellIdentifier";
 
@@ -28,10 +29,16 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
     [super viewDidLoad];
     
     self.title = DBHGetStringWithKeyFromTable(@"Languages", nil);
-    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
-    self.currentSelectedRow = [LANGUAGE isEqualToString:EN] ? 1 : 0;
+    self.view.backgroundColor = LIGHT_WHITE_BGCOLOR;
+    self.currentSelectedRow = [CURRENT_APP_LANGUAGE isEqualToString:EN] ? 1 : 0;
     
     [self setUI];
+    
+    if ([[DBHLanguageTool sharedInstance].language isEqualToString:CNS]) {
+        self.currentSelectedRow = 0;
+    } else {
+        self.currentSelectedRow = 1;
+    }
 }
 
 #pragma mark ------ UI ------
@@ -54,6 +61,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBHMonetaryUnitTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHMonetaryUnitTableViewCellIdentifier forIndexPath:indexPath];
     cell.title = self.titleArray[indexPath.row];
+   
     cell.isSelected = self.currentSelectedRow == indexPath.row;
     
     return cell;
@@ -73,8 +81,39 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
  确定
  */
 - (void)respondsToSureBarButtonItem {
-    [[DBHLanguageTool sharedInstance] setNewLanguage:self.currentSelectedRow ? EN : CNS];
-    [self.navigationController popViewControllerAnimated:YES];
+    
+//    UserModel *user = [UserSignData share].user;
+    // 货币单位跟随语言
+//    user.walletUnitType = self.currentSelectedRow ? 2 : 1;
+//    [[UserSignData share] storageData:user];
+    
+//    [self.navigationController popViewControllerAnimated:YES];
+    NSString *newLan = (self.currentSelectedRow == 0) ? CNS : EN;
+    if ([[DBHLanguageTool sharedInstance].language isEqualToString:newLan]) {
+        return;
+    }
+    
+    NSDictionary *params = @{
+                             @"lang" : [newLan isEqualToString:CNS] ? @"zh" : EN
+                             };
+    
+    [PPNetworkHelper PUT:@"user/lang" baseUrlType:3 parameters:params hudString:DBHGetStringWithKeyFromTable(@"Setting...", nil) success:^(id responseObject) {
+        [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Successfully set", nil)];
+        UserModel *user = [UserSignData share].user;
+        user.language = [newLan isEqualToString:CNS] ? @"zh" : EN;
+        user.walletUnitType = [user.language isEqualToString:@"zh"] ? 1 : 2;
+        [[UserSignData share] storageData:user];
+        
+        ZFTabBarViewController * tab = [[ZFTabBarViewController alloc] init];
+        tab.customTabBar.selectedIndex = 2;
+        tab.selectedIndex = 2; //必须放在tab.customTabBar.selectedIndex = 2;的下一行
+        UIWindow *window = [AppDelegate delegate].window;
+        window.rootViewController = tab;
+        [window makeKeyAndVisible];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:error];
+    }];
+    
 }
 
 #pragma mark ------ Getters And Setters ------

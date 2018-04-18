@@ -8,7 +8,7 @@
 #import "DBHProjectDetailInformationModelCategoryScore.h"
 
 
-NSString *const kDBHProjectDetailInformationModelCategoryScoreValue = @"value";
+NSString *const kDBHProjectDetailInformationModelCategoryScoreValue = VALUE;
 NSString *const kDBHProjectDetailInformationModelCategoryScoreSort = @"sort";
 
 

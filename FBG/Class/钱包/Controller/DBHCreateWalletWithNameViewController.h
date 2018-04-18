@@ -8,6 +8,13 @@
 
 #import "DBHBaseViewController.h"
 
+typedef enum create_from {
+    CreateWalletFromKeyStore = 0,
+    CreateWalletFromZhuJiCi = 1,
+    CreateWalletFromSiYao
+}CreateWalletFrom;
+@class DBHWalletManagerForNeoModelList;
+
 @interface DBHCreateWalletWithNameViewController : DBHBaseViewController
 
 /**
@@ -15,9 +22,31 @@
  */
 @property (nonatomic, assign) NSInteger walletType;
 
+@property (nonatomic, assign) CreateWalletFrom from;
+
+/**
+ NEO钱包Model
+ */
+@property (nonatomic, strong) DBHWalletManagerForNeoModelList *neoWalletModel;
+
+
+/**
+ NEO钱包
+ */
+@property (nonatomic, strong) NeomobileWallet *neoWallet;
+
+
+/**
+ ETH钱包
+ */
+@property (nonatomic, strong) EthmobileWallet *ethWallet;
+
+
 /**
  地址
  */
 @property (nonatomic, copy) NSString *address;
+
+@property (nonatomic, copy) NSString *password;
 
 @end

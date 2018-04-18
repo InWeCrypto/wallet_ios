@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZFTabBar.h"
 
 @interface ZFTabBarViewController : UITabBarController
+
+/**
+ *  自定义的tabbar
+ */
+@property (nonatomic, weak) ZFTabBar *customTabBar;
 
 @end

@@ -15,6 +15,7 @@ NSString *const kDBHTradingMarketModelDataUpdate = @"update";
 NSString *const kDBHTradingMarketModelDataVolumPercent = @"volum_percent";
 NSString *const kDBHTradingMarketModelDataVolum24 = @"volum_24";
 NSString *const kDBHTradingMarketModelDataPair = @"pair";
+NSString *const kDBHTradingMarketModelDataUrl = @"url";
 
 
 @interface DBHTradingMarketModelData ()
@@ -32,6 +33,7 @@ NSString *const kDBHTradingMarketModelDataPair = @"pair";
 @synthesize volumPercent = _volumPercent;
 @synthesize volum24 = _volum24;
 @synthesize pair = _pair;
+@synthesize url = _url;
 
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict {
@@ -44,14 +46,14 @@ NSString *const kDBHTradingMarketModelDataPair = @"pair";
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if (self && [dict isKindOfClass:[NSDictionary class]]) {
-            self.pairce = [self objectOrNilForKey:kDBHTradingMarketModelDataPairce fromDictionary:dict];
-            self.source = [self objectOrNilForKey:kDBHTradingMarketModelDataSource fromDictionary:dict];
-            self.sort = [self objectOrNilForKey:kDBHTradingMarketModelDataSort fromDictionary:dict];
-            self.update = [self objectOrNilForKey:kDBHTradingMarketModelDataUpdate fromDictionary:dict];
-            self.volumPercent = [self objectOrNilForKey:kDBHTradingMarketModelDataVolumPercent fromDictionary:dict];
-            self.volum24 = [self objectOrNilForKey:kDBHTradingMarketModelDataVolum24 fromDictionary:dict];
-            self.pair = [self objectOrNilForKey:kDBHTradingMarketModelDataPair fromDictionary:dict];
-
+        self.pairce = [self objectOrNilForKey:kDBHTradingMarketModelDataPairce fromDictionary:dict];
+        self.source = [self objectOrNilForKey:kDBHTradingMarketModelDataSource fromDictionary:dict];
+        self.sort = [self objectOrNilForKey:kDBHTradingMarketModelDataSort fromDictionary:dict];
+        self.update = [self objectOrNilForKey:kDBHTradingMarketModelDataUpdate fromDictionary:dict];
+        self.volumPercent = [self objectOrNilForKey:kDBHTradingMarketModelDataVolumPercent fromDictionary:dict];
+        self.volum24 = [self objectOrNilForKey:kDBHTradingMarketModelDataVolum24 fromDictionary:dict];
+        self.pair = [self objectOrNilForKey:kDBHTradingMarketModelDataPair fromDictionary:dict];
+        self.url = [self objectOrNilForKey:kDBHTradingMarketModelDataUrl fromDictionary:dict];
     }
     
     return self;
@@ -67,6 +69,7 @@ NSString *const kDBHTradingMarketModelDataPair = @"pair";
     [mutableDict setValue:self.volumPercent forKey:kDBHTradingMarketModelDataVolumPercent];
     [mutableDict setValue:self.volum24 forKey:kDBHTradingMarketModelDataVolum24];
     [mutableDict setValue:self.pair forKey:kDBHTradingMarketModelDataPair];
+    [mutableDict setValue:self.url forKey:kDBHTradingMarketModelDataUrl];
 
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -94,6 +97,7 @@ NSString *const kDBHTradingMarketModelDataPair = @"pair";
     self.volumPercent = [aDecoder decodeObjectForKey:kDBHTradingMarketModelDataVolumPercent];
     self.volum24 = [aDecoder decodeObjectForKey:kDBHTradingMarketModelDataVolum24];
     self.pair = [aDecoder decodeObjectForKey:kDBHTradingMarketModelDataPair];
+    self.url = [aDecoder decodeObjectForKey:kDBHTradingMarketModelDataUrl];
     return self;
 }
 
@@ -107,13 +111,11 @@ NSString *const kDBHTradingMarketModelDataPair = @"pair";
     [aCoder encodeObject:_volumPercent forKey:kDBHTradingMarketModelDataVolumPercent];
     [aCoder encodeObject:_volum24 forKey:kDBHTradingMarketModelDataVolum24];
     [aCoder encodeObject:_pair forKey:kDBHTradingMarketModelDataPair];
+    [aCoder encodeObject:_pair forKey:kDBHTradingMarketModelDataUrl];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
     DBHTradingMarketModelData *copy = [[DBHTradingMarketModelData alloc] init];
-    
-    
-    
     if (copy) {
 
         copy.pairce = [self.pairce copyWithZone:zone];
@@ -123,6 +125,7 @@ NSString *const kDBHTradingMarketModelDataPair = @"pair";
         copy.volumPercent = [self.volumPercent copyWithZone:zone];
         copy.volum24 = [self.volum24 copyWithZone:zone];
         copy.pair = [self.pair copyWithZone:zone];
+        copy.url = [self.url copyWithZone:zone];
     }
     
     return copy;

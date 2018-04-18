@@ -8,10 +8,13 @@
 
 #import "DBHBaseTableViewCell.h"
 
+@class YYEvaluateSynthesisModel;
+
 @class DBHProjectDetailInformationModelData;
 
 @interface DBHProjectOverviewForProjectInfomtaionTableViewCell : DBHBaseTableViewCell
 
-@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;;
+@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;
+@property (nonatomic, strong) YYEvaluateSynthesisModel *model;
 
 @end

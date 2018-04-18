@@ -80,7 +80,9 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     weakSelf.currentPage = 1;
     [self.conversation loadMessagesStartFromId:nil count:5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
         [weakSelf.dataSource addObjectsFromArray:aMessages];
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf scrollViewToBottom:NO];
         });
@@ -94,10 +96,12 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
     
     WEAKSELF
     [self.conversation loadMessagesStartFromId:message.messageId count:5 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
-        [weakSelf endRefresh];
-        [weakSelf.dataSource insertObjects:aMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, aMessages.count)]];
-        [weakSelf.tableView reloadData];
-        [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:aMessages.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf endRefresh];
+            [weakSelf.dataSource insertObjects:aMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, aMessages.count)]];
+            [weakSelf.tableView reloadData];
+            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:aMessages.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        });
     }];
 }
 
@@ -145,7 +149,7 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.rowHeight = AUTOLAYOUTSIZE(75.5);

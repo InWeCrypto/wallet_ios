@@ -145,7 +145,7 @@
 
 - (id)setupCellEditActions:(NSIndexPath *)aIndexPath
 {
-    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
+    if ([UIDevice currentDevice].systemVersion.doubleValue < 11.0) {
         UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:DBHGetStringWithKeyFromTable(@"delete",@"Delete") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
             [self deleteCellAction:indexPath];
         }];

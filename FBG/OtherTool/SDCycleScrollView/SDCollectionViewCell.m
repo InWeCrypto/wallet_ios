@@ -85,7 +85,7 @@
 - (void)setTitle:(NSString *)title
 {
     _title = [title copy];
-    _titleLabel.text = [NSString stringWithFormat:@"   %@", title];
+    _titleLabel.text = [NSString stringWithFormat:@" %@", title];
     if (_titleLabel.hidden) {
         _titleLabel.hidden = NO;
     }

@@ -9,7 +9,7 @@
 
 
 NSString *const kDBHWalletManagerForNeoModelCategoryId = @"id";
-NSString *const kDBHWalletManagerForNeoModelCategoryName = @"name";
+NSString *const kDBHWalletManagerForNeoModelCategoryName = NAME;
 
 
 @interface DBHWalletManagerForNeoModelCategory ()
@@ -23,6 +23,12 @@ NSString *const kDBHWalletManagerForNeoModelCategoryName = @"name";
 @synthesize categoryIdentifier = _categoryIdentifier;
 @synthesize name = _name;
 
+
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{
+             @"categoryIdentifier" : @"id"
+             };
+}
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict {
     return [[self alloc] initWithDictionary:dict];

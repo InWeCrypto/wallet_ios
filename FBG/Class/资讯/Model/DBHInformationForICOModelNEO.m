@@ -9,7 +9,7 @@
 
 
 NSString *const kDBHInformationForICOModelNEOId = @"id";
-NSString *const kDBHInformationForICOModelNEOPriceCny = @"price_cny";
+NSString *const kDBHInformationForICOModelNEOPriceCny = PRICE_CNY;
 NSString *const kDBHInformationForICOModelNEOMaxSupply = @"max_supply";
 NSString *const kDBHInformationForICOModelNEOMarketCapCny = @"market_cap_cny";
 NSString *const kDBHInformationForICOModelNEOPercentChange24h = @"percent_change_24h";
@@ -17,14 +17,14 @@ NSString *const kDBHInformationForICOModelNEOSymbol = @"symbol";
 NSString *const kDBHInformationForICOModelNEO24hVolumeCny = @"24h_volume_cny";
 NSString *const kDBHInformationForICOModelNEOLastUpdated = @"last_updated";
 NSString *const kDBHInformationForICOModelNEOMarketCapUsd = @"market_cap_usd";
-NSString *const kDBHInformationForICOModelNEOPriceUsd = @"price_usd";
+NSString *const kDBHInformationForICOModelNEOPriceUsd = PRICE_USD;
 NSString *const kDBHInformationForICOModelNEOPercentChange7d = @"percent_change_7d";
 NSString *const kDBHInformationForICOModelNEORank = @"rank";
 NSString *const kDBHInformationForICOModelNEO24hVolumeUsd = @"24h_volume_usd";
 NSString *const kDBHInformationForICOModelNEOPriceBtc = @"price_btc";
 NSString *const kDBHInformationForICOModelNEOAvailableSupply = @"available_supply";
 NSString *const kDBHInformationForICOModelNEOTotalSupply = @"total_supply";
-NSString *const kDBHInformationForICOModelNEOName = @"name";
+NSString *const kDBHInformationForICOModelNEOName = NAME;
 NSString *const kDBHInformationForICOModelNEOPercentChange1h = @"percent_change_1h";
 
 

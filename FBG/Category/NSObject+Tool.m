@@ -12,28 +12,20 @@
 
 + (BOOL)isNulllWithObject:(id)object
 {
-    if (object == nil || [object isEqual:[NSNull null]])
-    {
+    if (object == nil || [object isEqual:[NSNull null]]) {
         return YES;
-    } else if ([object isKindOfClass:[NSString class]])
-    {
-        if ([object isEqualToString:@""])
-        {
+    }
+    
+    if ([object isKindOfClass:[NSString class]]) {
+        if ([object isEqualToString:@""] || [((NSString *)object) containsString:@"null"]) {
             return YES;
-        }
-        else
-        {
+        } else {
             return NO;
         }
-    }
-    else if ([object isKindOfClass:[NSNumber class]])
-    {
-        if ([object isEqualToNumber:@0])
-        {
+    } else if ([object isKindOfClass:[NSNumber class]]) {
+        if ([object isEqualToNumber:@0]) {
             return YES;
-        }
-        else
-        {
+        } else {
             return NO;
         }
     }

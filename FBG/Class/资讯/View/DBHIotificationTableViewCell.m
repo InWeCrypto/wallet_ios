@@ -8,7 +8,8 @@
 
 #import "DBHIotificationTableViewCell.h"
 
-#import "DBHExchangeNoticeModelData.h"
+#import "DBHProjectHomeNewsModelData.h"
+
 
 @interface DBHIotificationTableViewCell ()
 
@@ -101,13 +102,14 @@
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setModel:(DBHExchangeNoticeModelData *)model {
+- (void)setModel:(DBHProjectHomeNewsModelData *)model {
     _model = model;
     
-    self.titleLabel.text = _model.sourceName;
-    self.timeLabel.text = _model.updatedAt;
+    self.titleLabel.text = _model.title;
+    self.timeLabel.text = [NSString formatTimeDelayEight:_model.updatedAt];
     
-    NSString *content = [self filterHTML:_model.content];
+    NSString *content = [self filterHTML:_model.desc];
+    content = [content stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     content = [content stringByReplacingOccurrencesOfString:@"&nbsp;" withString:@""];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:AUTOLAYOUTSIZE(5)];
@@ -134,7 +136,7 @@
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIImageView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
         _boxView.layer.cornerRadius = AUTOLAYOUTSIZE(5);
         _boxView.clipsToBounds = YES;
     }

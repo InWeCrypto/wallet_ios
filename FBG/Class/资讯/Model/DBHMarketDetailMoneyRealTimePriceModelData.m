@@ -9,7 +9,7 @@
 
 
 NSString *const kDBHMarketDetailMoneyRealTimePriceModelDataVolume = @"volume";
-NSString *const kDBHMarketDetailMoneyRealTimePriceModelDataPriceCny = @"price_cny";
+NSString *const kDBHMarketDetailMoneyRealTimePriceModelDataPriceCny = PRICE_CNY;
 NSString *const kDBHMarketDetailMoneyRealTimePriceModelDataMinPrice24h = @"24h_min_price";
 NSString *const kDBHMarketDetailMoneyRealTimePriceModelDataPrice = @"price";
 NSString *const kDBHMarketDetailMoneyRealTimePriceModelDataChangeCny24h = @"24h_change_cny";

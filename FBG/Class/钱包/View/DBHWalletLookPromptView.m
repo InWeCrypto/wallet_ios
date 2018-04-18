@@ -21,16 +21,33 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *numberLabel;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UILabel *avaliableLabel;
 
-@property (nonatomic, copy) SelectedBlock selectedBlock;
+/**
+ 没有钱包时显示的View
+ */
+@property (nonatomic, strong) UIView *noDataView;
+
+/**
+ 暂时还没有钱包
+ */
+@property (nonatomic, strong) UILabel *tipNoWalletLabel;
+
+/**
+ 添加/导入钱包
+ */
+@property (nonatomic, strong) UIButton *addWalletBtn;
+
+@property (nonatomic, copy) SelectedWalletBlock selectedBlock;
+
+@property (nonatomic, copy) AddOrImportWalletBlock addWalletBlock;
 
 @end
 
 @implementation DBHWalletLookPromptView
 
 #pragma mark ------ Lifecycle ------
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.backgroundColor = COLORFROM16(0x000000, 0.4);
@@ -39,6 +56,13 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
         [self setUI];
     }
     return self;
+}
+
+- (void)setDataSource:(NSMutableArray *)dataSource {
+    _dataSource = dataSource;
+    
+    self.noDataView.hidden = (_dataSource.count != 0);
+    [self sortData];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -57,6 +81,11 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
     [self.boxView addSubview:self.titleLabel];
     [self.boxView addSubview:self.numberLabel];
     [self.boxView addSubview:self.tableView];
+    [self.boxView addSubview:self.avaliableLabel];
+    
+    [self.boxView addSubview:self.noDataView];
+    [self.noDataView addSubview:self.addWalletBtn];
+    [self.noDataView addSubview:self.tipNoWalletLabel];
     
     WEAKSELF
     [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -78,12 +107,35 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
         make.right.offset(- AUTOLAYOUTSIZE(25));
         make.top.equalTo(weakSelf.titleLabel.mas_bottom).offset(AUTOLAYOUTSIZE(11.5));
     }];
+    
+    [self.avaliableLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(AUTOLAYOUTSIZE(23));
+        make.top.equalTo(weakSelf.numberLabel);
+    }];
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.boxView);
         make.centerX.equalTo(weakSelf.boxView);
         make.top.equalTo(weakSelf.numberLabel.mas_bottom);
         make.bottom.equalTo(weakSelf.boxView);
     }];
+    
+    [self.noDataView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.top.centerX.bottom.equalTo(weakSelf.tableView);
+    }];
+    
+    [self.addWalletBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(weakSelf.noDataView);
+        make.height.offset(AUTOLAYOUTSIZE(47));
+        make.centerY.equalTo(weakSelf.noDataView).offset(- AUTOLAYOUTSIZE(30));
+        make.width.equalTo(weakSelf.noDataView).offset(- AUTOLAYOUTSIZE(120));
+    }];
+    
+    [self.tipNoWalletLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(weakSelf.addWalletBtn.mas_top).offset(- AUTOLAYOUTSIZE(16));
+        make.centerX.equalTo(weakSelf.noDataView);
+    }];
+    
+    self.noDataView.hidden = YES;
 }
 
 #pragma mark ------ UITableViewDataSource ------
@@ -124,12 +176,23 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
     }];
 }
 
+/**
+ 添加/导入钱包
+ */
+- (void)respondsAddWalletBtn {
+    [self respondsToQuitButton];
+    self.addWalletBlock();
+}
+
+- (void)addOrImportWalletBlock:(AddOrImportWalletBlock)block {
+    self.addWalletBlock = block;
+}
+
 #pragma mark ------ Public Methods ------
 /**
  动画显示
  */
 - (void)animationShow {
-    [self sortData];
     WEAKSELF
     [self.boxView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf);
@@ -142,9 +205,10 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
         [weakSelf layoutIfNeeded];
     }];
 }
-- (void)selectedBlock:(SelectedBlock)selectedBlock {
+- (void)selectedBlock:(SelectedWalletBlock)selectedBlock {
     self.selectedBlock = selectedBlock;
 }
+
 
 #pragma mark ------ Private Methods ------
 /**
@@ -171,7 +235,7 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
             DBHWalletManagerForNeoModelList *nextModel = self.dataSource[j + 1];
             NSString *currentBalance = currentModel.tokenStatistics[self.tokenName];
             NSString *nextBalance = nextModel.tokenStatistics[self.tokenName];
-            if (currentBalance.floatValue < nextBalance.floatValue) {
+            if (currentBalance.doubleValue < nextBalance.doubleValue) {
                 [self.dataSource exchangeObjectAtIndex:j withObjectAtIndex:j + 1];
             }
         }
@@ -184,14 +248,14 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = [UIColor whiteColor];
+        _boxView.backgroundColor = WHITE_COLOR;
     }
     return _boxView;
 }
 - (UIButton *)quitButton {
     if (!_quitButton) {
         _quitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_quitButton setImage:[UIImage imageNamed:@"关闭-3"] forState:UIControlStateNormal];
+        [_quitButton setImage:[UIImage imageNamed:@"login_close"] forState:UIControlStateNormal];
         [_quitButton addTarget:self action:@selector(respondsToQuitButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _quitButton;
@@ -200,7 +264,7 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = BOLDFONT(18);
-        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Wallet Lists", nil);
+        _titleLabel.text = DBHGetStringWithKeyFromTable(@"Wallet List ", nil);
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _titleLabel;
@@ -217,7 +281,7 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _tableView.rowHeight = AUTOLAYOUTSIZE(60);
@@ -230,4 +294,45 @@ static NSString *const kDBHWalletLookPromptViewTableViewCellIdentifier = @"kDBHW
     return _tableView;
 }
 
+- (UIView *)noDataView {
+    if (!_noDataView) {
+        _noDataView = [[UIView alloc] init];
+        _noDataView.backgroundColor = WHITE_COLOR;
+    }
+    return _noDataView;
+}
+
+- (UIButton *)addWalletBtn {
+    if (!_addWalletBtn) {
+        _addWalletBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _addWalletBtn.layer.cornerRadius = AUTOLAYOUTSIZE(5);
+        [_addWalletBtn setBackgroundColor:MAIN_ORANGE_COLOR];
+        [_addWalletBtn setTitle:DBHGetStringWithKeyFromTable(@"Add / Import wallet", nil) forState:UIControlStateNormal];
+        [_addWalletBtn addTarget:self action:@selector(respondsAddWalletBtn) forControlEvents:UIControlEventTouchUpInside];
+        [_addWalletBtn setTitleColor:WHITE_COLOR forState:UIControlStateNormal];
+        _addWalletBtn.titleLabel.font = FONT(14);
+    }
+    return _addWalletBtn;
+}
+
+- (UILabel *)tipNoWalletLabel {
+    if (!_tipNoWalletLabel) {
+        _tipNoWalletLabel = [[UILabel alloc] init];
+        _tipNoWalletLabel.numberOfLines = 0;
+        _tipNoWalletLabel.text = DBHGetStringWithKeyFromTable(@"You don't have a wallet yet.", nil);
+        _tipNoWalletLabel.textColor = COLORFROM16(0xC1BEBE, 1);
+        _tipNoWalletLabel.font = FONT(12);
+    }
+    return _tipNoWalletLabel;
+}
+
+- (UILabel *)avaliableLabel {
+    if (!_avaliableLabel) {
+        _avaliableLabel = [[UILabel alloc] init];
+        _avaliableLabel.text = DBHGetStringWithKeyFromTable(@"Wallet List", nil);
+        _avaliableLabel.textColor = COLORFROM16(0xC1BEBE, 1);
+        _avaliableLabel.font = BOLDFONT(10);
+    }
+    return _avaliableLabel;
+}
 @end

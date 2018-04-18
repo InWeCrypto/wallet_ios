@@ -9,7 +9,7 @@
 #import "DBHTransferListModelList.h"
 
 
-NSString *const kDBHTransferListModelDataList = @"list";
+NSString *const kDBHTransferListModelDataList = LIST;
 
 
 @interface DBHTransferListModelData ()

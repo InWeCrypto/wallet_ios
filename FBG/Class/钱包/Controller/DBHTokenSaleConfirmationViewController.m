@@ -156,7 +156,7 @@
 - (UIButton *)sureButton {
     if (!_sureButton) {
         _sureButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _sureButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _sureButton.backgroundColor = MAIN_ORANGE_COLOR;
         _sureButton.titleLabel.font = FONT(14);
         [_sureButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
         [_sureButton addTarget:self action:@selector(respondsToSureButton) forControlEvents:UIControlEventTouchUpInside];

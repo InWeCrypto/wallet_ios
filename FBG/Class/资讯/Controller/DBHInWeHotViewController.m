@@ -16,19 +16,26 @@
 #import "DBHProjectHomeTypeThreeTableViewCell.h"
 
 #import "DBHProjectHomeNewsDataModels.h"
+#import "DBHInWeHistoryViewController.h"
+#import "DBHIotificationTableViewCell.h"
+#import "DBHInWeHotHistoricalInformationViewController.h"
 
 static NSString *const kDBHProjectHomeTypeTwoTableViewCellIdentifier = @"kDBHProjectHomeTypeTwoTableViewCellIdentifier";
 static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHProjectHomeTypeThreeTableViewCellIdentifer";
+static NSString *const kDBHIotificationTableViewCell = @"kDBHIotificationTableViewCell";
 
 @interface DBHInWeHotViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *grayLineView;
-@property (nonatomic, strong) UIButton *yourOpinionButton;
+//@property (nonatomic, strong) UIButton *yourOpinionButton;
+
+@property (nonatomic, strong) UIButton *historyInfoBtn;
 
 @property (nonatomic, assign) NSInteger type;
 @property (nonatomic, assign) NSInteger currentPage; // 当前页
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, assign) BOOL isScrollBottom;
 
 @end
 
@@ -42,7 +49,11 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
     [self addRefresh];
     
     self.currentPage = 1;
-    [self getInfomation];
+    self.isScrollBottom = NO;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self getInfomation];
+    });
 }
 
 #pragma mark ------ UI ------
@@ -50,23 +61,31 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"xiangmuzhuye_ren_ico"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToPersonBarButtonItem)];
     
     [self.view addSubview:self.tableView];
-//    [self.view addSubview:self.grayLineView];
-    //[self.view addSubview:self.yourOpinionButton];
+    [self.view addSubview:self.grayLineView];
+//    [self.view addSubview:self.yourOpinionButton];
+    [self.view addSubview:self.historyInfoBtn];
     
     WEAKSELF
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view);
         make.centerX.equalTo(weakSelf.view);
         make.top.equalTo(weakSelf.view);
-//        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+        make.bottom.equalTo(weakSelf.grayLineView.mas_top);
+//        make.bottom.equalTo(weakSelf.view);
+    }];
+    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view);
+        make.height.offset(AUTOLAYOUTSIZE(1));
+        make.centerX.equalTo(weakSelf.view);
+        make.bottom.equalTo(weakSelf.historyInfoBtn.mas_top);
+    }];
+
+    [self.historyInfoBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(weakSelf.view);
+        make.height.offset(AUTOLAYOUTSIZE(47));
+        make.centerX.equalTo(weakSelf.view);
         make.bottom.equalTo(weakSelf.view);
     }];
-//    [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//        make.width.equalTo(weakSelf.view);
-//        make.height.offset(AUTOLAYOUTSIZE(1));
-//        make.centerX.equalTo(weakSelf.view);
-//        make.bottom.equalTo(weakSelf.yourOpinionButton.mas_top);
-//    }];
 //    [self.yourOpinionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
 //        make.width.equalTo(weakSelf.view);
 //        make.height.offset(AUTOLAYOUTSIZE(47));
@@ -75,6 +94,15 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
 }
 
 #pragma mark ------ UITableViewDataSource ------
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isScrollBottom == NO) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.dataSource.count - 1] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        if (indexPath.section == self.dataSource.count - 1) {
+            self.isScrollBottom = YES;
+        }
+    }
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.dataSource.count;
 }
@@ -82,18 +110,27 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
-//    if (model.type == 1) {
-//        DBHProjectHomeTypeThreeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeThreeTableViewCellIdentifer forIndexPath:indexPath];
-//        cell.model = model;
-//
-//        return cell;
-//    } else {
+    DBHProjectHomeNewsModelData *model = nil;
+    if (indexPath.section < self.dataSource.count) {
+        model = self.dataSource[indexPath.section];
+    }
+    
+    if (model.type == 1 || model.type == 12) { //纯文本
+        DBHProjectHomeTypeThreeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeThreeTableViewCellIdentifer forIndexPath:indexPath];
+        cell.model = model;
+
+        return cell;
+    } else if (model.type == 16) { //文本标题
+        DBHIotificationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHIotificationTableViewCell forIndexPath:indexPath];
+        cell.model = model;
+        
+        return cell;
+    } else { //图文
         DBHProjectHomeTypeTwoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier forIndexPath:indexPath];
         cell.model = model;
         
         return cell;
-//    }
+    }
 }
 
 #pragma mark ------ UITableViewDelegate ------
@@ -101,10 +138,12 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
     DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
     KKWebView *webView = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD4 : TESTAPIEHEAD4, (NSInteger)model.dataIdentifier]];
     webView.title = model.title;
+    webView.imageStr = model.img;
     webView.isHaveShare = YES;
         webView.infomationId = [NSString stringWithFormat:@"%ld", (NSInteger)model.dataIdentifier];
     [self.navigationController pushViewController:webView animated:YES];
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     DBHProjectHomeNewsModelData *model = self.dataSource[section];
     DBHProjectHomeHeaderView *headerView = [[DBHProjectHomeHeaderView alloc] init];
@@ -112,13 +151,22 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
     headerView.time = model.createdAt;
     return headerView;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return AUTOLAYOUTSIZE(42);
 }
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
-//    return model.type == 1 ? AUTOLAYOUTSIZE(122) : AUTOLAYOUTSIZE(215.5);
-//}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    DBHProjectHomeNewsModelData *model = self.dataSource[indexPath.section];
+    NSInteger type = model.type;
+    if (type == 1 || type == 12) {
+        return AUTOLAYOUTSIZE(60);
+    }
+    if (type == 16) {
+        return AUTOLAYOUTSIZE(150);
+    }
+    return AUTOLAYOUTSIZE(215.5);
+}
 
 #pragma mark ------ Data ------
 /**
@@ -141,7 +189,13 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
 //        default:
 //            break;
 //    }
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?is_scroll&per_page=5&page=%ld", self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+    
+    NSString *param = @"is_not_category&type=[1,2,3,6,16]";
+    if (self.functionalUnitType == 1) {
+        param = @"type=[12,13,14,15]";
+    }
+    
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"article?%@&per_page=5&page=%ld", param, self.currentPage] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
         if (weakSelf.dataSource.count) {
             return ;
         }
@@ -154,10 +208,14 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
             [weakSelf.dataSource addObject:model];
         }
         
+        weakSelf.dataSource = [NSArray arraySortedByArr:weakSelf.dataSource];
+        
         [weakSelf.tableView reloadData];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf scrollViewToBottom:NO];
-        });
+        if (weakSelf.dataSource.count > 0) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf scrollViewToBottom:NO];
+            });
+        }
     } success:^(id responseObject) {
         [weakSelf endRefresh];
         
@@ -179,18 +237,23 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
             [weakSelf.dataSource insertObjects:dataArray atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataArray.count)]];
         }
         
+        weakSelf.dataSource = [NSArray arraySortedByArr:weakSelf.dataSource];
+        
+        
         [weakSelf.tableView reloadData];
-        if (weakSelf.currentPage == 1) {
-            if (weakSelf.dataSource.count > 2) {
-                [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[weakSelf.dataSource count] - 1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-            }
-        } else if (dataArray.count) {
-            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        if (weakSelf.dataSource.count > 0) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (weakSelf.currentPage == 1) {
+                    [weakSelf scrollViewToBottom:NO];
+                } else if (dataArray.count) {
+                    [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:dataArray.count] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                }
+            });
         }
     } failure:^(NSString *error) {
         [weakSelf endRefresh];
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
 
 #pragma mark ------ Event Responds ------
@@ -228,6 +291,20 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
     }
 }
 
+/**
+ 历史资讯
+ */
+- (void)respondsToHistoricInfoButton {
+    if (self.functionalUnitType == 0) {
+        DBHInWeHistoryViewController *vc = [[DBHInWeHistoryViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        DBHInWeHotHistoricalInformationViewController *inWeHotHistoricalInformationViewController = [[DBHInWeHotHistoricalInformationViewController alloc] init];
+        inWeHotHistoricalInformationViewController.functionalUnitType = self.functionalUnitType;
+        [self.navigationController pushViewController:inWeHotHistoricalInformationViewController animated:YES];
+    }
+}
+
 #pragma mark ------ Private Methods ------
 /**
  滑动到底部
@@ -236,7 +313,7 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
 {
     if (self.tableView.contentSize.height > self.tableView.frame.size.height)
     {
-        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height + self.tableView.contentInset.bottom);
         [self.tableView setContentOffset:offset animated:animated];
     }
 }
@@ -275,20 +352,29 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
         _tableView.backgroundColor = COLORFROM10(235, 235, 235, 1);
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
+        _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.001)];
+        _tableView.tableFooterView = nil; //[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOLAYOUTSIZE(47))];
+        
         _tableView.sectionHeaderHeight = 0;
         _tableView.sectionFooterHeight = 0;
-        _tableView.sectionFooterHeight = 0;
         
-        _tableView.rowHeight = AUTOLAYOUTSIZE(215.5);
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, AUTOLAYOUTSIZE(140), 0);
+        
+        _tableView.estimatedRowHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
         
         _tableView.dataSource = self;
         _tableView.delegate = self;
         
         [_tableView registerClass:[DBHProjectHomeTypeTwoTableViewCell class] forCellReuseIdentifier:kDBHProjectHomeTypeTwoTableViewCellIdentifier];
         [_tableView registerClass:[DBHProjectHomeTypeThreeTableViewCell class] forCellReuseIdentifier:kDBHProjectHomeTypeThreeTableViewCellIdentifer];
+        [_tableView registerClass:[DBHIotificationTableViewCell class] forCellReuseIdentifier:kDBHIotificationTableViewCell];
+        
     }
     return _tableView;
 }
+
 - (UIView *)grayLineView {
     if (!_grayLineView) {
         _grayLineView = [[UIView alloc] init];
@@ -296,15 +382,28 @@ static NSString *const kDBHProjectHomeTypeThreeTableViewCellIdentifer = @"kDBHPr
     }
     return _grayLineView;
 }
-- (UIButton *)yourOpinionButton {
-    if (!_yourOpinionButton) {
-        _yourOpinionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _yourOpinionButton.titleLabel.font = FONT(14);
-        [_yourOpinionButton setTitle:DBHGetStringWithKeyFromTable(@"Your Opinion", nil) forState:UIControlStateNormal];
-        [_yourOpinionButton setTitleColor:COLORFROM16(0x626262, 1) forState:UIControlStateNormal];
-        [_yourOpinionButton addTarget:self action:@selector(respondsToYourOpinionButton) forControlEvents:UIControlEventTouchUpInside];
+
+//- (UIButton *)yourOpinionButton {
+//    if (!_yourOpinionButton) {
+//        _yourOpinionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        _yourOpinionButton.titleLabel.font = FONT(14);
+//        [_yourOpinionButton setTitle:DBHGetStringWithKeyFromTable(@"Your Opinion", nil) forState:UIControlStateNormal];
+//        [_yourOpinionButton setTitleColor:COLORFROM16(0x626262, 1) forState:UIControlStateNormal];
+//        [_yourOpinionButton addTarget:self action:@selector(respondsToYourOpinionButton) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//    return _yourOpinionButton;
+//}
+
+- (UIButton *)historyInfoBtn {
+    if (!_historyInfoBtn) {
+        _historyInfoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _historyInfoBtn.titleLabel.font = FONT(14);
+        _historyInfoBtn.backgroundColor = WHITE_COLOR;
+        [_historyInfoBtn setTitle:DBHGetStringWithKeyFromTable(@"History", nil) forState:UIControlStateNormal];
+        [_historyInfoBtn setTitleColor:COLORFROM16(0x626262, 1) forState:UIControlStateNormal];
+        [_historyInfoBtn addTarget:self action:@selector(respondsToHistoricInfoButton) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _yourOpinionButton;
+    return _historyInfoBtn;
 }
 
 - (NSMutableArray *)dataSource {

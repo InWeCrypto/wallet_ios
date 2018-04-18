@@ -915,7 +915,9 @@ typedef enum : NSUInteger {
         __weak EaseMessageViewController *weakSelf = self;
         BOOL isPrepare = [[EaseMessageReadManager defaultManager] prepareMessageAudioModel:model updateViewCompletion:^(EaseMessageModel *prevAudioModel, EaseMessageModel *currentAudioModel) {
             if (prevAudioModel || currentAudioModel) {
-                [weakSelf.tableView reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.tableView reloadData];
+                });
             }
         }];
         
@@ -1303,11 +1305,15 @@ typedef enum : NSUInteger {
             [weakself _refreshAfterSentMessage:message];
         }
         else {
-            [weakself.tableView reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself.tableView reloadData];
+            });
         }
     }];
     
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 - (void)avatarViewSelcted:(id<IMessageModel>)model
@@ -1928,7 +1934,9 @@ typedef enum : NSUInteger {
                 [weakself _refreshAfterSentMessage:aMessage];
             }
             else {
-                [weakself.tableView reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakself.tableView reloadData];
+                });
             }
         }];
     }

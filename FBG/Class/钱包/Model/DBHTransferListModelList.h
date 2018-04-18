@@ -27,6 +27,7 @@
 @property (nonatomic, copy) NSString * maxBlockNumber;  //最大块号 当前
 @property (nonatomic, copy) NSString * minBlockNumber;  //最小块号 确认 12
 @property (nonatomic, copy) NSString * flag;
+@property (nonatomic, copy) NSString *typeName;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

@@ -53,7 +53,7 @@
     WEAKSELF
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(AUTOLAYOUTSIZE(15));
-        make.top.offset(AUTOLAYOUTSIZE(21));
+        make.top.offset(AUTOLAYOUTSIZE(0));
     }];
 //    [self.orangeView mas_remakeConstraints:^(MASConstraintMaker *make) {
 //        make.width.height.offset(AUTOLAYOUTSIZE(12.5));
@@ -89,9 +89,9 @@
         make.bottom.equalTo(weakSelf.contentView);
     }];
     
-    self.firstLabel.text = @"25%用于团队建设";
-    self.secondLabel.text = @"50%用于产品开发";
-    self.thirdLabel.text = @"25%用于社区运营";
+//    self.firstLabel.text = @"25%用于团队建设";
+//    self.secondLabel.text = @"50%用于产品开发";
+//    self.thirdLabel.text = @"25%用于社区运营";
 }
 
 #pragma mark ------ ChartViewDelegate ------
@@ -103,9 +103,11 @@
     NSMutableArray *values = [NSMutableArray array];
     NSMutableArray *pointColors = [NSMutableArray array];
     PieChartDataSet *dataSet;
-    for (NSInteger i = 0; i < _projectDetailModel.categoryStructure.count; i++) {
+    
+    NSInteger count =  _projectDetailModel.categoryStructure.count;
+    for (NSInteger i = 0; i < count; i++) {
         DBHProjectDetailInformationModelCategoryStructure *model = _projectDetailModel.categoryStructure[i];
-        PieChartDataEntry *pieChartDataEntry = [[PieChartDataEntry alloc] initWithValue:model.percentage label:[NSString stringWithFormat:@"%ld%%%@%@", (NSInteger)model.percentage, DBHGetStringWithKeyFromTable(@"Used for", nil), model.desc] data:[NSString stringWithFormat:@"%ld", i]];
+        PieChartDataEntry *pieChartDataEntry = [[PieChartDataEntry alloc] initWithValue:model.percentage label:[NSString stringWithFormat:@"%ld%% %@", (NSInteger)model.percentage, model.desc] data:[NSString stringWithFormat:@"%ld", i]];
         
         [values addObject:pieChartDataEntry];
         [pointColors addObject:[UIColor colorWithHexString:[model.colorValue substringFromIndex:1]]];
@@ -132,13 +134,15 @@
     [data setValueTextColor:UIColor.clearColor];
     
     self.pieChartView.data = data;
+    
+    [self.pieChartView animateWithXAxisDuration:1.0f easingOption:ChartEasingOptionEaseOutExpo];
 }
 
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = BOLDFONT(15);
-        _titleLabel.text = DBHGetStringWithKeyFromTable(@"ICO Distribution", nil);
+        _titleLabel.text = @"";
         _titleLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _titleLabel;
@@ -153,7 +157,7 @@
 - (UILabel *)firstLabel {
     if (!_firstLabel) {
         _firstLabel = [[UILabel alloc] init];
-        _firstLabel.font = FONT(13);
+        _firstLabel.font = FONT(14);
         _firstLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _firstLabel;
@@ -168,7 +172,7 @@
 - (UILabel *)secondLabel {
     if (!_secondLabel) {
         _secondLabel = [[UILabel alloc] init];
-        _secondLabel.font = FONT(13);
+        _secondLabel.font = FONT(14);
         _secondLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _secondLabel;
@@ -183,7 +187,7 @@
 - (UILabel *)thirdLabel {
     if (!_thirdLabel) {
         _thirdLabel = [[UILabel alloc] init];
-        _thirdLabel.font = FONT(13);
+        _thirdLabel.font = FONT(14);
         _thirdLabel.textColor = COLORFROM16(0x333333, 1);
     }
     return _thirdLabel;
@@ -191,6 +195,10 @@
 - (PieChartView *)pieChartView {
     if (!_pieChartView) {
         _pieChartView = [[PieChartView alloc] init];
+        
+        CGFloat margin = 50;
+        [_pieChartView setExtraOffsetsWithLeft:AUTOLAYOUTSIZE(margin) top:0 right:AUTOLAYOUTSIZE(margin) bottom:-AUTOLAYOUTSIZE(300)]; // 饼状图距离边缘的间隙
+        
         _pieChartView.drawHoleEnabled = YES; // 饼状图是否是空心
         _pieChartView.holeRadiusPercent = 0.5; // 空心半径占比
         _pieChartView.drawSliceTextEnabled = NO; // 是否显示区块文本
@@ -198,31 +206,27 @@
         _pieChartView.descriptionText = @""; // 饼状图描述
         _pieChartView.userInteractionEnabled = NO;
         
+        _pieChartView.legend.drawInside = NO;
+        _pieChartView.legend.xEntrySpace = AUTOLAYOUTSIZE(10); //图标左边距离
+        _pieChartView.legend.yEntrySpace = AUTOLAYOUTSIZE(16.5); //文字行间距
+        _pieChartView.legend.yOffset = AUTOLAYOUTSIZE(10); //文字距顶部距离
+        _pieChartView.legend.xOffset = AUTOLAYOUTSIZE(12);
+        _pieChartView.legend.maxSizePercent = 0; // 图例在饼状图中的大小占比, 这会影响图例的宽高
+        _pieChartView.legend.formToTextSpace = AUTOLAYOUTSIZE(5); // 文本与图标间隔
+        _pieChartView.legend.font = FONT(12); // 字体大小
+        _pieChartView.legend.textColor = COLORFROM16(0x333333, 1); // 字体颜色
+//        _pieChartView.legend.position = ChartLegendPositionBelowChartCenter; // 图例在饼状图中的位置
+//        _pieChartView.legend.form = ChartLegendFormSquare; // 图示样式: 方形、线条、圆形
+        _pieChartView.legend.formSize = AUTOLAYOUTSIZE(12); // 图示大小
+        _pieChartView.legend.orientation = ChartLegendOrientationVertical; //文字排列方向 垂直
         _pieChartView.legend.horizontalAlignment = ChartLegendHorizontalAlignmentLeft; // 文本的位置
         _pieChartView.legend.verticalAlignment = ChartLegendVerticalAlignmentTop;
-        _pieChartView.legend.orientation = ChartLegendOrientationVertical;
-        _pieChartView.legend.drawInside = NO;
-        _pieChartView.legend.xEntrySpace = AUTOLAYOUTSIZE(10);
-        _pieChartView.legend.yEntrySpace = AUTOLAYOUTSIZE(16.5);
-        _pieChartView.legend.yOffset = AUTOLAYOUTSIZE(20);
-        _pieChartView.legend.xOffset = AUTOLAYOUTSIZE(15);
-//        _pieChartView.legend.maxSizePercent = 1; // 图例在饼状图中的大小占比, 这会影响图例的宽高
-        _pieChartView.legend.formToTextSpace = AUTOLAYOUTSIZE(4.5); // 文本间隔
-        _pieChartView.legend.font = FONT(13); // 字体大小
-        _pieChartView.legend.textColor = COLORFROM16(0x333333, 1); // 字体颜色
-//        _pieChartView.legend.position = ChartLegendPositionBelowChartRight; // 图例在饼状图中的位置
-//        _pieChartView.legend.form = ChartLegendFormSquare; // 图示样式: 方形、线条、圆形
-        _pieChartView.legend.formSize = AUTOLAYOUTSIZE(12.5); // 图示大小
-//        _pieChartView.legend.orientation = ChartLegendOrientationHorizontal;
-//        _pieChartView.legend.horizontalAlignment = ChartLegendHorizontalAlignmentLeft;
-//        _pieChartView.legend.verticalAlignment = ChartLegendVerticalAlignmentCenter;
         _pieChartView.drawCenterTextEnabled = YES; // 是否显示中间文字
         NSMutableAttributedString *centerText = [[NSMutableAttributedString alloc] initWithString:@"ICO"];
         [centerText setAttributes:@{NSFontAttributeName:FONT(13),
                                     NSForegroundColorAttributeName:COLORFROM16(0x333333, 1)}
                             range:NSMakeRange(0, centerText.length)];
         _pieChartView.centerAttributedText = centerText;
-        [self.pieChartView setExtraOffsetsWithLeft:AUTOLAYOUTSIZE(130) top:0 right:-AUTOLAYOUTSIZE(130) bottom:0]; // 饼状图距离边缘的间隙
     }
     return _pieChartView;
 }

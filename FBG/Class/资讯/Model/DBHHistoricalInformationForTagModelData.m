@@ -10,7 +10,7 @@
 
 NSString *const kDBHHistoricalInformationForTagModelDataId = @"id";
 NSString *const kDBHHistoricalInformationForTagModelDataLang = @"lang";
-NSString *const kDBHHistoricalInformationForTagModelDataName = @"name";
+NSString *const kDBHHistoricalInformationForTagModelDataName = NAME;
 NSString *const kDBHHistoricalInformationForTagModelDataDesc = @"desc";
 
 

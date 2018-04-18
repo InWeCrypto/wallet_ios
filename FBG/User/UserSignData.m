@@ -31,8 +31,7 @@ static NSString *const kUserCacheKey = @"FBGCacheKey";
 
 #pragma mark ------ Public Methods ------
 /** 更新存储本地数据 */
-- (void)storageData:(UserModel *)user
-{
+- (void)storageData:(UserModel *)user {
     [self.userCache setObject:user forKey:kUserCacheKey];
 }
 
@@ -40,21 +39,19 @@ static NSString *const kUserCacheKey = @"FBGCacheKey";
 - (void)setUserModel:(UserModel *)userModel {
     [self storageData:userModel];
 }
-- (UserModel *)user
-{
+
+- (UserModel *)user {
     // 检查 读取（直接读取，不存在则是 nil）
-    if ([self.userCache containsObjectForKey:kUserCacheKey])
-    {
+    if ([self.userCache containsObjectForKey:kUserCacheKey]) {
         UserModel *user = (UserModel *)[self.userCache objectForKey:kUserCacheKey];
         return user;
     }
     UserModel *user = [[UserModel alloc] init];
     return user;
 }
-- (YYCache *)userCache
-{
-    if (!_userCache)
-    {
+
+- (YYCache *)userCache {
+    if (!_userCache) {
         _userCache = [[YYCache alloc] initWithName:kUserCacheKey];
     }
     return _userCache;

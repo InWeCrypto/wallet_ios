@@ -52,45 +52,49 @@
 - (void)loadData
 {
     //加载左抽屉数据
-    [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:@"加载中..."  responseCache:^(id responseCache)
+    [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil)  responseCache:^(id responseCache)
      {
-         if (![NSString isNulllWithObject:[responseCache objectForKey:@"list"]])
+         if (![NSString isNulllWithObject:[responseCache objectForKey:LIST]])
          {
              [self.dataSource removeAllObjects];
-             for (NSDictionary * leftDic in [responseCache objectForKey:@"list"])
+             for (NSDictionary * leftDic in [responseCache objectForKey:LIST])
              {
                  WalletLeftListModel * model = [[WalletLeftListModel alloc] initWithDictionary:leftDic];
-                 model.category_name = [[leftDic objectForKey:@"category"] objectForKey:@"name"];
-                 if ([NSString isNulllWithObject:[PDKeyChain load:model.address]])
+                 model.category_name = [[leftDic objectForKey:@"category"] objectForKey:NAME];
+                 
+                 if ([NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]])
                  {
                      //观察钱包
                      model.isLookWallet = YES;
                  }
+                 
                  [self.dataSource addObject:model];
              }
              [self.coustromTableView reloadData];
          }
      } success:^(id responseObject)
      {
-         if (![NSString isNulllWithObject:[responseObject objectForKey:@"list"]])
+         if (![NSString isNulllWithObject:[responseObject objectForKey:LIST]])
          {
              [self.dataSource removeAllObjects];
-             for (NSDictionary * leftDic in [responseObject objectForKey:@"list"])
+             for (NSDictionary * leftDic in [responseObject objectForKey:LIST])
              {
                  WalletLeftListModel * model = [[WalletLeftListModel alloc] initWithDictionary:leftDic];
-                 model.category_name = [[leftDic objectForKey:@"category"] objectForKey:@"name"];
-                 if ([NSString isNulllWithObject:[PDKeyChain load:model.address]])
+                 model.category_name = [[leftDic objectForKey:@"category"] objectForKey:NAME];
+                 if ([NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]])
                  {
                      //观察钱包
                      model.isLookWallet = YES;
                  }
                  [self.dataSource addObject:model];
              }
-             [self.coustromTableView reloadData];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self.coustromTableView reloadData];
+             });
          }
      } failure:^(NSString *error)
      {
-     }];
+     } specialBlock:nil];
 }
 
 - (void)showWithView:(UIView *)view

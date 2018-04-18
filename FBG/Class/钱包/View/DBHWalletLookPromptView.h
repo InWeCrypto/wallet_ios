@@ -10,7 +10,8 @@
 
 @class DBHWalletManagerForNeoModelList;
 
-typedef void(^SelectedBlock)(DBHWalletManagerForNeoModelList *model);
+typedef void(^SelectedWalletBlock)(DBHWalletManagerForNeoModelList *model);
+typedef void(^AddOrImportWalletBlock)(void);
 
 @interface DBHWalletLookPromptView : UIView
 
@@ -32,6 +33,13 @@ typedef void(^SelectedBlock)(DBHWalletManagerForNeoModelList *model);
 /**
  选择回调
  */
-- (void)selectedBlock:(SelectedBlock)selectedBlock;
+- (void)selectedBlock:(SelectedWalletBlock)selectedBlock;
+
+/**
+ 点击了添加/导入钱包
+
+ @param block <#block description#>
+ */
+- (void)addOrImportWalletBlock:(AddOrImportWalletBlock)block;
 
 @end

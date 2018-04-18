@@ -8,6 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DBHBaseNavigationController : UINavigationController
+@interface DBHBaseNavigationController : UINavigationController<UIGestureRecognizerDelegate> {
+    CGPoint startPoint;
+    UIImageView *lastScreenShotView;// view
+}
+
+@property (nonatomic, strong) UIView *backGroundView;
+@property (nonatomic, strong) NSMutableArray *screenShotList;
+@property (nonatomic, assign) BOOL isMoving;
+@property (nonatomic, strong) UIPanGestureRecognizer *recognizer;
+
+@property (nonatomic, assign) BOOL showSystemAnimation;
+
+- (void)popViewControllerWithAnimate:(BOOL)isAnimate;
+
 
 @end

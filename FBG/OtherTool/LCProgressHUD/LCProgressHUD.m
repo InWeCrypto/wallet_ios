@@ -32,6 +32,8 @@
     hud.bezelView.color = [UIColor lightGrayColor];
     [hud setRemoveFromSuperViewOnHide:YES];
     hud.label.font = [UIFont boldSystemFontOfSize:TEXT_SIZE];
+    
+    hud.label.numberOfLines = 0;
     [hud setMinSize:CGSizeMake(BGVIEW_WIDTH, BGVIEW_WIDTH)];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
 
@@ -47,7 +49,7 @@
             hud.mode = MBProgressHUDModeCustomView;
             UIImageView *sucView = [[UIImageView alloc] initWithImage:sucImage];
             hud.customView = sucView;
-            hud.label.font = [UIFont systemFontOfSize:11];
+            hud.label.font = [UIFont systemFontOfSize:13];
             [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(hide) userInfo:nil repeats:NO];
         }
             break;
@@ -60,7 +62,7 @@
             hud.mode = MBProgressHUDModeCustomView;
             UIImageView *errView = [[UIImageView alloc] initWithImage:errImage];
             hud.customView = errView;
-            hud.label.font = [UIFont systemFontOfSize:11];
+            hud.label.font = [UIFont systemFontOfSize:13];
             [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(hide) userInfo:nil repeats:NO];
         }
             break;
@@ -82,7 +84,7 @@
             hud.mode = MBProgressHUDModeCustomView;
             UIImageView *infoView = [[UIImageView alloc] initWithImage:infoImage];
             hud.customView = infoView;
-            hud.label.font = [UIFont systemFontOfSize:11];
+            hud.label.font = [UIFont systemFontOfSize:13];
             [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(hide) userInfo:nil repeats:NO];
         }
             break;

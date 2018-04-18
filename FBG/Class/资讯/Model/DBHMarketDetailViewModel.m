@@ -16,7 +16,7 @@
 
 @property (nonatomic, copy) NSString *ico_type;
 /** 计时器 */
-@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, weak) NSTimer *timer;
 
 @property (nonatomic, copy) RequestMoneyRealTimePriceBlock requestMoneyRealTimePriceBlock;
 @property (nonatomic, copy) RequestBlock requestBlock;
@@ -26,10 +26,13 @@
 @implementation DBHMarketDetailViewModel
 
 #pragma mark ------ Lifecycle ------
-- (void)dealloc
-{
+- (void)dealloc {
+    [self setTimernil];
+}
+
+- (void)setTimernil {
     [self.timer invalidate];
-    self.timer = nil;
+    _timer = nil;
 }
 
 #pragma mark ------ Data ------
@@ -37,17 +40,21 @@
  获取货币实时价格
  */
 - (void)getMoneyRealTimePrice {
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/time_price/%@", self.ico_type] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        DBHMarketDetailMoneyRealTimePriceModelData *model = [DBHMarketDetailMoneyRealTimePriceModelData modelObjectWithDictionary:responseCache];
-        
-        self.requestMoneyRealTimePriceBlock(model);
-    } success:^(id responseObject) {
-        DBHMarketDetailMoneyRealTimePriceModelData *model = [DBHMarketDetailMoneyRealTimePriceModelData modelObjectWithDictionary:responseObject];
-        
-        self.requestMoneyRealTimePriceBlock(model);
-    } failure:^(NSString *error) {
-        
-    }];
+    NSLog(@"getMoneyRealTimePrice  self.timer = %@", self.timer);
+    WEAKSELF
+    if (self.timer) { //TODO
+        [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/time_price/%@", self.ico_type] baseUrlType:3 parameters:nil hudString:nil responseCache:^(id responseCache) {
+            DBHMarketDetailMoneyRealTimePriceModelData *model = [DBHMarketDetailMoneyRealTimePriceModelData modelObjectWithDictionary:responseCache];
+            
+            weakSelf.requestMoneyRealTimePriceBlock(model);
+        } success:^(id responseObject) {
+            DBHMarketDetailMoneyRealTimePriceModelData *model = [DBHMarketDetailMoneyRealTimePriceModelData modelObjectWithDictionary:responseObject];
+            
+            weakSelf .requestMoneyRealTimePriceBlock(model);
+        } failure:^(NSString *error) {
+            
+        } specialBlock:nil];
+    }
 }
 
 #pragma mark ------ Public Methods ------
@@ -59,7 +66,10 @@
 }
 - (void)getKLineDataWithIco_type:(NSString *)ico_type interval:(NSString *)interval {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/currencies/%@/%@/%@", ico_type, @"usdt", interval] baseUrlType:2 parameters:nil hudString:@"加载中" responseCache:^(id responseCache) {
+    if ([NSObject isNulllWithObject:ico_type]) {
+        return;
+    }
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/currencies/%@/%@/%@", ico_type, @"usdt", interval] baseUrlType:2 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) responseCache:^(id responseCache) {
         NSArray *dataArray = responseCache;
         
         if (!dataArray.count) {
@@ -99,13 +109,16 @@
         weakSelf.requestBlock(kLineDataArray);
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    }];
+    } specialBlock:nil];
 }
-- (void)getMoneyRealTimePriceWithIco_type:(NSString *)ico_type {
+- (void)getMoneyRealTimePriceWithIco_type:(NSString *)ico_type isRunLoop:(BOOL)isLoop {
     self.ico_type = ico_type;
     [self getMoneyRealTimePrice];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getMoneyRealTimePrice) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+    
+    if (isLoop) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getMoneyRealTimePrice) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+    }
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "DBHFunctionalUnitLookViewController.h"
 
+#import "DBHInWeHistoryViewController.h"
 #import "KKWebView.h"
 
 #import "DBHInWeHotHistoricalInformationViewController.h"
@@ -96,41 +97,51 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
                 // 历史资讯
                 switch (weakSelf.functionalUnitType) {
                     case 0: {
-                        // InWe热点
-                        DBHInWeHotHistoricalInformationViewController *inWeHotHistoricalInformationViewController = [[DBHInWeHotHistoricalInformationViewController alloc] init];
-                        [self.navigationController pushViewController:inWeHotHistoricalInformationViewController animated:YES];
+                        // 动态
+                        
+                        DBHInWeHistoryViewController *vc = [[DBHInWeHistoryViewController alloc] init];
+                        [weakSelf.navigationController pushViewController:vc animated:YES];
+                        
+//                        DBHInWeHotHistoricalInformationViewController *inWeHotHistoricalInformationViewController = [[DBHInWeHotHistoricalInformationViewController alloc] init];
+//                        inWeHotHistoricalInformationViewController.functionalUnitType = weakSelf.functionalUnitType;
+//                        [weakSelf.navigationController pushViewController:inWeHotHistoricalInformationViewController animated:YES];
                         break;
                     }
                     case 1: {
-                        // TradingView
-                        DBHTradingViewHistoricalInformationViewController *tradingViewHistoricalInformationViewController = [[DBHTradingViewHistoricalInformationViewController alloc] init];
-                        [self.navigationController pushViewController:tradingViewHistoricalInformationViewController animated:YES];
+                        // 观点
+                        DBHInWeHotHistoricalInformationViewController *inWeHotHistoricalInformationViewController = [[DBHInWeHotHistoricalInformationViewController alloc] init];
+                        inWeHotHistoricalInformationViewController.functionalUnitType = weakSelf.functionalUnitType;
+                        [weakSelf.navigationController pushViewController:inWeHotHistoricalInformationViewController animated:YES];
                         break;
                     }
                     case 2: {
-                        // 交易所公告
-                        DBHExchangeNoticeHistoricalInformationViewController *exchangeNoticeHistoricalInformationViewController = [[DBHExchangeNoticeHistoricalInformationViewController alloc] init];
-                        [self.navigationController pushViewController:exchangeNoticeHistoricalInformationViewController animated:YES];
+                        // 期望
+                        DBHTradingViewHistoricalInformationViewController *tradingViewHistoricalInformationViewController = [[DBHTradingViewHistoricalInformationViewController alloc] init];
+                        [weakSelf.navigationController pushViewController:tradingViewHistoricalInformationViewController animated:YES];
+                        
+//                        // 交易所公告
+//                        DBHExchangeNoticeHistoricalInformationViewController *exchangeNoticeHistoricalInformationViewController = [[DBHExchangeNoticeHistoricalInformationViewController alloc] init];
+//                        [self.navigationController pushViewController:exchangeNoticeHistoricalInformationViewController animated:YES];
                         break;
                     }
+//                    case 3: {
+//                        // CandyBowl
+//                        DBHCandyBowlHistoricalInformationViewController *candyBowlHistoricalInformationViewController = [[DBHCandyBowlHistoricalInformationViewController alloc] init];
+//                        [self.navigationController pushViewController:candyBowlHistoricalInformationViewController animated:YES];
+//                        break;
+//                    }
                     case 3: {
-                        // CandyBowl
-                        DBHCandyBowlHistoricalInformationViewController *candyBowlHistoricalInformationViewController = [[DBHCandyBowlHistoricalInformationViewController alloc] init];
-                        [self.navigationController pushViewController:candyBowlHistoricalInformationViewController animated:YES];
+                        // 交易提醒
+//                        DBHTraderClockHistoricalInformationViewController *traderClockHistoricalInformationViewController = [[DBHTraderClockHistoricalInformationViewController alloc] init];
+//                        traderClockHistoricalInformationViewController.conversation = weakSelf.conversation;
+//                        [self.navigationController pushViewController:traderClockHistoricalInformationViewController animated:YES];
                         break;
                     }
                     case 4: {
-                        // 交易提醒
-                        DBHTraderClockHistoricalInformationViewController *traderClockHistoricalInformationViewController = [[DBHTraderClockHistoricalInformationViewController alloc] init];
-                        traderClockHistoricalInformationViewController.conversation = weakSelf.conversation;
-                        [self.navigationController pushViewController:traderClockHistoricalInformationViewController animated:YES];
-                        break;
-                    }
-                    case 5: {
                         // 通知
                         DBHNotificationHistoricalInformationViewController *notificationHistoricalInformationViewController = [[DBHNotificationHistoricalInformationViewController alloc] init];
                         notificationHistoricalInformationViewController.conversation = weakSelf.conversation;
-                        [self.navigationController pushViewController:notificationHistoricalInformationViewController animated:YES];
+                        [weakSelf.navigationController pushViewController:notificationHistoricalInformationViewController animated:YES];
                         break;
                     }
                         
@@ -230,11 +241,11 @@ static NSString *const kDBHPersonalSettingForSwitchTableViewCellIdentifier = @"k
 
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@"InWe Hotspot",
-                        @"Trading View",
-                        @"Exchange",
-                        @"Candybowl",
-                        @"Trading Reminder",
+        _titleArray = @[@"Dynamism",
+                        @"Viewpoint",
+                        @"Expectation",
+//                        @"Candybowl",
+                        @"Ranking",
                         @"Notice"];
     }
     return _titleArray;

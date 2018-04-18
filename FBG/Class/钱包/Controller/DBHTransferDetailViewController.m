@@ -62,12 +62,12 @@
         make.top.offset(AUTOLAYOUTSIZE(47));
     }];
     [self.unitLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.numberLabel.mas_right);
-        make.bottom.equalTo(weakSelf.numberLabel).offset(- AUTOLAYOUTSIZE(5));
+        make.top.equalTo(weakSelf.numberLabel.mas_bottom).offset(AUTOLAYOUTSIZE(5));
+        make.centerX.equalTo(weakSelf.numberLabel);
     }];
     [self.poundageLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(weakSelf.unitLabel.mas_bottom).offset(AUTOLAYOUTSIZE(5));
         make.centerX.equalTo(weakSelf.view);
-        make.top.equalTo(weakSelf.numberLabel.mas_bottom).offset(AUTOLAYOUTSIZE(8));
     }];
     [self.grayLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(60));
@@ -116,6 +116,17 @@
 
 #pragma mark ------ Event Responds ------
 /**
+ 长按地址复制
+ */
+- (void)respondsToCopyAddressLabel:(UILongPressGestureRecognizer *)recognizer {
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    UILabel *label = (UILabel *)recognizer.view;
+    
+    pasteboard.string = label.text;
+    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Copy success, you can send it to friends", nil)];
+}
+
+/**
  订单号
  */
 - (void)respondsToOrderNumberButton {
@@ -124,12 +135,12 @@
         if ([APP_APIEHEAD isEqualToString:TESTAPIEHEAD1])
         {
             //测试
-            url = [self.model.flag isEqualToString:@"ETH"] ? @"https://ropsten.etherscan.io/tx/" : @"https://neoscan-testnet.io/transaction/";
+            url = [self.model.typeName isEqualToString:@"ETH"] ? @"https://ropsten.etherscan.io/tx/" : @"https://neoscan-testnet.io/transaction/";
         }
         else
         {
             //正式
-            url = [self.model.flag isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
+            url = [self.model.typeName isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
         }
 //        NSString *orderNumber = [[self.model.tx substringToIndex:2] isEqualToString:@"0x"] ? [self.model.tx substringFromIndex:2] : self.model.tx;
         KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.model.tx]];
@@ -146,8 +157,8 @@
             //正式
             url = [self.message.ext[@"flag"] isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
         }
-//        NSString *orderNumber = [[self.message.ext[@"trade_no"] substringToIndex:2] isEqualToString:@"0x"] ? [self.message.ext[@"trade_no"] substringFromIndex:2] : self.message.ext[@"trade_no"];
-        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.message.ext[@"trade_no"]]];
+//        NSString *orderNumber = [[self.message.ext[TRADE_NO] substringToIndex:2] isEqualToString:@"0x"] ? [self.message.ext[TRADE_NO] substringFromIndex:2] : self.message.ext[TRADE_NO];
+        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.message.ext[TRADE_NO]]];
         vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -157,7 +168,7 @@
  */
 - (void)respondsToLongPressGR {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = self.model ? self.model.tx : self.message.ext[@"trade_no"];
+    pasteboard.string = self.model ? self.model.tx : self.message.ext[TRADE_NO];
     [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Copy success, you can send it to friends", nil)];
 }
 
@@ -168,13 +179,20 @@
     self.title = DBHGetStringWithKeyFromTable([_model.to isEqualToString:self.tokenModel.address] ? @"Collection Details" : @"Transfer Details", nil);
     
     if (!_model.transferType) {
-        self.numberLabel.text = [NSString stringWithFormat:@"%.4lf", _model.value.floatValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%.4lf", _model.value.doubleValue];
     } else {
-        self.numberLabel.text = [NSString stringWithFormat:@"%@%.4lf", _model.transferType == 1 ? @"-" : @"+", _model.value.floatValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%@%.4lf", _model.transferType == 1 ? @"-" : @"+", _model.value.doubleValue];
     }
+
     self.poundageLabel.hidden = _model.transferType == 2;
-    self.unitLabel.text = [NSString stringWithFormat:@"%@（%@）", DBHGetStringWithKeyFromTable(@"Transfer amount", nil), self.tokenModel.flag];
-    self.poundageLabel.text = [NSString stringWithFormat:@"%@：%.4lf", DBHGetStringWithKeyFromTable(@"Fees", nil), 0.0];
+    NSString *unit = self.tokenModel.symbol;
+    if ([NSObject isNulllWithObject:unit]) {
+        unit = self.tokenModel.flag;
+    }
+    self.unitLabel.text = [NSString stringWithFormat:@"%@（%@）", DBHGetStringWithKeyFromTable(@"Transfer amount", nil), unit];
+    
+    NSLog(@"  __ffee = %@", _model.handleFee);
+    self.poundageLabel.text = [NSString stringWithFormat:@"%@：%.8lf", DBHGetStringWithKeyFromTable(@"Fees", nil), [_model.handleFee floatValue]];
     self.collectionAddressValueLabel.text = _model.from;
     self.payAddressValueLabel.text = _model.to;
     self.timeValueLabel.text = [NSString getLocalDateFormateUTCDate:_model.createTime];
@@ -203,9 +221,9 @@
     self.collectionAddressValueLabel.text = _message.ext[@"from"];
     self.payAddressValueLabel.text = _message.ext[@"to"];
     
-    NSAttributedString *orderNumberAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@", DBHGetStringWithKeyFromTable(@"Transaction Number", nil), _message.ext[@"trade_no"]] attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
+    NSAttributedString *orderNumberAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@", DBHGetStringWithKeyFromTable(@"Transaction Number", nil), _message.ext[TRADE_NO]] attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
     [self.orderNumberButton setAttributedTitle:orderNumberAttributedString forState:UIControlStateNormal];
-    self.remarkValueLabel.text = ![NSObject isNulllWithObject:_message.ext[@"remark"]] ? _message.ext[@"remark"] : @"";
+    self.remarkValueLabel.text = ![NSObject isNulllWithObject:_message.ext[REMARK]] ? _message.ext[REMARK] : @"";
 }
 
 - (UILabel *)numberLabel {
@@ -253,6 +271,9 @@
         _collectionAddressValueLabel = [[UILabel alloc] init];
         _collectionAddressValueLabel.font = FONT(13);
         _collectionAddressValueLabel.textColor = COLORFROM16(0x3D3D3D, 1);
+        _collectionAddressValueLabel.userInteractionEnabled = YES;
+        UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToCopyAddressLabel:)];
+        [_collectionAddressValueLabel addGestureRecognizer:longPressGR];
     }
     return _collectionAddressValueLabel;
 }
@@ -270,6 +291,9 @@
         _payAddressValueLabel = [[UILabel alloc] init];
         _payAddressValueLabel.font = FONT(13);
         _payAddressValueLabel.textColor = COLORFROM16(0x3D3D3D, 1);
+        _payAddressValueLabel.userInteractionEnabled = YES;
+        UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToCopyAddressLabel:)];
+        [_payAddressValueLabel addGestureRecognizer:longPressGR];
     }
     return _payAddressValueLabel;
 }

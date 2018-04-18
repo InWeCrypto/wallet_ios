@@ -21,5 +21,6 @@ typedef void(^SelectedBlock)(NSInteger index);
  选择回调
  */
 - (void)selectedBlock:(SelectedBlock)selectedBlock;
-
+- (void)animateFromLeftShow;
+- (void)boxViewAtInit;
 @end

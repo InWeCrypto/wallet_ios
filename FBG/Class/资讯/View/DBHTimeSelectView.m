@@ -8,7 +8,13 @@
 
 #import "DBHTimeSelectView.h"
 
-//#import "DBHMarketDetailKLineViewModelData.h"
+#import "DBHMarketDetailKLineViewModelData.h"
+
+#define OPEN DBHGetStringWithKeyFromTable(@"Open ", nil)
+#define HIGH DBHGetStringWithKeyFromTable(@"High ", nil)
+#define LOW DBHGetStringWithKeyFromTable(@"Low ", nil)
+#define CLOSE DBHGetStringWithKeyFromTable(@"Close ", nil)
+#define VOLUME DBHGetStringWithKeyFromTable(@"Volume ", nil)
 
 @interface DBHTimeSelectView ()
 
@@ -32,8 +38,8 @@
 {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-        
+        self.backgroundColor = WHITE_COLOR;
+        self.currentSelectedIndex = 2;
         [self setUI];
     }
     return self;
@@ -77,7 +83,7 @@
     [self.bottomLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(AUTOLAYOUTSIZE(14));
         make.height.offset(AUTOLAYOUTSIZE(1));
-        make.centerX.equalTo([weakSelf viewWithTag:200]);
+        make.centerX.equalTo([weakSelf viewWithTag:200 + self.currentSelectedIndex]);
         make.bottom.equalTo(weakSelf).offset(- AUTOLAYOUTSIZE(3));
     }];
     [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -85,9 +91,8 @@
         make.center.equalTo(weakSelf);
     }];
     [self.openLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.boxView).multipliedBy(0.2);
         make.height.equalTo(weakSelf.boxView);
-        make.left.equalTo(weakSelf.boxView);
+        make.left.equalTo(weakSelf.boxView).offset(AUTOLAYOUTSIZE(6));
         make.centerY.equalTo(weakSelf);
     }];
     [self.heightLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -106,9 +111,15 @@
         make.centerY.equalTo(weakSelf.boxView);
     }];
     [self.amountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(weakSelf.openLabel);
+        make.height.equalTo(weakSelf.openLabel);
+        if ([[DBHLanguageTool sharedInstance].language isEqualToString:CNS]) {
+            make.width.equalTo(weakSelf.openLabel);
+        } else {
+            make.width.equalTo(weakSelf.openLabel).offset(AUTOLAYOUTSIZE(25));
+        }
         make.left.equalTo(weakSelf.incomeLabel.mas_right);
         make.centerY.equalTo(weakSelf.boxView);
+        make.right.equalTo(weakSelf.boxView).offset(-AUTOLAYOUTSIZE(6));
     }];
 }
 
@@ -151,42 +162,54 @@
 - (void)setIsShowData:(BOOL)isShowData {
     _isShowData = isShowData;
     
-//    self.boxView.hidden = !_isShowData;
-}
-//- (void)setModel:(DBHMarketDetailKLineViewModelData *)model {
-//    _model = model;
-//    
-//    NSString *openString = [NSString stringWithFormat:@"%.2lf", _model.openedPrice.floatValue];
-//    NSMutableAttributedString *openAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"开  %@", openString]];
-//    [openAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(3, openString.length)];
-//    
-//    NSString *heightString = [NSString stringWithFormat:@"%.2lf", _model.maxPrice.floatValue];
-//    NSMutableAttributedString *heightAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"高  %@", heightString]];
-//    [heightAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(3, heightString.length)];
-//    
-//    NSString *lowString = [NSString stringWithFormat:@"%.2lf", _model.minPrice.floatValue];
-//    NSMutableAttributedString *lowAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"低  %@", lowString]];
-//    [lowAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(3, lowString.length)];
-//    
-//    NSString *incomeString = [NSString stringWithFormat:@"%.2lf", _model.closedPrice.floatValue];
-//    NSMutableAttributedString *incomeAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"收  %@", incomeString]];
-//    [incomeAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(3, incomeString.length)];
-//    
-//    NSString *amountString = [NSString stringWithFormat:@"%.2lf", _model.volume.floatValue];
-//    NSMutableAttributedString *amountAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"量  %@", amountString]];
-//    [amountAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(3, amountString.length)];
-//    
+    self.boxView.hidden = !_isShowData;
+ }
+- (void)setModel:(DBHMarketDetailKLineViewModelData *)model {
+    _model = model;
+    
+    NSString *openStr = [NSString stringWithFormat:@"%@%0.2f", OPEN, _model.openedPrice.doubleValue];
+    NSString *maxStr = [NSString stringWithFormat:@"%@%0.2f", HIGH, _model.maxPrice.doubleValue];
+    NSString *minStr = [NSString stringWithFormat:@"%@%0.2f", LOW, _model.minPrice.doubleValue];
+    NSString *closeStr = [NSString stringWithFormat:@"%@%0.2f", CLOSE, _model.closedPrice.doubleValue];
+    NSString *volumeStr = [NSString stringWithFormat:@"%@%0.2f", VOLUME, _model.volume.doubleValue];
+    
+    self.openLabel.text = openStr;
+    self.heightLabel.text = maxStr;
+    self.lowLabel.text = minStr;
+    self.incomeLabel.text = closeStr;
+    self.amountLabel.text = volumeStr;
+    
+//    NSString *openString = [NSString stringWithFormat:@"%.2lf", _model.openedPrice.doubleValue];
+//    NSMutableAttributedString *openAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", DBHGetStringWithKeyFromTable(@"Open", nil), openString]];
+//    [openAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0x333333, 1) range:NSMakeRange(3, openString.length)];
+    
+//    NSString *heightString = [NSString stringWithFormat:@"%.2lf", _model.maxPrice.doubleValue];
+//    NSMutableAttributedString *heightAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",DBHGetStringWithKeyFromTable(@"Max", nil), heightString]];
+//    [heightAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0x333333, 1)  range:NSMakeRange(3, heightString.length)];
+    
+//    NSString *lowString = [NSString stringWithFormat:@"%.2lf", _model.minPrice.doubleValue];
+//    NSMutableAttributedString *lowAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", DBHGetStringWithKeyFromTable(@"Min", nil), lowString]];
+//    [lowAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0x333333, 1)  range:NSMakeRange(3, lowString.length)];
+    
+//    NSString *incomeString = [NSString stringWithFormat:@"%.2lf", _model.closedPrice.doubleValue];
+//    NSMutableAttributedString *incomeAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", DBHGetStringWithKeyFromTable(@"Close", nil), incomeString]];
+//    [incomeAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0x333333, 1)  range:NSMakeRange(3, incomeString.length)];
+    
+//    NSString *amountString = [NSString stringWithFormat:@"%.2lf", _model.volume.doubleValue];
+//    NSMutableAttributedString *amountAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", DBHGetStringWithKeyFromTable(@"Volume", nil), amountString]];
+//    [amountAttributedString addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0x333333, 1)  range:NSMakeRange(3, amountString.length)];
+    
 //    self.openLabel.attributedText = openAttributedString;
 //    self.heightLabel.attributedText = heightAttributedString;
 //    self.lowLabel.attributedText = lowAttributedString;
 //    self.incomeLabel.attributedText = incomeAttributedString;
 //    self.amountLabel.attributedText = amountAttributedString;
-//}
+}
 
 - (UIView *)boxView {
     if (!_boxView) {
         _boxView = [[UIView alloc] init];
-        _boxView.backgroundColor = COLORFROM10(42, 46, 51, 1);
+        _boxView.backgroundColor = COLORFROM16(0xF6F6F6, 1);
         _boxView.hidden = YES;
     }
     return _boxView;
@@ -194,45 +217,45 @@
 - (UILabel *)openLabel {
     if (!_openLabel) {
         _openLabel = [[UILabel alloc] init];
-        _openLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
-        _openLabel.textColor = [UIColor grayColor];
-        _openLabel.text = @"开";
+        _openLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(11)];
+        _openLabel.textColor = COLORFROM16(0x333333, 1);
+        _openLabel.lineBreakMode = NSLineBreakByTruncatingHead;
     }
     return _openLabel;
 }
 - (UILabel *)heightLabel {
     if (!_heightLabel) {
         _heightLabel = [[UILabel alloc] init];
-        _heightLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
-        _heightLabel.textColor = [UIColor grayColor];
-        _heightLabel.text = @"高";
+        _heightLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(11)];
+        _heightLabel.textColor = COLORFROM16(0x333333, 1);
+        _heightLabel.lineBreakMode = NSLineBreakByTruncatingHead;
     }
     return _heightLabel;
 }
 - (UILabel *)lowLabel {
     if (!_lowLabel) {
         _lowLabel = [[UILabel alloc] init];
-        _lowLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
-        _lowLabel.textColor = [UIColor grayColor];
-        _lowLabel.text = @"低";
+        _lowLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(11)];
+        _lowLabel.textColor = COLORFROM16(0x333333, 1);
+        _lowLabel.lineBreakMode = NSLineBreakByTruncatingHead;
     }
     return _lowLabel;
 }
 - (UILabel *)incomeLabel {
     if (!_incomeLabel) {
         _incomeLabel = [[UILabel alloc] init];
-        _incomeLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
-        _incomeLabel.textColor = [UIColor grayColor];
-        _incomeLabel.text = @"收";
+        _incomeLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(11)];
+        _incomeLabel.textColor = COLORFROM16(0x333333, 1);
+        _incomeLabel.lineBreakMode = NSLineBreakByTruncatingHead;
     }
     return _incomeLabel;
 }
 - (UILabel *)amountLabel {
     if (!_amountLabel) {
         _amountLabel = [[UILabel alloc] init];
-        _amountLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(12)];
-        _amountLabel.textColor = [UIColor grayColor];
-        _amountLabel.text = @"量";
+        _amountLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(11)];
+        _amountLabel.textColor = COLORFROM16(0x333333, 1);
+        _amountLabel.lineBreakMode = NSLineBreakByTruncatingHead;
     }
     return _amountLabel;
 }

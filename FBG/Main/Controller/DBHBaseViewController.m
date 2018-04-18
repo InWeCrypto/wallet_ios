@@ -20,10 +20,21 @@
     
     self.view.backgroundColor = BACKGROUNDCOLOR;
 }
+
+- (void)dealloc {
+    NSLog(@"💣💣💣dealloc----   %@ 💣💣💣", [self class]);
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([NSStringFromClass([self class]) isEqualToString:@"DBHInformationViewController"] || [NSStringFromClass([self class]) isEqualToString:@"DBHHomePageViewController"] || [NSStringFromClass([self class]) isEqualToString:@"DBHMyViewController"]) {
+    if ([NSStringFromClass([self class]) isEqualToString:@"DBHInformationViewController"] ||
+        [NSStringFromClass([self class]) isEqualToString:@"DBHHomePageViewController"] ||
+        [NSStringFromClass([self class]) isEqualToString:@"DBHWalletPageViewController"] ||
+        [NSStringFromClass([self class]) isEqualToString:@"DBHMyViewController"] ||
+        [NSStringFromClass([self class]) isEqualToString:@"DBHWalletDetailViewController"] ||
+        [NSStringFromClass([self class]) isEqualToString:@"DBHWalletDetailWithETHViewController"] ||
+        [NSStringFromClass([self class]) isEqualToString:@"AddWalletSucessVC"]) {
                 if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
                     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
                 }

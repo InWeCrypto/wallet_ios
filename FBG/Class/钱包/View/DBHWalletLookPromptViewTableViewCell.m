@@ -58,10 +58,10 @@
 - (void)setModel:(DBHWalletManagerForNeoModelList *)model {
     _model = model;
     
-    self.iconImageView.image = [UIImage imageNamed:_model.categoryId == 1 ? @"ETH" : @"NEO"];
+    self.iconImageView.image = [UIImage imageNamed:(_model.categoryId == 1 ? @"ETH" : @"NEO")];
     self.nameLabel.text = _model.name;
     NSString *balance = _model.tokenStatistics[self.tokenName];
-    self.numberLabel.text = [NSString stringWithFormat:@"%.5lf", balance.floatValue];
+    self.numberLabel.text = [NSString stringWithFormat:@"%.5lf", balance.doubleValue];
 }
 
 - (UIImageView *)iconImageView {

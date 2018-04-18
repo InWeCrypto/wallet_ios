@@ -16,6 +16,7 @@
 
 + (id)decimalWithString:(NSString *)string;
 - (id)initWithString:(NSString *)string;
+-(id)initWithBigInteger:(JKBigInteger *)i figure:(NSInteger)f;
 
 - (id)add:(JKBigDecimal *)bigDecimal;
 - (id)subtract:(JKBigDecimal *)bigDecimal;

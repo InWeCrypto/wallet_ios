@@ -10,9 +10,11 @@
 
 @interface DBHGradeView : UIView
 
+@property (nonatomic, strong) NSArray *titlesArr;
 /**
  评分
  */
-@property (nonatomic, assign) NSInteger grade;
+@property (nonatomic, assign) CGFloat grade;
+@property (nonatomic, assign) CGFloat width;
 
 @end

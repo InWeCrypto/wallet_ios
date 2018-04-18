@@ -31,7 +31,7 @@ static NSString *const kDBHChangePasswordTableViewCellIdentifier = @"kDBHChangeP
     [super viewDidLoad];
     
     self.title = DBHGetStringWithKeyFromTable(@"Change Password", nil);
-    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+    self.view.backgroundColor = LIGHT_WHITE_BGCOLOR;
     
     [self setUI];
 }
@@ -86,11 +86,24 @@ static NSString *const kDBHChangePasswordTableViewCellIdentifier = @"kDBHChangeP
                                 @"password_confirmation":surePasswordCell.valueTextField.text};
     
     [PPNetworkHelper PUT:@"user/reset_password" baseUrlType:3 parameters:paramters hudString:nil success:^(id responseObject) {
-        [[EMClient sharedClient] logout:YES];
-        [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
-        [[AppDelegate delegate] showLoginController];
+        
+        [[EMClient sharedClient].options setIsAutoLogin:NO];
+        
+        [[UserSignData share] storageData:nil];
+        
+        UserModel *user = [UserSignData share].user;
+        // 货币单位跟随语言
+        user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+        [[UserSignData share] storageData:user];
+        
+        EMError *error = [[EMClient sharedClient] logout:YES];
+        //        [[AppDelegate delegate] showLoginController];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:IS_LOGIN_KEY];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Password Update Success", nil)];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
     }];

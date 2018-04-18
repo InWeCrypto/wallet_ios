@@ -109,10 +109,10 @@
     [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:[UIImage imageNamed:@"NEO_add"]];
     self.nameLabel.text = _model.longName;
     self.abbreviationLabel.text = [NSString stringWithFormat:@"(%@)", _model.unit];
-    self.priceLabel.text = [UserSignData share].user.walletUnitType == 1 ? [NSString stringWithFormat:@"¥%.2lf", _model.ico.priceCny.floatValue] : [NSString stringWithFormat:@"$%.2lf", _model.ico.priceUsd.floatValue];
-    self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", _model.ico.percentChange24h.floatValue >= 0 ? @"+" : @"", _model.ico.percentChange24h.floatValue];
-    self.aboceLabel.text = [NSString stringWithFormat:@"Above $%@", _model.categoryUser.marketHige];
-    self.belowLabel.text = [NSString stringWithFormat:@"Below $%@", _model.categoryUser.marketLost];
+    self.priceLabel.text = [UserSignData share].user.walletUnitType == 1 ? [NSString stringWithFormat:@"¥%.2lf", _model.ico.priceCny.doubleValue] : [NSString stringWithFormat:@"$%.2lf", _model.ico.priceUsd.doubleValue];
+    self.changeLabel.text = [NSString stringWithFormat:@"(%@%.2lf%%)", _model.ico.percentChange24h.doubleValue >= 0 ? @"+" : @"", _model.ico.percentChange24h.doubleValue];
+    self.aboceLabel.text = [NSString stringWithFormat:@"%@ $%@", DBHGetStringWithKeyFromTable(@"Above", nil), _model.categoryUser.marketHige];
+    self.belowLabel.text = [NSString stringWithFormat:@"%@ $%@", DBHGetStringWithKeyFromTable(@"Below", nil), _model.categoryUser.marketLost];
 }
 
 - (UIImageView *)iconImageView {

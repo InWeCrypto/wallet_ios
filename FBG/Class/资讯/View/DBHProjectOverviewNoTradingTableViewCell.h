@@ -15,6 +15,6 @@
 /**
  项目信息
  */
-@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;;
+@property (nonatomic, strong) DBHProjectDetailInformationModelData *projectDetailModel;
 
 @end

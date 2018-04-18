@@ -8,12 +8,13 @@
 
 #import "DBHLoginViewController.h"
 
-#import <LocalAuthentication/LocalAuthentication.h>
 #import <HyphenateLite/HyphenateLite.h>
 
 #import "DBHForgetPasswordViewController.h"
 #import "DBHSignUpViewController.h"
 #import "DBHSelectFaceOrTouchViewController.h"
+
+#import "UserLogin.h"
 
 @interface DBHLoginViewController ()
 
@@ -28,7 +29,6 @@
 @property (nonatomic, strong) UIButton *forgetPasswordButton;
 @property (nonatomic, strong) UIButton *enterWalletButton;
 @property (nonatomic, strong) UIButton *registerButton;
-@property (nonatomic, strong) LAContext *context;
 
 @end
 
@@ -39,6 +39,16 @@
     [super viewDidLoad];
     
     [self setUI];
+    [self setNavigationBar];
+}
+
+- (void)setNavigationBar {
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"login_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(closeClicked)];
+    self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+}
+
+- (void)closeClicked {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark ------ Touch ------
@@ -47,6 +57,20 @@
     
     [self.view endEditing:YES];
 }
+
+/**
+// 测试环境切换❤️❤️切换❤️❤️
+- (void)exchangeAccount {
+    NSString *account = self.accountTextField.text;
+    if ([account isEqualToString:@"413646278@qq.com"]) {
+//        self.accountTextField.text = @"18081789190@163.com";
+        self.accountTextField.text = @"1343438795@qq.com";
+        self.passwordTextField.text = @"lalala123";
+    } else {
+        self.accountTextField.text = @"413646278@qq.com";
+        self.passwordTextField.text = @"zhangyu920323";
+    }
+} */
 
 #pragma mark ------ UI ------
 - (void)setUI {
@@ -61,6 +85,18 @@
     [self.view addSubview:self.forgetPasswordButton];
     [self.view addSubview:self.enterWalletButton];
     [self.view addSubview:self.registerButton];
+    
+    /**
+    {
+        //测试环境切换❤️❤️切换❤️❤️
+        UIButton *exchangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        exchangeBtn.frame = CGRectMake(100, 100, 60, 40);
+        [exchangeBtn setBackgroundColor:[UIColor redColor]];
+        [exchangeBtn setTitle:@"change" forState:UIControlStateNormal];
+        [exchangeBtn addTarget:self action:@selector(exchangeAccount) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:exchangeBtn];
+    }
+    */
     
     WEAKSELF
     [self.backImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -129,37 +165,7 @@
  登录
  */
 - (void)login {
-    NSDictionary *paramters = @{@"email":self.accountTextField.text,
-                                @"password":self.passwordTextField.text};
-    
-    WEAKSELF
-    [PPNetworkHelper POST:@"login" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Log in", nil)] success:^(id responseObject) {
-        EMError *error = [[EMClient sharedClient] loginWithUsername:[NSString stringWithFormat:@"%@", responseObject[@"id"]] password:weakSelf.passwordTextField.text];
-        while (error) {
-            [[EMClient sharedClient] logout:YES];
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Login Failed", nil)];
-            error = [[EMClient sharedClient] loginWithUsername:[NSString stringWithFormat:@"%@", responseObject[@"id"]] password:weakSelf.passwordTextField.text];
-        }
-        // 环信登录成功
-        // 开启自动登录
-        [[EMClient sharedClient].options setIsAutoLogin:YES];
-        
-        UserModel *user = [UserSignData share].user;
-        if (![UserSignData share].user) {
-            user = [[UserModel alloc] init];
-        }
-        user.token = responseObject[@"token"];
-        user.open_id = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
-        user.email = responseObject[@"email"];
-        user.nickname = responseObject[@"name"];
-        user.img = responseObject[@"img"];
-        user.walletUnitType = 1;
-        [[UserSignData share] storageData:user];
-        
-        [weakSelf goHome];
-    } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
-    }];
+    [UserLogin userLogin:self.accountTextField.text password:self.passwordTextField.text target:self];
 }
 
 #pragma mark ------ Event Responds ------
@@ -201,36 +207,6 @@
     [self.navigationController pushViewController:signUpViewController animated:YES];
 }
 
-#pragma mark ------ Private Methods ------
-/**
- 去主页或开启FaceID/TouchID
- */
-- (void)goHome {
-    if ([[NSString deviceType] isEqualToString:@"iPhone X"]) {
-        // Face ID
-        [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeFaceID;
-        [[UserSignData share] storageData:[UserSignData share].user];
-        DBHSelectFaceOrTouchViewController *selectFaceOrTouchViewController = [[DBHSelectFaceOrTouchViewController alloc] init];
-        selectFaceOrTouchViewController.faceOrTouchViewControllerType = DBHFaceViewControllerType;
-        [self.navigationController pushViewController:selectFaceOrTouchViewController animated:YES];
-    } else {
-        NSError *error = nil;
-        if ([self.context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
-            // Touch ID
-            [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeTouchID;
-            [[UserSignData share] storageData:[UserSignData share].user];
-            DBHSelectFaceOrTouchViewController *selectFaceOrTouchViewController = [[DBHSelectFaceOrTouchViewController alloc] init];
-            selectFaceOrTouchViewController.faceOrTouchViewControllerType = DBHTouchViewControllerType;
-            [self.navigationController pushViewController:selectFaceOrTouchViewController animated:YES];
-        } else {
-            // 不支持Touch ID
-            [UserSignData share].user.canUseUnlockType = DBHCanUseUnlockTypeNone;
-            [[UserSignData share] storageData:[UserSignData share].user];
-            [[AppDelegate delegate] goToTabbar];
-        }
-    }
-}
-
 #pragma mark ------ Getters And Setters ------
 - (UIImageView *)backImageView {
     if (!_backImageView) {
@@ -243,7 +219,7 @@
         _helloLabel = [[UILabel alloc] init];
         _helloLabel.font = BOLDFONT(25);
         _helloLabel.text = DBHGetStringWithKeyFromTable(@"Hello,", nil);
-        _helloLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _helloLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _helloLabel;
 }
@@ -252,7 +228,7 @@
         _welcomeLabel = [[UILabel alloc] init];
         _welcomeLabel.font = BOLDFONT(25);
         _welcomeLabel.text = DBHGetStringWithKeyFromTable(@"Welcome Back!", nil);
-        _welcomeLabel.textColor = COLORFROM16(0xFF841C, 1);
+        _welcomeLabel.textColor = MAIN_ORANGE_COLOR;
     }
     return _welcomeLabel;
 }
@@ -263,6 +239,8 @@
         _accountTextField.textColor = COLORFROM16(0x333333, 1);
         _accountTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
         _accountTextField.placeholder = DBHGetStringWithKeyFromTable(@"Email", nil);
+        
+//         _accountTextField.text = @"413646278@qq.com"; //测试环境下切换❤️❤️切换❤️❤️
     }
     return _accountTextField;
 }
@@ -281,6 +259,9 @@
         _passwordTextField.secureTextEntry = YES;
         _passwordTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
         _passwordTextField.placeholder = DBHGetStringWithKeyFromTable(@"Password", nil);
+        
+//        _passwordTextField.text = @"zhangyu920323"; //测试环境下切换❤️❤️切换❤️❤️
+        
     }
     return _passwordTextField;
 }
@@ -313,7 +294,7 @@
 - (UIButton *)enterWalletButton {
     if (!_enterWalletButton) {
         _enterWalletButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _enterWalletButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _enterWalletButton.backgroundColor = MAIN_ORANGE_COLOR;
         _enterWalletButton.titleLabel.font = BOLDFONT(14);
         _enterWalletButton.layer.cornerRadius = AUTOLAYOUTSIZE(2);
         _enterWalletButton.clipsToBounds = YES;
@@ -333,11 +314,6 @@
     }
     return _registerButton;
 }
-- (LAContext *)context {
-    if (!_context) {
-        _context = [[LAContext alloc] init];
-    }
-    return _context;
-}
+
 
 @end

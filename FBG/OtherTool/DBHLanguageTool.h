@@ -29,7 +29,7 @@
 /**
  *  改变当前语言
  */
--(void)changeNowLanguage;
+//-(void)changeNowLanguage;
 
 /**
  *  设置新的语言

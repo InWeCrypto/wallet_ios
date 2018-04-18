@@ -16,4 +16,7 @@
 // 数组转成json 字符串
 - (NSString *)toJSONStringForArray;
 
++ (NSMutableArray *)arraySortedByArr:(NSMutableArray *)arr;
+
+
 @end

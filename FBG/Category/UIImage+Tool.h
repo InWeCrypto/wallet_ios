@@ -18,5 +18,17 @@
 
 //将图片剪裁至目标尺寸
 + (UIImage *) imageByScalingAndCroppingForSourceImage:(UIImage *)sourceImage targetSize:(CGSize)targetSize;
++ (UIImage *)imageWithGradients:(NSArray *)colours;
 
+
+/**
+ 将图片压缩至指定大小
+
+ @param image image
+ @param newSize newSize
+ @return 图片
+ */
++ (UIImage *)imageWithImage:(UIImage*)image scaledToSize:(CGSize)newSize;
+
++ (void)setRoundForView:(UIView *)view borderColor:(UIColor *)color;
 @end

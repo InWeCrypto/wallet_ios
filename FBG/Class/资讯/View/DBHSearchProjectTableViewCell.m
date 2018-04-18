@@ -64,7 +64,7 @@
     
     [self.iconImageView sdsetImageWithURL:_model.img placeholderImage:nil];
     
-    NSMutableAttributedString *nameAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@（%@）", _model.unit, _model.name]];
+    NSMutableAttributedString *nameAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@（%@）", _model.unit, _model.longName]];
     [nameAttributedString addAttributes:@{NSFontAttributeName:BOLDFONT(15)} range:NSMakeRange(0, _model.unit.length)];
     self.nameLabel.attributedText = nameAttributedString;
     self.tagLabel.text = _model.industry;
@@ -81,6 +81,7 @@
     if (!_iconImageView) {
         _iconImageView = [[UIImageView alloc] init];
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _iconBackView.backgroundColor = [UIColor clearColor];
     }
     return _iconImageView;
 }

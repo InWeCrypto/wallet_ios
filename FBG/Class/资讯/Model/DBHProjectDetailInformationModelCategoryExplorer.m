@@ -8,7 +8,7 @@
 #import "DBHProjectDetailInformationModelCategoryExplorer.h"
 
 
-NSString *const kDBHProjectDetailInformationModelCategoryExplorerName = @"name";
+NSString *const kDBHProjectDetailInformationModelCategoryExplorerName = NAME;
 NSString *const kDBHProjectDetailInformationModelCategoryExplorerDesc = @"desc";
 NSString *const kDBHProjectDetailInformationModelCategoryExplorerUrl = @"url";
 

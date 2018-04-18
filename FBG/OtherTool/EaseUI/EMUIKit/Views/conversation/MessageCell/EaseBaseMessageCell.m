@@ -44,7 +44,7 @@
     cell.messageNameColor = [UIColor grayColor];
     cell.messageNameFont = [UIFont systemFontOfSize:10];
     cell.messageNameHeight = 15;
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+    if ([UIDevice currentDevice].systemVersion.doubleValue >= 8.0) {
         cell.messageNameIsHidden = NO;
     }
     
@@ -68,7 +68,7 @@
         
         [self configureLayoutConstraintsWithModel:model];
         
-        if ([UIDevice currentDevice].systemVersion.floatValue == 7.0) {
+        if ([UIDevice currentDevice].systemVersion.doubleValue == 7.0) {
             self.messageNameHeight = 15;
         }
     }
@@ -361,7 +361,7 @@
     
     CGFloat minHeight = cell.avatarSize + EaseMessageCellPadding * 2;
     CGFloat height = cell.messageNameHeight;
-    if ([UIDevice currentDevice].systemVersion.floatValue == 7.0) {
+    if ([UIDevice currentDevice].systemVersion.doubleValue == 7.0) {
         height = 15;
     }
     height += - EaseMessageCellPadding + [EaseMessageCell cellHeightWithModel:model];

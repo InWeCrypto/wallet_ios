@@ -32,8 +32,8 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Claim", nil);
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.title = DBHGetStringWithKeyFromTable(@"Claim Gas", nil);
+    self.view.backgroundColor = WHITE_COLOR;
     
     [self setUI];
     [self addRefresh];
@@ -78,13 +78,66 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
 #pragma mark ------ Data ------
 - (void)getData {
     WEAKSELF
-    [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%@", self.wallectId] baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject)
-     {
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%@", self.wallectId] baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        [weakSelf endRefresh];
+        NSDictionary *record = responseCache[RECORD];
+        NSString *neoNumber = [NSString stringWithFormat:@"%@", record[BALANCE]];
+        
+        NSString *neoPriceForCny = @"0";
+        NSString *neoPriceForUsd = @"0";
+        if (![record isEqual:[NSNull null]]) {
+            NSDictionary *cap = record[CAP];
+            if (![cap isEqual:[NSNull null]]) {
+                neoPriceForCny = cap[PRICE_CNY];
+                neoPriceForUsd = cap[PRICE_USD];
+            }
+        }
+        
+        weakSelf.neoTokenModel.address = record[@"address"];
+        weakSelf.neoTokenModel.name = @"NEO";
+        weakSelf.neoTokenModel.icon = @"NEO_add";
+        weakSelf.neoTokenModel.balance = neoNumber;
+        weakSelf.neoTokenModel.priceCny = neoPriceForCny;
+        weakSelf.neoTokenModel.priceUsd = neoPriceForUsd;
+        weakSelf.neoTokenModel.flag = @"NEO";
+        
+        NSArray *gny = record[GNT];
+        NSDictionary *gas = gny.firstObject;
+        
+        NSString *gasPriceForCny = @"0";
+        NSString *gasPriceForUsd = @"0";
+        if (![gas isEqual:[NSNull null]]) {
+            NSDictionary *cap = gas[CAP];
+            if (![cap isEqual:[NSNull null]]) {
+                gasPriceForCny = cap[PRICE_CNY];
+                gasPriceForUsd = cap[PRICE_USD];
+            }
+        }
+        
+        weakSelf.gasTokenModel.name = @"可提现Gas";
+        weakSelf.gasTokenModel.icon = @"NEO_project_icon_Gas";
+        weakSelf.gasTokenModel.balance = gas[@"available"];
+        weakSelf.gasTokenModel.noExtractbalance = gas[@"unavailable"];
+        weakSelf.gasTokenModel.priceCny = gasPriceForCny;
+        weakSelf.gasTokenModel.priceUsd = gasPriceForUsd;
+        weakSelf.gasTokenModel.dataIdentifier = gas[CAP][@"id"];
+        
+        [weakSelf.tableView reloadData];
+    } success:^(id responseObject) {
          [weakSelf endRefresh];
-         NSDictionary *record = responseObject[@"record"];
-         NSString *neoNumber = [NSString stringWithFormat:@"%@", record[@"balance"]];
-         NSString *neoPriceForCny = record[@"cap"][@"price_cny"];
-         NSString *neoPriceForUsd = record[@"cap"][@"price_usd"];
+         NSDictionary *record = responseObject[RECORD];
+         NSString *neoNumber = [NSString stringWithFormat:@"%@", record[BALANCE]];
+         
+         NSString *neoPriceForCny = @"0";
+         NSString *neoPriceForUsd = @"0";
+         if (![record isEqual:[NSNull null]]) {
+             NSDictionary *cap = record[CAP];
+             if (![cap isEqual:[NSNull null]]) {
+                 neoPriceForCny = cap[PRICE_CNY];
+                 neoPriceForUsd = cap[PRICE_USD];
+             }
+         }
+         
          weakSelf.neoTokenModel.address = record[@"address"];
          weakSelf.neoTokenModel.name = @"NEO";
          weakSelf.neoTokenModel.icon = @"NEO_add";
@@ -93,24 +146,32 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
          weakSelf.neoTokenModel.priceUsd = neoPriceForUsd;
          weakSelf.neoTokenModel.flag = @"NEO";
 
-         NSArray *gny = record[@"gnt"];
+         NSArray *gny = record[GNT];
          NSDictionary *gas = gny.firstObject;
-         NSString *gasPriceForCny = gas[@"cap"][@"price_cny"];
-         NSString *gasPriceForUsd = gas[@"cap"][@"price_usd"];
+         
+         NSString *gasPriceForCny = @"0";
+         NSString *gasPriceForUsd = @"0";
+         if (![gas isEqual:[NSNull null]]) {
+             NSDictionary *cap = gas[CAP];
+             if (![cap isEqual:[NSNull null]]) {
+                 gasPriceForCny = cap[PRICE_CNY];
+                 gasPriceForUsd = cap[PRICE_USD];
+             }
+         }
+         
          weakSelf.gasTokenModel.name = @"可提现Gas";
          weakSelf.gasTokenModel.icon = @"NEO_project_icon_Gas";
          weakSelf.gasTokenModel.balance = gas[@"available"];
          weakSelf.gasTokenModel.noExtractbalance = gas[@"unavailable"];
          weakSelf.gasTokenModel.priceCny = gasPriceForCny;
          weakSelf.gasTokenModel.priceUsd = gasPriceForUsd;
-         weakSelf.gasTokenModel.dataIdentifier = gas[@"cap"][@"id"];
+         weakSelf.gasTokenModel.dataIdentifier = gas[CAP][@"id"];
 
-         [weakSelf.tableView reloadData];
-     }failure:^(NSString *error)
-     {
+        [weakSelf.tableView reloadData];
+     } failure:^(NSString *error) {
          [weakSelf endRefresh];
          [LCProgressHUD showFailure:error];
-     }];
+     } specialBlock:nil];
 }
 // 上传后台提交NEO订单
 - (void)creatNeoOrderWithData:(NSString *)data trade_no:(NSString *)trade_no
@@ -120,18 +181,18 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     [dic setObject:/*self.wallectId*/@(0) forKey:@"wallet_id"];
     [dic setObject:data forKey:@"data"];
-    [dic setObject:self.gasTokenModel.address forKey:@"pay_address"];
-    [dic setObject:self.gasTokenModel.address forKey:@"receive_address"];
-    [dic setObject:@"" forKey:@"remark"];
-    [dic setObject:self.type == 1 ? self.neoTokenModel.balance : self.gasTokenModel.canExtractbalance forKey:@"fee"];
-    [dic setObject:@"0" forKey:@"handle_fee"];
+    [dic setObject:self.gasTokenModel.address forKey:PAY_ADDRESS];
+    [dic setObject:self.gasTokenModel.address forKey:RECEIVE_ADDRESS];
+    [dic setObject:@"" forKey:REMARK];
+    [dic setObject:self.type == 1 ? self.neoTokenModel.balance : self.gasTokenModel.canExtractbalance forKey:FEE];
+    [dic setObject:@"0" forKey:HANDLE_FEE];
     [dic setObject:@"NEO" forKey:@"flag"];
-    [dic setObject:[NSString stringWithFormat:@"0x%@", trade_no] forKey:@"trade_no"];
+    [dic setObject:[NSString stringWithFormat:@"0x%@", trade_no] forKey:TRADE_NO];
     [dic setObject:assert forKey:@"asset_id"];
 
-    [PPNetworkHelper POST:@"wallet-order" baseUrlType:1 parameters:dic hudString:self.type == 1 ? @"gas解冻中，请耐心等待" : @"创建中..." success:^(id responseObject)
+    [PPNetworkHelper POST:@"wallet-order" baseUrlType:1 parameters:dic hudString:self.type == 1 ? DBHGetStringWithKeyFromTable(@"In gas extraction, Please be patient", nil) : DBHGetStringWithKeyFromTable(@"Creating...", nil) success:^(id responseObject)
      {
-         [LCProgressHUD showMessage:@"订单创建成功"];
+         [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Order successfully created", nil)];
          [self.navigationController popViewControllerAnimated:YES];
 
      } failure:^(NSString *error)
@@ -145,12 +206,12 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
  解冻
  */
 - (void)respondsToUnfreezeButton {
-    if (self.gasTokenModel.noExtractbalance.floatValue <= 0) {
-        [LCProgressHUD showFailure:@"暂未可解冻的Gas"];
+    if (self.gasTokenModel.noExtractbalance.doubleValue <= 0) {
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The balance of NEO is 0!Unable to unfreeze!", nil)];
 
         return;
     }
-    if (self.neoTokenModel.balance.floatValue <= 0) {
+    if (self.neoTokenModel.balance.doubleValue <= 0) {
         [LCProgressHUD showFailure:@"NEO数量不够 解冻失败"];
 
         return;
@@ -169,7 +230,7 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
  确定
  */
 - (void)respondsToSureButton {
-    if (self.gasTokenModel.canExtractbalance.floatValue <= 0) {
+    if (self.gasTokenModel.canExtractbalance.doubleValue <= 0) {
         [LCProgressHUD showFailure:@"暂未可提取的Gas"];
 
         return;
@@ -190,7 +251,7 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
  NEO转账
  */
 - (void)transferAccountsForNEOWithPassword:(NSString *)password unspent:(NSString *)unspent {
-    id data = [PDKeyChain load:self.gasTokenModel.address];
+    id data = [PDKeyChain load:KEYCHAIN_KEY(self.gasTokenModel.address)];
     // NEO钱包转账
     //子线程异步执行下载任务，防止主线程卡顿
     NSError * error;
@@ -221,7 +282,7 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
                                               if (!error)
                                               {
                                                   [LCProgressHUD hide];
-                                                  [LCProgressHUD showMessage:self.type == 1 ? @"解冻成功" : @"提取成功"];
+                                                  [LCProgressHUD showMessage:self.type == 1 ? DBHGetStringWithKeyFromTable(@"Unfreeze successfully", nil) : DBHGetStringWithKeyFromTable(@"Claim successfully", nil)];
 
                                                   //热钱包生成订单
                                                   [self creatNeoOrderWithData:tx.data trade_no:tx.id_];
@@ -229,14 +290,15 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
                                               else
                                               {
                                                   [LCProgressHUD hide];
-                                                  [LCProgressHUD showMessage:self.type == 1 ? @"解冻失败，请稍后重试" : @"提取失败，请稍后重试"];
+                                                  [LCProgressHUD showMessage:self.type == 1 ? DBHGetStringWithKeyFromTable(@"Unfreeze failure, please try again later", nil) : DBHGetStringWithKeyFromTable(@"Claim failure, please try again later", nil)];
                                               }
                                           });
                        }
                        else
                        {
                            [LCProgressHUD hide];
-                           [LCProgressHUD showMessage:@"密码错误，请稍后重试"];
+                           [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"The password is incorrect. Please try again later", nil)];
+                           
                        }
                    });
 }
@@ -262,7 +324,7 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = WHITE_COLOR;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
@@ -281,7 +343,7 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
 - (UIButton *)sureButton {
     if (!_sureButton) {
         _sureButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _sureButton.backgroundColor = COLORFROM16(0xFF841C, 1);
+        _sureButton.backgroundColor = MAIN_ORANGE_COLOR;
         _sureButton.titleLabel.font = [UIFont systemFontOfSize:AUTOLAYOUTSIZE(14)];
         [_sureButton setTitle:DBHGetStringWithKeyFromTable(@"Claim", nil) forState:UIControlStateNormal];
         [_sureButton addTarget:self action:@selector(respondsToSureButton) forControlEvents:UIControlEventTouchUpInside];
@@ -301,7 +363,7 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
                            {
                                if (weakSelf.type == 1) {
                                    // 解冻
-                                   [PPNetworkHelper GET:[NSString stringWithFormat:@"extend/getNeoUtxo?address=%@&type=%@", weakSelf.gasTokenModel.address, @"neo-asset-id"] baseUrlType:1 parameters:nil hudString:@"" success:^(id responseObject) {
+                                   [PPNetworkHelper GET:[NSString stringWithFormat:@"extend/getNeoUtxo?address=%@&type=%@", weakSelf.gasTokenModel.address, @"neo-asset-id"] baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
                                        NSArray *result = responseObject[@"result"];
                                        [weakSelf transferAccountsForNEOWithPassword:password unspent:[result toJSONStringForArray]];
                                    } failure:^(NSString *error) {
@@ -309,7 +371,7 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
                                    }];
                                } else {
                                    // 提取
-                                   [PPNetworkHelper GET:[NSString stringWithFormat:@"extend/getNeoClaimUtxo?address=%@", weakSelf.gasTokenModel.address] baseUrlType:1 parameters:nil hudString:@"" success:^(id responseObject) {
+                                   [PPNetworkHelper GET:[NSString stringWithFormat:@"extend/getNeoClaimUtxo?address=%@", weakSelf.gasTokenModel.address] baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
                                        NSArray *result = responseObject[@"result"][@"Claims"];
                                        [weakSelf transferAccountsForNEOWithPassword:password unspent:[result toJSONStringForArray]];
                                    } failure:^(NSString *error) {

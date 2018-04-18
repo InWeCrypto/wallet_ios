@@ -9,7 +9,7 @@
 #import "DBHAddressBookModelList.h"
 
 
-NSString *const kDBHAddressBookModelDataList = @"list";
+NSString *const kDBHAddressBookModelDataList = LIST;
 
 
 @interface DBHAddressBookModelData ()

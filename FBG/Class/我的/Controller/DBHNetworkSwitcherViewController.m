@@ -6,6 +6,7 @@
 //  Copyright © 2018年 ButtonRoot. All rights reserved.
 //
 
+#import "ZFTabBarViewController.h"
 #import "DBHNetworkSwitcherViewController.h"
 
 #import "DBHMonetaryUnitTableViewCell.h"
@@ -28,7 +29,7 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
     [super viewDidLoad];
     
     self.title = DBHGetStringWithKeyFromTable(@"Network Settings", nil);
-    self.view.backgroundColor = COLORFROM16(0xF8F8F8, 1);
+    self.view.backgroundColor = LIGHT_WHITE_BGCOLOR;
     self.currentSelectedRow = [APP_APIEHEAD isEqualToString:APIEHEAD1] ? 0 : 1;
     
     [self setUI];
@@ -76,12 +77,30 @@ static NSString *const kDBHMonetaryUnitTableViewCellIdentifier = @"kDBHMonetaryU
     if (self.currentSelectedRow == ([APP_APIEHEAD isEqualToString:APIEHEAD1] ? 0 : 1)) {
         [self.navigationController popViewControllerAnimated:YES];
     } else {
-        [UserSignData share].user.token = nil;
-        [[UserSignData share] storageData:[UserSignData share].user];
-        [[NSUserDefaults standardUserDefaults] setObject:!self.currentSelectedRow ? APIEHEAD1 : TESTAPIEHEAD1 forKey:@"appNetWorkApi"];
+        [[EMClient sharedClient].options setIsAutoLogin:NO];
+        
+        [[UserSignData share] storageData:nil];
+        
+        UserModel *user = [UserSignData share].user;
+        // 货币单位跟随语言
+        user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+        [[UserSignData share] storageData:user];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:!self.currentSelectedRow ? APIEHEAD1 : TESTAPIEHEAD1 forKey:APP_NETWORK_API_KEY];
         EMError *error = [[EMClient sharedClient] logout:YES];
         [[AppDelegate delegate] emregister];
-        [[AppDelegate delegate] showLoginController];
+//        [[AppDelegate delegate] showLoginController];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:IS_LOGIN_KEY];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+        ZFTabBarViewController * tab = [[ZFTabBarViewController alloc] init];
+        UIWindow *window = [AppDelegate delegate].window;
+        window.rootViewController = tab;
+        [window makeKeyAndVisible];
+        
     }
 }
 
