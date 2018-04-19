@@ -22,8 +22,7 @@
 /**
  转账记录
  */
-@property (nonatomic, strong) DBHTransferListModelList *neoModel;
-@property (nonatomic, strong) YYTransferListETHModel *ethModel;
+@property (nonatomic, strong) DBHTransferListModelList *model;
 
 @property (nonatomic, strong) EMMessage *message;
 

@@ -9,7 +9,6 @@
 #import "DBHTransferListTableViewCell.h"
 
 #import "DBHTransferListModelList.h"
-#import "YYTransferListETHModel.h"
 #import "DBHWalletManagerForNeoModelList.h"
 
 @interface DBHTransferListTableViewCell ()
@@ -79,36 +78,42 @@
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setModel:(id)model {
+- (void)setModel:(DBHTransferListModelList *)model {
     _model = model;
-    if ([model isKindOfClass:[YYTransferListETHModel class]]) {
-        YYTransferListETHModel *ethModel = (YYTransferListETHModel *)model;
-        if (!ethModel.transferType) {
-            self.stateImageView.image = [UIImage imageNamed:@"自转"];
-            self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", ethModel.fee.doubleValue];
-            self.numberLabel.textColor = COLORFROM16(0x232772, 1);
-        } else {
-            self.stateImageView.image = [UIImage imageNamed:ethModel.transferType == 1 ? @"转出" : @"转入"];
-            self.numberLabel.text = [NSString stringWithFormat:@"%@%.8lf", ethModel.transferType == 1 ? @"-" : @"+", ethModel.fee.doubleValue];
-            self.numberLabel.textColor = ethModel.transferType == 1 ? [UIColor redColor] : COLORFROM16(0x232772, 1);
-        }
-        self.addressLabel.text = ethModel.trade_no;
-        self.timeLabel.text = [NSString getLocalDateFormateUTCDate:ethModel.created_at];
-        //    self.stateLabel.text = ![NSObject isNulllWithObject:_model.confirmTime] ? @"交易成功" : @"待确认";
-        
-        //（当前块高-订单里的块高 + 1）/最小块高
-        int number;
-        if ([ethModel.maxBlockNumber intValue] - [ethModel.block_number intValue] + 1 < 0) {
-            //小于0 置为0
-            number = 0;
-        } else {
-            number = ([ethModel.maxBlockNumber intValue] - [ethModel.block_number intValue] + 1);
-        }
-        
-        self.slider.hidden = NO;
     
-        if ([NSObject isNulllWithObject:ethModel.confirm_at]) {
-            if (number >= ethModel.minBlockNumber.doubleValue) {
+    if (!_model.transferType) {
+        self.stateImageView.image = [UIImage imageNamed:@"自转"];
+        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.value.doubleValue];
+        self.numberLabel.textColor = COLORFROM16(0x232772, 1);
+    } else {
+        self.stateImageView.image = [UIImage imageNamed:_model.transferType == 1 ? @"转出" : @"转入"];
+        self.numberLabel.text = [NSString stringWithFormat:@"%@%.8lf", _model.transferType == 1 ? @"-" : @"+", _model.value.doubleValue];
+        self.numberLabel.textColor = _model.transferType == 1 ? [UIColor redColor] : COLORFROM16(0x232772, 1);
+    }
+    self.addressLabel.text = _model.tx;
+    self.timeLabel.text = [NSString getLocalDateFormateUTCDate:_model.createTime];
+    //    self.stateLabel.text = ![NSObject isNulllWithObject:_model.confirmTime] ? @"交易成功" : @"待确认";
+    
+    //（当前块高-订单里的块高 + 1）/最小块高
+    int number;
+    if ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1 < 0) {
+        //小于0 置为0
+        number = 0;
+    } else {
+        number = ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1);
+    }
+    
+    self.slider.hidden = NO;
+    if (self.neoWalletModel.categoryId == 2) { //neo gas 代币
+        self.slider.hidden = YES;
+        if ([NSObject isNulllWithObject:model.confirmTime]) {
+            self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Processing...", nil);
+        } else { // eth 代币
+            self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Successful Transaction", nil);
+        }
+    } else {
+        if ([NSObject isNulllWithObject:model.confirmTime]) {
+            if (number >= model.minBlockNumber.doubleValue) {
                 // 交易失败
                 self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Failed Transaction", nil);
                 self.slider.hidden = YES;
@@ -118,48 +123,14 @@
                 self.slider.value = 0;
             }
         } else {
-            if (number >= ethModel.minBlockNumber.doubleValue) {
+            if (number >= model.minBlockNumber.doubleValue) {
                 // 交易成功
                 self.slider.hidden = YES;
                 self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Successful Transaction", nil);
             } else {
                 // 打包中
-                self.stateLabel.text = [NSString stringWithFormat:@"%@%d/%@", DBHGetStringWithKeyFromTable(@"Confirmed", nil), number,ethModel.minBlockNumber];
-                self.slider.value = number/[ethModel.minBlockNumber floatValue];
-            }
-        }
-        
-    } else if ([model isKindOfClass:[DBHTransferListModelList class]]) {
-        DBHTransferListModelList *neoModel = (DBHTransferListModelList *)model;
-        if (!neoModel.transferType) {
-            self.stateImageView.image = [UIImage imageNamed:@"自转"];
-            self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", neoModel.value.doubleValue];
-            self.numberLabel.textColor = COLORFROM16(0x232772, 1);
-        } else {
-            self.stateImageView.image = [UIImage imageNamed:neoModel.transferType == 1 ? @"转出" : @"转入"];
-            self.numberLabel.text = [NSString stringWithFormat:@"%@%.8lf", neoModel.transferType == 1 ? @"-" : @"+", neoModel.value.doubleValue];
-            self.numberLabel.textColor = neoModel.transferType == 1 ? [UIColor redColor] : COLORFROM16(0x232772, 1);
-        }
-        self.addressLabel.text = neoModel.tx;
-        self.timeLabel.text = [NSString getLocalDateFormateUTCDate:neoModel.createTime];
-        //    self.stateLabel.text = ![NSObject isNulllWithObject:_model.confirmTime] ? @"交易成功" : @"待确认";
-        
-        //（当前块高-订单里的块高 + 1）/最小块高
-        int number;
-        if ([neoModel.maxBlockNumber intValue] - [neoModel.block_number intValue] + 1 < 0) {
-            //小于0 置为0
-            number = 0;
-        } else {
-            number = ([neoModel.maxBlockNumber intValue] - [neoModel.block_number intValue] + 1);
-        }
-        
-        self.slider.hidden = NO;
-        if (self.neoWalletModel.categoryId == 2) { //neo gas 代币
-            self.slider.hidden = YES;
-            if ([NSObject isNulllWithObject:neoModel.confirmTime]) {
-                self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Processing...", nil);
-            } else { // eth 代币
-                self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Successful Transaction", nil);
+                self.stateLabel.text = [NSString stringWithFormat:@"%@%d/%@", DBHGetStringWithKeyFromTable(@"Confirmed", nil), number,model.minBlockNumber];
+                self.slider.value = number/[model.minBlockNumber floatValue];
             }
         }
     }

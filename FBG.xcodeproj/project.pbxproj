@@ -4205,6 +4205,8 @@
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TTTAttributedLabel/TTTAttributedLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
+				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
 				"${BUILT_PRODUCTS_DIR}/YUSegment/YUSegment.framework",
 				"${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework",
 			);
@@ -4227,6 +4229,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTTAttributedLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TZImagePickerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YUSegment.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCache.framework",
 			);
@@ -4241,9 +4245,14 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FBG/Pods-FBG-resources.sh",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterShareExtensionUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterShareExtensionUIResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5127,11 +5136,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Pods/Charts",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/FBG/OtherTool",
-					"$(PROJECT_DIR)/FBG/OtherTool/OneSDK",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)/FBG/OtherTool $(PROJECT_DIR)/FBG/OtherTool/OneSDK";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/FBG/FBG-PrefixHeader.pch";
 				INFOPLIST_FILE = FBG/Info.plist;

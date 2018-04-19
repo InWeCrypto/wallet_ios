@@ -14,6 +14,7 @@
 #import "WKWebView+Tool.h"
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "LYShareMenuView.h"
+#import <TwitterKit/TWTRComposer.h>
 
 #import "CustomActivity.h"
 #import "WXApi.h"
@@ -547,10 +548,12 @@
     NSArray *activityItems = items;
     
     CustomActivity *reservesActivity = [[CustomActivity alloc]initWithTitle:DBHGetStringWithKeyFromTable(@"Reserves", nil) ActivityImage:[UIImage imageNamed:@"fenxiang_shoucang"] URL:[NSURL URLWithString:@"Reserves"] ActivityType:@"Reserves"];
-    CustomActivity *lookProjectActivity = [[CustomActivity alloc]initWithTitle:DBHGetStringWithKeyFromTable(@"Look Project", nil) ActivityImage:[UIImage imageNamed:@"fenxiang_chakan"] URL:[NSURL URLWithString:@"Look Project"] ActivityType:@"Look Project"];
+//    CustomActivity *lookProjectActivity = [[CustomActivity alloc]initWithTitle:DBHGetStringWithKeyFromTable(@"Look Project", nil) ActivityImage:[UIImage imageNamed:@"fenxiang_chakan"] URL:[NSURL URLWithString:@"Look Project"] ActivityType:@"Look Project"];
     
     CustomActivity *longImgShareActivity = [[CustomActivity alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Share Picture", nil) ActivityImage:[UIImage imageNamed:@"fenxiang_jietu1"] URL:[NSURL URLWithString:@"Share Picture"] ActivityType:@"Share Picture"];
-    NSArray *activityArray = @[reservesActivity, lookProjectActivity, longImgShareActivity];
+    CustomActivity *twitterActivity = [[CustomActivity alloc]initWithTitle:@"Twitter" ActivityImage:[UIImage imageNamed:@"fenxiang_twitter"] URL:[NSURL URLWithString:@"Twitter"] ActivityType:@"Twitter"];
+    
+    NSArray *activityArray = @[reservesActivity, longImgShareActivity, twitterActivity];
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activityArray];
     activityVC.excludedActivityTypes = @[UIActivityTypeMessage, UIActivityTypeMail, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeOpenInIBooks];
@@ -564,9 +567,9 @@
             if ([activityType isEqualToString:@"Reserves"]) {
                 [weakSelf reserves];
             }
-            if ([activityType isEqualToString:@"Look Project"]) {
-                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming soon", nil)];
-            }
+//            if ([activityType isEqualToString:@"Look Project"]) {
+//                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming soon", nil)];
+//            }
             
             if ([activityType isEqualToString:@"Share Picture"]) {
                 if (!weakSelf.captureImg) {
@@ -582,6 +585,11 @@
                 }
                 
             }
+            
+            if ([activityType isEqualToString:@"Twitter"]) {
+                [weakSelf shareToTwitter];
+            }
+            
             NSLog(@"Share success");
         } else {
             NSLog(@"Cancel the share");
@@ -600,6 +608,20 @@
 }
 
 #pragma mark ------ Data ------
+- (void)shareToTwitter {
+    NSString *urlStr = [self sharedUrlStr];
+    TWTRComposer *composer = [[TWTRComposer alloc] init];
+    
+    [composer setText:self.title];
+    [composer setImage:self.shareIconImg];
+    [composer setURL:[NSURL URLWithString:urlStr]];
+    
+    WEAKSELF
+    [composer showFromViewController:self completion:^(TWTRComposerResult result) {
+        [weakSelf shareSuccess:result == TWTRComposerResultDone];
+    }];
+}
+
 - (void)reserves {
     NSDictionary *paramters = @{@"enable":[NSNumber numberWithBool:true]};
     
@@ -629,11 +651,11 @@
         LYShareMenuItem *telegramItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"fenxiang_telegram" itemTitle:@"Telegram"];
         
         LYShareMenuItem *reservesItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"fenxiang_shoucang" itemTitle:DBHGetStringWithKeyFromTable(@"Reserves", nil)];
-        LYShareMenuItem *lookProjectItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"fenxiang_chakan" itemTitle:DBHGetStringWithKeyFromTable(@"Look Project", nil)];
+//        LYShareMenuItem *lookProjectItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"fenxiang_chakan" itemTitle:DBHGetStringWithKeyFromTable(@"Look Project", nil)];
         LYShareMenuItem *longImgShareItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"fenxiang_jietu1" itemTitle:DBHGetStringWithKeyFromTable(@"Share Picture", nil)];
+        LYShareMenuItem *twitterShareItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"fenxiang_twitter" itemTitle:@"Twitter"];
         
-        _sharedMenuItems = [NSMutableArray arrayWithObjects:friendItem, weixinItem, qqItem, telegramItem, reservesItem, lookProjectItem, longImgShareItem,
-                            nil];
+        _sharedMenuItems = [NSMutableArray arrayWithObjects:friendItem, weixinItem, qqItem, telegramItem, reservesItem, longImgShareItem, twitterShareItem, nil];
     }
     return _sharedMenuItems;
 }
@@ -663,12 +685,16 @@
             [self reserves];
             break;
         }
+//        case 5: {
+//            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming soon", nil)];
+//            break;
+//        }
         case 5: {
-            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming soon", nil)];
+            [self shareLongPicture];
             break;
         }
         case 6: {
-            [self shareLongPicture];
+            [self shareToTwitter];
             break;
         }
             

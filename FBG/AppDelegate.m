@@ -24,7 +24,7 @@
 //推送
 #import <CloudPushSDK/CloudPushSDK.h>
 // 推特
-//#import <TwitterKit/TWTRKit.h>
+#import <TwitterKit/TWTRKit.h>
 
 // iOS 10 notification
 #import <UserNotifications/UserNotifications.h>
@@ -138,7 +138,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         [self initCloudPush];
         
         // 推特
-//        [[Twitter sharedInstance] startWithConsumerKey:TWITTER_APP_KEY consumerSecret:TWITTER_APP_SECRET];
+        [[Twitter sharedInstance] startWithConsumerKey:TWITTER_APP_KEY consumerSecret:TWITTER_APP_SECRET];
     });
     
     return YES;
@@ -161,9 +161,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         return [WXApi handleOpenURL:url delegate:self];
     } else if ([url.scheme containsString:QQAppID]){
         return [QQApiInterface handleOpenURL:url delegate:self];
-    }/** else if ([url.scheme containsString:TWITTER_APP_KEY]) {
-      //        return [[Twitter sharedInstance] application:application openURL:url options:options];
-      }*/ else {
+    } else if ([url.scheme containsString:TWITTER_APP_KEY]) {
+      return [[Twitter sharedInstance] application:app openURL:url options:options];
+    } else {
         return YES;
     }
 }

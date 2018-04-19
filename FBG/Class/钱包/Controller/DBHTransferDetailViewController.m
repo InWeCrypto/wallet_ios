@@ -12,7 +12,6 @@
 
 #import "DBHWalletDetailTokenInfomationModelData.h"
 #import "DBHTransferListModelList.h"
-#import "YYTransferListETHModel.h"
 
 @interface DBHTransferDetailViewController ()
 
@@ -132,28 +131,19 @@
  */
 - (void)respondsToOrderNumberButton {
     NSString * url;
-    if (self.neoModel) {
-        if ([APP_APIEHEAD isEqualToString:TESTAPIEHEAD1]) {
+    if (self.model) {
+        if ([APP_APIEHEAD isEqualToString:TESTAPIEHEAD1])
+        {
             //测试
-            url = [self.neoModel.typeName isEqualToString:@"ETH"] ? @"https://ropsten.etherscan.io/tx/" : @"https://neoscan-testnet.io/transaction/";
-        } else {
-            //正式
-            url = [self.neoModel.typeName isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
+            url = [self.model.typeName isEqualToString:@"ETH"] ? @"https://ropsten.etherscan.io/tx/" : @"https://neoscan-testnet.io/transaction/";
         }
-//        NSString *orderNumber = [[self.model.trade_nosubstringToIndex:2] isEqualToString:@"0x"] ? [self.model.trade_no substringFromIndex:2] : self.model.tx;
-        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.neoModel.tx]];
-        vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
-        [self.navigationController pushViewController:vc animated:YES];
-    } else if (self.ethModel) {
-        if ([APP_APIEHEAD isEqualToString:TESTAPIEHEAD1]) {
-            //测试
-            url = [self.ethModel.typeName isEqualToString:@"ETH"] ? @"https://ropsten.etherscan.io/tx/" : @"https://neoscan-testnet.io/transaction/";
-        } else {
+        else
+        {
             //正式
-            url = [self.ethModel.typeName isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
+            url = [self.model.typeName isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
         }
-        //        NSString *orderNumber = [[self.model.trade_nosubstringToIndex:2] isEqualToString:@"0x"] ? [self.model.trade_no substringFromIndex:2] : self.model.tx;
-        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.ethModel.trade_no]];
+        //        NSString *orderNumber = [[self.model.tx substringToIndex:2] isEqualToString:@"0x"] ? [self.model.tx substringFromIndex:2] : self.model.tx;
+        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.model.tx]];
         vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
         [self.navigationController pushViewController:vc animated:YES];
     } else {
@@ -167,7 +157,7 @@
             //正式
             url = [self.message.ext[@"flag"] isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
         }
-//        NSString *orderNumber = [[self.message.ext[TRADE_NO] substringToIndex:2] isEqualToString:@"0x"] ? [self.message.ext[TRADE_NO] substringFromIndex:2] : self.message.ext[TRADE_NO];
+        //        NSString *orderNumber = [[self.message.ext[TRADE_NO] substringToIndex:2] isEqualToString:@"0x"] ? [self.message.ext[TRADE_NO] substringFromIndex:2] : self.message.ext[TRADE_NO];
         KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.message.ext[TRADE_NO]]];
         vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
         [self.navigationController pushViewController:vc animated:YES];
@@ -178,75 +168,39 @@
  */
 - (void)respondsToLongPressGR {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    NSString *tempStr = self.message.ext[TRADE_NO];;
-    if (self.neoModel) {
-        tempStr = self.neoModel.tx;
-    } else if (self.ethModel) {
-        tempStr = self.ethModel.trade_no;
-    }
-    pasteboard.string = tempStr;
+    pasteboard.string = self.model ? self.model.tx : self.message.ext[TRADE_NO];
     [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Copy success, you can send it to friends", nil)];
 }
 
 #pragma mark ------ Getters And Setters ------
-- (void)setNeoModel:(DBHTransferListModelList *)neoModel {
-    _neoModel = neoModel;
+- (void)setModel:(DBHTransferListModelList *)model {
+    _model = model;
     
-    self.title = DBHGetStringWithKeyFromTable([_neoModel.to isEqualToString:self.tokenModel.address] ? @"Collection Details" : @"Transfer Details", nil);
+    self.title = DBHGetStringWithKeyFromTable([_model.to isEqualToString:self.tokenModel.address] ? @"Collection Details" : @"Transfer Details", nil);
     
-    if (!_neoModel.transferType) {
-        self.numberLabel.text = [NSString stringWithFormat:@"%.4lf", _neoModel.value.doubleValue];
+    if (!_model.transferType) {
+        self.numberLabel.text = [NSString stringWithFormat:@"%.4lf", _model.value.doubleValue];
     } else {
-        self.numberLabel.text = [NSString stringWithFormat:@"%@%.4lf", _neoModel.transferType == 1 ? @"-" : @"+", _neoModel.value.doubleValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%@%.4lf", _model.transferType == 1 ? @"-" : @"+", _model.value.doubleValue];
     }
-
-    self.poundageLabel.hidden = _neoModel.transferType == 2;
+    
+    self.poundageLabel.hidden = _model.transferType == 2;
     NSString *unit = self.tokenModel.symbol;
     if ([NSObject isNulllWithObject:unit]) {
         unit = self.tokenModel.flag;
     }
     self.unitLabel.text = [NSString stringWithFormat:@"%@（%@）", DBHGetStringWithKeyFromTable(@"Transfer amount", nil), unit];
     
-    NSLog(@"  __ffee = %@", _neoModel.handle_fee);
-    self.poundageLabel.text = [NSString stringWithFormat:@"%@：%.8lf", DBHGetStringWithKeyFromTable(@"Fees", nil), [_neoModel.handle_fee floatValue]];
-    self.collectionAddressValueLabel.text = _neoModel.from;
-    self.payAddressValueLabel.text = _neoModel.to;
-    self.timeValueLabel.text = [NSString getLocalDateFormateUTCDate:_neoModel.createTime];
-    self.remarkValueLabel.text = [_neoModel.remark isEqual:[NSNull null]] ? @"" : _neoModel.remark;
-
-    NSAttributedString *orderNumberAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@", DBHGetStringWithKeyFromTable(@"Transaction Number", nil), _neoModel.tx] attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
+    NSLog(@"  __ffee = %@", _model.handle_fee);
+    self.poundageLabel.text = [NSString stringWithFormat:@"%@：%.8lf", DBHGetStringWithKeyFromTable(@"Fees", nil), [_model.handle_fee floatValue]];
+    self.collectionAddressValueLabel.text = _model.from;
+    self.payAddressValueLabel.text = _model.to;
+    self.timeValueLabel.text = [NSString getLocalDateFormateUTCDate:_model.createTime];
+    self.remarkValueLabel.text = [_model.remark isEqual:[NSNull null]] ? @"" : _model.remark;
+    
+    NSAttributedString *orderNumberAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@", DBHGetStringWithKeyFromTable(@"Transaction Number", nil), _model.tx] attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
     [self.orderNumberButton setAttributedTitle:orderNumberAttributedString forState:UIControlStateNormal];
 }
-
-- (void)setEthModel:(YYTransferListETHModel *)ethModel {
-    _ethModel = ethModel;
-    
-    self.title = DBHGetStringWithKeyFromTable([ethModel.pay_address isEqualToString:self.tokenModel.address] ? @"Collection Details" : @"Transfer Details", nil);
-    
-    if (!ethModel.transferType) {
-        self.numberLabel.text = [NSString stringWithFormat:@"%.4lf", ethModel.fee.doubleValue];
-    } else {
-        self.numberLabel.text = [NSString stringWithFormat:@"%@%.4lf", ethModel.transferType == 1 ? @"-" : @"+", ethModel.fee.doubleValue];
-    }
-    
-    self.poundageLabel.hidden = ethModel.transferType == 2;
-    NSString *unit = self.tokenModel.symbol;
-    if ([NSObject isNulllWithObject:unit]) {
-        unit = self.tokenModel.flag;
-    }
-    self.unitLabel.text = [NSString stringWithFormat:@"%@（%@）", DBHGetStringWithKeyFromTable(@"Transfer amount", nil), unit];
-    
-    NSLog(@"  __ffee = %@", ethModel.handle_fee);
-    self.poundageLabel.text = [NSString stringWithFormat:@"%@：%.8lf", DBHGetStringWithKeyFromTable(@"Fees", nil), [ethModel.handle_fee floatValue]];
-    self.collectionAddressValueLabel.text = ethModel.pay_address;
-    self.payAddressValueLabel.text = ethModel.receive_address;
-    self.timeValueLabel.text = [NSString getLocalDateFormateUTCDate:ethModel.created_at];
-    self.remarkValueLabel.text = [ethModel.remark isEqual:[NSNull null]] ? @"" : ethModel.remark;
-    
-    NSAttributedString *orderNumberAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@", DBHGetStringWithKeyFromTable(@"Transaction Number", nil), ethModel.trade_no] attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
-    [self.orderNumberButton setAttributedTitle:orderNumberAttributedString forState:UIControlStateNormal];
-}
-
 - (void)setMessage:(EMMessage *)message {
     _message = message;
     

@@ -207,8 +207,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //    DBHTransferListViewController *transferListViewController = [[DBHTransferListViewController alloc] init];
-    YYTransferListViewController *transferListViewController = [[YYTransferListViewController alloc] init];
+    DBHTransferListViewController *transferListViewController = [[DBHTransferListViewController alloc] init];
+//    YYTransferListViewController *transferListViewController = [[YYTransferListViewController alloc] init];
     NSInteger row = indexPath.row;
     NSInteger count = self.isHideZero ? self.noZeroDatasource.count : self.dataSource.count;
     if (row < count) {
@@ -307,6 +307,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 model.address = listModel.gnt_category.address;
                 model.flag = name;
                 model.symbol = symbol;
+                model.dataIdentifier = [NSString stringWithFormat:@"%@", @(listModel.listId)];
+                model.typeName = NEO;
                 
                 NSData *data = [self convertHexStrToData:balance];
                 model.decimals = [NSString stringWithFormat:@"%@", @(decimals)];

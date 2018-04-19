@@ -152,11 +152,11 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     // 交易详情
     DBHTransferDetailViewController *transferDetailViewController = [[DBHTransferDetailViewController alloc] init];
     transferDetailViewController.tokenModel = self.tokenModel;
-    if ([self isEth]) {
-        transferDetailViewController.ethModel = self.dataSource[indexPath.row];
-    } else {
-        transferDetailViewController.neoModel = self.dataSource[indexPath.row];
-    }
+//    if ([self isEth]) {
+//        transferDetailViewController.ethModel = self.dataSource[indexPath.row];
+//    } else {
+//        transferDetailViewController.neoModel = self.dataSource[indexPath.row];
+//    }
     [self.navigationController pushViewController:transferDetailViewController animated:YES];
 }
 
