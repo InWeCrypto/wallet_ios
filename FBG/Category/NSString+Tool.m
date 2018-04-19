@@ -455,28 +455,41 @@ yy-MM-dd HH:mm:ss
     }
      */
     
-    NSDecimalNumber *resultNumber = [[NSDecimalNumber alloc]initWithString:@"0"];
+    NSDecimalNumber *resultNumber = [[NSDecimalNumber alloc] initWithString:@"0"];
+    
+    if ([NSObject isNulllWithObject:first]) {
+        first = @"0";
+    }
+    NSDecimalNumber *firstNumber = [[NSDecimalNumber alloc] initWithString:first];
+    
     if ([NSObject isNulllWithObject:secend]) {
         secend = @"0";
     }
+    NSDecimalNumber *secondNumber = [[NSDecimalNumber alloc] initWithString:secend];
     
     switch (operatorType)
     {
         case 0:
-            resultNumber = SNAdd_handler(first, secend, NSRoundPlain, value);
+//            resultNumber = SNAdd_handler(first, secend, NSRoundPlain, value);
+            resultNumber = [firstNumber decimalNumberByAdding:secondNumber];
+            
             break;
         case 1:
-            resultNumber = SNSub_handler(first, secend, NSRoundPlain, value);
+//            resultNumber = SNSub_handler(first, secend, NSRoundPlain, value);
+            resultNumber = [firstNumber decimalNumberBySubtracting:secondNumber];
             break;
         case 2:
-            resultNumber = SNMul_handler(first, secend, NSRoundPlain, value);
+//            resultNumber = SNMul_handler(first, secend, NSRoundPlain, value);
+            resultNumber = [firstNumber decimalNumberByMultiplyingBy:secondNumber];
             break;
-        case 3:
-            resultNumber = SNDiv_handler(first, secend, NSRoundPlain, value);
+        case 3: {
+//            resultNumber = SNDiv_handler(first, secend, NSRoundPlain, value);
+            resultNumber = [firstNumber decimalNumberByDividingBy:secondNumber];
             break;
+        }
     }
      
-    return [NSString stringWithFormat:@"%@", @(resultNumber.doubleValue)];
+    return resultNumber.stringValue;
 
 }
 

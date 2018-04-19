@@ -42,12 +42,22 @@
 				<string>tencent1106810898</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>twitterkit-D7a0vT5OHmwIvdoFUQGzNCUIg</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>201</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>mqqapi</string>
+		<string>twitter</string>
+		<string>twitterauth</string>
 		<string>mqqopensdkapiV3</string>
 		<string>timapi</string>
 		<string>wtloginmqq2</string>

@@ -142,8 +142,8 @@
             //正式
             url = [self.model.typeName isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
         }
-//        NSString *orderNumber = [[self.model.tx substringToIndex:2] isEqualToString:@"0x"] ? [self.model.tx substringFromIndex:2] : self.model.tx;
-        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.model.tx]];
+//        NSString *orderNumber = [[self.model.trade_nosubstringToIndex:2] isEqualToString:@"0x"] ? [self.model.trade_no substringFromIndex:2] : self.model.tx;
+        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.model.trade_no]];
         vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
         [self.navigationController pushViewController:vc animated:YES];
     } else {
@@ -168,7 +168,7 @@
  */
 - (void)respondsToLongPressGR {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = self.model ? self.model.tx : self.message.ext[TRADE_NO];
+    pasteboard.string = self.model ? self.model.trade_no : self.message.ext[TRADE_NO];
     [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Copy success, you can send it to friends", nil)];
 }
 
@@ -176,12 +176,12 @@
 - (void)setModel:(DBHTransferListModelList *)model {
     _model = model;
     
-    self.title = DBHGetStringWithKeyFromTable([_model.to isEqualToString:self.tokenModel.address] ? @"Collection Details" : @"Transfer Details", nil);
+    self.title = DBHGetStringWithKeyFromTable([_model.receive_address isEqualToString:self.tokenModel.address] ? @"Collection Details" : @"Transfer Details", nil);
     
     if (!_model.transferType) {
-        self.numberLabel.text = [NSString stringWithFormat:@"%.4lf", _model.value.doubleValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%.4lf", _model.fee.doubleValue];
     } else {
-        self.numberLabel.text = [NSString stringWithFormat:@"%@%.4lf", _model.transferType == 1 ? @"-" : @"+", _model.value.doubleValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%@%.4lf", _model.transferType == 1 ? @"-" : @"+", _model.fee.doubleValue];
     }
 
     self.poundageLabel.hidden = _model.transferType == 2;
@@ -191,14 +191,14 @@
     }
     self.unitLabel.text = [NSString stringWithFormat:@"%@（%@）", DBHGetStringWithKeyFromTable(@"Transfer amount", nil), unit];
     
-    NSLog(@"  __ffee = %@", _model.handleFee);
-    self.poundageLabel.text = [NSString stringWithFormat:@"%@：%.8lf", DBHGetStringWithKeyFromTable(@"Fees", nil), [_model.handleFee floatValue]];
-    self.collectionAddressValueLabel.text = _model.from;
-    self.payAddressValueLabel.text = _model.to;
-    self.timeValueLabel.text = [NSString getLocalDateFormateUTCDate:_model.createTime];
+    NSLog(@"  __ffee = %@", _model.handle_fee);
+    self.poundageLabel.text = [NSString stringWithFormat:@"%@：%.8lf", DBHGetStringWithKeyFromTable(@"Fees", nil), [_model.handle_fee floatValue]];
+    self.collectionAddressValueLabel.text = _model.pay_address;
+    self.payAddressValueLabel.text = _model.receive_address;
+    self.timeValueLabel.text = [NSString getLocalDateFormateUTCDate:_model.created_at];
     self.remarkValueLabel.text = [_model.remark isEqual:[NSNull null]] ? @"" : _model.remark;
 
-    NSAttributedString *orderNumberAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@", DBHGetStringWithKeyFromTable(@"Transaction Number", nil), _model.tx] attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
+    NSAttributedString *orderNumberAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@", DBHGetStringWithKeyFromTable(@"Transaction Number", nil), _model.trade_no] attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
     [self.orderNumberButton setAttributedTitle:orderNumberAttributedString forState:UIControlStateNormal];
 }
 - (void)setMessage:(EMMessage *)message {

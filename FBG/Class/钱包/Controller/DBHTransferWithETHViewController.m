@@ -289,10 +289,12 @@
         return;
     }
     
+    NSString *numberStr = [NSString stringWithFormat:@"%@", @(self.transferNumberTextField.text.doubleValue)];
+    
     DBHTransferConfirmationViewController *transferConfirmationViewController = [[DBHTransferConfirmationViewController alloc] init];
     transferConfirmationViewController.tokenModel = self.tokenModel;
     transferConfirmationViewController.neoWalletModel = self.neoWalletModel;
-    transferConfirmationViewController.transferNumber = @(self.transferNumberTextField.text.doubleValue);
+    transferConfirmationViewController.transferNumber = numberStr;
     transferConfirmationViewController.poundage = [NSString stringWithFormat:@"%lf", self.gasSlider.value];
     transferConfirmationViewController.address = self.walletAddressTextField.text;
     transferConfirmationViewController.remark = self.remarkTextField.text;

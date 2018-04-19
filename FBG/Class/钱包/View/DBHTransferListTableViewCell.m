@@ -83,15 +83,15 @@
     
     if (!_model.transferType) {
         self.stateImageView.image = [UIImage imageNamed:@"自转"];
-        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.value.doubleValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.fee.doubleValue];
         self.numberLabel.textColor = COLORFROM16(0x232772, 1);
     } else {
         self.stateImageView.image = [UIImage imageNamed:_model.transferType == 1 ? @"转出" : @"转入"];
-        self.numberLabel.text = [NSString stringWithFormat:@"%@%.8lf", _model.transferType == 1 ? @"-" : @"+", _model.value.doubleValue];
+        self.numberLabel.text = [NSString stringWithFormat:@"%@%.8lf", _model.transferType == 1 ? @"-" : @"+", _model.fee.doubleValue];
         self.numberLabel.textColor = _model.transferType == 1 ? [UIColor redColor] : COLORFROM16(0x232772, 1);
     }
-    self.addressLabel.text = _model.tx;
-    self.timeLabel.text = [NSString getLocalDateFormateUTCDate:_model.createTime];
+    self.addressLabel.text = _model.trade_no;
+    self.timeLabel.text = [NSString getLocalDateFormateUTCDate:_model.created_at];
 //    self.stateLabel.text = ![NSObject isNulllWithObject:_model.confirmTime] ? @"交易成功" : @"待确认";
     
     //（当前块高-订单里的块高 + 1）/最小块高
@@ -106,13 +106,13 @@
     self.slider.hidden = NO;
     if (self.neoWalletModel.categoryId == 2) { //neo gas 代币
         self.slider.hidden = YES;
-        if ([NSObject isNulllWithObject:model.confirmTime]) {
+        if ([NSObject isNulllWithObject:model.confirm_at]) {
             self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Processing...", nil);
         } else { // eth 代币
             self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Successful Transaction", nil);
         }
     } else {
-        if ([NSObject isNulllWithObject:model.confirmTime]) {
+        if ([NSObject isNulllWithObject:model.confirm_at]) {
             if (number >= model.minBlockNumber.doubleValue) {
                 // 交易失败
                 self.stateLabel.text = DBHGetStringWithKeyFromTable(@"Failed Transaction", nil);

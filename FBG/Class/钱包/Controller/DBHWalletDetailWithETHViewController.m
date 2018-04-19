@@ -29,6 +29,7 @@
 #import "WalletLeftListModel.h"
 #import "DBHWalletManagerForNeoDataModels.h"
 #import "DBHWalletDetailTokenInfomationDataModels.h"
+#import "YYTransferListViewController.h"
 
 #import "LYShareMenuView.h"
 #import <TencentOpenAPI/QQApiInterface.h>
@@ -217,7 +218,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHTransferListViewController *transferListViewController = [[DBHTransferListViewController alloc] init];
+//    DBHTransferListViewController *transferListViewController = [[DBHTransferListViewController alloc] init];
+    YYTransferListViewController *transferListViewController = [[YYTransferListViewController alloc] init];
     NSInteger row = indexPath.row;
     NSInteger count = self.isHideZero ? self.noZeroDatasource.count : self.dataSource.count;
     if (row < count) {

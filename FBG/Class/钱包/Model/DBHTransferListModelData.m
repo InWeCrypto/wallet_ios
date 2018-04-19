@@ -39,11 +39,11 @@ NSString *const kDBHTransferListModelDataList = LIST;
     if ([receivedDBHTransferListModelList isKindOfClass:[NSArray class]]) {
         for (NSDictionary *item in (NSArray *)receivedDBHTransferListModelList) {
             if ([item isKindOfClass:[NSDictionary class]]) {
-                [parsedDBHTransferListModelList addObject:[DBHTransferListModelList modelObjectWithDictionary:item]];
+                [parsedDBHTransferListModelList addObject:[DBHTransferListModelList mj_objectWithKeyValues:item]];
             }
        }
     } else if ([receivedDBHTransferListModelList isKindOfClass:[NSDictionary class]]) {
-       [parsedDBHTransferListModelList addObject:[DBHTransferListModelList modelObjectWithDictionary:(NSDictionary *)receivedDBHTransferListModelList]];
+       [parsedDBHTransferListModelList addObject:[DBHTransferListModelList mj_objectWithKeyValues:(NSDictionary *)receivedDBHTransferListModelList]];
     }
 
     self.list = [NSArray arrayWithArray:parsedDBHTransferListModelList];

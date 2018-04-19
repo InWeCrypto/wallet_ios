@@ -23,6 +23,8 @@
 #import <AliyunOSSiOS/OSSService.h>
 //推送
 #import <CloudPushSDK/CloudPushSDK.h>
+// 推特
+//#import <TwitterKit/TWTRKit.h>
 
 // iOS 10 notification
 #import <UserNotifications/UserNotifications.h>
@@ -42,6 +44,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 
 #define BUGLY_APP_ID @"8f38371e64" // TODO
 #define WEIXIN_APP_ID @"wxd346a4033d5a09a3"
+
+#define TWITTER_APP_KEY     @"D7a0vT5OHmwIvdoFUQGzNCUIg"
+#define TWITTER_APP_SECRET  @"hh9bpRGbsrO9cl1DzYzYHvFZQ4T1YW7dO681bjHQ0KitFNlVdd"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, EMChatManagerDelegate, EMClientDelegate, WXApiDelegate, QQApiInterfaceDelegate, TencentSessionDelegate>
 {
@@ -131,6 +136,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         
         // 初始化SDK
         [self initCloudPush];
+        
+        // 推特
+//        [[Twitter sharedInstance] startWithConsumerKey:TWITTER_APP_KEY consumerSecret:TWITTER_APP_SECRET];
     });
     
     return YES;
@@ -141,7 +149,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         return [WXApi handleOpenURL:url delegate:self];
     } else if ([url.scheme containsString:QQAppID]){
         return [QQApiInterface handleOpenURL:url delegate:self];
-    } else {
+    }/** else if ([url.scheme containsString:TWITTER_APP_KEY]) {
+//        return [[Twitter sharedInstance] application:application openURL:url options:options];
+    }*/ else {
         return YES;
     }
 }
@@ -151,7 +161,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         return [WXApi handleOpenURL:url delegate:self];
     } else if ([url.scheme containsString:QQAppID]){
         return [QQApiInterface handleOpenURL:url delegate:self];
-    } else {
+    }/** else if ([url.scheme containsString:TWITTER_APP_KEY]) {
+      //        return [[Twitter sharedInstance] application:application openURL:url options:options];
+      }*/ else {
         return YES;
     }
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2017年 com.csst.www. All rights reserved.
 //
 
-#import <TTTAttributedLabel/TTTAttributedLabel.h>
+#import "TTTAttributedLabel/TTTAttributedLabel.h"
 
 
 typedef void(^EBTAttributeLinkClickLabelCompleteHandler)(NSInteger linkedURLTag);
