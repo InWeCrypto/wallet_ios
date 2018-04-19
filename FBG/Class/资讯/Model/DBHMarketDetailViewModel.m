@@ -53,7 +53,11 @@
             weakSelf .requestMoneyRealTimePriceBlock(model);
         } failure:^(NSString *error) {
             
-        } specialBlock:nil];
+        } specialBlock:^{
+            if (![UserSignData share].user.isLogin) {
+                return ;
+            }
+        }];
     }
 }
 
@@ -109,7 +113,11 @@
         weakSelf.requestBlock(kLineDataArray);
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:error];
-    } specialBlock:nil];
+    } specialBlock:^{
+        if (![UserSignData share].user.isLogin) {
+            return ;
+        }
+    }];
 }
 - (void)getMoneyRealTimePriceWithIco_type:(NSString *)ico_type isRunLoop:(BOOL)isLoop {
     self.ico_type = ico_type;

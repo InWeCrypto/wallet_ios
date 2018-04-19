@@ -420,7 +420,7 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     NSString *flag;
     if ([self isEth]) { // eth及其代币
         if ([self.flag isEqualToString:ETH]) { // eth
-            flag = self.neoWalletModel.category.name;
+            flag = ETH; //TODO
             asset_id = @"0x0000000000000000000000000000000000000000";
         } else { //eth代币
             flag = self.tokenModel.name;
