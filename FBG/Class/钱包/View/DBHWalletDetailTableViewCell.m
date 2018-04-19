@@ -113,7 +113,13 @@
     if ([UserSignData share].user.isHideAsset) {
         self.priceLabel.text = [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"];
     } else {
-        self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", [UserSignData share].user.walletUnitType == 1 ? _model.priceCny.doubleValue : _model.priceUsd.doubleValue];
+        if ([UserSignData share].user.walletUnitType == 1) {
+            NSString *priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.priceCny value:0];
+            self.priceLabel.text = [NSString stringWithFormat:@"¥%.2lf", priceCny.doubleValue];
+        } else {
+            NSString *priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:model.priceUsd value:0];
+            self.priceLabel.text = [NSString stringWithFormat:@"$%.2lf", priceUsd.doubleValue];
+        }
     }
     
     self.canExtractGasLabel.hidden = !_model.canExtractbalance;

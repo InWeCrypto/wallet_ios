@@ -9,6 +9,7 @@
 #import "DBHWalletDetailViewController.h"
 #import "WXApi.h"
 #import "PackupsWordsVC.h"
+#import "YYTransferListViewController.h"
 
 #import "DBHQrCodeViewController.h"
 #import "DBHAddPropertyViewController.h"
@@ -206,7 +207,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBHTransferListViewController *transferListViewController = [[DBHTransferListViewController alloc] init];
+    //    DBHTransferListViewController *transferListViewController = [[DBHTransferListViewController alloc] init];
+    YYTransferListViewController *transferListViewController = [[YYTransferListViewController alloc] init];
     NSInteger row = indexPath.row;
     NSInteger count = self.isHideZero ? self.noZeroDatasource.count : self.dataSource.count;
     if (row < count) {
@@ -310,8 +312,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 model.decimals = [NSString stringWithFormat:@"%@", @(decimals)];
                 model.balance = [NSString stringWithFormat:@"%lf", [self getBalanceWithByte:(Byte *)data.bytes length:data.length] / pow(10, decimals)];
                 
-                model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:8];
-                model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:8];
+                model.priceUsd = price_usd;
+                model.priceCny = price_cny;
                 
                 [tempArr addObject:model];
             }
@@ -355,8 +357,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         }
         
         self.gasModel.balance = gasBalance;
-        self.gasModel.priceCny = [NSString DecimalFuncWithOperatorType:2 first:gasBalance secend:gasPriceCny value:8];
-        self.gasModel.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:gasBalance secend:gasPriceUsd value:8];
+        self.gasModel.priceCny = gasPriceCny;
+        self.gasModel.priceUsd = gasPriceUsd;
         self.gasModel.canExtractbalance = canExtractbalance;
         self.gasModel.noExtractbalance = noExtractbalance;
         self.gasModel.symbol = GAS;
@@ -365,8 +367,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
     
     self.neoModel.balance = balance;
     
-    self.neoModel.priceCny = [NSString DecimalFuncWithOperatorType:2 first:balance secend:priceCny value:8];
-    self.neoModel.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:balance secend:priceUsd value:8];
+    self.neoModel.priceCny = priceCny;
+    self.neoModel.priceUsd = priceUsd;
 }
 
 - (void)showDataWithArray:(NSArray *)array {
@@ -390,6 +392,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             DBHWalletDetailTokenInfomationModelData *model = (DBHWalletDetailTokenInfomationModelData *)obj;
             if (![model.flag isEqualToString:NEO] && ![model.flag isEqualToString:GAS]) {
                 NSString *tokenPrice = [UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd;
+                
+                tokenPrice = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:tokenPrice value:8];
                 tokenTotal = [NSString DecimalFuncWithOperatorType:0 first:tokenTotal secend:tokenPrice value:8];
                 
                 NSString *bala = model.balance;
@@ -401,8 +405,12 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
     }];
     
     
-    NSString *neoPrice = [UserSignData share].user.walletUnitType == 1 ? self.neoModel.priceCny : self.neoModel.priceUsd;
-    NSString *gasPrice = [UserSignData share].user.walletUnitType == 1 ? self.gasModel.priceCny : self.gasModel.priceUsd;
+    NSString *neoPrice = [NSString DecimalFuncWithOperatorType:2 first:self.neoModel.balance secend:[UserSignData share].user.walletUnitType == 1 ? self.neoModel.priceCny : self.neoModel.priceUsd value:8];
+    
+    NSString *gasPrice = [NSString DecimalFuncWithOperatorType:2 first:self.gasModel.balance secend:[UserSignData share].user.walletUnitType == 1 ? self.gasModel.priceCny : self.gasModel.priceUsd value:8];
+    
+//    NSString *neoPrice = [UserSignData share].user.walletUnitType == 1 ? self.neoModel.priceCny : self.neoModel.priceUsd;
+//    NSString *gasPrice = [UserSignData share].user.walletUnitType == 1 ? self.gasModel.priceCny : self.gasModel.priceUsd;
     
     NSString *gasNeo = [NSString DecimalFuncWithOperatorType:0 first:neoPrice secend:gasPrice value:8];
     

@@ -23,6 +23,13 @@
 #import "DBHWalletManagerForNeoModelCategory.h"
 #import "YYWalletConversionListModel.h"
 #import "DBHWalletManagerForNeoModelList.h"
+#import "YYTransferListETHModel.h"
+
+#define WALLET_ORDER_LIST_KEY(userName, address) [NSString stringWithFormat:@"WALLET_ORDER_LIST_%@_%@", userName, address]
+#define WALLET_ORDER_LIST @"WALLET_ORDER_LIST"
+#define WALLET_ORDER_BALANCE @"WALLET_ORDER_BALANCE"
+#define WALLET_ORDER_PRICECNY @"WALLET_ORDER_PRICECNY"
+#define WALLET_ORDER_PRICEUSD @"WALLET_ORDER_PRICEUSD"
 
 typedef void (^RequestCompleteBlock) (void);
 
@@ -50,7 +57,7 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
 @property (nonatomic, assign) BOOL isNeedInvalidateTimer; // 是否将timer置空
 
 /** 计时器 */
-@property (nonatomic, strong) NSTimer * timer;
+//@property (nonatomic, strong) NSTimer * timer;
 
 @end
 
@@ -64,7 +71,7 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
 }
 
 - (void)dealloc {
-    [self removeTimer];
+//    [self removeTimer];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -73,7 +80,10 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     if (![UserSignData share].user.isLogin) {
         return;
     }
+    [self getDataFromServer];
+}
 
+- (void)getDataFromServer {
     if ([self isEth]) {
         dispatch_group_enter(group);
         dispatch_group_async(group, queue, ^{
@@ -84,25 +94,21 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
         
         dispatch_group_notify(group, queue, ^{
             [self getNeoTransferListIsLoadMore:NO];
+            [self getBalance];
         });
-    } else { // NEO
-        [self countDownTime];
-        [self timerDown];
+    } else {
+        dispatch_async(queue, ^{
+            [self getNeoTransferListIsLoadMore:NO];
+            [self getBalance];
+        });
     }
-    [self getBalance];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     self.isNeedInvalidateTimer = YES;
-    [self removeTimer];
-}
 
-- (void)removeTimer {
-    if (_timer) {
-        [self.timer invalidate];
-        _timer = nil;
-    }
+    NSLog(@"list----退出当前界面");
 }
 
 #pragma mark ------ UI ------
@@ -146,13 +152,51 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     // 交易详情
     DBHTransferDetailViewController *transferDetailViewController = [[DBHTransferDetailViewController alloc] init];
     transferDetailViewController.tokenModel = self.tokenModel;
-    transferDetailViewController.model = self.dataSource[indexPath.row];
+    if ([self isEth]) {
+        transferDetailViewController.ethModel = self.dataSource[indexPath.row];
+    } else {
+        transferDetailViewController.neoModel = self.dataSource[indexPath.row];
+    }
     [self.navigationController pushViewController:transferDetailViewController animated:YES];
 }
 
 #pragma mark ------ Data ------
 - (void)getDataFromCache {
-    //TODO
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        NSString *lastUserEmail = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_USER_EMAIL];
+        NSMutableDictionary *dict = [PPNetworkCache getResponseCacheForKey:WALLET_ORDER_LIST_KEY(lastUserEmail, self.tokenModel.address)];
+        if (![NSObject isNulllWithObject:dict]) {
+            self.dataSource = dict[WALLET_ORDER_LIST];
+            NSString *balance = dict[WALLET_ORDER_BALANCE];
+            NSString *priceCny = dict[WALLET_ORDER_PRICECNY];
+            NSString *priceUsd = dict[WALLET_ORDER_PRICEUSD];
+            
+            if ([NSObject isNulllWithObject:balance]) {
+                balance = @"0.00";
+            }
+            
+            if ([NSObject isNulllWithObject:priceCny]) {
+                priceCny = @"0.00";
+            }
+            
+            if ([NSObject isNulllWithObject:priceUsd]) {
+                priceUsd = @"0.00";
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.headerView.balance = balance;
+                
+                if (![self.flag isEqualToString:NEO] && ![self.flag isEqualToString:GAS]) {
+                    self.headerView.headImageUrl = self.tokenModel.icon;
+                }
+                
+                NSString *price = [UserSignData share].user.walletUnitType == 1 ? priceCny : priceUsd;
+                NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:balance secend:price value:0];
+                self.headerView.asset = asset;
+            });
+        }
+    });
 }
 
 - (void)getBalance {
@@ -170,8 +214,8 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                 
                 type = 5;
             } else { //eth代币
-                param = @{@"contract" : self.neoWalletModel.address,
-                          @"address" : self.tokenModel.address
+                param = @{@"contract" : self.tokenModel.address,
+                          @"address" : self.neoWalletModel.address
                           };
                 urlStr = @"extend/balanceOf";
                 
@@ -179,7 +223,7 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
             }
         } else { // neo gas 及其代币
             if (![self.flag isEqualToString:NEO] && ![self.flag isEqualToString:GAS]) { // NEO代币
-                urlStr = [NSString stringWithFormat:@"extend/getNeoGntInfo?address=%@&wallet=%@", self.neoWalletModel.address, @""]; //TODO
+                urlStr = [NSString stringWithFormat:@"extend/getNeoGntInfo?address=%@&wallet=%@", self.tokenModel.address, self.neoWalletModel.addressHash160];
                 
                 type = 7;
             }
@@ -261,10 +305,6 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     if (![NSObject isNulllWithObject:responseObject]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
-            NSString *tempBalance = @"0";
-            NSString *tempPriceCny = @"0";
-            NSString *tempPriceUsd = @"0";
-            
             switch (type) {
                 case 1: // min-block
                     self.minBlockNumber = [responseObject objectForKey:MIN_BLOCK_NUM];
@@ -282,10 +322,71 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                 }
 //            ----- 获取余额----
                 case 4: { // NEO、Gas
+                    NSString *tempBalance = @"0";
+                    NSString *tempPriceCny = @"0";
+                    NSString *tempPriceUsd = @"0";
+                    
+                    if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                        if (![self isEth]) { // NEO gas 及代币
+                            NSDictionary *record = responseObject[RECORD];
+                            if (![NSObject isNulllWithObject:record]) {
+                                DBHWalletManagerForNeoModelList *recordModel = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:record];
+                                if ([self.flag isEqualToString:NEO]) {
+                                    self.tokenModel.balance = recordModel.balance;
+                                    
+                                    NSString *neoPriceForCny = recordModel.cap.priceCny;
+                                    NSString *neoPriceForUsd = recordModel.cap.priceUsd;
+                                    self.tokenModel.priceCny = neoPriceForCny;
+                                    self.tokenModel.priceUsd = neoPriceForUsd;
+                                } else if([self.flag isEqualToString:GAS]) { // GAS
+                                    NSArray *gnt = recordModel.gnt;
+                                    
+                                    NSString *gasPriceForCny = @"0";
+                                    NSString *gasPriceForUsd = @"0";
+                                    if (![NSObject isNulllWithObject:gnt] && gnt.count > 0) {
+                                        YYWalletRecordGntModel *gasGntModel = gnt.firstObject;
+                                        gasPriceForCny = gasGntModel.cap.priceCny;
+                                        gasPriceForUsd = gasGntModel.cap.priceUsd;
+                                    }
+                                    
+                                    self.tokenModel.priceCny = gasPriceForCny;
+                                    self.tokenModel.priceUsd = gasPriceForUsd;
+                                }
+                            }
+                        }
+                        
+                        if ([self.flag isEqualToString:NEO]) { // neo
+                            tempBalance = [NSString stringWithFormat:@"%.0lf", self.tokenModel.balance.doubleValue];
+                        } else if ([self.flag isEqualToString:GAS]) { // gas
+                            tempBalance = self.tokenModel.balance;
+                        }
+                        
+                        tempPriceCny = self.tokenModel.priceCny;
+                        tempPriceUsd = self.tokenModel.priceUsd;
+                        
+                        tempBalance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
+                        [self cacheBalance:tempBalance cny:tempPriceCny usd:tempPriceUsd];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.headerView.balance = tempBalance;
+                            
+                            NSString *price = [UserSignData share].user.walletUnitType == 1 ? tempPriceCny : tempPriceUsd;
+                            NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:tempBalance secend:price value:0];
+                            self.headerView.asset = asset;
+                            if (![self.flag isEqualToString:NEO] && ![self.flag isEqualToString:GAS]) {
+                                self.headerView.headImageUrl = self.tokenModel.icon;
+                            }
+                        });
+                    }
                     break;
                 }
                     
                 case 5: { // eth
+                    
+                    NSString *tempBalance = @"0";
+                    NSString *tempPriceCny = @"0";
+                    NSString *tempPriceUsd = @"0";
+                    
                     NSArray *dataArray = responseObject[LIST];
                     if (![NSObject isNulllWithObject:dataArray] && dataArray.count > 0) {
                         for (NSDictionary *dict in dataArray) {
@@ -305,37 +406,115 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                                     second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:@"1000000000000000000" value:8];
                                     
                                     tempBalance = [NSString DecimalFuncWithOperatorType:0 first:tempBalance secend:second value:8];
-                                    tempPriceCny = [NSString DecimalFuncWithOperatorType:2 first:tempBalance secend:price_cny value:8];
-                                    tempPriceUsd = [NSString DecimalFuncWithOperatorType:2 first:tempBalance secend:price_usd value:8];
+                                    tempPriceCny = price_cny;
+                                    tempPriceUsd = price_usd;
                                 }
                             }
                         }
                     }
                     
+                    tempBalance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
+                    [self cacheBalance:tempBalance cny:tempPriceCny usd:tempPriceUsd];
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        self.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
-                        self.headerView.asset = [UserSignData share].user.walletUnitType == 1 ? tempPriceCny : tempPriceUsd;
+                        self.headerView.balance = tempBalance;
+                        
+                        NSString *price = [UserSignData share].user.walletUnitType == 1 ? tempPriceCny : tempPriceUsd;
+                        NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:tempBalance secend:price value:0];
+                        self.headerView.asset = asset;
                         if (![self.flag isEqualToString:NEO] && ![self.flag isEqualToString:GAS]) {
                             self.headerView.headImageUrl = self.tokenModel.icon;
                         }
                     });
-                                    
+                    
                     break;
                 }
                     
                 case 6: { //eth代币
+                    
+                    NSString *tempBalance = @"0";
+                    NSString *tempPriceCny = @"0";
+                    NSString *tempPriceUsd = @"0";
+                    
+                    NSString *value = responseObject[@"value"];
+                    if (![NSObject isNulllWithObject:value] && value.length > 2) {
+                        value = [value substringFromIndex:2];
+                        
+                        NSString *temp = [NSString numberHexString:value];
+                        tempBalance = [NSString DecimalFuncWithOperatorType:3 first:temp secend:[NSString stringWithFormat:@"%@", @(pow(10, self.tokenModel.decimals.intValue))] value:0];
+                        
+                        tempPriceCny = self.tokenModel.priceCny;
+                        tempPriceUsd = self.tokenModel.priceUsd;
+                    }
+                    tempBalance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
+                    [self cacheBalance:tempBalance cny:tempPriceCny usd:tempPriceUsd];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.headerView.balance = tempBalance;
+                        
+                        NSString *price = [UserSignData share].user.walletUnitType == 1 ? tempPriceCny : tempPriceUsd;
+                        NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:tempBalance secend:price value:0];
+                        self.headerView.asset = asset;
+                        if (![self.flag isEqualToString:NEO] && ![self.flag isEqualToString:GAS]) {
+                            self.headerView.headImageUrl = self.tokenModel.icon;
+                        }
+                    });
                     break;
                 }
                     
                 case 7: { // NEO代币
+                    
+                    NSString *tempBalance = @"0";
+                    NSString *tempPriceCny = @"0";
+                    NSString *tempPriceUsd = @"0";
+                    //TODO
+                    tempBalance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
+                    [self cacheBalance:tempBalance cny:tempPriceCny usd:tempPriceUsd];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.headerView.balance = tempBalance;
+                        
+                        NSString *price = [UserSignData share].user.walletUnitType == 1 ? tempPriceCny : tempPriceUsd;
+                        NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:tempBalance secend:price value:0];
+                        self.headerView.asset = asset;
+                        if (![self.flag isEqualToString:NEO] && ![self.flag isEqualToString:GAS]) {
+                            self.headerView.headImageUrl = self.tokenModel.icon;
+                        }
+                    });
                     break;
                 }
                 default:
                     break;
             }
             
+            
+            
         });
     }
+}
+
+- (void)cacheBalance:(NSString *)balance cny:(NSString *)cny usd:(NSString *)usd {
+    NSString *lastUserEmail = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_USER_EMAIL];
+    NSMutableDictionary *dict = [PPNetworkCache getResponseCacheForKey:WALLET_ORDER_LIST_KEY(lastUserEmail, self.tokenModel.address)];
+    if ([NSObject isNulllWithObject:dict]) {
+        dict =  [NSMutableDictionary dictionary];
+    }
+    
+    if ([NSObject isNulllWithObject:balance]) {
+        balance = @"0";
+    }
+    if ([NSObject isNulllWithObject:cny]) {
+        cny = @"0";
+    }
+    if ([NSObject isNulllWithObject:usd]) {
+        usd = @"0";
+    }
+    
+    [dict setObject:balance forKey:WALLET_ORDER_BALANCE];
+    [dict setObject:cny forKey:WALLET_ORDER_PRICECNY];
+    [dict setObject:usd forKey:WALLET_ORDER_PRICEUSD];
+    
+    [PPNetworkCache saveResponseCache:dict forKey:WALLET_ORDER_LIST_KEY(lastUserEmail, self.tokenModel.address)];
 }
 
 - (void)loadMaxblockNumber:(RequestCompleteBlock)block {
@@ -354,6 +533,7 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     }];
 }
 
+/**
 - (void)handleResponseObj:(id)responseObject {
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT,
@@ -459,10 +639,12 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
         });
     });
 }
-
+*/
 /**
  获取余额
  */
+
+/**
 - (void)getNeoBalance {
     WEAKSELF
     [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%ld", (NSInteger)self.neoWalletModel.listIdentifier] baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
@@ -477,6 +659,7 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
         }
     }];
 }
+ */
 
 
 /**
@@ -506,19 +689,12 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                 
                 for (NSDictionary *dict in list) {
                     @autoreleasepool {
-                        DBHTransferListModelList *model = [DBHTransferListModelList mj_objectWithKeyValues:dict];
-                        
-                        model.flag = self.flag;
-                        model.typeName = self.tokenModel.typeName;
-                        
-                        // 只有neo的代币才设置value   // 代币的话，value值应该要除以10的decimals次方
-                        if (!([self isEth] ||
-                              [self.flag isEqualToString:NEO] ||
-                              [self.flag isEqualToString:GAS])) {
-                            model.fee = [NSString DecimalFuncWithOperatorType:3 first:model.fee secend:[NSString stringWithFormat:@"%lf", pow(10, self.tokenModel.decimals.doubleValue)] value:8];
-                        }
-                        
-                        if ([self isEth]) { //ETH及代币的
+                        if ([self isEth]) {
+                            YYTransferListETHModel *model = [YYTransferListETHModel mj_objectWithKeyValues:dict];
+                            
+                            model.flag = self.flag;
+                            model.typeName = self.tokenModel.typeName;
+                            
                             if ([model.fee containsString:@"0x"]) {
                                 model.fee = [NSString numberHexString:[model.fee substringFromIndex:2]];
                             }
@@ -548,33 +724,78 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                                 number = tempValue;
                             }
                             
-                            if (number < model.minBlockNumber.doubleValue && [NSObject isNulllWithObject:model.created_at]) {
+                            if (number < model.minBlockNumber.doubleValue && [NSObject isNulllWithObject:model.confirm_at]) {
                                 isHaveNoFinishOrder = YES;
                             }
+                            
+                            
+                            if ([[model.pay_address lowercaseString] isEqualToString:[model.receive_address lowercaseString]]) {
+                                // 自转
+                                model.transferType = 0;
+                            } else {
+                                model.transferType = [[model.pay_address lowercaseString] isEqualToString:[self.neoWalletModel.address lowercaseString]] ? 1 : 2;
+                            }
+                            
+                            [tempArr addObject:model];
                         } else {
-                            if ([NSObject isNulllWithObject:model.confirm_at]) {
+                            DBHTransferListModelList *model = [DBHTransferListModelList mj_objectWithKeyValues:dict];
+                            
+                            model.flag = self.flag;
+                            model.typeName = self.tokenModel.typeName;
+                            
+                            // 只有neo的代币才设置value   // 代币的话，value值应该要除以10的decimals次方
+                            if (!([self.flag isEqualToString:NEO] ||
+                                  [self.flag isEqualToString:GAS])) {
+                                model.value = [NSString DecimalFuncWithOperatorType:3 first:model.value secend:[NSString stringWithFormat:@"%lf", pow(10, self.tokenModel.decimals.doubleValue)] value:8];
+                            }
+                            
+                            if ([NSObject isNulllWithObject:model.confirmTime]) {
                                 isHaveNoFinishOrder = YES;
                             }
+                            
+                            if ([[model.from lowercaseString] isEqualToString:[model.to lowercaseString]]) {
+                                // 自转
+                                model.transferType = 0;
+                            } else {
+                                model.transferType = [[model.from lowercaseString] isEqualToString:[self.neoWalletModel.address lowercaseString]] ? 1 : 2;
+                            }
+                            
+                            [tempArr addObject:model];
                         }
-                        
-                        if ([[model.pay_address lowercaseString] isEqualToString:[model.receive_address lowercaseString]]) {
-                            // 自转
-                            model.transferType = 0;
-                        } else {
-                            model.transferType = [[model.pay_address lowercaseString] isEqualToString:[self.neoWalletModel.address lowercaseString]] ? 1 : 2;
-                        }
-                        
-                        [tempArr addObject:model];
                     }
                         
                 }
                 
                 self.isCanTransferAccounts = !isHaveNoFinishOrder;
-                if (!isHaveNoFinishOrder) {
-                    // 不再轮询 TODO
+                if (!isLoadMore && isHaveNoFinishOrder) { // 第一页有未完成订单
+                    // 轮询一次 TODO
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.blockPerSecond.intValue * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        NSLog(@"list----%fs后", self.blockPerSecond.floatValue);
+                        if (self.isNeedInvalidateTimer) { // 不在当前页面 或者  不是第一页 或者 全都是已完成订单
+                             NSLog(@"list----不再执行");
+                        } else {
+                            NSLog(@"list----从服务器获取数据");
+                            [self getDataFromServer];
+                        }
+                    });
+                } else { // 不是第一页 或者 全都是已完成订单
                     self.isNeedInvalidateTimer = YES;
+                    NSLog(@"list----不是第一页 或者 全都是已完成订单");
                 }
                 self.dataSource = tempArr;
+                
+                if (!isLoadMore) { // 第一页 缓存到本地
+                    NSString *lastUserEmail = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_USER_EMAIL];
+                    NSMutableDictionary *dict = [PPNetworkCache getResponseCacheForKey:WALLET_ORDER_LIST_KEY(lastUserEmail, self.tokenModel.address)];
+                    if ([NSObject isNulllWithObject:dict]) {
+                        dict =  [NSMutableDictionary dictionary];
+                    }
+                    if (![NSObject isNulllWithObject:tempArr]) {
+                        [dict setObject:tempArr forKey:WALLET_ORDER_LIST];
+                    }
+                    
+                    [PPNetworkCache saveResponseCache:dict forKey:WALLET_ORDER_LIST_KEY(lastUserEmail, self.tokenModel.address)];
+                }
             }
         }
     });
@@ -669,20 +890,20 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
 }
 
 #pragma mark ------ Private Methods ------
+/**
 - (void)timerDown {
-    if (self.isNeedInvalidateTimer) {
-        [self removeTimer];
-    } else {
+    [self removeTimer];
+    if (!self.isNeedInvalidateTimer) {
         //开始计时
         self.timer = [NSTimer scheduledTimerWithTimeInterval:[self.blockPerSecond intValue] target:self selector:@selector(countDownTime) userInfo:nil repeats:YES];
         [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     }
-}
+}*/
 
 
 /**
  每隔几秒需要执行一次 获取最大块高
- */
+
 - (void)countDownTime {
     if (self.isNeedInvalidateTimer) {
         [self removeTimer];
@@ -696,103 +917,12 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
         }
         [self getNeoBalance];
     }
-}
+} */
 
-/**
- - (void)getOrderListCache {
- NSString *asset_id;
- if ([self.flag isEqualToString:NEO]) {
- asset_id = @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
- } else if ([self.flag isEqualToString:GAS]) {
- asset_id = @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
- } else {
- asset_id = self.tokenModel.address;
- }
- NSMutableDictionary *parametersDic = [[NSMutableDictionary alloc] init];
- [parametersDic setObject:@(self.neoWalletModel.listIdentifier) forKey:WALLET_ID];
- [parametersDic setObject:NEO forKey:FLAG];
- [parametersDic setObject:@(self.page) forKey:PAGE];
- [parametersDic setObject:asset_id forKey:ASSET_ID];
- if (![NSString isNulllWithObject:[PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", @"wallet-order", [NSString dataTOjsonString:parametersDic]]]]) {
- NSDictionary *responseCache = [PPNetworkCache getResponseCacheForKey:[NSString stringWithFormat:@"%@/%@", @"wallet-order", [NSString dataTOjsonString:parametersDic]]];
- if (1) { //self.model.category_id == 2
- if (![NSString isNulllWithObject:[responseCache objectForKey:LIST]]) {
- [self.dataSource removeAllObjects];
- 
- for (NSDictionary * dic in [responseCache objectForKey:LIST]) {
- DBHTransferListModelList *model = [DBHTransferListModelList modelObjectWithDictionary:dic];
- 
- if ([self.tokenModel.flag isEqualToString:@"TNC"]  ||
- [self.tokenModel.flag isEqualToString:@"APH"] ||
- [self.tokenModel.flag isEqualToString:@"DBC"] ||
- [self.tokenModel.flag isEqualToString:@"ZPT"] ||
- [self.tokenModel.flag isEqualToString:@"RHT"] ||
- [self.tokenModel.flag isEqualToString:@"BCS"] ||
- [self.tokenModel.flag isEqualToString:@"TKY"] ||
- [self.tokenModel.flag isEqualToString:@"CPX"] ||
- [self.tokenModel.flag isEqualToString:@"NRV"] ||
- [self.tokenModel.flag isEqualToString:@"CGE"] ||
- [self.tokenModel.flag isEqualToString:@"IAM"] ||
- [self.tokenModel.flag isEqualToString:@"ACAT"] ||
- [self.tokenModel.flag isEqualToString:@"NRVE"] ||
- [self.tokenModel.flag isEqualToString:@"CPX"] ||
- [self.tokenModel.flag isEqualToString:@"QLC"] ||
- [self.tokenModel.flag isEqualToString:@"ONT"] ||
- [self.tokenModel.flag isEqualToString:@"CPX"]) {
- model.value = [NSString DecimalFuncWithOperatorType:3 first:model.value secend:[NSString stringWithFormat:@"%lf", pow(10, self.tokenModel.decimals.doubleValue)] value:8];
- }
- 
- if ([model.from isEqualToString:model.to]) {
- // 自转
- model.transferType = 0;
- } else {
- model.transferType = [model.from isEqualToString:self.neoWalletModel.address] ? 1 : 2;
- }
- 
- [self.dataSource addObject:model];
- }
- [self.tableView reloadData];
- }
- } else {
- if (![NSString isNulllWithObject:[responseCache objectForKey:LIST]])
- {
- [self.dataSource removeAllObjects];
- 
- for (NSDictionary * dic in [responseCache objectForKey:LIST])
- {
- //                    WalletOrderModel * model = [[WalletOrderModel alloc] initWithDictionary:dic];
- //                    model.maxBlockNumber = self.maxBlockNumber;
- //                    model.minBlockNumber = self.minBlockNumber;
- //                    model.flag = [NSObject isNulllWithObject:self.tokenModel] ? @"ether" : [self.tokenModel.flag lowercaseString];
- //                    if ([dic[@"from"] isEqualToString:self.model.address] && [dic[@"to"] isEqualToString:self.model.address]) {
- //                        model.isMySelf = YES;
- //                    } else {
- //                        model.isMySelf = NO;
- //
- //                        if ([model.pay_address isEqualToString:self.model.address])
- //                        {
- //                            //热钱包 eth
- //                            //转账
- //                            model.isReceivables = NO;
- //                        }
- //                        else
- //                        {
- //                            //收款
- //                            model.isReceivables = YES;
- //                        }
- //                    }
- //                    [self.dataSource addObject:model];
- }
- [self.tableView reloadData];
- }
- }
- }
- }
- */
 - (void)addRefresh {
     WEAKSELF
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//        [weakSelf getDataFromServer];
+        [weakSelf getDataFromServer];
     }];
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [weakSelf getNeoTransferListIsLoadMore:YES];
@@ -896,7 +1026,10 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     } else {
         self.headerView.balance = [NSString stringWithFormat:@"%.4lf", _tokenModel.balance.doubleValue];
     }
-    self.headerView.asset = [UserSignData share].user.walletUnitType == 1 ? _tokenModel.priceCny : _tokenModel.priceUsd;
+    
+    NSString *price = [UserSignData share].user.walletUnitType == 1 ? _tokenModel.priceCny : _tokenModel.priceUsd;
+    NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:tokenModel.balance secend:price value:0];
+    self.headerView.asset = asset;
     self.headerView.headImageUrl = _tokenModel.icon;
 }
 

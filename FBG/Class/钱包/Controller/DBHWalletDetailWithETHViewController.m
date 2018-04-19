@@ -302,8 +302,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 price_cny = @"0";
                 price_usd = @"0";
             }
-            model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
-            model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
+            model.priceCny = price_cny;
+            model.priceUsd = price_usd;
             model.address = dic[@"address"];
         }
         
@@ -347,8 +347,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 price_cny = @"0";
                 price_usd = @"0";
             }
-            model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
-            model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
+            model.priceCny = price_cny;
+            model.priceUsd = price_usd;
             model.address = dic[@"address"];
         }
         
@@ -408,7 +408,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             [weakSelf.dataSource removeObjectsInRange:NSMakeRange(1, weakSelf.dataSource.count - 1)];
             DBHWalletDetailTokenInfomationModelData *firstModel = weakSelf.dataSource.firstObject;
             
-            NSString *sum = [UserSignData share].user.walletUnitType == 1 ? firstModel.priceCny : firstModel.priceUsd;
+            NSString *price = [UserSignData share].user.walletUnitType == 1 ? firstModel.priceCny : firstModel.priceUsd;
+            NSString *sum = [NSString DecimalFuncWithOperatorType:2 first:firstModel.balance secend:price value:0];
             if ([NSObject isNulllWithObject:sum] || [sum isEqualToString:@"0"]) {
                 sum = @"0.00";
             }
@@ -444,14 +445,15 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                         price_cny = @"0";
                         price_usd = @"0";
                     }
-                    model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
-                    model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
+                    model.priceCny = price_cny;
+                    model.priceUsd = price_usd;
                     model.flag = dic[GNT_CATEGORY][NAME];
                 } @catch (NSException *exception) {
                     NSLog(@"NSDictionary objectForkey failed: %@", exception);
                 } @finally {
                     NSString *price = [UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd;
-                    sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:price value:5];
+                    NSString *tempPrice = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price value:0];
+                    sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:tempPrice value:5];
                     
                     [weakSelf.dataSource addObject:model];
                 }
@@ -486,7 +488,9 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             
             DBHWalletDetailTokenInfomationModelData *firstModel = weakSelf.dataSource.firstObject;
             
-            NSString *sum = [UserSignData share].user.walletUnitType == 1 ? firstModel.priceCny : firstModel.priceUsd;
+            NSString *price = [UserSignData share].user.walletUnitType == 1 ? firstModel.priceCny : firstModel.priceUsd;
+            NSString *sum = [NSString DecimalFuncWithOperatorType:2 first:firstModel.balance secend:price value:0];
+            
             if ([NSObject isNulllWithObject:sum] || [sum isEqualToString:@"0"]) {
                 sum = @"0.00";
             }
@@ -517,13 +521,14 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                         price_cny = @"0";
                         price_usd = @"0";
                     }
-                    model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:2];
-                    model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:2];
+                    model.priceCny = price_cny;
+                    model.priceUsd = price_usd;
                     model.flag = dic[GNT_CATEGORY][NAME];
                 } @catch (NSException *exception) {
                     NSLog(@"NSDictionary objectForkey failed: %@", exception);
                 } @finally {
                     NSString *price = [UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd;
+                    price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price value:0];
                     sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:price value:5];
                     
                     [weakSelf.dataSource addObject:model];
@@ -608,6 +613,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             }
             
             NSString *price = [UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd;
+            price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price value:0];
             
             NSString *totalAsset = weakSelf.headerView.asset;
             NSString *value = @"0.00";

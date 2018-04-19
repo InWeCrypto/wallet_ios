@@ -152,6 +152,7 @@
 		1B7B89A720862197009F7D69 /* YYTransferListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7B89A620862197009F7D69 /* YYTransferListViewController.m */; };
 		1B81F336205A038900A3822D /* DBHWalletPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81F335205A038900A3822D /* DBHWalletPageViewController.m */; };
 		1B81F33C205AB99200A3822D /* DBHProjectNewOverviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81F33B205AB99200A3822D /* DBHProjectNewOverviewViewController.m */; };
+		1B861A572088948B00592B8C /* YYTransferListETHModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B861A562088948B00592B8C /* YYTransferListETHModel.m */; };
 		1B99F87420735CE9004FD7F7 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B99F87220735CE9004FD7F7 /* TencentOpenAPI.framework */; };
 		1B99F87520735CE9004FD7F7 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B99F87320735CE9004FD7F7 /* TencentOpenApi_IOS_Bundle.bundle */; };
 		1B99F87720735D20004FD7F7 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B99F87620735D20004FD7F7 /* libiconv.tbd */; };
@@ -934,6 +935,8 @@
 		1B81F335205A038900A3822D /* DBHWalletPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHWalletPageViewController.m; sourceTree = "<group>"; };
 		1B81F33A205AB99200A3822D /* DBHProjectNewOverviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHProjectNewOverviewViewController.h; sourceTree = "<group>"; };
 		1B81F33B205AB99200A3822D /* DBHProjectNewOverviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectNewOverviewViewController.m; sourceTree = "<group>"; };
+		1B861A552088948B00592B8C /* YYTransferListETHModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYTransferListETHModel.h; sourceTree = "<group>"; };
+		1B861A562088948B00592B8C /* YYTransferListETHModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYTransferListETHModel.m; sourceTree = "<group>"; };
 		1B99F87220735CE9004FD7F7 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		1B99F87320735CE9004FD7F7 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		1B99F87620735D20004FD7F7 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -2421,6 +2424,8 @@
 				1B21546E207DF95A00EB9224 /* YYWalletConversionListModel.m */,
 				1B215470207DFA0F00EB9224 /* YYWalletConversionListGntCategoryModel.h */,
 				1B215471207DFA0F00EB9224 /* YYWalletConversionListGntCategoryModel.m */,
+				1B861A552088948B00592B8C /* YYTransferListETHModel.h */,
+				1B861A562088948B00592B8C /* YYTransferListETHModel.m */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -4338,6 +4343,7 @@
 				1B2D32F22085CEB7007E4F02 /* YYRedPacketHomeHeaderView.m in Sources */,
 				A88A787E1F6954DF0058094C /* NSDecimalNumber+Addtion.m in Sources */,
 				A807132A1F5558B900C5B862 /* SectionModel.m in Sources */,
+				1B861A572088948B00592B8C /* YYTransferListETHModel.m in Sources */,
 				A80713591F5563CE00C5B862 /* NSDictionary+ValueNoNull.m in Sources */,
 				D5B788CC202997C6005ACFC8 /* DBHTradingMarketModelData.m in Sources */,
 				1B215472207DFA0F00EB9224 /* YYWalletConversionListGntCategoryModel.m in Sources */,

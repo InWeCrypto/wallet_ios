@@ -484,6 +484,9 @@ yy-MM-dd HH:mm:ss
             break;
         case 3: {
 //            resultNumber = SNDiv_handler(first, secend, NSRoundPlain, value);
+            if (secondNumber.intValue == 0) {
+                return @"0";
+            }
             resultNumber = [firstNumber decimalNumberByDividingBy:secondNumber];
             break;
         }

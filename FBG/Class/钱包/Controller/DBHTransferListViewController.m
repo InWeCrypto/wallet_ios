@@ -124,7 +124,7 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     // 交易详情
     DBHTransferDetailViewController *transferDetailViewController = [[DBHTransferDetailViewController alloc] init];
     transferDetailViewController.tokenModel = self.tokenModel;
-    transferDetailViewController.model = self.dataSource[indexPath.row];
+    transferDetailViewController.neoModel = self.dataSource[indexPath.row]; //TODO
     [self.navigationController pushViewController:transferDetailViewController animated:YES];
 }
 
@@ -452,23 +452,23 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
             if (!([weakSelf isEth] ||
                   [weakSelf.flag isEqualToString:NEO] ||
                   [weakSelf.flag isEqualToString:GAS])) {
-                model.fee = [NSString DecimalFuncWithOperatorType:3 first:model.fee secend:[NSString stringWithFormat:@"%lf", pow(10, weakSelf.tokenModel.decimals.doubleValue)] value:8];
+                model.value = [NSString DecimalFuncWithOperatorType:3 first:model.autoContentAccessingProxy secend:[NSString stringWithFormat:@"%lf", pow(10, weakSelf.tokenModel.decimals.doubleValue)] value:8];
             }
             
             // eth及其代币的
             if ([weakSelf isEth]) {
-                model.confirm_at = dic[CONFIRM_AT];
-                model.created_at = dic[CREATED_AT];
-                model.fee = dic[FEE];
+                model.confirmTime = dic[CONFIRM_AT];
+                model.createTime = dic[CREATED_AT];
+                model.value = dic[FEE];
                 model.handle_fee = dic[HANDLE_FEE];
-                model.pay_address = dic[PAY_ADDRESS];
-                model.receive_address = dic[RECEIVE_ADDRESS];
+                model.from = dic[PAY_ADDRESS];
+                model.to = dic[RECEIVE_ADDRESS];
                 model.remark = dic[REMARK];
-                model.trade_no = dic[TRADE_NO];
+                model.tx = dic[TRADE_NO];
                 
                 if ([weakSelf isEth]) { //ETH及代币的
-                    if ([model.fee containsString:@"0x"]) {
-                        model.fee = [NSString numberHexString:[model.fee substringFromIndex:2]];
+                    if ([model.value containsString:@"0x"]) {
+                        model.value = [NSString numberHexString:[model.value substringFromIndex:2]];
                     }
                     
                     NSString *secondStr = @"1000000000000000000";
@@ -477,18 +477,18 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                     if (![[weakSelf flag] isEqualToString:ETH]) { // eth代币
                         secondStr = [NSString stringWithFormat:@"%lf", pow(10, weakSelf.tokenModel.decimals.doubleValue)];
                     }
-                    model.fee = [NSString DecimalFuncWithOperatorType:3 first:model.fee secend:secondStr value:8];
+                    model.value = [NSString DecimalFuncWithOperatorType:3 first:model.value secend:secondStr value:8];
                     model.block_number = dic[BLOCK_NUMBER];
                     model.maxBlockNumber = weakSelf.maxBlockNumber;
                     model.minBlockNumber = weakSelf.minBlockNumber;
                 }
             }
             
-            if ([[model.pay_address lowercaseString] isEqualToString:[model.receive_address lowercaseString]]) {
+            if ([[model.from lowercaseString] isEqualToString:[model.to lowercaseString]]) {
                 // 自转
                 model.transferType = 0;
             } else {
-                model.transferType = [[model.pay_address lowercaseString] isEqualToString:[weakSelf.neoWalletModel.address lowercaseString]] ? 1 : 2;
+                model.transferType = [[model.from lowercaseString] isEqualToString:[weakSelf.neoWalletModel.address lowercaseString]] ? 1 : 2;
             }
             
             // eth和代币的
@@ -500,11 +500,11 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                 } else {
                     number = ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1);
                 }
-                if (number < model.minBlockNumber.doubleValue && [NSObject isNulllWithObject:model.created_at]) {
+                if (number < model.minBlockNumber.doubleValue && [NSObject isNulllWithObject:model.createTime]) {
                     isHaveNoFinishOrder = YES;
                 }
             } else {
-                if ([NSObject isNulllWithObject:model.confirm_at]) {
+                if ([NSObject isNulllWithObject:model.confirmTime]) {
                     isHaveNoFinishOrder = YES;
                 }
             }
@@ -540,23 +540,23 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
             if (!([weakSelf isEth] ||
                 [weakSelf.flag isEqualToString:NEO] ||
                 [weakSelf.flag isEqualToString:GAS])) {
-                model.fee = [NSString DecimalFuncWithOperatorType:3 first:model.fee secend:[NSString stringWithFormat:@"%lf", pow(10, weakSelf.tokenModel.decimals.doubleValue)] value:8];
+                model.value = [NSString DecimalFuncWithOperatorType:3 first:model.value secend:[NSString stringWithFormat:@"%lf", pow(10, weakSelf.tokenModel.decimals.doubleValue)] value:8];
             }
             
             // eth及其代币的
             if ([weakSelf isEth]) {
-                model.confirm_at = dic[CONFIRM_AT];
-                model.created_at = dic[CREATED_AT];
-                model.fee = dic[FEE];
+                model.confirmTime = dic[CONFIRM_AT];
+                model.createTime = dic[CREATED_AT];
+                model.value = dic[FEE];
                 model.handle_fee = dic[HANDLE_FEE];
-                model.pay_address = dic[PAY_ADDRESS];
-                model.receive_address = dic[RECEIVE_ADDRESS];
+                model.from = dic[PAY_ADDRESS];
+                model.to = dic[RECEIVE_ADDRESS];
                 model.remark = dic[REMARK];
-                model.trade_no = dic[TRADE_NO];
+                model.tx = dic[TRADE_NO];
                 
                 if ([weakSelf isEth]) { //ETH及代币的
-                    if ([model.fee containsString:@"0x"]) {
-                        model.fee = [NSString numberHexString:[model.fee substringFromIndex:2]];
+                    if ([model.value containsString:@"0x"]) {
+                        model.value = [NSString numberHexString:[model.value substringFromIndex:2]];
                     }
                     
                     NSString *secondStr = @"1000000000000000000";
@@ -565,18 +565,18 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                     if (![[weakSelf flag] isEqualToString:ETH]) { // eth代币
                         secondStr = [NSString stringWithFormat:@"%lf", pow(10, weakSelf.tokenModel.decimals.doubleValue)];
                     }
-                    model.fee = [NSString DecimalFuncWithOperatorType:3 first:model.fee secend:secondStr value:8];
+                    model.value = [NSString DecimalFuncWithOperatorType:3 first:model.value secend:secondStr value:8];
                     model.block_number = dic[BLOCK_NUMBER];
                     model.maxBlockNumber = weakSelf.maxBlockNumber;
                     model.minBlockNumber = weakSelf.minBlockNumber;
                 }
             }
             
-            if ([[model.pay_address lowercaseString] isEqualToString:[model.receive_address lowercaseString]]) {
+            if ([[model.from lowercaseString] isEqualToString:[model.to lowercaseString]]) {
                 // 自转
                 model.transferType = 0;
             } else {
-                model.transferType = [[model.pay_address lowercaseString] isEqualToString:[weakSelf.neoWalletModel.address lowercaseString]] ? 1 : 2;
+                model.transferType = [[model.from lowercaseString] isEqualToString:[weakSelf.neoWalletModel.address lowercaseString]] ? 1 : 2;
             }
             
             // eth和代币的
@@ -588,11 +588,11 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                 } else {
                     number = ([model.maxBlockNumber intValue] - [model.block_number intValue] + 1);
                 }
-                if (number < model.minBlockNumber.doubleValue && [NSObject isNulllWithObject:model.created_at]) {
+                if (number < model.minBlockNumber.doubleValue && [NSObject isNulllWithObject:model.createTime]) {
                     isHaveNoFinishOrder = YES;
                 }
             } else {
-                if ([NSObject isNulllWithObject:model.confirm_at]) {
+                if ([NSObject isNulllWithObject:model.confirmTime]) {
                     isHaveNoFinishOrder = YES;
                 }
             }

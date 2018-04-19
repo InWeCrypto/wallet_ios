@@ -575,10 +575,8 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
             if (![model.flag isEqualToString:NEO] && ![model.flag isEqualToString:GAS] && ![model.flag isEqualToString:ETH]) {
                 
                 NSString *tokenPrice = [UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd;
-                if ([model.typeName isEqualToString:ETH]) { // ETH代币 直接使用cny或者usd
-                } else { //NEO代币 balance * cny 或者 balance * usd
-                    tokenPrice = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:tokenPrice value:8];
-                }
+                tokenPrice = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:tokenPrice value:8];
+                
                 tokenTotal = [NSString DecimalFuncWithOperatorType:0 first:tokenTotal secend:tokenPrice value:8];
                 
                 NSString *bala = model.balance;
@@ -589,14 +587,14 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
         }
     }];
     
-    NSString *neoPrice = [UserSignData share].user.walletUnitType == 1 ? self.neoModel.priceCny : self.neoModel.priceUsd;
-    NSString *gasPrice = [UserSignData share].user.walletUnitType == 1 ? self.gasModel.priceCny : self.gasModel.priceUsd;
+//    NSString *neoPrice = [UserSignData share].user.walletUnitType == 1 ? self.neoModel.priceCny : self.neoModel.priceUsd;
+//    NSString *gasPrice = [UserSignData share].user.walletUnitType == 1 ? self.gasModel.priceCny : self.gasModel.priceUsd;
     
-    //    NSString *neoPrice = [NSString DecimalFuncWithOperatorType:2 first:self.neoModel.balance secend:[UserSignData share].user.walletUnitType == 1 ? self.neoModel.priceCny : self.neoModel.priceUsd value:8];
-    //
-    //    NSString *gasPrice = [NSString DecimalFuncWithOperatorType:2 first:self.gasModel.balance secend:[UserSignData share].user.walletUnitType == 1 ? self.gasModel.priceCny : self.gasModel.priceUsd value:8];
+    NSString *neoPrice = [NSString DecimalFuncWithOperatorType:2 first:self.neoModel.balance secend:[UserSignData share].user.walletUnitType == 1 ? self.neoModel.priceCny : self.neoModel.priceUsd value:8];
     
-    NSString *ethPrice = [UserSignData share].user.walletUnitType == 1 ? self.ethModel.priceCny : self.ethModel.priceUsd;
+    NSString *gasPrice = [NSString DecimalFuncWithOperatorType:2 first:self.gasModel.balance secend:[UserSignData share].user.walletUnitType == 1 ? self.gasModel.priceCny : self.gasModel.priceUsd value:8];
+    
+    NSString *ethPrice = [NSString DecimalFuncWithOperatorType:2 first:self.ethModel.balance secend:[UserSignData share].user.walletUnitType == 1 ? self.ethModel.priceCny : self.ethModel.priceUsd value:8];
     
     NSString *gasNeo = [NSString DecimalFuncWithOperatorType:0 first:neoPrice secend:gasPrice value:8];
     NSString *ethDB = [NSString DecimalFuncWithOperatorType:0 first:ethPrice secend:tokenTotal value:8];
@@ -663,8 +661,12 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
         if (![NSObject isNulllWithObject:responseObj]) {
             NSArray *dataArray = responseObj[LIST];
             if (![NSObject isNulllWithObject:dataArray] && dataArray.count > 0) {
-                NSString *tempETHBalance, *tempETHPriceCny, *tempETHPriceUsd,
-                        *tempNEOBalance, *tempNEOPriceCny, *tempNEOPriceUsd = @"0";
+                NSString *tempETHBalance = @"0";
+                NSString *tempETHPriceCny = @"0";
+                NSString *tempETHPriceUsd = @"0";
+                NSString *tempNEOBalance = @"0";
+                NSString *tempNEOPriceCny = @"0";
+                NSString *tempNEOPriceUsd = @"0";
                 
                 for (NSDictionary *dict in dataArray) {
                     @autoreleasepool {
@@ -683,8 +685,8 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                             second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:@"1000000000000000000" value:8];
                             
                             tempETHBalance = [NSString DecimalFuncWithOperatorType:0 first:tempETHBalance secend:second value:8];
-                            tempETHPriceCny = [NSString DecimalFuncWithOperatorType:2 first:tempETHBalance secend:price_cny value:8];
-                            tempETHPriceUsd = [NSString DecimalFuncWithOperatorType:2 first:tempETHBalance secend:price_usd value:8];
+                            tempETHPriceCny = price_cny;
+                            tempETHPriceUsd = price_usd;
                             
                             // 代币数量统计
                             for (DBHWalletManagerForNeoModelList *walletModel in self.walletsArray) {
@@ -695,8 +697,8 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                             
                         } else {
                             tempNEOBalance = [NSString DecimalFuncWithOperatorType:0 first:tempNEOBalance secend:second value:8];
-                            tempNEOPriceCny = [NSString DecimalFuncWithOperatorType:2 first:tempNEOBalance secend:price_cny value:8];
-                            tempNEOPriceUsd = [NSString DecimalFuncWithOperatorType:2 first:tempNEOBalance secend:price_usd value:8];
+                            tempNEOPriceCny = price_cny;
+                            tempNEOPriceUsd = price_usd;
                             
                             // 代币数量统计
                             for (DBHWalletManagerForNeoModelList *walletModel in self.walletsArray) {
@@ -753,8 +755,8 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                     
                     gasBalance = [NSString DecimalFuncWithOperatorType:0 first:balance secend:gasBalance value:8];
 
-                    gasPriceCny = [NSString DecimalFuncWithOperatorType:2 first:gasBalance secend:priceCny value:8];
-                    gasPriceUsd = [NSString DecimalFuncWithOperatorType:2 first:gasBalance secend:priceUsd value:8];
+                    gasPriceCny = priceCny;
+                    gasPriceUsd = priceUsd;
                     
                     [walletModel.tokenStatistics setObject:balance forKey:GAS];
                 }
@@ -787,9 +789,6 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                                         
                                         model.balance = [NSString DecimalFuncWithOperatorType:0 first:model.balance secend:second value:8];
                                         
-                                        model.priceCny = [NSString DecimalFuncWithOperatorType:0 first:model.priceCny secend:[NSString DecimalFuncWithOperatorType:2 first:second secend:price_cny value:8] value:8];
-                                        model.priceUsd = [NSString DecimalFuncWithOperatorType:0 first:model.priceUsd secend:[NSString DecimalFuncWithOperatorType:2 first:second secend:price_usd value:8] value:8];
-                                        
                                         NSLog(@"priceCny = %f  second = %f", model.priceCny.doubleValue, second.doubleValue);
                                         [walletModel.tokenStatistics setObject:second forKey:model.name];
                                     } else {
@@ -815,15 +814,15 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                             model.icon = listModel.gnt_category.icon;
                             model.flag = model.name;
                             
+                            model.priceCny = price_cny;
+                            model.priceUsd = price_usd;
+                            
                             if (![NSObject isNulllWithObject:balance]) {
                                 NSString *temp, *second = @"0";
                                 if (isETH) { //ETH
                                     temp = [NSString numberHexString:[balance substringFromIndex:2]];
                                     second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:[NSString stringWithFormat:@"%lf", pow(10, decimals)] value:8];
-                                    model.balance = second;
                                     
-                                    model.priceCny = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_cny value:8];
-                                    model.priceUsd = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price_usd value:8];
                                     NSLog(@"priceCny = %f  second = %f", model.priceCny.doubleValue, model.balance.doubleValue);
                                     // 代币数量统计
                                     [walletModel.tokenStatistics setObject:second forKey:model.name];
@@ -833,13 +832,10 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                                     second = temp;
                                     
                                     model.decimals = [NSString stringWithFormat:@"%@", @(decimals)];
-                                    model.balance = second;
-                                    
-                                    model.priceCny = price_cny;
-                                    model.priceUsd = price_usd;
-                                    
+                                   
                                     [walletModel.tokenStatistics setObject:second forKey:model.name];
                                 }
+                                model.balance = second;
                             }
                             [self.tokensArray addObject:model];
                         }

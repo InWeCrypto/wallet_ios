@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *label2;
 @property (weak, nonatomic) IBOutlet UILabel *label3;
 @property (weak, nonatomic) IBOutlet UILabel *label4;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImg;
 
 @end
 
@@ -30,6 +31,9 @@
     self.label2.text = DBHGetStringWithKeyFromTable(@"Privacy Policy", nil);
     self.label3.text = DBHGetStringWithKeyFromTable(@"Open Source Agreement", nil);
     self.label4.text = DBHGetStringWithKeyFromTable(@"Development Team", nil);
+    
+    self.iconImg.layer.cornerRadius = 5;
+    self.iconImg.layer.masksToBounds = YES;
 }
 
 - (NSString *)currentVersion {

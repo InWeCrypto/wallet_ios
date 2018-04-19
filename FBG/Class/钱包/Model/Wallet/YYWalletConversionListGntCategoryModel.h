@@ -12,7 +12,7 @@
 
 @interface YYWalletConversionListGntCategoryModel : NSObject
 
-@property (nonatomic, copy) NSString *address;
+@property (nonatomic, copy) NSString *address; // 合约地址
 @property (nonatomic, strong) DBHProjectDetailInformationModelIco *cap;
 @property (nonatomic, copy) NSString *created_at;
 @property (nonatomic, copy) NSString *updated_at;

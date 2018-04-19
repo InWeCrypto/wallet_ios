@@ -11,12 +11,6 @@
 
 MJCodingImplementation
 
-+ (NSDictionary *)mj_replacedKeyFromPropertyName {
-    return @{
-             @"hashStr" : @"hash"
-             };
-}
-
 - (NSString *)maxBlockNumber {
     if (!_maxBlockNumber) {
         _maxBlockNumber = @"0";
