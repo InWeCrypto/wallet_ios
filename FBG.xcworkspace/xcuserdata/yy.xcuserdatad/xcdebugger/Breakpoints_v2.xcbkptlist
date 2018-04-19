@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/DBHTransferDetailViewController.m"
-            timestampString = "545832074.22773"
+            timestampString = "545833991.5070781"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "224"
@@ -26,28 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/DBHTransferDetailViewController.m"
-            timestampString = "545832074.227831"
+            timestampString = "545833991.507149"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "261"
             endingLineNumber = "261"
             landmarkName = "-setMessage:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FBG/Class/&#x94b1;&#x5305;/Controller/YYTransferListViewController.m"
-            timestampString = "545832074.2278889"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "467"
-            endingLineNumber = "467"
-            landmarkName = "-handleResponseObject:type:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
