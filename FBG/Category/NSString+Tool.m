@@ -460,11 +460,20 @@ yy-MM-dd HH:mm:ss
     if ([NSObject isNulllWithObject:first]) {
         first = @"0";
     }
-    NSDecimalNumber *firstNumber = [[NSDecimalNumber alloc] initWithString:first];
     
+    if ([first isKindOfClass:[NSNumber class]]) {
+        first = [NSString stringWithFormat:@"%@", first];
+    }
+    NSDecimalNumber *firstNumber = [[NSDecimalNumber alloc] initWithString:first];
+
     if ([NSObject isNulllWithObject:secend]) {
         secend = @"0";
     }
+    
+    if ([secend isKindOfClass:[NSNumber class]]) {
+        secend = [NSString stringWithFormat:@"%@", secend];
+    }
+    
     NSDecimalNumber *secondNumber = [[NSDecimalNumber alloc] initWithString:secend];
     
     switch (operatorType)

@@ -5005,8 +5005,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: WenTing Lei (9MQE599Q9A)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: WenTing Lei (S8Z6KS96GV)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 9MQE599Q9A;
@@ -5105,7 +5105,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.raistone.inwecrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "88b3b5f1-63e0-40b2-bd37-242dc3862bed";
-				PROVISIONING_PROFILE_SPECIFIER = Inwecrypto;
+				PROVISIONING_PROFILE_SPECIFIER = iOS_development;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -5122,8 +5122,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FBG/FBG.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: WenTing Lei (9MQE599Q9A)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: WenTing Lei (S8Z6KS96GV)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 9MQE599Q9A;
@@ -5227,7 +5227,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.raistone.inwecrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "88b3b5f1-63e0-40b2-bd37-242dc3862bed";
-				PROVISIONING_PROFILE_SPECIFIER = Inwecrypto;
+				PROVISIONING_PROFILE_SPECIFIER = iOS_development;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_VERSION = 3.0;

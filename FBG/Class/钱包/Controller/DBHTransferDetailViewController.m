@@ -142,8 +142,11 @@
             //正式
             url = [self.model.typeName isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
         }
-        //        NSString *orderNumber = [[self.model.tx substringToIndex:2] isEqualToString:@"0x"] ? [self.model.tx substringFromIndex:2] : self.model.tx;
-        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.model.tx]];
+        NSString *orderNumber = self.model.tx;
+        if (![self.model.typeName isEqualToString:ETH]) {
+            orderNumber = [[self.model.tx substringToIndex:2] isEqualToString:@"0x"] ? [self.model.tx substringFromIndex:2] : self.model.tx;
+        }
+        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, orderNumber]];
         vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
         [self.navigationController pushViewController:vc animated:YES];
     } else {
@@ -157,8 +160,14 @@
             //正式
             url = [self.message.ext[@"flag"] isEqualToString:@"ETH"] ? @"https://etherscan.io/tx/" : @"https://neoscan.io/transaction/";
         }
-        //        NSString *orderNumber = [[self.message.ext[TRADE_NO] substringToIndex:2] isEqualToString:@"0x"] ? [self.message.ext[TRADE_NO] substringFromIndex:2] : self.message.ext[TRADE_NO];
-        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, self.message.ext[TRADE_NO]]];
+//        NSString *orderNumber = [[self.message.ext[TRADE_NO] substringToIndex:2] isEqualToString:@"0x"] ? [self.message.ext[TRADE_NO] substringFromIndex:2] : self.message.ext[TRADE_NO];
+        
+        NSString *orderNumber =  self.message.ext[TRADE_NO];
+        if (![self.model.typeName isEqualToString:ETH]) {
+           orderNumber = [[self.message.ext[TRADE_NO] substringToIndex:2] isEqualToString:@"0x"] ? [self.message.ext[TRADE_NO] substringFromIndex:2] : self.message.ext[TRADE_NO];
+        }
+        
+        KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, orderNumber]];
         vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
         [self.navigationController pushViewController:vc animated:YES];
     }
