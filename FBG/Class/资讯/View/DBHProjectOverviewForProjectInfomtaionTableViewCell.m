@@ -67,7 +67,6 @@
     }];
     [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.iconImageView.mas_right).offset(AUTOLAYOUTSIZE(8));
-        make.width.lessThanOrEqualTo(@(AUTOLAYOUTSIZE(180)));
         make.top.offset(AUTOLAYOUTSIZE(18));
     }];
     [self.tagLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -157,8 +156,21 @@
     if (_projectDetailModel.type == 1) {
         BOOL isZhUnit = [UserSignData share].user.walletUnitType == 1;
         NSString *price = isZhUnit ? _projectDetailModel.ico.priceCny : _projectDetailModel.ico.priceUsd;
-        price = [NSString stringWithFormat:@"%@%.2lf", isZhUnit ? @"¥" : @"$", price.doubleValue];
+        if (price.doubleValue < 0.01) {
+            price = [NSString stringWithFormat:@"%@%@", isZhUnit ? @"¥" : @"$", price];
+        } else {
+            price = [NSString stringWithFormat:@"%@%.2lf", isZhUnit ? @"¥" : @"$", price.doubleValue];
+        }
         self.priceLabel.text =  price;
+        
+        CGFloat width = [NSString getWidthtWithString:price fontSize:20] + 6;
+        WEAKSELF
+        [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.greaterThanOrEqualTo(weakSelf.nameLabel.mas_right).offset(AUTOLAYOUTSIZE(6));
+            make.centerY.equalTo(weakSelf.nameLabel);
+            make.width.equalTo(@(width));
+            make.right.offset(- AUTOLAYOUTSIZE(21));
+        }];
         
         self.volumeLabel.text = [NSString stringWithFormat:@"%@：%@", DBHGetStringWithKeyFromTable(@"Volume (24h)", nil), isZhUnit ? _projectDetailModel.ico.volumeCny24h : _projectDetailModel.ico.volumeUsd24h];
         
@@ -172,6 +184,7 @@
     } else {
         
     }
+    
     if ([[DBHLanguageTool sharedInstance].language isEqualToString:CNS]) {
         self.rankLabel.text = [NSString stringWithFormat:@"第%ld名", (NSInteger)_projectDetailModel.categoryScore.sort];
     } else {

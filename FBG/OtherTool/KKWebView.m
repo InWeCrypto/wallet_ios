@@ -655,7 +655,7 @@
         LYShareMenuItem *longImgShareItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"fenxiang_jietu1" itemTitle:DBHGetStringWithKeyFromTable(@"Share Picture", nil)];
         LYShareMenuItem *twitterShareItem = [[LYShareMenuItem alloc] initShareMenuItemWithImageName:@"fenxiang_twitter" itemTitle:@"Twitter"];
         
-        _sharedMenuItems = [NSMutableArray arrayWithObjects:friendItem, weixinItem, qqItem, telegramItem, reservesItem, longImgShareItem, twitterShareItem, nil];
+        _sharedMenuItems = [NSMutableArray arrayWithObjects:friendItem, weixinItem, qqItem, telegramItem, twitterShareItem, reservesItem, longImgShareItem, nil];
     }
     return _sharedMenuItems;
 }
@@ -682,6 +682,11 @@
             break;
         }
         case 4: {
+            [self shareToTwitter];
+            break;
+        }
+            
+        case 5: {
             [self reserves];
             break;
         }
@@ -689,15 +694,10 @@
 //            [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming soon", nil)];
 //            break;
 //        }
-        case 5: {
+        case 6: {
             [self shareLongPicture];
             break;
         }
-        case 6: {
-            [self shareToTwitter];
-            break;
-        }
-            
         default:
             break;
     }

@@ -65,13 +65,14 @@
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.iconBackImageView.mas_right).offset(AUTOLAYOUTSIZE(10));
         make.top.offset(AUTOLAYOUTSIZE(10));
-        make.width.lessThanOrEqualTo(@(AUTOLAYOUTSIZE(180)));
+//        make.width.lessThanOrEqualTo(@(AUTOLAYOUTSIZE(160)));
     }];
     [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.titleLabel);
-        make.width.offset(AUTOLAYOUTSIZE(170));
+        make.width.equalTo(@(AUTOLAYOUTSIZE(170)));
         make.bottom.offset(- AUTOLAYOUTSIZE(10.5));
     }];
+    
     [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.greaterThanOrEqualTo(weakSelf.titleLabel.mas_right).offset(AUTOLAYOUTSIZE(2));
         make.centerY.equalTo(weakSelf.titleLabel);
@@ -124,8 +125,15 @@
     self.titleLabel.text = [NSString stringWithFormat:@"%@（%@）", _model.name, _model.longName];
     self.contentLabel.text = _model.lastArticle.title;
     self.timeLabel.text = [NSString formatTimeDelayEight:_model.lastArticle.createdAt];
-    self.priceLabel.hidden = _model.type != 1;
-    self.changeLabel.hidden = _model.type != 1;
+    
+    NSString *price = [UserSignData share].user.walletUnitType == 1 ? _icoModel.priceCny : _icoModel.priceUsd;
+    if ([NSObject isNulllWithObject:price]) {
+        self.priceLabel.hidden = YES;
+        self.changeLabel.hidden = YES;
+    } else {
+        self.priceLabel.hidden = _model.type != 1;
+        self.changeLabel.hidden = _model.type != 1;
+    }
 
     if (self.currentSelectedTitleIndex == 0) { // 自选如果有未读消息才显示
         self.isNoRead = _model.categoryUser.isFavoriteDot;
@@ -137,15 +145,31 @@
     _icoModel = icoModel;
     
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _icoModel.priceCny : _icoModel.priceUsd;
-    self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.doubleValue];
-    
-    float percentChange24h = _icoModel.percentChange24h.doubleValue;
-    if (percentChange24h == 0) { // -0的情况
-        percentChange24h = 0;
+    if ([NSObject isNulllWithObject:price]) {
+        self.priceLabel.hidden = YES;
+        self.changeLabel.hidden = YES;
+    } else {
+        if (price.doubleValue < 0.01) {
+            self.priceLabel.text = [NSString stringWithFormat:@"%@%@", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price];
+        } else {
+            self.priceLabel.text = [NSString stringWithFormat:@"%@%.2lf", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$", price.doubleValue];
+        }
+        WEAKSELF
+        CGFloat width = [NSString getWidthtWithString:self.priceLabel.text fontSize:11];
+        [self.priceLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.greaterThanOrEqualTo(weakSelf.titleLabel.mas_right).offset(AUTOLAYOUTSIZE(2));
+            make.centerY.equalTo(weakSelf.titleLabel);
+            make.width.equalTo(@(width));
+            make.right.equalTo(weakSelf.changeLabel.mas_left).offset(- AUTOLAYOUTSIZE(10));
+        }];
+        
+        float percentChange24h = _icoModel.percentChange24h.doubleValue;
+        if (percentChange24h == 0) { // -0的情况
+            percentChange24h = 0;
+        }
+        self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", percentChange24h >= 0 ? @"+" : @"", percentChange24h];
+        self.changeLabel.backgroundColor = percentChange24h >= 0 ? COLORFROM16(0x008C55, 1) : MAIN_ORANGE_COLOR;
     }
-    self.changeLabel.text = [NSString stringWithFormat:@"%@%.2lf%%", percentChange24h >= 0 ? @"+" : @"", percentChange24h];
-    self.changeLabel.backgroundColor = percentChange24h >= 0 ? COLORFROM16(0x008C55, 1) : MAIN_ORANGE_COLOR;
-    
 }
 - (void)setFunctionalUnitTitle:(NSString *)functionalUnitTitle {
     _functionalUnitTitle = functionalUnitTitle;
