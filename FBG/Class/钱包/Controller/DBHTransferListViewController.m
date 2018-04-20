@@ -210,7 +210,9 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                     NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.headerView.balance value:2];
                     weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
                     
-                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
+                    NSString *number = [NSString notRounding:tempBalance afterPoint:4];
+                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
+//                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
                 }
             }
         } else {  // NEO
@@ -289,13 +291,16 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
             } else if ([weakSelf.flag isEqualToString:GAS]) { // gas
                 tempBalance = weakSelf.tokenModel.balance;
             } else { //代币
-                tempBalance = [NSString stringWithFormat:@"%.4lf", weakSelf.tokenModel.balance.doubleValue];
+                NSString *number = [NSString notRounding:weakSelf.tokenModel.balance afterPoint:4];
+                tempBalance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
+                
+//                tempBalance = [NSString stringWithFormat:@"%.4lf", weakSelf.tokenModel.balance.doubleValue];
             }
             
             NSString *price = [UserSignData share].user.walletUnitType == 1 ? weakSelf.tokenModel.priceCny : weakSelf.tokenModel.priceUsd;
             NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.tokenModel.balance value:2];
             weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
-            weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
+            weakSelf.headerView.balance = tempBalance;
         }
     } success:^(id responseObject) {
         if ([weakSelf isEth]) {
@@ -317,7 +322,11 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                     NSString *price = [UserSignData share].user.walletUnitType == 1 ? price_cny : price_usd;
                     NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.headerView.balance value:2];
                     weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
-                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
+                    
+                    NSString *number = [NSString notRounding:tempBalance afterPoint:4];
+                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
+                    
+//                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
                 }
             }
         } else { // NEO
@@ -391,12 +400,16 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
             } else if ([weakSelf.flag isEqualToString:GAS]) { // gas
                 tempBalance = weakSelf.tokenModel.balance;
             } else { // dai'b
-                tempBalance = [NSString stringWithFormat:@"%.4lf", weakSelf.tokenModel.balance.doubleValue];
+                
+                NSString *number = [NSString notRounding:weakSelf.tokenModel.balance afterPoint:4];
+                tempBalance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
+                
+//                tempBalance = [NSString stringWithFormat:@"%.4lf", weakSelf.tokenModel.balance.doubleValue];
             }
             NSString *price = [UserSignData share].user.walletUnitType == 1 ? weakSelf.tokenModel.priceCny : weakSelf.tokenModel.priceUsd;
             NSString *asset =[NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.tokenModel.balance value:2];
             weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
-            weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
+            weakSelf.headerView.balance = tempBalance;
         }
     } failure:^(NSString *error) {
 //        [LCProgressHUD showFailure:error];
@@ -892,9 +905,12 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     _tokenModel = tokenModel;
     
     if ([_tokenModel.flag isEqualToString:NEO]) {
-        self.headerView.balance = _tokenModel.balance;
+        self.headerView.balance = [NSString stringWithFormat:@"%.0lf", _tokenModel.balance.doubleValue];
     } else {
-        self.headerView.balance = [NSString stringWithFormat:@"%.4lf", _tokenModel.balance.doubleValue];
+        NSString *number = [NSString notRounding:_tokenModel.balance afterPoint:4];
+        self.headerView.balance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
+        
+//        self.headerView.balance = [NSString stringWithFormat:@"%.4lf", _tokenModel.balance.doubleValue];
     }
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _tokenModel.priceCny : _tokenModel.priceUsd;
     NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:tokenModel.balance value:2];

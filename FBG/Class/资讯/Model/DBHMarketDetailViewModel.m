@@ -112,7 +112,7 @@
         
         weakSelf.requestBlock(kLineDataArray);
     } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"No Data", nil)];
     } specialBlock:^{
         if (![UserSignData share].user.isLogin) {
             return ;

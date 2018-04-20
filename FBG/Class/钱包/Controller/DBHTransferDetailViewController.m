@@ -147,7 +147,7 @@
             orderNumber = [[self.model.tx substringToIndex:2] isEqualToString:@"0x"] ? [self.model.tx substringFromIndex:2] : self.model.tx;
         }
         KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, orderNumber]];
-        vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
+        vc.title = DBHGetStringWithKeyFromTable(@"Check the balance", nil);
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         if ([APP_APIEHEAD isEqualToString:TESTAPIEHEAD1])
@@ -168,7 +168,7 @@
         }
         
         KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@",url, orderNumber]];
-        vc.title = DBHGetStringWithKeyFromTable(@"Order Details", nil);
+        vc.title = DBHGetStringWithKeyFromTable(@"Check the balance", nil);
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

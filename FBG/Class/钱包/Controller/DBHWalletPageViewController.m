@@ -1110,7 +1110,7 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                 // ETH
                 DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
                 walletDetailWithETHViewController.ethWalletModel = model;
-                [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
+                   [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
             } else {
                 // NEO
                 DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];

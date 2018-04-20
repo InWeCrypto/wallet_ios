@@ -127,7 +127,7 @@
     self.timeLabel.text = [NSString formatTimeDelayEight:_model.lastArticle.createdAt];
     
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _icoModel.priceCny : _icoModel.priceUsd;
-    if ([NSObject isNulllWithObject:price]) {
+    if ([NSObject isNulllWithObject:price] || [price isEqualToString:@"-"]) {
         self.priceLabel.hidden = YES;
         self.changeLabel.hidden = YES;
     } else {
@@ -145,7 +145,7 @@
     _icoModel = icoModel;
     
     NSString *price = [UserSignData share].user.walletUnitType == 1 ? _icoModel.priceCny : _icoModel.priceUsd;
-    if ([NSObject isNulllWithObject:price]) {
+    if ([NSObject isNulllWithObject:price] || [price isEqualToString:@"-"]) {
         self.priceLabel.hidden = YES;
         self.changeLabel.hidden = YES;
     } else {

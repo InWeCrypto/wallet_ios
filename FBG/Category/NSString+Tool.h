@@ -26,7 +26,7 @@
 
 //MD5加密
 - (NSString *)md5WithString;
-
++ (NSString *)notRounding:(NSString *)price afterPoint:(int)position;
 #pragma mark -- 正则判断
 
 //手机号码验证

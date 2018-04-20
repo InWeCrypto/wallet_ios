@@ -338,7 +338,6 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         priceCny = recordModel.cap.priceCny;
         priceUsd = recordModel.cap.priceUsd;
         
-        
         NSString *gasPriceCny = @"0";
         NSString *gasPriceUsd = @"0";
         NSString *gasBalance = @"0";

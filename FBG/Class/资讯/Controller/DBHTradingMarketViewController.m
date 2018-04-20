@@ -123,7 +123,7 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
             [weakSelf.tableView reloadData];
         });
     } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"No Data", nil)];
     } specialBlock:^{
         
     }];

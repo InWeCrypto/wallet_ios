@@ -95,14 +95,22 @@
     _model = model;
     
     if ([_model.flag isEqualToString:@"NEO"] || [_model.flag isEqualToString:@"Gas"]) {
+        
         if ([_model.flag isEqualToString:@"NEO"]) {
             self.numberLabel.text = [NSString stringWithFormat:@"%.0lf", _model.balance.doubleValue];
         } else {
-            self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.doubleValue];
+//            self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.doubleValue];
+            
+            NSString *number = [NSString notRounding:model.balance afterPoint:8];
+            self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
         }
         self.iconImageView.image = [UIImage imageNamed:![_model.icon isEqual:[NSNull null]] ? _model.icon : @""];
     } else {
-        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.doubleValue];
+//        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.doubleValue];
+        
+        NSString *number = [NSString notRounding:model.balance afterPoint:8];
+        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+        
         if ([_model.icon containsString:@"http"]) {
             [self.iconImageView sdsetImageWithURL:_model.icon placeholderImage:[UIImage imageNamed:@"NEO_add"]];
         } else {

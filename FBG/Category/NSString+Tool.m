@@ -415,6 +415,18 @@ yy-MM-dd HH:mm:ss
     return hexStr;
 }
 
++ (NSString *)notRounding:(NSString *)price afterPoint:(int)position {
+    NSDecimalNumberHandler * roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:position raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+    NSDecimalNumber *ouncesDecimal;
+    NSDecimalNumber *roundedOunces;
+    
+    ouncesDecimal = [[NSDecimalNumber alloc] initWithString:price];
+    roundedOunces = [ouncesDecimal decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
+    
+    return [NSString stringWithFormat:@"%@",roundedOunces];
+}
+
+
 + (NSString *)DecimalFuncWithOperatorType:(NSInteger)operatorType first:(id)first secend:(id)secend value:(int)value
 {
     /*

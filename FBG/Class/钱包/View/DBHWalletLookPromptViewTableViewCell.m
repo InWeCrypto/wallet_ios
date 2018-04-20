@@ -61,7 +61,9 @@
     self.iconImageView.image = [UIImage imageNamed:(_model.categoryId == 1 ? @"ETH" : @"NEO")];
     self.nameLabel.text = _model.name;
     NSString *balance = _model.tokenStatistics[self.tokenName];
-    self.numberLabel.text = [NSString stringWithFormat:@"%.5lf", balance.doubleValue];
+
+    NSString *number = [NSString notRounding:balance afterPoint:5];
+    self.numberLabel.text = [NSString stringWithFormat:@"%.5lf", number.doubleValue];
 }
 
 - (UIImageView *)iconImageView {
