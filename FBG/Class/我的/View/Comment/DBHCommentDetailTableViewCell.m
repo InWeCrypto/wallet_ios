@@ -155,6 +155,8 @@
     _detailModel = detailModel;
     
     self.nameLabel.text = detailModel.user.name;
+    
+    //http://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/ios_header_1523700570.jpeg
     [self.photoImgView sdsetImageWithURL:detailModel.user.img placeholderImage:[UIImage imageNamed:@"touxiang"]];
 
     self.timeLabel.text = [NSString formatTimeDelayEight:detailModel.category_comment_at];
