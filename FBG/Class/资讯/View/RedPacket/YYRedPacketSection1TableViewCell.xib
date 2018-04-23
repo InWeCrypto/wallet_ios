@@ -28,14 +28,14 @@
                                     <constraint firstAttribute="width" secondItem="1xu-md-obY" secondAttribute="height" multiplier="1:1" id="nWw-bG-oGX"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xjjjfsddsfasfsdfafdfdfad" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ig-3K-38G">
-                                <rect key="frame" x="56" y="16.5" width="130.5" height="13.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ig-3K-38G">
+                                <rect key="frame" x="56" y="16.5" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="110.00000000ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Inn-RC-bFk">
-                                <rect key="frame" x="56" y="33.5" width="131" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Inn-RC-bFk">
+                                <rect key="frame" x="56" y="50.5" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -54,15 +54,33 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTd-qO-ayr">
-                        <rect key="frame" x="239" y="6" width="124" height="66.5"/>
+                        <rect key="frame" x="108" y="6" width="255" height="66.5"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uOg-g2-W8V">
-                                <rect key="frame" x="-41" y="19" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4eH-m5-rdu">
+                                <rect key="frame" x="245" y="22.5" width="0.0" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="Hic-Zc-in4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.92941176470588238" green="0.45490196078431372" blue="0.12941176470588234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uOg-g2-W8V" customClass="YYRedPacketReceiveProgressView">
+                                <rect key="frame" x="157" y="5.5" width="88" height="56"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="88" id="Bby-pR-u4g"/>
+                                    <constraint firstAttribute="height" constant="56" id="zbT-pX-2Cl"/>
+                                </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="4eH-m5-rdu" secondAttribute="trailing" constant="10" id="7ls-8R-PwI"/>
+                            <constraint firstItem="uOg-g2-W8V" firstAttribute="centerY" secondItem="aTd-qO-ayr" secondAttribute="centerY" id="dTD-LF-VM9"/>
+                            <constraint firstAttribute="trailing" secondItem="uOg-g2-W8V" secondAttribute="trailing" constant="10" id="jrd-AP-siH"/>
+                            <constraint firstItem="4eH-m5-rdu" firstAttribute="centerY" secondItem="aTd-qO-ayr" secondAttribute="centerY" id="kfn-Gt-gvw"/>
+                        </constraints>
                     </view>
                 </subviews>
                 <constraints>
@@ -77,6 +95,12 @@
                     <constraint firstItem="0dc-8R-2ti" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="kSp-dL-pyK"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="priceLabel" destination="Inn-RC-bFk" id="hFg-b4-c4j"/>
+                <outlet property="progessView" destination="uOg-g2-W8V" id="Wea-xc-0Ap"/>
+                <outlet property="redPacketNoLabel" destination="6ig-3K-38G" id="lUb-lq-RoJ"/>
+                <outlet property="statusLabel" destination="4eH-m5-rdu" id="xYR-Rp-aY8"/>
+            </connections>
             <point key="canvasLocation" x="69.5" y="102"/>
         </tableViewCell>
     </objects>

@@ -8,7 +8,22 @@
 
 #import "YYRedPacketReceiveProgressView.h"
 
+@interface YYRedPacketReceiveProgressView()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *progressWidthConstaint;
+@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+
+@end
+
 @implementation YYRedPacketReceiveProgressView
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        _progressWidthConstaint.constant = 0;
+        _progressLabel.text = @"";
+    }
+    return self;
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -86,7 +86,7 @@
 
 - (void)respondsToOKBtn {
     [self animationHide];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.pgyer.com/InWeCrypto"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UPDATE_APP_URL]];
 }
 
 - (void)animationHide {

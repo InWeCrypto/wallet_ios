@@ -159,6 +159,7 @@
 #define APIEHEAD6 @"http://inwecrypto.com/newsdetail?art_id="  //分享网络请求头
 #define IMAGEHEAD1 @"https://china.inwecrypto.com:4431/"  //图片头
 #define HELPCENTER @"http://inwecrypto.com/%@/helpcenter" //帮助中心
+#define UPDATE_APP_URL  @"https://fir.im/InWeCrypto"
 
 #define KEYCHAIN_KEY(address) [NSString stringWithFormat:@"%@_%@_%@", address, [UserSignData share].user.email, [APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
 //钱包状态

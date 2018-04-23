@@ -214,6 +214,10 @@
         _passwordTextField.secureTextEntry = YES;
         _passwordTextField.textColor = COLORFROM16(0x333333, 1);
         _passwordTextField.delegate = self;
+        
+        if (self.placeHolder.length > 0) {
+            _passwordTextField.placeholder = self.placeHolder;
+        }
     }
     return _passwordTextField;
 }

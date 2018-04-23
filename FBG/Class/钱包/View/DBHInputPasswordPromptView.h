@@ -14,6 +14,8 @@ typedef void(^CommitBlock)(NSString *password);
 
 @property (nonatomic, assign) NSInteger inputPsdType;
 
+@property (nonatomic, copy) NSString *placeHolder;
+
 /**
  动画显示
  */

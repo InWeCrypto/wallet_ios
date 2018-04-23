@@ -31,6 +31,7 @@ static CGFloat min_distance = 60;// 最小回弹距离
     self.delegate = self;
     //设置导航栏背景颜色
     UINavigationBar *bar = self.navigationBar;
+    
     bar.tintColor = COLORFROM16(0x333333, 1);
     [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(20)}];
     [self.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
@@ -62,7 +63,8 @@ static CGFloat min_distance = 60;// 最小回弹距离
             backImageName = @"login_close";
         } else if ([viewController isKindOfClass:NSClassFromString(@"DBHWalletDetailViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHWalletDetailWithETHViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHQrCodeViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHPaymentReceivedViewController")]) {
             backImageName = @"关闭-4";
-        } else if ([viewController isKindOfClass:NSClassFromString(@"YYRedPacketViewController")]) {
+        } else if ([viewController isKindOfClass:NSClassFromString(@"YYRedPacketViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFirstViewController")]) {
             backImageName = @"white_back";
         } else {
             backImageName = @"返回-3";

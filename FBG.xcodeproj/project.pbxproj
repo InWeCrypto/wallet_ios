@@ -216,6 +216,12 @@
 		1BAE4A8620616790006EBB00 /* DBHPlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAE4A8520616790006EBB00 /* DBHPlaceHolderTextView.m */; };
 		1BAE4A8920620572006EBB00 /* DBHCheckVersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAE4A8820620572006EBB00 /* DBHCheckVersionModel.m */; };
 		1BAE4A8C20621F7B006EBB00 /* DBHUpdateTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAE4A8B20621F7B006EBB00 /* DBHUpdateTipView.m */; };
+		1BBD781F208DB725000FDC8E /* YYRedPacketSendFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD781E208DB725000FDC8E /* YYRedPacketSendFirstViewController.m */; };
+		1BBD7821208DB73D000FDC8E /* RedPacket.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD7820208DB73D000FDC8E /* RedPacket.storyboard */; };
+		1BBD782A208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD7828208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m */; };
+		1BBD782B208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD7829208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib */; };
+		1BBD782F208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD782D208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m */; };
+		1BBD7830208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD782E208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib */; };
 		1BDA485F205C88ED006A0E9D /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BDA485C205C88EC006A0E9D /* README.txt */; };
 		1BDA4860205C88ED006A0E9D /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA485E205C88EC006A0E9D /* libWeChatSDK.a */; };
 		1BDA4862205C89E5006A0E9D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA4861205C89E5006A0E9D /* CFNetwork.framework */; };
@@ -1046,6 +1052,15 @@
 		1BAE4A8820620572006EBB00 /* DBHCheckVersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHCheckVersionModel.m; sourceTree = "<group>"; };
 		1BAE4A8A20621F7B006EBB00 /* DBHUpdateTipView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHUpdateTipView.h; sourceTree = "<group>"; };
 		1BAE4A8B20621F7B006EBB00 /* DBHUpdateTipView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHUpdateTipView.m; sourceTree = "<group>"; };
+		1BBD781D208DB725000FDC8E /* YYRedPacketSendFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFirstViewController.h; sourceTree = "<group>"; };
+		1BBD781E208DB725000FDC8E /* YYRedPacketSendFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFirstViewController.m; sourceTree = "<group>"; };
+		1BBD7820208DB73D000FDC8E /* RedPacket.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RedPacket.storyboard; sourceTree = "<group>"; };
+		1BBD7827208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFirstSection0Cell.h; sourceTree = "<group>"; };
+		1BBD7828208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFirstSection0Cell.m; sourceTree = "<group>"; };
+		1BBD7829208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketSendFirstSection0Cell.xib; sourceTree = "<group>"; };
+		1BBD782C208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFirstSection1Cell.h; sourceTree = "<group>"; };
+		1BBD782D208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFirstSection1Cell.m; sourceTree = "<group>"; };
+		1BBD782E208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketSendFirstSection1Cell.xib; sourceTree = "<group>"; };
 		1BDA485A205C88EC006A0E9D /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		1BDA485B205C88EC006A0E9D /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		1BDA485C205C88EC006A0E9D /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -2435,6 +2450,9 @@
 			children = (
 				1B2D32E620859D7D007E4F02 /* YYRedPacketViewController.h */,
 				1B2D32E720859D7D007E4F02 /* YYRedPacketViewController.m */,
+				1BBD781D208DB725000FDC8E /* YYRedPacketSendFirstViewController.h */,
+				1BBD781E208DB725000FDC8E /* YYRedPacketSendFirstViewController.m */,
+				1BBD7820208DB73D000FDC8E /* RedPacket.storyboard */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2461,6 +2479,12 @@
 				1B2D32FF2085EC2A007E4F02 /* YYRedPacketReceiveProgressView.h */,
 				1B2D33002085EC2A007E4F02 /* YYRedPacketReceiveProgressView.m */,
 				1B2D33022085EC2F007E4F02 /* YYRedPacketReceiveProgressView.xib */,
+				1BBD7827208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.h */,
+				1BBD7828208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m */,
+				1BBD7829208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib */,
+				1BBD782C208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.h */,
+				1BBD782D208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m */,
+				1BBD782E208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -4100,12 +4124,14 @@
 				0FF7830E1F2B1A1900F5B3D2 /* InfoPlist.strings in Resources */,
 				0FAC29091F2F7C4A009B3EC9 /* AAJQueryLibrary.js in Resources */,
 				A855ADBD1F3C62EE00E10B03 /* C-_Users_U.gif in Resources */,
+				1BBD7821208DB73D000FDC8E /* RedPacket.storyboard in Resources */,
 				A8A818551F4488A700FFF088 /* CommitOrderView.xib in Resources */,
 				D577EED9202C5EC500E96DA0 /* AboutVC.xib in Resources */,
 				A81A5ADA1F3A07950015CC0D /* TowButtonAlertView.xib in Resources */,
 				D51E66DE2015E20C0025B502 /* AddWalletSucessVC.xib in Resources */,
 				0FAC29041F2F7C4A009B3EC9 /* AAChartView.html in Resources */,
 				0FAC29051F2F7C4A009B3EC9 /* AAFunnel.js in Resources */,
+				1BBD782B208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib in Resources */,
 				1B5BA4602080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.xib in Resources */,
 				1B99F8952074707F004FD7F7 /* Assets.xcassets in Resources */,
 				A8016B521F418D5F003848CD /* ChoseWalletView.xib in Resources */,
@@ -4138,6 +4164,7 @@
 				1B99F93F207A037A004FD7F7 /* YYEvaluateTagTableViewCell.xib in Resources */,
 				0FAC29071F2F7C4A009B3EC9 /* AAHighchartsLibrary.js in Resources */,
 				D572EC712022F77E002C8EFD /* EaseUIResource.bundle in Resources */,
+				1BBD7830208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib in Resources */,
 				0FAC29081F2F7C4A009B3EC9 /* AAHighchartsMore.js in Resources */,
 				A8A818501F44849B00FFF088 /* ChoseCell.xib in Resources */,
 				A8AAFBCE1F3EF6BD00724FF6 /* PayPriceView.xib in Resources */,
@@ -4327,6 +4354,7 @@
 				D565E8F22017206C00930274 /* DBHAddressBookTableViewCell.m in Sources */,
 				1BE63AED205AD67200AE53E1 /* DBHProjectOtherSectionTableViewCell.m in Sources */,
 				D55B5270202ED9A6004D65F7 /* DBHTransferWithETHViewController.m in Sources */,
+				1BBD781F208DB725000FDC8E /* YYRedPacketSendFirstViewController.m in Sources */,
 				1BE63AF8205B89EC00AE53E1 /* DBHTradingMarketOCViewController.m in Sources */,
 				D51E66692011F01B0025B502 /* DBHWalletLookPromptView.m in Sources */,
 				1B99F8A72074AF2C004FD7F7 /* DBHProjectCommentModel.m in Sources */,
@@ -4495,6 +4523,7 @@
 				D56CEE62201AD4C80081DE05 /* DBHInputView.m in Sources */,
 				D5EA6F14202AEF3E00181346 /* DBHInfomationModelArticleUser.m in Sources */,
 				D572EC602022F77E002C8EFD /* EaseChatBarMoreView.m in Sources */,
+				1BBD782A208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m in Sources */,
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
 				1B2D32F82085DB88007E4F02 /* YYRedPacketSection0TableViewCell.m in Sources */,
 				D536E2CA2031808B0076E3D4 /* DBHProjectDetailInformationModelCategoryMedia.m in Sources */,
@@ -4692,6 +4721,7 @@
 				D51E66E32015E20C0025B502 /* DBHTransferViewController.m in Sources */,
 				D5C36BAF201F4E8500A82FCB /* DBHMarketDetailView.m in Sources */,
 				D51E665B2011F01B0025B502 /* DBHAddPropertyModelDataBase.m in Sources */,
+				1BBD782F208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m in Sources */,
 				D5F03E4120216A1200A4F051 /* DBHExchangeNoticeModelDataBase.m in Sources */,
 				1B18D7D9206C95FF0021C96F /* DBHRankListHeaderView.m in Sources */,
 				1B99F884207382F5004FD7F7 /* DBHHotInfoDataCategoryModel.m in Sources */,

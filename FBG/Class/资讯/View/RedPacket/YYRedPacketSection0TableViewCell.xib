@@ -244,16 +244,18 @@
                     <constraint firstItem="Ura-up-998" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" id="xyS-QL-Kb1"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="recordLabel" destination="eUz-0C-Y2L" id="pTB-87-vtm"/>
+                <outlet property="sendingLabel" destination="4J7-Rl-TdJ" id="G4Y-fg-Kk8"/>
+                <outlet property="sendingValueLabel" destination="34F-au-nea" id="EJa-Mg-iac"/>
+                <outlet property="successLabel" destination="J3e-hV-T9h" id="kcw-dY-n74"/>
+                <outlet property="successValueLabel" destination="WwH-4k-aVQ" id="tdq-Qo-c88"/>
+                <outlet property="titleLabel" destination="IE6-gk-in1" id="Be5-qp-3TE"/>
+                <outlet property="totalLabel" destination="ezn-uK-Xdv" id="9d2-f6-ade"/>
+                <outlet property="totalValueLabel" destination="26j-Y6-9Ww" id="vao-kz-cbZ"/>
+            </connections>
             <point key="canvasLocation" x="148" y="138"/>
         </tableViewCell>
-        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="48f-y9-etR">
-            <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-            <nil key="textColor"/>
-            <nil key="highlightedColor"/>
-            <point key="canvasLocation" x="-225" y="158"/>
-        </label>
     </objects>
     <resources>
         <image name="line_hor" width="249" height="2"/>

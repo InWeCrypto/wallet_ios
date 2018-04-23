@@ -8,9 +8,6 @@
 
 #import "DBHBaseViewController.h"
 
-#define REDPACKET_STORYBOARD_NAME @"RedPacket"
-#define REDPACKET_HOME_STORYBOARD_ID @"REDPACKET_HOME"
-
 @interface YYRedPacketViewController : DBHBaseViewController
 
 @end

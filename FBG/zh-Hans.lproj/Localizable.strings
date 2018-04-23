@@ -616,3 +616,11 @@
 "Red Packet" = "红包";
 "Red  Packet" = "InWe红包";
 "redpacket_home_bg_en" = "redpacket_home_bg";
+"Check transfer Record" = "查询更多发送记录";
+"First:" = "第一步：";
+"Authorization For Use RedPacket" = "授权使用红包功能";
+"Choose Below Authorization" = "选择以下资产进行授权";
+"Send RedPacket" = "发红包";
+"Start Authorize" = "开始授权";
+"Maximum Available Quantity:" = "最大可用数量：";
+"Please Input Wallet Password" = "请输入钱包密码";

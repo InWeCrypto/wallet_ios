@@ -16,8 +16,14 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="288"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="redpacket_home_bg" translatesAutoresizingMaskIntoConstraints="NO" id="qFa-vr-3uk">
+                    <rect key="frame" x="0.0" y="65" width="375" height="223"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="223" id="dEv-De-XIW"/>
+                    </constraints>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bft-Ng-0sf">
-                    <rect key="frame" x="118.5" y="188.5" width="138" height="60"/>
+                    <rect key="frame" x="118" y="192.5" width="138" height="60"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="KRS-7B-miu"/>
                         <constraint firstAttribute="width" constant="138" id="YdM-xO-wRx"/>
@@ -26,12 +32,6 @@
                         <action selector="respondsSendRedPacketBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="RHf-rZ-5Zn"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="redpacket_home_bg" translatesAutoresizingMaskIntoConstraints="NO" id="qFa-vr-3uk">
-                    <rect key="frame" x="0.0" y="65" width="375" height="223"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="223" id="dEv-De-XIW"/>
-                    </constraints>
-                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.78431372549019607" green="0.29803921568627451" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -39,7 +39,7 @@
                 <constraint firstItem="bft-Ng-0sf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="biy-6q-sYz"/>
                 <constraint firstItem="qFa-vr-3uk" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bmv-O8-njy"/>
                 <constraint firstItem="qFa-vr-3uk" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="g2I-kc-IH8"/>
-                <constraint firstAttribute="bottom" secondItem="bft-Ng-0sf" secondAttribute="bottom" multiplier="1.16" id="lgG-Qd-3cw"/>
+                <constraint firstAttribute="bottom" secondItem="bft-Ng-0sf" secondAttribute="bottom" multiplier="1.14" id="lgG-Qd-3cw"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

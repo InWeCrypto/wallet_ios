@@ -7,6 +7,8 @@
 //
 
 #import "YYRedPacketHomeHeaderView.h"
+#import "YYRedPacketSendFirstViewController.h"
+
 @interface YYRedPacketHomeHeaderView()
 
 @property (weak, nonatomic) IBOutlet UIImageView *bgImgView;
@@ -31,6 +33,8 @@
 }
 
 - (IBAction)respondsSendRedPacketBtn:(UIButton *)sender {
+    YYRedPacketSendFirstViewController *vc = [[YYRedPacketSendFirstViewController alloc] init];
+    [[self parentController].navigationController pushViewController:vc animated:YES];
 }
 
 @end

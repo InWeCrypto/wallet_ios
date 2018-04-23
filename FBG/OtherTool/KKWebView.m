@@ -497,6 +497,8 @@
  
         if (img == nil) {
             UIImageView *imgView = [[UIImageView alloc] init];
+            
+            imageStr = [imageStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             NSURL *imgURL = [NSURL URLWithString:imageStr];
             
             if (![NSObject isNulllWithObject:imgURL]) {
@@ -508,7 +510,6 @@
         } else {
             self.shareIconImg = img;
         }
-        
     }
 }
 
@@ -519,7 +520,6 @@
 //    [self activityOriginalShare];
     [self activityCustomShare];
 }
-
 
 - (void)activityCustomShare {
     [[UIApplication sharedApplication].keyWindow addSubview:self.sharedMenuView];
@@ -765,6 +765,7 @@
     NSData *data = UIImagePNGRepresentation(img);
     
     NSString *urlStr = [self sharedUrlStr];
+    
     QQApiNewsObject *newsObj = [QQApiNewsObject objectWithURL:[NSURL URLWithString:urlStr] title:self.title description:urlStr previewImageData:data];
     
     SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
@@ -819,8 +820,6 @@
     
     WXWebpageObject *obj = [[WXWebpageObject alloc] init];
     obj.webpageUrl = [self sharedUrlStr];
-    
-    
     
     UIImage *img = [UIImage imageWithImage:self.shareIconImg scaledToSize:CGSizeMake(100, 100)];
     [message setThumbImage:img];
