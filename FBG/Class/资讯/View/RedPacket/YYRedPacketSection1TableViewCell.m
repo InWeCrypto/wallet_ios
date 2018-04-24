@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet YYRedPacketReceiveProgressView *progessView;
+@property (weak, nonatomic) IBOutlet UILabel *ingLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *ingHeightConstraint;
 
 @end
 
@@ -23,6 +25,10 @@
     [super awakeFromNib];
     // Initialization code
     
+}
+
+- (void)setModel:(id)model showIng:(BOOL)showIng {
+    _ingHeightConstraint.constant = showIng ? 15 : 0;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

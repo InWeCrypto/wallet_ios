@@ -33,7 +33,9 @@ static CGFloat min_distance = 60;// 最小回弹距离
     UINavigationBar *bar = self.navigationBar;
     
     bar.tintColor = COLORFROM16(0x333333, 1);
-    [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(20)}];
+    [bar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(20)}];
+    
+//    [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(20)}];
     [self.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName:FONT(14)} forState:UIControlStateNormal];

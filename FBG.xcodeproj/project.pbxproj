@@ -218,10 +218,14 @@
 		1BAE4A8C20621F7B006EBB00 /* DBHUpdateTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAE4A8B20621F7B006EBB00 /* DBHUpdateTipView.m */; };
 		1BBD781F208DB725000FDC8E /* YYRedPacketSendFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD781E208DB725000FDC8E /* YYRedPacketSendFirstViewController.m */; };
 		1BBD7821208DB73D000FDC8E /* RedPacket.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD7820208DB73D000FDC8E /* RedPacket.storyboard */; };
-		1BBD782A208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD7828208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m */; };
-		1BBD782B208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD7829208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib */; };
-		1BBD782F208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD782D208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m */; };
-		1BBD7830208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD782E208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib */; };
+		1BBD7839208DED33000FDC8E /* YYWalletHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD7838208DED33000FDC8E /* YYWalletHomeViewController.m */; };
+		1BBD783D208ECC41000FDC8E /* YYRedPacketSendHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD783C208ECC41000FDC8E /* YYRedPacketSendHistoryViewController.m */; };
+		1BBD7840208F1184000FDC8E /* YYRedPacketChooseCashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD783F208F1184000FDC8E /* YYRedPacketChooseCashViewController.m */; };
+		1BBD7846208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD7845208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.m */; };
+		1BBD7849208F14BC000FDC8E /* YYRedPacketChoosePayStyleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD7848208F14BC000FDC8E /* YYRedPacketChoosePayStyleView.m */; };
+		1BBD784B208F14C2000FDC8E /* YYRedPacketChoosePayStyleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD784A208F14C2000FDC8E /* YYRedPacketChoosePayStyleView.xib */; };
+		1BBD784F208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD784D208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m */; };
+		1BBD7850208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD784E208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib */; };
 		1BDA485F205C88ED006A0E9D /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BDA485C205C88EC006A0E9D /* README.txt */; };
 		1BDA4860205C88ED006A0E9D /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA485E205C88EC006A0E9D /* libWeChatSDK.a */; };
 		1BDA4862205C89E5006A0E9D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA4861205C89E5006A0E9D /* CFNetwork.framework */; };
@@ -1055,12 +1059,20 @@
 		1BBD781D208DB725000FDC8E /* YYRedPacketSendFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFirstViewController.h; sourceTree = "<group>"; };
 		1BBD781E208DB725000FDC8E /* YYRedPacketSendFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFirstViewController.m; sourceTree = "<group>"; };
 		1BBD7820208DB73D000FDC8E /* RedPacket.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RedPacket.storyboard; sourceTree = "<group>"; };
-		1BBD7827208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFirstSection0Cell.h; sourceTree = "<group>"; };
-		1BBD7828208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFirstSection0Cell.m; sourceTree = "<group>"; };
-		1BBD7829208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketSendFirstSection0Cell.xib; sourceTree = "<group>"; };
-		1BBD782C208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFirstSection1Cell.h; sourceTree = "<group>"; };
-		1BBD782D208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFirstSection1Cell.m; sourceTree = "<group>"; };
-		1BBD782E208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketSendFirstSection1Cell.xib; sourceTree = "<group>"; };
+		1BBD7837208DED33000FDC8E /* YYWalletHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYWalletHomeViewController.h; sourceTree = "<group>"; };
+		1BBD7838208DED33000FDC8E /* YYWalletHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYWalletHomeViewController.m; sourceTree = "<group>"; };
+		1BBD783B208ECC41000FDC8E /* YYRedPacketSendHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendHistoryViewController.h; sourceTree = "<group>"; };
+		1BBD783C208ECC41000FDC8E /* YYRedPacketSendHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendHistoryViewController.m; sourceTree = "<group>"; };
+		1BBD783E208F1184000FDC8E /* YYRedPacketChooseCashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketChooseCashViewController.h; sourceTree = "<group>"; };
+		1BBD783F208F1184000FDC8E /* YYRedPacketChooseCashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketChooseCashViewController.m; sourceTree = "<group>"; };
+		1BBD7844208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRedPacketChooseCashTableViewCell.h; sourceTree = "<group>"; };
+		1BBD7845208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketChooseCashTableViewCell.m; sourceTree = "<group>"; };
+		1BBD7847208F14BC000FDC8E /* YYRedPacketChoosePayStyleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketChoosePayStyleView.h; sourceTree = "<group>"; };
+		1BBD7848208F14BC000FDC8E /* YYRedPacketChoosePayStyleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketChoosePayStyleView.m; sourceTree = "<group>"; };
+		1BBD784A208F14C2000FDC8E /* YYRedPacketChoosePayStyleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketChoosePayStyleView.xib; sourceTree = "<group>"; };
+		1BBD784C208F1686000FDC8E /* YYChoosePayStyleTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYChoosePayStyleTableViewCell.h; sourceTree = "<group>"; };
+		1BBD784D208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYChoosePayStyleTableViewCell.m; sourceTree = "<group>"; };
+		1BBD784E208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYChoosePayStyleTableViewCell.xib; sourceTree = "<group>"; };
 		1BDA485A205C88EC006A0E9D /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		1BDA485B205C88EC006A0E9D /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		1BDA485C205C88EC006A0E9D /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -2453,6 +2465,10 @@
 				1BBD781D208DB725000FDC8E /* YYRedPacketSendFirstViewController.h */,
 				1BBD781E208DB725000FDC8E /* YYRedPacketSendFirstViewController.m */,
 				1BBD7820208DB73D000FDC8E /* RedPacket.storyboard */,
+				1BBD783B208ECC41000FDC8E /* YYRedPacketSendHistoryViewController.h */,
+				1BBD783C208ECC41000FDC8E /* YYRedPacketSendHistoryViewController.m */,
+				1BBD783E208F1184000FDC8E /* YYRedPacketChooseCashViewController.h */,
+				1BBD783F208F1184000FDC8E /* YYRedPacketChooseCashViewController.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2467,6 +2483,8 @@
 		1B2D32E520859A3F007E4F02 /* RedPacket */ = {
 			isa = PBXGroup;
 			children = (
+				1BBD7844208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.h */,
+				1BBD7845208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.m */,
 				1B2D32F02085CEB7007E4F02 /* YYRedPacketHomeHeaderView.h */,
 				1B2D32F12085CEB7007E4F02 /* YYRedPacketHomeHeaderView.m */,
 				1B2D32F32085CEC0007E4F02 /* YYRedPacketHomeHeaderView.xib */,
@@ -2479,12 +2497,12 @@
 				1B2D32FF2085EC2A007E4F02 /* YYRedPacketReceiveProgressView.h */,
 				1B2D33002085EC2A007E4F02 /* YYRedPacketReceiveProgressView.m */,
 				1B2D33022085EC2F007E4F02 /* YYRedPacketReceiveProgressView.xib */,
-				1BBD7827208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.h */,
-				1BBD7828208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m */,
-				1BBD7829208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib */,
-				1BBD782C208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.h */,
-				1BBD782D208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m */,
-				1BBD782E208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib */,
+				1BBD7847208F14BC000FDC8E /* YYRedPacketChoosePayStyleView.h */,
+				1BBD7848208F14BC000FDC8E /* YYRedPacketChoosePayStyleView.m */,
+				1BBD784A208F14C2000FDC8E /* YYRedPacketChoosePayStyleView.xib */,
+				1BBD784C208F1686000FDC8E /* YYChoosePayStyleTableViewCell.h */,
+				1BBD784D208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m */,
+				1BBD784E208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2615,6 +2633,22 @@
 				1B5BA455207F567700B03A4F /* YYEvaluateDetailAnalysisModel.m */,
 			);
 			path = ProjectSurvey;
+			sourceTree = "<group>";
+		};
+		1BBD7836208DED09000FDC8E /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				1BBD7837208DED33000FDC8E /* YYWalletHomeViewController.h */,
+				1BBD7838208DED33000FDC8E /* YYWalletHomeViewController.m */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		1BBD783A208DEEB9000FDC8E /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Wallet;
 			sourceTree = "<group>";
 		};
 		1BDA4859205C88EC006A0E9D /* WechatSDK */ = {
@@ -2910,6 +2944,7 @@
 		D51E661B2011F01B0025B502 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				1BBD783A208DEEB9000FDC8E /* Wallet */,
 				1B48BAFD20637F55004E74EB /* RTDragCellTableView.h */,
 				1B48BAFE20637F55004E74EB /* RTDragCellTableView.m */,
 				D51E663E2011F01B0025B502 /* DBHAddPropertyTableViewCell.h */,
@@ -3427,6 +3462,7 @@
 		D51E66A62015E20C0025B502 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				1BBD7836208DED09000FDC8E /* Wallet */,
 				D51E66C02015E20C0025B502 /* AddWalletSucessVC.h */,
 				D51E66AA2015E20C0025B502 /* AddWalletSucessVC.m */,
 				D51E66BA2015E20C0025B502 /* AddWalletSucessVC.xib */,
@@ -4121,6 +4157,7 @@
 				A85F8A9E1F5950B500340D49 /* CodeWalletCodeView.xib in Resources */,
 				A8B804651F4D170400633C34 /* ChoseNetView.xib in Resources */,
 				1B99F91C20777470004FD7F7 /* CommentSend.storyboard in Resources */,
+				1BBD7850208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib in Resources */,
 				0FF7830E1F2B1A1900F5B3D2 /* InfoPlist.strings in Resources */,
 				0FAC29091F2F7C4A009B3EC9 /* AAJQueryLibrary.js in Resources */,
 				A855ADBD1F3C62EE00E10B03 /* C-_Users_U.gif in Resources */,
@@ -4131,8 +4168,8 @@
 				D51E66DE2015E20C0025B502 /* AddWalletSucessVC.xib in Resources */,
 				0FAC29041F2F7C4A009B3EC9 /* AAChartView.html in Resources */,
 				0FAC29051F2F7C4A009B3EC9 /* AAFunnel.js in Resources */,
-				1BBD782B208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.xib in Resources */,
 				1B5BA4602080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.xib in Resources */,
+				1BBD784B208F14C2000FDC8E /* YYRedPacketChoosePayStyleView.xib in Resources */,
 				1B99F8952074707F004FD7F7 /* Assets.xcassets in Resources */,
 				A8016B521F418D5F003848CD /* ChoseWalletView.xib in Resources */,
 				1B2D33032085EC2F007E4F02 /* YYRedPacketReceiveProgressView.xib in Resources */,
@@ -4164,7 +4201,6 @@
 				1B99F93F207A037A004FD7F7 /* YYEvaluateTagTableViewCell.xib in Resources */,
 				0FAC29071F2F7C4A009B3EC9 /* AAHighchartsLibrary.js in Resources */,
 				D572EC712022F77E002C8EFD /* EaseUIResource.bundle in Resources */,
-				1BBD7830208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.xib in Resources */,
 				0FAC29081F2F7C4A009B3EC9 /* AAHighchartsMore.js in Resources */,
 				A8A818501F44849B00FFF088 /* ChoseCell.xib in Resources */,
 				A8AAFBCE1F3EF6BD00724FF6 /* PayPriceView.xib in Resources */,
@@ -4310,6 +4346,7 @@
 				A81A5AF71F3AFD3C0015CC0D /* PDKeyChain.m in Sources */,
 				A80713561F5563CE00C5B862 /* MASViewAttribute.m in Sources */,
 				1B48BAFF20637F56004E74EB /* RTDragCellTableView.m in Sources */,
+				1BBD7849208F14BC000FDC8E /* YYRedPacketChoosePayStyleView.m in Sources */,
 				D56CEE94201C1AE50081DE05 /* DBHProjectHomeNewsModelCategory.m in Sources */,
 				D572EC582022F77E002C8EFD /* EaseMessageViewController.m in Sources */,
 				A807135A1F5563CE00C5B862 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
@@ -4438,6 +4475,7 @@
 				0FAC290F1F2F7C4A009B3EC9 /* AAColumn.m in Sources */,
 				0FAC29011F2F7C4A009B3EC9 /* AAJsonConverter.m in Sources */,
 				D572EC4A2022F77E002C8EFD /* EMSDWebImageManager.m in Sources */,
+				1BBD7846208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.m in Sources */,
 				D51E66662011F01B0025B502 /* DBHAddPropertyTableViewCell.m in Sources */,
 				D55B526A202D982E004D65F7 /* DBHWalletDetailWithETHViewController.m in Sources */,
 				D572EC6D2022F77E002C8EFD /* EaseBubbleView+Voice.m in Sources */,
@@ -4523,7 +4561,6 @@
 				D56CEE62201AD4C80081DE05 /* DBHInputView.m in Sources */,
 				D5EA6F14202AEF3E00181346 /* DBHInfomationModelArticleUser.m in Sources */,
 				D572EC602022F77E002C8EFD /* EaseChatBarMoreView.m in Sources */,
-				1BBD782A208DBD32000FDC8E /* YYRedPacketSendFirstSection0Cell.m in Sources */,
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
 				1B2D32F82085DB88007E4F02 /* YYRedPacketSection0TableViewCell.m in Sources */,
 				D536E2CA2031808B0076E3D4 /* DBHProjectDetailInformationModelCategoryMedia.m in Sources */,
@@ -4550,6 +4587,7 @@
 				1BAE4A8920620572006EBB00 /* DBHCheckVersionModel.m in Sources */,
 				1BDA4876205F9302006A0E9D /* WKWebView+ZFJViewCapture.m in Sources */,
 				D565E92F2018B49800930274 /* DBHInformationTableViewCell.m in Sources */,
+				1BBD783D208ECC41000FDC8E /* YYRedPacketSendHistoryViewController.m in Sources */,
 				A80713571F5563CE00C5B862 /* MASViewConstraint.m in Sources */,
 				D572EC302022F77E002C8EFD /* MWTapDetectingView.m in Sources */,
 				1B99F8C5207624E8004FD7F7 /* DBHProjectSurveyHeaderView.m in Sources */,
@@ -4573,6 +4611,7 @@
 				0FDD5F391F2DD6E800228CE0 /* YCXMenu.m in Sources */,
 				1B27607020723AFE00FFB7B1 /* DBHExchangeRankModel.m in Sources */,
 				1B99F8C22076125E004FD7F7 /* DBHProjectSurveyScrollTableViewCell.m in Sources */,
+				1BBD784F208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m in Sources */,
 				D536E2C62031808B0076E3D4 /* DBHProjectDetailInformationModelCategoryPresentation.m in Sources */,
 				D577EEDA202C5EC500E96DA0 /* AboutVC.m in Sources */,
 				D565E92C2018961D00930274 /* DBHPaymentReceivedViewController.m in Sources */,
@@ -4582,6 +4621,7 @@
 				A8B804631F4D16F600633C34 /* ChoseNetView.m in Sources */,
 				0FFEA9D31F170361009F6151 /* CDNavigationController.m in Sources */,
 				1BDA48C320601A21006A0E9D /* DBHInfoScrollTableViewCell.m in Sources */,
+				1BBD7840208F1184000FDC8E /* YYRedPacketChooseCashViewController.m in Sources */,
 				D572EC642022F77E002C8EFD /* EaseTextView.m in Sources */,
 				D572EC562022F77E002C8EFD /* EaseUsersListViewController.m in Sources */,
 				1B99F88E2073874C004FD7F7 /* DBHMyCommentsTableViewCell.m in Sources */,
@@ -4633,6 +4673,7 @@
 				D51E66D72015E20C0025B502 /* DBHQrCodeViewController.m in Sources */,
 				D572EC262022F77E002C8EFD /* EMCDDeviceManager+Media.m in Sources */,
 				A85F8A991F59408800340D49 /* YsLabel.m in Sources */,
+				1BBD7839208DED33000FDC8E /* YYWalletHomeViewController.m in Sources */,
 				D521D9FE1FBB162A009566EA /* UIImage+ImageForColor.m in Sources */,
 				0FDCAC8F1F20CF280090D12A /* UIViewController+Tool.m in Sources */,
 				D572EC432022F77E002C8EFD /* UIButton+EMWebCache.m in Sources */,
@@ -4721,7 +4762,6 @@
 				D51E66E32015E20C0025B502 /* DBHTransferViewController.m in Sources */,
 				D5C36BAF201F4E8500A82FCB /* DBHMarketDetailView.m in Sources */,
 				D51E665B2011F01B0025B502 /* DBHAddPropertyModelDataBase.m in Sources */,
-				1BBD782F208DBFC5000FDC8E /* YYRedPacketSendFirstSection1Cell.m in Sources */,
 				D5F03E4120216A1200A4F051 /* DBHExchangeNoticeModelDataBase.m in Sources */,
 				1B18D7D9206C95FF0021C96F /* DBHRankListHeaderView.m in Sources */,
 				1B99F884207382F5004FD7F7 /* DBHHotInfoDataCategoryModel.m in Sources */,

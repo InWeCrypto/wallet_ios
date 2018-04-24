@@ -49,22 +49,32 @@ static char imageURLKey;
     if (url) {
         __weak UIImageView *wself = self;
         id <EMSDWebImageOperation> operation = [EMSDWebImageManager.sharedManager downloadImageWithURL:url options:options progress:progressBlock completed:^(UIImage *image, NSError *error, EMSDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-            if (!wself) return;
-            dispatch_main_sync_safe(^{
-                if (!wself) return;
-                if (image) {
-                    wself.image = image;
-                    [wself setNeedsLayout];
-                } else {
-                    if ((options & EMSDWebImageDelayPlaceholder)) {
-                        wself.image = placeholder;
-                        [wself setNeedsLayout];
-                    }
-                }
+            if (!wself) {
                 if (completedBlock && finished) {
                     completedBlock(image, error, cacheType, url);
                 }
-            });
+            } else {
+                dispatch_main_sync_safe(^{
+                    if (!wself) {
+                        if (completedBlock && finished) {
+                            completedBlock(image, error, cacheType, url);
+                        }
+                    } else {
+                        if (image) {
+                            wself.image = image;
+                            [wself setNeedsLayout];
+                        } else {
+                            if ((options & EMSDWebImageDelayPlaceholder)) {
+                                wself.image = placeholder;
+                                [wself setNeedsLayout];
+                            }
+                        }
+                        if (completedBlock && finished) {
+                            completedBlock(image, error, cacheType, url);
+                        }
+                    }
+                });
+            }
         }];
         [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
     } else {

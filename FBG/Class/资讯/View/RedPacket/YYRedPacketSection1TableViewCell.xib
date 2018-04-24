@@ -65,21 +65,46 @@
                                 <color key="textColor" red="0.92941176470588238" green="0.45490196078431372" blue="0.12941176470588234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uOg-g2-W8V" customClass="YYRedPacketReceiveProgressView">
-                                <rect key="frame" x="157" y="5.5" width="88" height="56"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aob-2F-VsR">
+                                <rect key="frame" x="200" y="9" width="45" height="47"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="领取中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPf-0o-QLG">
+                                        <rect key="frame" x="0.0" y="0.0" width="44" height="18"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="18" id="Vnk-d2-ZKc"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <color key="textColor" red="0.92941176470588238" green="0.45490196078431372" blue="0.12941176470588234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uOg-g2-W8V" customClass="YYRedPacketReceiveProgressView">
+                                        <rect key="frame" x="0.0" y="18" width="44" height="29"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="Bby-pR-u4g"/>
+                                            <constraint firstAttribute="height" constant="29" id="zbT-pX-2Cl"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="88" id="Bby-pR-u4g"/>
-                                    <constraint firstAttribute="height" constant="56" id="zbT-pX-2Cl"/>
+                                    <constraint firstItem="cPf-0o-QLG" firstAttribute="leading" secondItem="Aob-2F-VsR" secondAttribute="leading" id="6HL-P8-xh0"/>
+                                    <constraint firstItem="uOg-g2-W8V" firstAttribute="centerX" secondItem="Aob-2F-VsR" secondAttribute="centerX" id="F0w-0h-cZe"/>
+                                    <constraint firstAttribute="bottom" secondItem="uOg-g2-W8V" secondAttribute="bottom" id="Zit-dY-nFM"/>
+                                    <constraint firstItem="cPf-0o-QLG" firstAttribute="centerX" secondItem="Aob-2F-VsR" secondAttribute="centerX" id="gfW-JZ-DLR"/>
+                                    <constraint firstItem="uOg-g2-W8V" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Aob-2F-VsR" secondAttribute="leading" id="isc-23-Aq5"/>
+                                    <constraint firstItem="cPf-0o-QLG" firstAttribute="top" secondItem="Aob-2F-VsR" secondAttribute="top" id="vXl-Wm-o0w"/>
+                                    <constraint firstItem="uOg-g2-W8V" firstAttribute="top" secondItem="cPf-0o-QLG" secondAttribute="bottom" id="zTF-1e-fLl"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Aob-2F-VsR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aTd-qO-ayr" secondAttribute="leading" id="15j-Jl-uOu"/>
                             <constraint firstAttribute="trailing" secondItem="4eH-m5-rdu" secondAttribute="trailing" constant="10" id="7ls-8R-PwI"/>
-                            <constraint firstItem="uOg-g2-W8V" firstAttribute="centerY" secondItem="aTd-qO-ayr" secondAttribute="centerY" id="dTD-LF-VM9"/>
-                            <constraint firstAttribute="trailing" secondItem="uOg-g2-W8V" secondAttribute="trailing" constant="10" id="jrd-AP-siH"/>
+                            <constraint firstItem="Aob-2F-VsR" firstAttribute="centerY" secondItem="aTd-qO-ayr" secondAttribute="centerY" id="DIa-Rx-KUA"/>
                             <constraint firstItem="4eH-m5-rdu" firstAttribute="centerY" secondItem="aTd-qO-ayr" secondAttribute="centerY" id="kfn-Gt-gvw"/>
+                            <constraint firstAttribute="trailing" secondItem="Aob-2F-VsR" secondAttribute="trailing" constant="10" id="ydl-A6-nCV"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -96,6 +121,8 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="ingHeightConstraint" destination="Vnk-d2-ZKc" id="prl-UL-dLz"/>
+                <outlet property="ingLabel" destination="cPf-0o-QLG" id="yJz-OQ-lai"/>
                 <outlet property="priceLabel" destination="Inn-RC-bFk" id="hFg-b4-c4j"/>
                 <outlet property="progessView" destination="uOg-g2-W8V" id="Wea-xc-0Ap"/>
                 <outlet property="redPacketNoLabel" destination="6ig-3K-38G" id="lUb-lq-RoJ"/>

@@ -21,6 +21,15 @@
     self.view.backgroundColor = BACKGROUNDCOLOR;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self setNavigationBarTitleColor];
+}
+
+- (void)setNavigationBarTitleColor {
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(20)}];
+}
+
 - (void)dealloc {
     NSLog(@"💣💣💣dealloc----   %@ 💣💣💣", [self class]);
 }

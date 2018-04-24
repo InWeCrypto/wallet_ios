@@ -33,7 +33,8 @@
 }
 
 - (IBAction)respondsSendRedPacketBtn:(UIButton *)sender {
-    YYRedPacketSendFirstViewController *vc = [[YYRedPacketSendFirstViewController alloc] init];
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil];
+    YYRedPacketSendFirstViewController *vc = [sb instantiateViewControllerWithIdentifier:REDPACKET_SEND_STORYBOARD_ID];
     [[self parentController].navigationController pushViewController:vc animated:YES];
 }
 

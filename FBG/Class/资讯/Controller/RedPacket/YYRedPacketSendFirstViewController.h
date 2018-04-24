@@ -9,6 +9,7 @@
 #import "DBHBaseViewController.h"
 
 #define REDPACKET_STORYBOARD_NAME @"RedPacket"
+#define REDPACKET_SEND_STORYBOARD_ID @"REDPACKET_SEND_ID"
 
 @interface YYRedPacketSendFirstViewController : DBHBaseViewController
 

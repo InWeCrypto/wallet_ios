@@ -13,4 +13,6 @@
 
 @interface YYRedPacketSection1TableViewCell : DBHBaseTableViewCell
 
+- (void)setModel:(id)model showIng:(BOOL)showIng;
+
 @end

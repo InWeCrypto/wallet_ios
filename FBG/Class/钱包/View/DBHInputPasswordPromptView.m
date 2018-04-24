@@ -221,6 +221,18 @@
     }
     return _passwordTextField;
 }
+
+- (void)setPlaceHolder:(NSString *)placeHolder {
+    if ([placeHolder isEqualToString:_placeHolder]) {
+        return;
+    }
+    
+    _placeHolder = placeHolder;
+    if (placeHolder.length > 0) {
+        _passwordTextField.placeholder = placeHolder;
+    }
+}
+
 - (UIButton *)showPasswordButton {
     if (!_showPasswordButton) {
         _showPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
