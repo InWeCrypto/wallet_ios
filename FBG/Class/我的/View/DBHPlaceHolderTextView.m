@@ -50,7 +50,7 @@
     // 设置始终可以拖拽
     self.alwaysBounceVertical = YES;
     self.placeholderColor = COLORFROM10(220, 220, 220, 1);
-    self.font = FONT(14);
+    self.font = FONT(13);
 }
 
 - (void)textDidChange {

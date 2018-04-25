@@ -60,8 +60,8 @@
 
     self.styleLabel.text = self.styleStr;
     
-    [self.senderView setBorderWidth:0.5f color:COLORFROM16(0xD7D3D3, 1)];
-    [self.bestView setBorderWidth:0.5f color:COLORFROM16(0xD7D3D3, 1)];
+    [self.senderView setBorderWidth:0.5f color:COLORFROM16(0xD9D9D9, 1)];
+    [self.bestView setBorderWidth:0.5f color:COLORFROM16(0xD9D9D9, 1)];
     
     self.senderNameTextField.placeholder = DBHGetStringWithKeyFromTable(@"Sender Name", nil);
     self.bestTextView.placeholder = DBHGetStringWithKeyFromTable(@"Best / Message", nil);
@@ -71,5 +71,12 @@
 
 #pragma mark ----- RespondsToSelector ---------
 - (IBAction)respondsToShareBtn:(UIButton *)sender {
+    NSString *bestStr = self.bestTextView.text;
+    if (bestStr.length > 0 && bestStr.length < 10) {
+        //YYTODO
+//        return;
+    }
+    
+    
 }
 @end
