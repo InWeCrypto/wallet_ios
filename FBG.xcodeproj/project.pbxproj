@@ -226,6 +226,13 @@
 		1BBD784B208F14C2000FDC8E /* YYRedPacketChoosePayStyleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD784A208F14C2000FDC8E /* YYRedPacketChoosePayStyleView.xib */; };
 		1BBD784F208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD784D208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m */; };
 		1BBD7850208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD784E208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib */; };
+		1BBD7853209055BC000FDC8E /* YYRedPacketPackagingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD7852209055BC000FDC8E /* YYRedPacketPackagingViewController.m */; };
+		1BBD785620905D2A000FDC8E /* YYRedPacketSendSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD785520905D2A000FDC8E /* YYRedPacketSendSecondViewController.m */; };
+		1BBD7859209063AF000FDC8E /* YYRedPacketSendThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD7858209063AF000FDC8E /* YYRedPacketSendThirdViewController.m */; };
+		1BBD785C209063BA000FDC8E /* YYRedPacketSendFourthTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD785B209063BA000FDC8E /* YYRedPacketSendFourthTextViewController.m */; };
+		1BBD786320907AE4000FDC8E /* YYRedPacketSendFourthCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD785E20907AE2000FDC8E /* YYRedPacketSendFourthCodeViewController.m */; };
+		1BBD786420907AE4000FDC8E /* YYRedPacketSendFourthImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD786020907AE3000FDC8E /* YYRedPacketSendFourthImageViewController.m */; };
+		1BBD786520907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD786220907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m */; };
 		1BDA485F205C88ED006A0E9D /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BDA485C205C88EC006A0E9D /* README.txt */; };
 		1BDA4860205C88ED006A0E9D /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA485E205C88EC006A0E9D /* libWeChatSDK.a */; };
 		1BDA4862205C89E5006A0E9D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA4861205C89E5006A0E9D /* CFNetwork.framework */; };
@@ -1073,6 +1080,20 @@
 		1BBD784C208F1686000FDC8E /* YYChoosePayStyleTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYChoosePayStyleTableViewCell.h; sourceTree = "<group>"; };
 		1BBD784D208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYChoosePayStyleTableViewCell.m; sourceTree = "<group>"; };
 		1BBD784E208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYChoosePayStyleTableViewCell.xib; sourceTree = "<group>"; };
+		1BBD7851209055BC000FDC8E /* YYRedPacketPackagingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketPackagingViewController.h; sourceTree = "<group>"; };
+		1BBD7852209055BC000FDC8E /* YYRedPacketPackagingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketPackagingViewController.m; sourceTree = "<group>"; };
+		1BBD785420905D2A000FDC8E /* YYRedPacketSendSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendSecondViewController.h; sourceTree = "<group>"; };
+		1BBD785520905D2A000FDC8E /* YYRedPacketSendSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendSecondViewController.m; sourceTree = "<group>"; };
+		1BBD7857209063AF000FDC8E /* YYRedPacketSendThirdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendThirdViewController.h; sourceTree = "<group>"; };
+		1BBD7858209063AF000FDC8E /* YYRedPacketSendThirdViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendThirdViewController.m; sourceTree = "<group>"; };
+		1BBD785A209063BA000FDC8E /* YYRedPacketSendFourthTextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFourthTextViewController.h; sourceTree = "<group>"; };
+		1BBD785B209063BA000FDC8E /* YYRedPacketSendFourthTextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFourthTextViewController.m; sourceTree = "<group>"; };
+		1BBD785D20907AE2000FDC8E /* YYRedPacketSendFourthCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFourthCodeViewController.h; sourceTree = "<group>"; };
+		1BBD785E20907AE2000FDC8E /* YYRedPacketSendFourthCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFourthCodeViewController.m; sourceTree = "<group>"; };
+		1BBD785F20907AE2000FDC8E /* YYRedPacketSendFourthImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFourthImageViewController.h; sourceTree = "<group>"; };
+		1BBD786020907AE3000FDC8E /* YYRedPacketSendFourthImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFourthImageViewController.m; sourceTree = "<group>"; };
+		1BBD786120907AE3000FDC8E /* YYRedPacketSendFourthLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFourthLinkViewController.h; sourceTree = "<group>"; };
+		1BBD786220907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFourthLinkViewController.m; sourceTree = "<group>"; };
 		1BDA485A205C88EC006A0E9D /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		1BDA485B205C88EC006A0E9D /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		1BDA485C205C88EC006A0E9D /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -2469,6 +2490,20 @@
 				1BBD783C208ECC41000FDC8E /* YYRedPacketSendHistoryViewController.m */,
 				1BBD783E208F1184000FDC8E /* YYRedPacketChooseCashViewController.h */,
 				1BBD783F208F1184000FDC8E /* YYRedPacketChooseCashViewController.m */,
+				1BBD7851209055BC000FDC8E /* YYRedPacketPackagingViewController.h */,
+				1BBD7852209055BC000FDC8E /* YYRedPacketPackagingViewController.m */,
+				1BBD785420905D2A000FDC8E /* YYRedPacketSendSecondViewController.h */,
+				1BBD785520905D2A000FDC8E /* YYRedPacketSendSecondViewController.m */,
+				1BBD7857209063AF000FDC8E /* YYRedPacketSendThirdViewController.h */,
+				1BBD7858209063AF000FDC8E /* YYRedPacketSendThirdViewController.m */,
+				1BBD785A209063BA000FDC8E /* YYRedPacketSendFourthTextViewController.h */,
+				1BBD785B209063BA000FDC8E /* YYRedPacketSendFourthTextViewController.m */,
+				1BBD785D20907AE2000FDC8E /* YYRedPacketSendFourthCodeViewController.h */,
+				1BBD785E20907AE2000FDC8E /* YYRedPacketSendFourthCodeViewController.m */,
+				1BBD785F20907AE2000FDC8E /* YYRedPacketSendFourthImageViewController.h */,
+				1BBD786020907AE3000FDC8E /* YYRedPacketSendFourthImageViewController.m */,
+				1BBD786120907AE3000FDC8E /* YYRedPacketSendFourthLinkViewController.h */,
+				1BBD786220907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -4386,6 +4421,7 @@
 				D572EC032022F77E002C8EFD /* EaseConvertToCommonEmoticonsHelper.m in Sources */,
 				0FAC291E1F2F7C4A009B3EC9 /* AAStyle.m in Sources */,
 				1B18D7CE206B9B9B0021C96F /* JJStockView.m in Sources */,
+				1BBD786320907AE4000FDC8E /* YYRedPacketSendFourthCodeViewController.m in Sources */,
 				1B99F91420777330004FD7F7 /* YbWebView.m in Sources */,
 				1B21546C207DE87F00EB9224 /* YYWalletRecordGntModel.m in Sources */,
 				D565E8F22017206C00930274 /* DBHAddressBookTableViewCell.m in Sources */,
@@ -4523,6 +4559,7 @@
 				1B99F91720777354004FD7F7 /* DBHProjectSurveyViewController.m in Sources */,
 				0FAC29021F2F7C4A009B3EC9 /* AAOptionsConstructor.m in Sources */,
 				D572EC422022F77E002C8EFD /* NSData+EMImageContentType.m in Sources */,
+				1BBD785C209063BA000FDC8E /* YYRedPacketSendFourthTextViewController.m in Sources */,
 				D572EC752022FF1A002C8EFD /* UIViewController+HUD.m in Sources */,
 				D51E66E52015E20C0025B502 /* DBHTokenSaleViewController.m in Sources */,
 				D572EC6C2022F77E002C8EFD /* EaseBubbleView+Video.m in Sources */,
@@ -4563,6 +4600,7 @@
 				D572EC602022F77E002C8EFD /* EaseChatBarMoreView.m in Sources */,
 				0FAC29151F2F7C4A009B3EC9 /* AAMarker.m in Sources */,
 				1B2D32F82085DB88007E4F02 /* YYRedPacketSection0TableViewCell.m in Sources */,
+				1BBD786520907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m in Sources */,
 				D536E2CA2031808B0076E3D4 /* DBHProjectDetailInformationModelCategoryMedia.m in Sources */,
 				A83303751F346F24000C08B4 /* UIScrollView+EmptyDataSet.m in Sources */,
 				A8CD77791F32453300005027 /* SymbolsValueFormatter.m in Sources */,
@@ -4604,6 +4642,7 @@
 				0FDD5F271F2D671600228CE0 /* PassWordView.m in Sources */,
 				0FAC29231F2F7C4A009B3EC9 /* AAYAxis.m in Sources */,
 				D572EC6A2022F77E002C8EFD /* EaseBubbleView+File.m in Sources */,
+				1BBD7853209055BC000FDC8E /* YYRedPacketPackagingViewController.m in Sources */,
 				D56CEE97201C1AE50081DE05 /* DBHProjectHomeNewsModelDataBase.m in Sources */,
 				0F0CFDEA1F15E54100476A86 /* AppDelegate.m in Sources */,
 				D565E8CE2016D54B00930274 /* DBHMyForUserInfomationTableViewCell.m in Sources */,
@@ -4620,6 +4659,7 @@
 				A8A818531F44889D00FFF088 /* CommitOrderView.m in Sources */,
 				A8B804631F4D16F600633C34 /* ChoseNetView.m in Sources */,
 				0FFEA9D31F170361009F6151 /* CDNavigationController.m in Sources */,
+				1BBD786420907AE4000FDC8E /* YYRedPacketSendFourthImageViewController.m in Sources */,
 				1BDA48C320601A21006A0E9D /* DBHInfoScrollTableViewCell.m in Sources */,
 				1BBD7840208F1184000FDC8E /* YYRedPacketChooseCashViewController.m in Sources */,
 				D572EC642022F77E002C8EFD /* EaseTextView.m in Sources */,
@@ -4668,6 +4708,7 @@
 				0FAC290C1F2F7C4A009B3EC9 /* AAAreaspline.m in Sources */,
 				1B99F8B32074C8DC004FD7F7 /* DBHProjectCommentUserClickCommentModel.m in Sources */,
 				D5F679EA1FB9B4A900EB773D /* DBHNavigationController.m in Sources */,
+				1BBD7859209063AF000FDC8E /* YYRedPacketSendThirdViewController.m in Sources */,
 				D565E91C201831F900930274 /* DBHNetworkSwitcherViewController.m in Sources */,
 				D51E666D2011F01B0025B502 /* DBHTransferListHeaderView.m in Sources */,
 				D51E66D72015E20C0025B502 /* DBHQrCodeViewController.m in Sources */,
@@ -4722,6 +4763,7 @@
 				A80713551F5563CE00C5B862 /* MASLayoutConstraint.m in Sources */,
 				D56CEE5F201AC95B0081DE05 /* DBHProjectHomeHeaderView.m in Sources */,
 				D5EA6F17202AEF3E00181346 /* DBHInfomationModelCategory.m in Sources */,
+				1BBD785620905D2A000FDC8E /* YYRedPacketSendSecondViewController.m in Sources */,
 				D51E66682011F01B0025B502 /* DBHWalletDetailHeaderView.m in Sources */,
 				1B9DEF1E205C286200D7CDC1 /* DBHInputPasswordNamePromptView.m in Sources */,
 				A8DC9B451F58428D006984D4 /* CommitOrderVC.m in Sources */,

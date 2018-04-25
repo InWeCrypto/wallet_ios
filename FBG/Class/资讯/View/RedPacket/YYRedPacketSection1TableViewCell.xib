@@ -65,10 +65,10 @@
                                 <color key="textColor" red="0.92941176470588238" green="0.45490196078431372" blue="0.12941176470588234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aob-2F-VsR">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aob-2F-VsR">
                                 <rect key="frame" x="200" y="9" width="45" height="47"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="领取中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPf-0o-QLG">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="领取中" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPf-0o-QLG">
                                         <rect key="frame" x="0.0" y="0.0" width="44" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="Vnk-d2-ZKc"/>
@@ -77,7 +77,7 @@
                                         <color key="textColor" red="0.92941176470588238" green="0.45490196078431372" blue="0.12941176470588234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uOg-g2-W8V" customClass="YYRedPacketReceiveProgressView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uOg-g2-W8V" customClass="YYRedPacketReceiveProgressView">
                                         <rect key="frame" x="0.0" y="18" width="44" height="29"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -86,7 +86,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="cPf-0o-QLG" firstAttribute="leading" secondItem="Aob-2F-VsR" secondAttribute="leading" id="6HL-P8-xh0"/>
                                     <constraint firstItem="uOg-g2-W8V" firstAttribute="centerX" secondItem="Aob-2F-VsR" secondAttribute="centerX" id="F0w-0h-cZe"/>

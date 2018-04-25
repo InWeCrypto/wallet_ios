@@ -12,6 +12,7 @@
 #import "MyNavigationController.h"
 #import "YYRedPacketChoosePayStyleView.h"
 #import "DBHWalletLookPromptView.h"
+#import "YYRedPacketPackagingViewController.h"
 
 #define MAX_SEND_COUNT(count) [NSString stringWithFormat:@"%d%@", count, DBHGetStringWithKeyFromTable(@"  ", nil)]
 
@@ -49,6 +50,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *noWalletTip2Label;
 @property (weak, nonatomic) IBOutlet UIButton *addWalletBtn;
 @property (weak, nonatomic) IBOutlet UILabel *noWalletTip3Label;
+
+@property (weak, nonatomic) IBOutlet UILabel *feeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *slowLabel;
+@property (weak, nonatomic) IBOutlet UILabel *fastLabel;
+@property (weak, nonatomic) IBOutlet UISlider *slider;
+
 
 @property (nonatomic, strong) YYRedPacketChoosePayStyleView *choosePayStyleView;
 
@@ -93,13 +100,17 @@
     
     [self.payBtn setTitle:DBHGetStringWithKeyFromTable(@"Pay", nil) forState:UIControlStateNormal];
     self.walletMaxUseTitleLabel.text = DBHGetStringWithKeyFromTable(@"Max Avaliable Amount:", nil);
+
+    self.slowLabel.text = DBHGetStringWithKeyFromTable(@"Slow", nil);
+    self.fastLabel.text = DBHGetStringWithKeyFromTable(@"Fast", nil);
+    self.feeLabel.text = DBHGetStringWithKeyFromTable(@"Pitman Cost", nil);
     
     CALayer *layer = [CALayer layer];
     layer.frame = CGRectMake(0, 0, SCREEN_WIDTH * 0.25, 4);
     layer.backgroundColor = COLORFROM16(0x029857, 1).CGColor;
     [self.progressView.layer addSublayer:layer];
     
-    [self.payBtn setCorner:3];
+    [self.payBtn setCorner:2];
     
     self.noWalletTip1Label.text = DBHGetStringWithKeyFromTable(@"Your wallet has not this property,", nil);
     self.noWalletTip2Label.text = DBHGetStringWithKeyFromTable(@"Please ", nil);
@@ -152,8 +163,9 @@
         WEAKSELF
         [_inputPasswordPromptView commitBlock:^(NSString *password) {
             //YYTODO 去打包
-            // 打包成功
-            
+            YYRedPacketPackagingViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_PACKAGING_STORYBOARD_ID];
+            vc.packageType = PackageTypeCash;
+            [weakSelf.navigationController pushViewController:vc animated:YES];
         }];
     }
     return _inputPasswordPromptView;

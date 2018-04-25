@@ -426,6 +426,27 @@ yy-MM-dd HH:mm:ss
     return [NSString stringWithFormat:@"%@",roundedOunces];
 }
 
+- (NSArray *)componentsSeparatedFromString:(NSString *)fromString toString:(NSString *)toString {
+    if (IsEmptyStr(fromString) || IsEmptyStr(toString)) {
+        return nil;
+    }
+    NSMutableArray *subStringsArray = [[NSMutableArray alloc] init];
+    NSString *tempString = self;
+    NSRange range = [tempString rangeOfString:fromString];
+    while (range.location != NSNotFound) {
+        tempString = [tempString substringFromIndex:(range.location + range.length)];
+        range = [tempString rangeOfString:toString];
+        if (range.location != NSNotFound) {
+            [subStringsArray addObject:[tempString substringToIndex:range.location]];
+            range = [tempString rangeOfString:fromString];
+        }
+        else
+        {
+            break;
+        }
+    }
+    return subStringsArray;
+}
 
 + (NSString *)DecimalFuncWithOperatorType:(NSInteger)operatorType first:(id)first secend:(id)secend value:(int)value
 {

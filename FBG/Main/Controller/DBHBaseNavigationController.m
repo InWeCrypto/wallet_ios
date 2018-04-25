@@ -66,9 +66,15 @@ static CGFloat min_distance = 60;// 最小回弹距离
         } else if ([viewController isKindOfClass:NSClassFromString(@"DBHWalletDetailViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHWalletDetailWithETHViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHQrCodeViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHPaymentReceivedViewController")]) {
             backImageName = @"关闭-4";
         } else if ([viewController isKindOfClass:NSClassFromString(@"YYRedPacketViewController")] ||
-                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFirstViewController")]) {
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFirstViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendSecondViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendThirdViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthTextViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthImageViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthLinkViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthCodeViewController")]) {
             backImageName = @"white_back";
-        } else {
+        } else { 
             backImageName = @"返回-3";
         }
         [backButton setImage:[[UIImage imageNamed:backImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
@@ -88,7 +94,10 @@ static CGFloat min_distance = 60;// 最小回弹距离
         if ([viewController isKindOfClass:NSClassFromString(@"DBHPersonalCenterViewController")]) {
             [viewController.navigationItem setHidesBackButton:YES];
             viewController.navigationItem.rightBarButtonItem = backBarButtonItem;
-        } else if ([viewController isKindOfClass:NSClassFromString(@"DBHSelectFaceOrTouchViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHCheckFaceOrTouchViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHSearchViewController")]) {
+        } else if ([viewController isKindOfClass:NSClassFromString(@"DBHSelectFaceOrTouchViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"DBHCheckFaceOrTouchViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"DBHSearchViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketPackagingViewController")]) {
             [viewController.navigationItem setHidesBackButton:YES];
         } else {
             viewController.navigationItem.leftBarButtonItems = @[backBarButtonItem, otherBarButtonItem];

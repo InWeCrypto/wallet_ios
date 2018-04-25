@@ -8,6 +8,25 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  判断是否是空字符串 非空字符串 ＝ yes
+ *
+ *  @param string
+ *
+ *  @return
+ */
+
+#define  NOEmptyStr(string)  string == nil || string == NULL ||[string isKindOfClass:[NSNull class]] || [string isEqualToString: @""]  ||[[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0 ? NO : YES
+
+/**
+ *  判断是否是空字符串 空字符串 = yes
+ *
+ *  @param string
+ *
+ *  @return
+ */
+#define  IsEmptyStr(string) string == nil || string == NULL ||[string isKindOfClass:[NSNull class]]|| [string isEqualToString:@""] ||[[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0 ? YES : NO
+
 @interface NSString (Tool)
 
 #pragma mark -- 时间
@@ -99,6 +118,7 @@
 + (NSString *)flattenHTML:(NSString *)html;
 
 + (NSString *)formatTimeDelayEight:(NSString *)timeStr;
+- (NSArray *)componentsSeparatedFromString:(NSString *)fromString toString:(NSString *)toString;
 
 @end
 

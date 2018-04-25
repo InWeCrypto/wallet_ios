@@ -156,7 +156,6 @@
         [webView loadRequest:[NSURLRequest requestWithURL:url]];
     }
     
-    
     //模拟按钮
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 100, 100, 100);
@@ -167,7 +166,7 @@
 //    [self.view addSubview:button];
 }
 
--(WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
     
     NSLog(@"createWebViewWithConfiguration");
     
@@ -181,8 +180,7 @@
     
 }
 
-- (void)rightButton
-{
+- (void)rightButton {
     // 刷新
     [self.webView reload];
 }
@@ -368,17 +366,47 @@
     
 }
 
+/**
+ 隐藏网页中的广告
+ 
+ @param HTMLSource 网页html源码串
+ */
+- (void)removeADByHTMLSource:(NSString *)HTMLSource {
+    NSString *fromString = @"javascript:document.getElementById";
+    NSString *toString = @".style.display='none'";
+    NSArray *strArr = [HTMLSource componentsSeparatedFromString:fromString toString:toString];// (这个截取的头和尾自己看着截,自己怎么觉得方便怎么来)
+    NSLog(@"%@====%@",strArr,strArr.firstObject);
+    if (strArr.count) {
+        NSString *removeAD_JS_Str = [NSString stringWithFormat:@"%@%@%@",fromString,strArr.firstObject,toString];//再拼接上
+        [self.webView evaluateJavaScript:removeAD_JS_Str completionHandler:nil];//执行隐藏广告的JS
+    }
+}
+
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    WEAKSELF
+    NSString *jsToGetHTMLSource = @"document.getElementsByTagName('html')[0].innerHTML";//获取整个页面的HTMLstring
+    [webView evaluateJavaScript:jsToGetHTMLSource completionHandler:^(id _Nullable HTMLsource, NSError * _Nullable error) {
+        NSLog(@"%@",HTMLsource);
+        if (!error && NOEmptyStr(HTMLsource)) {
+            [weakSelf removeADByHTMLSource:HTMLsource];
+        }
+    }];
 }
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+   
     //如果是跳转一个新页面
     if (navigationAction.targetFrame == nil) {
         [webView loadRequest:navigationAction.request];
     }
     
-    decisionHandler(WKNavigationActionPolicyAllow);
+    NSString *hostname = navigationAction.request.URL.host.lowercaseString;
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated && ![hostname containsString:@"inwecrypto.com"]) {
+        decisionHandler(WKNavigationActionPolicyCancel);
+    } else {
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }
 }
 
 

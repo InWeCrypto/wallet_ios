@@ -48,4 +48,7 @@ typedef enum {
 /**  移除所以子控件*/
 - (void)removeAllSubviews;
 
+
+- (void)setBorderWidth:(CGFloat)width color:(UIColor *)color;
+
 @end

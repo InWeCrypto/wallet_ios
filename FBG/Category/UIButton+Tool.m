@@ -16,7 +16,7 @@
 
 - (void)setBorderWidth:(CGFloat)width color:(UIColor *)color {
     [self.layer setMasksToBounds:YES];
-    [self.layer setCornerRadius:AUTOLAYOUTSIZE(3.0f)]; //设置圆角
+    [self.layer setCornerRadius:AUTOLAYOUTSIZE(5.0f)]; //设置圆角
     
     [self.layer setBorderWidth:AUTOLAYOUTSIZE(1.0)]; // 边框宽度
     self.layer.borderColor = color.CGColor;

@@ -4,7 +4,7 @@
 //
 //  Created by 邓毕华 on 2017/12/25.
 //  Copyright © 2017年 邓毕华. All rights reserved.
-//
+// 
 
 #import "DBHBaseViewController.h"
 
@@ -43,7 +43,8 @@
         [NSStringFromClass([self class]) isEqualToString:@"DBHMyViewController"] ||
         [NSStringFromClass([self class]) isEqualToString:@"DBHWalletDetailViewController"] ||
         [NSStringFromClass([self class]) isEqualToString:@"DBHWalletDetailWithETHViewController"] ||
-        [NSStringFromClass([self class]) isEqualToString:@"AddWalletSucessVC"]) {
+        [NSStringFromClass([self class]) isEqualToString:@"AddWalletSucessVC"] ||
+        [NSStringFromClass([self class]) isEqualToString:@"YYRedPacketPackagingViewController"]) {
                 if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
                     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
                 }
