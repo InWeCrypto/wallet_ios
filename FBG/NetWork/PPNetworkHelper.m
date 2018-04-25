@@ -344,7 +344,9 @@ static NetworkStatus _status;
                     return ;
                 }
                 
-                if (![URL isEqualToString:@"login"] && ![UserSignData share].user.token.length) {
+                if (![URL isEqualToString:@"login"] &&
+                    ![URL isEqualToString:@"register"] &&
+                    ![UserSignData share].user.token.length) {
                     [weakSelf gotoLoginVC];
                     return ;
                 }

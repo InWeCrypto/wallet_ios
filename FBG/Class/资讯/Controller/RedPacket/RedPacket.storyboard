@@ -470,7 +470,7 @@
                                 </state>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="xaF-WP-alG" firstAttribute="centerX" secondItem="t3o-pY-fVV" secondAttribute="centerX" id="3Cv-aD-U5I"/>
                             <constraint firstItem="H04-gQ-OzD" firstAttribute="top" secondItem="D4n-qy-Yfc" secondAttribute="bottom" constant="30" id="3Ji-sM-bMS"/>
