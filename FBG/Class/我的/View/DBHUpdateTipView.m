@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIButton *okBtn;
 
 @property (nonatomic, assign) CGFloat bgHeight;
+@property (nonatomic, copy) NSString *downloadURL;
 
 @end
 
@@ -86,7 +87,9 @@
 
 - (void)respondsToOKBtn {
     [self animationHide];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UPDATE_APP_URL]];
+    
+    NSString *tempUrl = [self.downloadURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tempUrl]];
 }
 
 - (void)animationHide {
@@ -120,8 +123,9 @@
     }];
 }
 
-- (void)setTipString:(NSString *)tipStr isForce:(BOOL)isForceUpdate {
+- (void)setTipString:(NSString *)tipStr isForce:(BOOL)isForceUpdate downloadUrl:(NSString *)downloadUrl {
     self.contentLabel.text = tipStr;
+    self.downloadURL = downloadUrl;
     
    CGFloat height = [NSString getHeightWithString:tipStr width:CGRectGetWidth(self.bgView.frame) - AUTOLAYOUTSIZE(50) lineSpacing:0 fontSize:14] + 30;
     _bgHeight = height + 170;

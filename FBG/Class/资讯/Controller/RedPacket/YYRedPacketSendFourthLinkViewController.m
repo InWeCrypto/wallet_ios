@@ -8,6 +8,7 @@
 
 #import "YYRedPacketSendFourthLinkViewController.h"
 #import "DBHPlaceHolderTextView.h"
+#import "YYRedPacketPreviewViewController.h"
 
 @interface YYRedPacketSendFourthLinkViewController ()
 @property (weak, nonatomic) IBOutlet UIView *progressView;
@@ -79,6 +80,9 @@
         //YYTODO
         //        return;
     }
+    
+    YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
+    [self.navigationController pushViewController:previewVC animated:YES];
 }
     
 @end

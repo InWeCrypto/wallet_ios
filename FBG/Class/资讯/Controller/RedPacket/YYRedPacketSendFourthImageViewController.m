@@ -10,6 +10,7 @@
 #import "DBHPlaceHolderTextView.h"
 #import <AliyunOSSiOS/OSSService.h>
 #import "TZImagePickerController.h"
+#import "YYRedPacketPreviewViewController.h"
 
 @interface YYRedPacketSendFourthImageViewController ()<TZImagePickerControllerDelegate>
 
@@ -194,6 +195,9 @@
         //YYTODO
         //        return;
     }
+    
+    YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
+    [self.navigationController pushViewController:previewVC animated:YES];
 }
 
 - (IBAction)respondsToAddPhotoBtn:(UIButton *)sender {

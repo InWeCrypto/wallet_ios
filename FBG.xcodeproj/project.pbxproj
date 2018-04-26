@@ -111,6 +111,8 @@
 		1B244AB72059090100DE097C /* WKWebView+Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B244AB52059090000DE097C /* WKWebView+Tool.m */; };
 		1B244ABA20591E9800DE097C /* DBHLookWalletInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B244AB920591E9800DE097C /* DBHLookWalletInfoViewController.m */; };
 		1B244ABD205923CD00DE097C /* DBHLookWalletInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B244ABC205923CD00DE097C /* DBHLookWalletInfoTableViewCell.m */; };
+		1B24E8F52091D2E500E1974E /* YYRedPacketPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E8F42091D2E500E1974E /* YYRedPacketPreviewViewController.m */; };
+		1B24E8F82091DAC200E1974E /* YYSharePromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E8F72091DAC200E1974E /* YYSharePromptView.m */; };
 		1B27606D20721AB000FFB7B1 /* DBHRankDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27606C20721AB000FFB7B1 /* DBHRankDetailModel.m */; };
 		1B27607020723AFE00FFB7B1 /* DBHExchangeRankModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27606F20723AFE00FFB7B1 /* DBHExchangeRankModel.m */; };
 		1B27607320723C7600FFB7B1 /* DBHExchangeRankTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27607220723C7600FFB7B1 /* DBHExchangeRankTypeModel.m */; };
@@ -878,6 +880,10 @@
 		1B244AB920591E9800DE097C /* DBHLookWalletInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHLookWalletInfoViewController.m; sourceTree = "<group>"; };
 		1B244ABB205923CD00DE097C /* DBHLookWalletInfoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHLookWalletInfoTableViewCell.h; sourceTree = "<group>"; };
 		1B244ABC205923CD00DE097C /* DBHLookWalletInfoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHLookWalletInfoTableViewCell.m; sourceTree = "<group>"; };
+		1B24E8F32091D2E500E1974E /* YYRedPacketPreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketPreviewViewController.h; sourceTree = "<group>"; };
+		1B24E8F42091D2E500E1974E /* YYRedPacketPreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketPreviewViewController.m; sourceTree = "<group>"; };
+		1B24E8F62091DAC200E1974E /* YYSharePromptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYSharePromptView.h; sourceTree = "<group>"; };
+		1B24E8F72091DAC200E1974E /* YYSharePromptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYSharePromptView.m; sourceTree = "<group>"; };
 		1B27606B20721AB000FFB7B1 /* DBHRankDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHRankDetailModel.h; sourceTree = "<group>"; };
 		1B27606C20721AB000FFB7B1 /* DBHRankDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHRankDetailModel.m; sourceTree = "<group>"; };
 		1B27606E20723AFE00FFB7B1 /* DBHExchangeRankModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHExchangeRankModel.h; sourceTree = "<group>"; };
@@ -2504,6 +2510,8 @@
 				1BBD786020907AE3000FDC8E /* YYRedPacketSendFourthImageViewController.m */,
 				1BBD786120907AE3000FDC8E /* YYRedPacketSendFourthLinkViewController.h */,
 				1BBD786220907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m */,
+				1B24E8F32091D2E500E1974E /* YYRedPacketPreviewViewController.h */,
+				1B24E8F42091D2E500E1974E /* YYRedPacketPreviewViewController.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2538,6 +2546,8 @@
 				1BBD784C208F1686000FDC8E /* YYChoosePayStyleTableViewCell.h */,
 				1BBD784D208F1686000FDC8E /* YYChoosePayStyleTableViewCell.m */,
 				1BBD784E208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib */,
+				1B24E8F62091DAC200E1974E /* YYSharePromptView.h */,
+				1B24E8F72091DAC200E1974E /* YYSharePromptView.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -4700,6 +4710,7 @@
 				D565E91620182F1400930274 /* DBHMonetaryUnitViewController.m in Sources */,
 				D572EC082022F77E002C8EFD /* EaseEmotionManager.m in Sources */,
 				D572EC272022F77E002C8EFD /* EMCDDeviceManager+Microphone.m in Sources */,
+				1B24E8F82091DAC200E1974E /* YYSharePromptView.m in Sources */,
 				D572EC292022F77E002C8EFD /* EMAudioPlayerUtil.m in Sources */,
 				1B77F6DB206E11AB00B198A9 /* DBHRankDetailViewController.m in Sources */,
 				D5215DA41FD7E83500536248 /* NSString+Null.m in Sources */,
@@ -4795,6 +4806,7 @@
 				D5EA6F1B202B0EC500181346 /* DBHQuotationReminderPromptView.m in Sources */,
 				0FDCAC921F20CF460090D12A /* ObjcRuntime.m in Sources */,
 				D565E9042017383600930274 /* DBHMyFavoriteViewController.m in Sources */,
+				1B24E8F52091D2E500E1974E /* YYRedPacketPreviewViewController.m in Sources */,
 				A8016B501F418D4E003848CD /* ChoseWalletView.m in Sources */,
 				1BE63AE7205ACC9900AE53E1 /* DBHProjectInformationTableViewCell.m in Sources */,
 				D565E90A201743BC00930274 /* DBHMyQuotationReminderViewController.m in Sources */,
@@ -5216,7 +5228,7 @@
 				PODS_ROOT = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raistone.inwecrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e2ab6295-96b0-4193-ae60-1838a7ac5e1f";
+				PROVISIONING_PROFILE = "dc80cee2-ca2f-4b87-8421-3a830d263006";
 				PROVISIONING_PROFILE_SPECIFIER = iOS_development;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
@@ -5338,7 +5350,7 @@
 				PODS_ROOT = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raistone.inwecrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e2ab6295-96b0-4193-ae60-1838a7ac5e1f";
+				PROVISIONING_PROFILE = "dc80cee2-ca2f-4b87-8421-3a830d263006";
 				PROVISIONING_PROFILE_SPECIFIER = iOS_development;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";

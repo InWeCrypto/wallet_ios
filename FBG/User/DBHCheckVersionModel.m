@@ -73,17 +73,18 @@ static DBHCheckVersionModel *shareModel = nil;
     NSString *currentVer = [self currentVersion];
     if (versionStr.integerValue > currentVer.integerValue) { // 需要更新
         NSString *updateTip = dict[UPDATE_HIT];
+        NSString *downloadURL = dict[DOWNLOAD_URL];
         NSLog(@"更新提示:%@", updateTip);
         if (updateTip.length > 0) {
             BOOL isForce = [dict[FORCE] boolValue];
-            [self needUpdate:updateTip isForce:isForce];
+            [self needUpdate:updateTip isForce:isForce downloadUrl:downloadURL];
         }
     }
     
 }
 
-- (void)needUpdate:(NSString *)tipStr isForce:(BOOL)isForceUpdate {
-    [self.tipView setTipString:tipStr isForce:isForceUpdate];
+- (void)needUpdate:(NSString *)tipStr isForce:(BOOL)isForceUpdate downloadUrl:(NSString *)downloadUrl {
+    [self.tipView setTipString:tipStr isForce:isForceUpdate  downloadUrl:downloadUrl];
     [[UIApplication sharedApplication].keyWindow addSubview:self.tipView];
     
     WEAKSELF

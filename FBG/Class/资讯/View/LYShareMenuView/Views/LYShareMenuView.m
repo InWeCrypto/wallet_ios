@@ -109,7 +109,7 @@ static CGFloat const kCancelbuttonHeight = 50;
         }
     }];
 }
-- (void)dismissShareMenuView{
+- (void)dismissShareMenuView {
     WEAKSELF
     CGFloat height = [self backgroundMenuViewHeight];
     [UIView animateWithDuration:.2 animations:^{
@@ -117,6 +117,9 @@ static CGFloat const kCancelbuttonHeight = 50;
         weakSelf.alpha = 0;
     } completion:^(BOOL finished) {
         [weakSelf removeFromSuperview];
+        if (weakSelf.block) {
+            weakSelf.block();
+        }
     }];
 }
 /**

@@ -10,7 +10,7 @@
 
 @interface DBHUpdateTipView : UIView
 
-- (void)setTipString:(NSString *)tipStr isForce:(BOOL)isForceUpdate;
+- (void)setTipString:(NSString *)tipStr isForce:(BOOL)isForceUpdate downloadUrl:(NSString *)downloadUrl;
 - (void)animationShow;
 
 @end

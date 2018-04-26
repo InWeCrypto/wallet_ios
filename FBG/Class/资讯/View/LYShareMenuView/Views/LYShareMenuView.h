@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "LYShareItemMenuView.h"
 
+typedef void(^CancelBlock) (void);
+
 @class LYShareMenuView;
+
 @protocol LYShareMenuViewDelegate <NSObject>
 
 @optional
@@ -22,8 +25,10 @@
 
 @property (nonatomic, weak) id <LYShareMenuViewDelegate> delegate;
 @property (nonatomic, strong) NSArray *shareMenuItems;
+@property (nonatomic, copy) CancelBlock block;
 
 - (void)show;
+
 @end
 
 

@@ -435,19 +435,12 @@
 }
 
 - (void)onClickBack {
-    if (self.webView.canGoBack==YES) {
-        
+    if (self.webView.canGoBack == YES) {
         [self.webView goBack];
-        
-    }
-    else
-    {
-        if (self.isLogin)
-        {
+    } else {
+        if (self.isLogin) {
             [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
+        } else {
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
