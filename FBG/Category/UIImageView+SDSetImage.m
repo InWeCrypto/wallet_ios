@@ -38,4 +38,20 @@
     }
 }
 
+
+- (void)sdsetImageWithURL:(NSString *)url placeholderImage:(UIImage *)placeholder completed:(EMSDWebImageCompletionBlock)completedBlock {
+    if (url != nil && ![url isKindOfClass:[NSString class]]) {
+        return;
+    }
+    
+    NSString *tempUrl = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    if ([tempUrl containsString:@"http"]) {
+        [self sd_setImageWithURL:[NSURL URLWithString:tempUrl] placeholderImage:placeholder completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+        }];
+    } else {
+        [self sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGEHEAD,tempUrl]] placeholderImage:placeholder];
+    }
+}
 @end

@@ -72,6 +72,7 @@
     self.bestTextView.placeholder = DBHGetStringWithKeyFromTable(@"Best / Message", nil);
     
     [self.shareBtn setCorner:2];
+    [self.shareBtn setTitle:DBHGetStringWithKeyFromTable(@"Preview And Share", nil) forState:UIControlStateNormal];
     
     self.photoView.layer.cornerRadius = AUTOLAYOUTSIZE(2);
     self.photoView.layer.masksToBounds = YES;

@@ -67,6 +67,8 @@
     self.bestTextView.placeholder = DBHGetStringWithKeyFromTable(@"Best / Message", nil);
     
     [self.shareBtn setCorner:2];
+   
+    [self.shareBtn setTitle:DBHGetStringWithKeyFromTable(@" Share ", nil) forState:UIControlStateNormal];
 }
 
 #pragma mark ----- RespondsToSelector ---------

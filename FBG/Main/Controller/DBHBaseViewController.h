@@ -14,6 +14,8 @@
  返回到第几级
  */
 @property (nonatomic, assign) NSInteger backIndex;
+
 - (void)setNavigationBarTitleColor;
+- (void)setNavigationTintColor;
 
 @end
