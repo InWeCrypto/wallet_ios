@@ -83,65 +83,69 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     
     self.notificationCenter.delegate = self;
     
+    // 推特
+    [[Twitter sharedInstance] startWithConsumerKey:TWITTER_APP_KEY consumerSecret:TWITTER_APP_SECRET];
+    
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT,
                                              0), ^{
-        //添加网络状态提醒
-        [self netNotification];
-        
-        // 环信sdk注册
-        //AppKey:注册的AppKey，详细见下面注释。
-        //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
-        EMOptions *options = [EMOptions optionsWithAppkey:[APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"1109180116115999#online" : @"1109180116115999#test"];
-        options.apnsCertName = @"aps_development";
-        [[EMClient sharedClient] initializeSDKWithOptions:options];
-        
-        // 注册消息回调
-        [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
-        [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
-        
-        [WXApi registerApp:WEIXIN_APP_ID];
-        self.oauth = [[TencentOAuth alloc] initWithAppId:QQAppID andDelegate:self];
-        
-        UserModel *user = [UserSignData share].user;
-        if (!user.isLogin) {
-            user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
-        }
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"has_come"]) {
-            user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
-            
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"has_come"];
-        }
-        [[UserSignData share] storageData:user];
-        
-        if ([APP_WALLETSTATUS isEqualToString:@"HOT"])  {
-        } else {  //始终进入冷钱包
-            [UserSignData share].user.isCode = YES;
-            [[UserSignData share] storageData:[UserSignData share].user];
-            YYCache * dataCache = [YYCache cacheWithName:@"FBGNetworkResponseCache"];
-            [dataCache removeAllObjects];
-        }
-       
-        //友盟统计
-        UMConfigInstance.appKey = UM_APP_KEY;
-        UMConfigInstance.channelId = @"App Store";
-        [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！
-//        [MobClick setLogEnabled:YES]; // <#正式/测试切换#>❤️❤️切换❤️❤️
-        
-        // Bugly统计
-        [Bugly startWithAppId:BUGLY_APP_ID];
-        
-        //推送
-        [self registerEMAPNs];
-        
-        // 初始化SDK
-        [self initCloudPush];
-        
-        // 推特
-        [[Twitter sharedInstance] startWithConsumerKey:TWITTER_APP_KEY consumerSecret:TWITTER_APP_SECRET];
+        [self otherThings];
     });
     
     return YES;
+}
+
+- (void)otherThings {
+    //添加网络状态提醒
+    [self netNotification];
+    
+    // 环信sdk注册
+    //AppKey:注册的AppKey，详细见下面注释。
+    //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
+    EMOptions *options = [EMOptions optionsWithAppkey:[APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"1109180116115999#online" : @"1109180116115999#test"];
+    options.apnsCertName = @"aps_development";
+    [[EMClient sharedClient] initializeSDKWithOptions:options];
+    
+    // 注册消息回调
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    
+    [WXApi registerApp:WEIXIN_APP_ID];
+    self.oauth = [[TencentOAuth alloc] initWithAppId:QQAppID andDelegate:self];
+    
+    UserModel *user = [UserSignData share].user;
+    if (!user.isLogin) {
+        user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+    }
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"has_come"]) {
+        user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"has_come"];
+    }
+    [[UserSignData share] storageData:user];
+    
+    if ([APP_WALLETSTATUS isEqualToString:@"HOT"])  {
+    } else {  //始终进入冷钱包
+        [UserSignData share].user.isCode = YES;
+        [[UserSignData share] storageData:[UserSignData share].user];
+        YYCache * dataCache = [YYCache cacheWithName:@"FBGNetworkResponseCache"];
+        [dataCache removeAllObjects];
+    }
+    
+    //友盟统计
+    UMConfigInstance.appKey = UM_APP_KEY;
+    UMConfigInstance.channelId = @"App Store";
+    [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！
+    //        [MobClick setLogEnabled:YES]; // <#正式/测试切换#>❤️❤️切换❤️❤️
+    
+    // Bugly统计
+    [Bugly startWithAppId:BUGLY_APP_ID];
+    
+    //推送
+    [self registerEMAPNs];
+    
+    // 初始化SDK
+    [self initCloudPush];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(nonnull NSURL *)url {
