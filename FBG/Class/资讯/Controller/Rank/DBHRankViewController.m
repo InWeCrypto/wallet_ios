@@ -171,7 +171,7 @@
             urlStr = @"ico/total_market_value";
             break;
         default:
-            urlStr = @"article?sort_desc=click_rate&per_page=10";
+            urlStr = @"article?sort_desc=click_rate&per_page=50";
             break;
     }
     
