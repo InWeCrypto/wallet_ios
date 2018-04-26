@@ -888,7 +888,8 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
         WEAKSELF
         [_menuView selectedBlock:^(NSInteger index) {
             switch (index) {
-                 case 0: { //TODO InWe红包
+                 //   /**
+                 case 0: { // InWe红包
                     if (![UserSignData share].user.isLogin) {
                         [[AppDelegate delegate] goToLoginVC:weakSelf];
                     } else {
@@ -898,7 +899,7 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
                     break;
                 }
             
-                case 1: { //TODO 扫一扫
+                case 1: { // 扫一扫
                     [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
                     
                     ScanVC * vc = [[ScanVC alloc] init];
@@ -907,7 +908,8 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
                     
                     break;
                 }
-                    
+                 //  */
+//                case 0: {
                 case 2: {
                     // 添加钱包
                     if (![UserSignData share].user.isLogin) {
@@ -924,6 +926,7 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
                     }
                     break;
                 }
+//                case 1: {
                 case 3: {
                     // 收付款
                     if (![UserSignData share].user.isLogin) {
@@ -1070,8 +1073,11 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
 
 - (NSArray *)menuArray {
     if (!_menuArray) {
-        _menuArray = @[@"Red  Packet",
+        _menuArray = @[
+      //  /**
+                        @"Red  Packet",
                        @"Scan QR Code",
+       //  */
                        @"Add Wallet",
                        @"Payment"];
     }

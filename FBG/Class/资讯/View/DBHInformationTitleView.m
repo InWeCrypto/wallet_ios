@@ -106,7 +106,7 @@
         _moreButton.frame = CGRectMake(x, 0, width, 40);
         [_moreButton setImageEdgeInsets:UIEdgeInsetsMake(10, 0, 10, 0)];
         _moreButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-        [_moreButton setImage:[UIImage imageNamed:@"zhuye_right_icon"] forState:UIControlStateNormal]; // zhuye_tianjia_ico
+        [_moreButton setImage:[UIImage imageNamed:@"zhuye_right_icon"] forState:UIControlStateNormal]; //  zhuye_tianjia_ico
         [_moreButton addTarget:self action:@selector(respondsToMoreButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return _moreButton;
