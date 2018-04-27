@@ -14,4 +14,5 @@
 
 - (void)setNavigationBarWithColor:(UIColor *)color;
 - (void)setNavigationBarWithColors:(NSArray *)colors;
+
 @end

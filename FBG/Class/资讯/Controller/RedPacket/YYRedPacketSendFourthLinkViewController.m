@@ -38,14 +38,14 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"redpacket_navigation"] forBarMetrics:UIBarMetricsDefault];
+    [self redPacketNavigationBar];
 }
 
 /**
  父类方法
  */
 - (void)setNavigationBarTitleColor {
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:WHITE_COLOR, NSFontAttributeName:FONT(20)}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:WHITE_COLOR, NSFontAttributeName:FONT(18)}];
 }
 
 #pragma mark ------- SetUI ---------

@@ -113,6 +113,10 @@
 		1B244ABD205923CD00DE097C /* DBHLookWalletInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B244ABC205923CD00DE097C /* DBHLookWalletInfoTableViewCell.m */; };
 		1B24E8F52091D2E500E1974E /* YYRedPacketPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E8F42091D2E500E1974E /* YYRedPacketPreviewViewController.m */; };
 		1B24E8F82091DAC200E1974E /* YYSharePromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E8F72091DAC200E1974E /* YYSharePromptView.m */; };
+		1B24E8FB2092168700E1974E /* YYRedPacketShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E8FA2092168700E1974E /* YYRedPacketShareViewController.m */; };
+		1B24E8FE2092C0F800E1974E /* YYRedPacketDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E8FD2092C0F800E1974E /* YYRedPacketDetailViewController.m */; };
+		1B24E9022092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E9002092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m */; };
+		1B24E9072092C9B700E1974E /* YYRedPacketDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E9052092C9B700E1974E /* YYRedPacketDetailTableViewCell.m */; };
 		1B27606D20721AB000FFB7B1 /* DBHRankDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27606C20721AB000FFB7B1 /* DBHRankDetailModel.m */; };
 		1B27607020723AFE00FFB7B1 /* DBHExchangeRankModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27606F20723AFE00FFB7B1 /* DBHExchangeRankModel.m */; };
 		1B27607320723C7600FFB7B1 /* DBHExchangeRankTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27607220723C7600FFB7B1 /* DBHExchangeRankTypeModel.m */; };
@@ -155,6 +159,9 @@
 		1B81F336205A038900A3822D /* DBHWalletPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81F335205A038900A3822D /* DBHWalletPageViewController.m */; };
 		1B81F33C205AB99200A3822D /* DBHProjectNewOverviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81F33B205AB99200A3822D /* DBHProjectNewOverviewViewController.m */; };
 		1B861A572088948B00592B8C /* YYTransferListETHModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B861A562088948B00592B8C /* YYTransferListETHModel.m */; };
+		1B881DB72092D215003D92EF /* YYRedPacketDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B881DB62092D215003D92EF /* YYRedPacketDetailHeaderView.m */; };
+		1B881DB92092D21A003D92EF /* YYRedPacketDetailHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B881DB82092D21A003D92EF /* YYRedPacketDetailHeaderView.xib */; };
+		1B881DBC2092FC7D003D92EF /* UINavigationBar+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B881DBB2092FC7D003D92EF /* UINavigationBar+Extension.m */; };
 		1B99F87420735CE9004FD7F7 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B99F87220735CE9004FD7F7 /* TencentOpenAPI.framework */; };
 		1B99F87520735CE9004FD7F7 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B99F87320735CE9004FD7F7 /* TencentOpenApi_IOS_Bundle.bundle */; };
 		1B99F87720735D20004FD7F7 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B99F87620735D20004FD7F7 /* libiconv.tbd */; };
@@ -884,6 +891,14 @@
 		1B24E8F42091D2E500E1974E /* YYRedPacketPreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketPreviewViewController.m; sourceTree = "<group>"; };
 		1B24E8F62091DAC200E1974E /* YYSharePromptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYSharePromptView.h; sourceTree = "<group>"; };
 		1B24E8F72091DAC200E1974E /* YYSharePromptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYSharePromptView.m; sourceTree = "<group>"; };
+		1B24E8F92092168700E1974E /* YYRedPacketShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketShareViewController.h; sourceTree = "<group>"; };
+		1B24E8FA2092168700E1974E /* YYRedPacketShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketShareViewController.m; sourceTree = "<group>"; };
+		1B24E8FC2092C0F800E1974E /* YYRedPacketDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDetailViewController.h; sourceTree = "<group>"; };
+		1B24E8FD2092C0F800E1974E /* YYRedPacketDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDetailViewController.m; sourceTree = "<group>"; };
+		1B24E8FF2092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDetailSpecialTableViewCell.h; sourceTree = "<group>"; };
+		1B24E9002092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDetailSpecialTableViewCell.m; sourceTree = "<group>"; };
+		1B24E9042092C9B700E1974E /* YYRedPacketDetailTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDetailTableViewCell.h; sourceTree = "<group>"; };
+		1B24E9052092C9B700E1974E /* YYRedPacketDetailTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDetailTableViewCell.m; sourceTree = "<group>"; };
 		1B27606B20721AB000FFB7B1 /* DBHRankDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHRankDetailModel.h; sourceTree = "<group>"; };
 		1B27606C20721AB000FFB7B1 /* DBHRankDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHRankDetailModel.m; sourceTree = "<group>"; };
 		1B27606E20723AFE00FFB7B1 /* DBHExchangeRankModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHExchangeRankModel.h; sourceTree = "<group>"; };
@@ -960,6 +975,11 @@
 		1B81F33B205AB99200A3822D /* DBHProjectNewOverviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHProjectNewOverviewViewController.m; sourceTree = "<group>"; };
 		1B861A552088948B00592B8C /* YYTransferListETHModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYTransferListETHModel.h; sourceTree = "<group>"; };
 		1B861A562088948B00592B8C /* YYTransferListETHModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYTransferListETHModel.m; sourceTree = "<group>"; };
+		1B881DB52092D215003D92EF /* YYRedPacketDetailHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDetailHeaderView.h; sourceTree = "<group>"; };
+		1B881DB62092D215003D92EF /* YYRedPacketDetailHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDetailHeaderView.m; sourceTree = "<group>"; };
+		1B881DB82092D21A003D92EF /* YYRedPacketDetailHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketDetailHeaderView.xib; sourceTree = "<group>"; };
+		1B881DBA2092FC7D003D92EF /* UINavigationBar+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Extension.h"; sourceTree = "<group>"; };
+		1B881DBB2092FC7D003D92EF /* UINavigationBar+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Extension.m"; sourceTree = "<group>"; };
 		1B99F87220735CE9004FD7F7 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		1B99F87320735CE9004FD7F7 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		1B99F87620735D20004FD7F7 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -2123,6 +2143,8 @@
 				1B21545E207CB3AC00EB9224 /* UIWindow+Extension.m */,
 				1B5BA46120809FDC00B03A4F /* NSDate+Tool.h */,
 				1B5BA46220809FDC00B03A4F /* NSDate+Tool.m */,
+				1B881DBA2092FC7D003D92EF /* UINavigationBar+Extension.h */,
+				1B881DBB2092FC7D003D92EF /* UINavigationBar+Extension.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2512,6 +2534,10 @@
 				1BBD786220907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m */,
 				1B24E8F32091D2E500E1974E /* YYRedPacketPreviewViewController.h */,
 				1B24E8F42091D2E500E1974E /* YYRedPacketPreviewViewController.m */,
+				1B24E8F92092168700E1974E /* YYRedPacketShareViewController.h */,
+				1B24E8FA2092168700E1974E /* YYRedPacketShareViewController.m */,
+				1B24E8FC2092C0F800E1974E /* YYRedPacketDetailViewController.h */,
+				1B24E8FD2092C0F800E1974E /* YYRedPacketDetailViewController.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2548,6 +2574,13 @@
 				1BBD784E208F1686000FDC8E /* YYChoosePayStyleTableViewCell.xib */,
 				1B24E8F62091DAC200E1974E /* YYSharePromptView.h */,
 				1B24E8F72091DAC200E1974E /* YYSharePromptView.m */,
+				1B24E8FF2092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.h */,
+				1B24E9002092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m */,
+				1B24E9042092C9B700E1974E /* YYRedPacketDetailTableViewCell.h */,
+				1B24E9052092C9B700E1974E /* YYRedPacketDetailTableViewCell.m */,
+				1B881DB52092D215003D92EF /* YYRedPacketDetailHeaderView.h */,
+				1B881DB62092D215003D92EF /* YYRedPacketDetailHeaderView.m */,
+				1B881DB82092D21A003D92EF /* YYRedPacketDetailHeaderView.xib */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -4198,6 +4231,7 @@
 				1B99F9322079CA34004FD7F7 /* EvaluateGradeCell.xib in Resources */,
 				1B99F87520735CE9004FD7F7 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				D572EAD32022F5A4002C8EFD /* LCProgressHUD.bundle in Resources */,
+				1B881DB92092D21A003D92EF /* YYRedPacketDetailHeaderView.xib in Resources */,
 				D51E66D32015E20C0025B502 /* ScanVC.xib in Resources */,
 				A85F8A9E1F5950B500340D49 /* CodeWalletCodeView.xib in Resources */,
 				A8B804651F4D170400633C34 /* ChoseNetView.xib in Resources */,
@@ -4618,6 +4652,7 @@
 				A88A787B1F694BB30058094C /* JKBigDecimal.m in Sources */,
 				A8AAFBCC1F3EF6B000724FF6 /* PayPriceView.m in Sources */,
 				D5F03E4A202175D500A4F051 /* DBHCandyBowlModelData.m in Sources */,
+				1B24E9022092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m in Sources */,
 				D51E66642011F01B0025B502 /* DBHMenuViewTableViewCell.m in Sources */,
 				0F0CFE5A1F161F4C00476A86 /* ZFTabBar.m in Sources */,
 				D518A555203EC8D7006A8D76 /* CustomActivity.m in Sources */,
@@ -4690,6 +4725,7 @@
 				1B99F95D207B62AE004FD7F7 /* YYGradeStarView.m in Sources */,
 				D572EC652022F77E002C8EFD /* EaseChatToolbar.m in Sources */,
 				D572EC2E2022F77E002C8EFD /* MWTapDetectingImageView.m in Sources */,
+				1B24E8FB2092168700E1974E /* YYRedPacketShareViewController.m in Sources */,
 				D565E8EF2017202A00930274 /* DBHAddressBookViewController.m in Sources */,
 				D51E66732011F01B0025B502 /* DBHHomePageView.m in Sources */,
 				D5B788C320298660005ACFC8 /* DBHAddressBookModelDataBase.m in Sources */,
@@ -4790,6 +4826,7 @@
 				D51E665F2011F01B0025B502 /* DBHWalletDetailTokenInfomationModelDataBase.m in Sources */,
 				D56CEEDF201C9F210081DE05 /* DBHLanguageSetViewController.m in Sources */,
 				D565E8E9201716CB00930274 /* DBHChangePasswordTableViewCell.m in Sources */,
+				1B24E9072092C9B700E1974E /* YYRedPacketDetailTableViewCell.m in Sources */,
 				1B99F942207A0756004FD7F7 /* D5FlowButtonView.m in Sources */,
 				D572EC412022F77E002C8EFD /* EMSDWebImageDownloader.m in Sources */,
 				D572EAD42022F5A4002C8EFD /* LCProgressHUD.m in Sources */,
@@ -4870,10 +4907,12 @@
 				D5066B4B20301C3900D3F86D /* DBHInformationForICOModelNEO.m in Sources */,
 				D5B788C520298660005ACFC8 /* DBHAddressBookModelUser.m in Sources */,
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,
+				1B24E8FE2092C0F800E1974E /* YYRedPacketDetailViewController.m in Sources */,
 				D5C36BBD201F90A300A82FCB /* DBHMarketDetailMoneyRealTimePriceModelData.m in Sources */,
 				D5B788CB202997C6005ACFC8 /* DBHTradingMarketModelDataBase.m in Sources */,
 				0FAC291B1F2F7C4A009B3EC9 /* AASeries.m in Sources */,
 				1BAE4A8620616790006EBB00 /* DBHPlaceHolderTextView.m in Sources */,
+				1B881DBC2092FC7D003D92EF /* UINavigationBar+Extension.m in Sources */,
 				D572EC692022F77E002C8EFD /* EaseBubbleView+Location.m in Sources */,
 				0F0CFE2F1F15FB3F00476A86 /* NSArray+Tool.m in Sources */,
 				0FFEA9D71F17382A009F6151 /* BaseModel.m in Sources */,
@@ -4938,6 +4977,7 @@
 				D572EC022022F77E002C8EFD /* EaseMessageReadManager.m in Sources */,
 				A88A78941F6992E90058094C /* SGQRCodeScanManager.m in Sources */,
 				D55B5267202D8F35004D65F7 /* DBHImportWalletWithETHViewController.m in Sources */,
+				1B881DB72092D215003D92EF /* YYRedPacketDetailHeaderView.m in Sources */,
 				D536E2CF2031808B0076E3D4 /* DBHProjectDetailInformationModelCategoryWallet.m in Sources */,
 				0F0CFE361F15FB3F00476A86 /* UIView+Tool.m in Sources */,
 				D572EC222022F77E002C8EFD /* amrFileCodec.mm in Sources */,

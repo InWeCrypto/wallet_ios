@@ -18,4 +18,6 @@
 - (void)setNavigationBarTitleColor;
 - (void)setNavigationTintColor;
 
+- (void)redPacketNavigationBar;
+
 @end

@@ -900,8 +900,6 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
                 }
             
                 case 1: { // 扫一扫
-                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Coming Soon", nil)];
-                    
                     ScanVC * vc = [[ScanVC alloc] init];
                     //                    vc.delegate = self;
                     [weakSelf.navigationController pushViewController:vc animated:YES];

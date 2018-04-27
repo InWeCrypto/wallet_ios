@@ -31,8 +31,14 @@
     self.navigationController.navigationBar.tintColor = COLORFROM16(0x333333, 1);
 }
 
+- (void)redPacketNavigationBar {
+    NSArray *colors = @[COLORFROM16(0xD9725B, 1), COLORFROM16(0xB23E2E, 1)];
+    UIImage *image = [UIImage imageWithGradients:colors];
+    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+}
+
 - (void)setNavigationBarTitleColor {
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(20)}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(18)}];
 }
 
 - (void)dealloc {

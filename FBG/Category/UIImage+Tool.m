@@ -23,8 +23,8 @@ void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor
     NSArray *colors = @[(__bridge id) startColor, (__bridge id) endColor];
     
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
-    CGPoint startPoint = CGPointMake(rect.size.width/2, 0);
-    CGPoint endPoint = CGPointMake(rect.size.width/2, rect.size.height/1.5);
+    CGPoint startPoint = CGPointMake(0, 0);
+    CGPoint endPoint = CGPointMake(0, rect.size.height);
     
     CGContextSaveGState(context);
     CGContextAddRect(context, rect);
@@ -36,7 +36,8 @@ void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor
 }
 
 + (UIImage *)imageWithGradients:(NSArray *)colours {
-    CGRect rect = CGRectMake(0, 0, 1, 1);
+    CGRect rect = CGRectMake(0, 0, SCREEN_WIDTH, STATUS_HEIGHT + 44);
+    
     UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     UIColor *beginColor = [colours objectAtIndex:0];

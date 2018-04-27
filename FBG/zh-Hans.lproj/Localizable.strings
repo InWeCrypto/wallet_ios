@@ -663,3 +663,9 @@
 "Done" = "完成";
 "Preview" = "预览";
 "Capture" = "截图";
+"Sender's Wallet Address" = "红包发送地址(钱包地址)";
+"Create Time" = "红包创建时间";
+"Look Up Red Packet" = "查看红包";
+"Look Up And Share Red Packet" = "查看红包，并分享";
+"Money in expired red packet will be saved to your Balance After 24H" = "未领取的红包将于24H后退回";
+"RedPacket Detail" = "红包详情";

@@ -19,7 +19,7 @@
 
 @property (nonatomic, strong) LYShareMenuView *sharedMenuView;
 @property (nonatomic, strong) NSMutableArray *sharedMenuItems;
-@property (nonatomic, strong) UIImage *captureImg;
+//@property (nonatomic, strong) UIImage *captureImg;
 
 @end
 
@@ -36,7 +36,6 @@
 #pragma mark ---- push vc ------
 - (void)pushToShareVC {
     DBHSharePictureViewController *shareVC = [[DBHSharePictureViewController alloc] init];
-    shareVC.longPictureImg = self.longPictureImg;
     DBHBaseNavigationController *navigationController = [[DBHBaseNavigationController alloc] initWithRootViewController:shareVC];
     [[self parentController] presentViewController:navigationController animated:YES completion:nil];
 }
@@ -82,6 +81,7 @@
     }
 }
 
+/**
 - (void)shareToQQ {
     WEAKSELF
     [[AppDelegate delegate] setQqResultBlock:^(QQBaseResp *res) {
@@ -109,7 +109,7 @@
     SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:imgObj];
     QQApiSendResultCode send = [QQApiInterface sendReq:req];
     [self handleSendResult:send];
-}
+}*/
 
 - (void)handleSendResult:(QQApiSendResultCode)code {
     switch (code) {
@@ -133,6 +133,7 @@
  @param index 0-朋友圈  1-好友
  @return 消息
  */
+/**
 - (SendMessageToWXReq *)shareToWX:(NSInteger)index {
     WEAKSELF
     [[AppDelegate delegate] setResultBlock:^(BaseResp *res) {
@@ -168,22 +169,20 @@
     }
     return req;
 }
-
+*/
 #pragma mark ----- Share Delegate ------
 - (void)shareMenuView:(LYShareMenuView *)shareMenuView didSelecteShareMenuItem:(LYShareMenuItem *)shareMenuItem atIndex:(NSInteger)index {
     switch (index) {
         case 0: {
-            BOOL result = [WXApi sendReq:[self shareToWX:0]];
-            NSLog(@"result = %d", result);
+            [self pushToShareVC];
             break;
         }
         case 1: {
-            BOOL result = [WXApi sendReq:[self shareToWX:1]];
-            NSLog(@"result = %d", result);
+           [self pushToShareVC];
             break;
         }
         case 2: { // qq
-            [self shareToQQ];
+            [self pushToShareVC];
             break;
         }
         case 3: { // tele
@@ -195,7 +194,7 @@
             break;
         }
         case 5: {
-            [self shareLongPicture];
+            [self shareLongPicture]; //YYTODO
             break;
         }
         default:

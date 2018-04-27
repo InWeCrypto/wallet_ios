@@ -61,7 +61,7 @@
     
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
     
-    if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
+    if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied || authStatus == AVAuthorizationStatusNotDetermined){
         
         
         UIAlertController *alert=[UIAlertController alertControllerWithTitle:DBHGetStringWithKeyFromTable(@"No Camera Privileges", nil) message:DBHGetStringWithKeyFromTable(@"Please go to settings - Privacy - camera for sweeping authorization", nil) preferredStyle:UIAlertControllerStyleAlert];

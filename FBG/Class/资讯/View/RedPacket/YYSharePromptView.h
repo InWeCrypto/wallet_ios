@@ -11,7 +11,7 @@
 @interface YYSharePromptView : UIView
 
 @property (nonatomic, copy) NSString *urlStr;
-@property (nonatomic, strong) UIImage *longPictureImg;
+//@property (nonatomic, strong) UIImage *longPictureImg;
 
 - (void)show;
 

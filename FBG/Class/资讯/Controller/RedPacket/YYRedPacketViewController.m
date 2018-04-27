@@ -11,6 +11,7 @@
 
 #import "YYRedPacketSection0TableViewCell.h"
 #import "YYRedPacketSection1TableViewCell.h"
+#import "YYRedPacketSendHistoryViewController.h"
 
 #define HEADER_VIEW_HEIGHT 223
 
@@ -77,6 +78,12 @@
     }];
 }
 
+#pragma mark ----- RespondsToSelector ---------
+- (void)respondsToMoreBtn {
+    YYRedPacketSendHistoryViewController *vc = [[YYRedPacketSendHistoryViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark ----- UITableView ---------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 6;
@@ -126,6 +133,7 @@
     CGFloat width = [NSString getWidthtWithString:btn.currentTitle fontSize:13] + 100;
     btn.frame = CGRectMake(0, 0, width, 36);
     btn.center = view.center;
+    [btn addTarget:self action:@selector(respondsToMoreBtn) forControlEvents:UIControlEventTouchUpInside];
     
     [view addSubview:btn];
     return view;

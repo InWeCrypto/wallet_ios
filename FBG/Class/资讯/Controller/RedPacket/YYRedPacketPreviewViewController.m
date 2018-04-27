@@ -16,7 +16,6 @@
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) UIView *grayLineView;
 
-
 @end
 
 @implementation YYRedPacketPreviewViewController
