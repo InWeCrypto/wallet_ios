@@ -364,10 +364,13 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
         // 处理iOS 10通知，并上报通知打开回执
         [self handleiOS10Notification:response.notification];
         //跳转消息页面
-        ZFTabBarViewController * tab = (ZFTabBarViewController*) (self.window.rootViewController);
-        CDNavigationController * nav = tab.childViewControllers[tab.selectedIndex];
-        //        MessageVC * vc = [[MessageVC alloc]init];
-        //        [nav pushViewController:vc animated:YES];
+        UIViewController *rootVC = self.window.rootViewController;
+        if ([rootVC isKindOfClass:[ZFTabBarViewController class]]) {
+            ZFTabBarViewController * tab = (ZFTabBarViewController*) rootVC;
+            CDNavigationController * nav = tab.childViewControllers[tab.selectedIndex];
+            //        MessageVC * vc = [[MessageVC alloc]init];
+            //        [nav pushViewController:vc animated:YES];
+        }
     }
     // 通知dismiss，category创建时传入UNNotificationCategoryOptionCustomDismissAction才可以触发
     if ([userAction isEqualToString:UNNotificationDismissActionIdentifier])
