@@ -7,10 +7,13 @@
 //
 
 #import "DBHBaseTableViewCell.h"
+@class YYRedPacketSentCountModel;
 
 #define REDPACKET_SECTION0_CELL_HEIGHT 140
 #define REDPACKET_SECTION0_CELL_ID @"REDPACKET_SECTION0_CELL"
 
 @interface YYRedPacketSection0TableViewCell : DBHBaseTableViewCell
+
+@property (nonatomic, strong) YYRedPacketSentCountModel *model;
 
 @end

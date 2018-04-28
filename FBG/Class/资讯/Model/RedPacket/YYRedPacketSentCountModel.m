@@ -1,12 +1,13 @@
 //
-//  YYRedPacketModels.h
+//  YYRedPacketSentCountModel.m
 //  FBG
 //
-//  Created by yy on 2018/4/27.
+//  Created by yy on 2018/4/28.
 //  Copyright © 2018年 ButtonRoot. All rights reserved.
 //
 
-#import "YYRedPacketMySentListModel.h"
 #import "YYRedPacketSentCountModel.h"
 
+@implementation YYRedPacketSentCountModel
 
+@end

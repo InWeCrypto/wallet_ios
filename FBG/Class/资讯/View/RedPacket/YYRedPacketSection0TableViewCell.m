@@ -7,6 +7,7 @@
 //
 
 #import "YYRedPacketSection0TableViewCell.h"
+#import "YYRedPacketSentCountModel.h"
 
 #define REDPACKET_COUNT(count) [NSString stringWithFormat:@"%ld%@", count, DBHGetStringWithKeyFromTable(@"  ", nil)]
 
@@ -48,6 +49,17 @@
     self.successValueLabel.text = countStr;
     
     [self setTotalTitle:0];
+}
+
+- (void)setModel:(YYRedPacketSentCountModel *)model {
+    NSInteger successCount = model.success_redbag;
+    NSInteger beingCount = model.be_on_redbag;
+    
+    NSInteger totalCount = successCount + beingCount;
+    
+    [self setTotalTitle:totalCount];
+    self.sendingValueLabel.text = REDPACKET_COUNT(beingCount);
+    self.successValueLabel.text = REDPACKET_COUNT(successCount);
 }
 
 - (void)setTotalTitle:(NSInteger)count {

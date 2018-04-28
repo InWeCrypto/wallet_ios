@@ -12,7 +12,7 @@
 
 + (NSDictionary *)mj_replacedKeyFromPropertyName {
     return @{
-             @"redPacketId" : "id"
+             @"redPacketId" : @"id"
              };
 }
 
