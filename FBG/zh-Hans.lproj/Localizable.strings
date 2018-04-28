@@ -616,7 +616,7 @@
 "Red Packet" = "红包";
 "Red  Packet" = "InWe红包";
 "redpacket_home_bg_en" = "redpacket_home_bg";
-"Check transfer Record" = "查询更多发送记录";
+"Check transfer Record" = "查看更多发送记录";
 "First:" = "第一步：";
 "Authorization For Use RedPacket" = "授权使用红包功能";
 "Choose Below Authorization" = "选择ETH资产作为礼金";
@@ -669,3 +669,15 @@
 "Look Up And Share Red Packet" = "查看红包，并分享";
 "Money in expired red packet will be saved to your Balance After 24H" = "未领取的红包将于24H后退回";
 "RedPacket Detail" = "红包详情";
+
+"My Sent Redpacket" = "我发送的红包";
+" Total " = "合计";
+"Sending" = "发送中";
+"Success" = "成功";
+"Sent Record Recently" = "近期发送记录";
+"Opened Record" = "领取记录";
+"Opened Success" = "领取成功";
+"Openning" = "领取中";
+"Has opened " = "你已经成功领取了";
+"'s Redpacket Successfully" = "的红包";
+"Opened in 24H, Please look over wallet" = "红包将在24H内开奖，请留意相关钱包关注领取情况";

@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *progressWidthConstaint;
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (weak, nonatomic) IBOutlet UIView *bgView;
 
 @end
 
@@ -25,12 +26,12 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)setProgress:(NSInteger)progress total:(NSInteger)total {
+    _progressLabel.text = [NSString stringWithFormat:@"%ld/%ld", progress, total];
+    CGFloat width = self.bgView.width;
+    
+    CGFloat value = (CGFloat)progress / (CGFloat)total;
+    _progressWidthConstaint.constant = width * value;
 }
-*/
 
 @end

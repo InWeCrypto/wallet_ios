@@ -415,6 +415,13 @@ yy-MM-dd HH:mm:ss
     return hexStr;
 }
 
+/**
+ 保留小数点后几位
+
+ @param price stirng
+ @param position 位数
+ @return 取小的数
+ */
 + (NSString *)notRounding:(NSString *)price afterPoint:(int)position {
     NSDecimalNumberHandler * roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:position raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
     NSDecimalNumber *ouncesDecimal;

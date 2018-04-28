@@ -65,6 +65,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="bgView" destination="eg4-1F-wdr" id="O8f-zt-1hE"/>
                 <outlet property="progressLabel" destination="9Ra-c7-Nma" id="3oC-YI-M2x"/>
                 <outlet property="progressWidthConstaint" destination="sGR-Rk-vB6" id="La5-ws-Tmu"/>
             </connections>

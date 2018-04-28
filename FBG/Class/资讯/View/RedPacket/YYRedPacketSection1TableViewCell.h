@@ -7,12 +7,13 @@
 //
 
 #import "DBHBaseTableViewCell.h"
+@class YYRedPacketMySentListModel;
 
 #define REDPACKET_SECTION1_CELL_HEIGHT 80
 #define REDPACKET_SECTION1_CELL_ID @"REDPACKET_SECTION1_CELL"
 
 @interface YYRedPacketSection1TableViewCell : DBHBaseTableViewCell
 
-- (void)setModel:(id)model showIng:(BOOL)showIng;
+@property (nonatomic, strong) YYRedPacketMySentListModel *model;
 
 @end

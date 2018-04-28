@@ -38,7 +38,7 @@ static CGFloat min_distance = 60;// 最小回弹距离
 //    [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(18)}];
     [self.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName:FONT(14)} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName:FONT(16)} forState:UIControlStateNormal];
     
     self.interactivePopGestureRecognizer.delegate = self;
 }
@@ -73,7 +73,8 @@ static CGFloat min_distance = 60;// 最小回弹距离
                    [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthImageViewController")] ||
                    [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthLinkViewController")] ||
                    [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthCodeViewController")] ||
-                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketDetailViewController")]) {
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketDetailViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSuccessViewController")]) {
             backImageName = @"white_back";
         } else { 
             backImageName = @"返回-3";

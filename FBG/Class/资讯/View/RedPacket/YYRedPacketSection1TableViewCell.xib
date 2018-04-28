@@ -66,19 +66,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aob-2F-VsR">
-                                <rect key="frame" x="200" y="9" width="45" height="47"/>
+                                <rect key="frame" x="200" y="10.5" width="45" height="44"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="领取中" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPf-0o-QLG">
-                                        <rect key="frame" x="0.0" y="0.0" width="44" height="18"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="44" height="15"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="Vnk-d2-ZKc"/>
+                                            <constraint firstAttribute="height" constant="15" id="Vnk-d2-ZKc"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <color key="textColor" red="0.92941176470588238" green="0.45490196078431372" blue="0.12941176470588234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uOg-g2-W8V" customClass="YYRedPacketReceiveProgressView">
-                                        <rect key="frame" x="0.0" y="18" width="44" height="29"/>
+                                        <rect key="frame" x="0.0" y="15" width="44" height="29"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="Bby-pR-u4g"/>

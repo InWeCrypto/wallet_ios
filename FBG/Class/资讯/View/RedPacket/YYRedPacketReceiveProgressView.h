@@ -10,4 +10,6 @@
 
 @interface YYRedPacketReceiveProgressView : UIView
 
+- (void)setProgress:(NSInteger)progress total:(NSInteger)total;
+
 @end
