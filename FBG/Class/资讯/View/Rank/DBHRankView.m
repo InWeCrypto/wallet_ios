@@ -207,7 +207,7 @@
                 return listHeaderView;
                 break;
             }
-            default: { // 热门资讯
+            case 4: { // 热门资讯
                 DBHHotInfoRankDataModel *model = self.rowDatasArray[row];
                 UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
                 btn.frame = CGRectMake(0, 0, width, AUTOLAYOUTSIZE(CONTENT_VIEW_HEIGHT));

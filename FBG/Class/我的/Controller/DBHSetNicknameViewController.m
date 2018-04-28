@@ -64,8 +64,16 @@ static NSString *const kDBHSetNicknameTableViewCellIdentifier = @"kDBHSetNicknam
  */
 - (void)updateNickname {
     DBHSetNicknameTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    NSDictionary *paramters = @{@"img":[UserSignData share].user.img,
-                                NAME:cell.nicknameTextField.text};
+    NSString *img = [UserSignData share].user.img;
+    NSString *name = cell.nicknameTextField.text;
+    
+    NSMutableDictionary *paramters = [NSMutableDictionary dictionary];
+    if (![NSObject isNulllWithObject:img]) {
+        [paramters setObject:img forKey:@"img"];
+    }
+    if (![NSObject isNulllWithObject:name]) {
+        [paramters setObject:name forKey:NAME];
+    }
     WEAKSELF
     [PPNetworkHelper PUT:@"user" baseUrlType:3 parameters:paramters hudString:[NSString stringWithFormat:@"%@...", DBHGetStringWithKeyFromTable(@"Submit", nil)] success:^(id responseObject) {
         [UserSignData share].user.nickname = responseObject[NAME];

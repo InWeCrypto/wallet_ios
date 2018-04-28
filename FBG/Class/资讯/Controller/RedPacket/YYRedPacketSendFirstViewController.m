@@ -67,7 +67,7 @@
     [super viewDidLoad];
     
     [self setUI];
-    self.walletInfoView.hidden = NO;
+    self.walletInfoView.hidden = YES;
     self.noWalletView.hidden = YES;
 }
 
@@ -97,6 +97,8 @@
     
     self.maxSendTipLabel.text = DBHGetStringWithKeyFromTable(@"(Max Availuable Send:", nil);
     self.maxSendValueLabel.text = MAX_SEND_COUNT(0);
+    
+    self.slider.value = 0;
     
     [self.payBtn setTitle:DBHGetStringWithKeyFromTable(@"Pay", nil) forState:UIControlStateNormal];
     self.walletMaxUseTitleLabel.text = DBHGetStringWithKeyFromTable(@"Max Avaliable Amount:", nil);

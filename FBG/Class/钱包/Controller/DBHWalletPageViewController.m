@@ -679,7 +679,7 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                         NSString *second = balance;
                         if (model.categoryId == 1) { //ETH
                             NSString *temp = @"0";
-                            if (![NSObject isNulllWithObject:balance]) {
+                            if (![NSObject isNulllWithObject:balance] && balance.length > 2) {
                                 temp = [NSString numberHexString:[balance substringFromIndex:2]];
                             }
                             second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:@"1000000000000000000" value:8];
@@ -784,7 +784,9 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                                 if (![NSObject isNulllWithObject:balance]) {
                                     NSString *temp, *second = @"0";
                                     if (isETH) {
-                                        temp = [NSString numberHexString:[balance substringFromIndex:2]];
+                                        if (balance.length > 2) {
+                                            temp = [NSString numberHexString:[balance substringFromIndex:2]];
+                                        }
                                         second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:[NSString stringWithFormat:@"%lf", pow(10, decimals)] value:8];
                                         
                                         model.balance = [NSString DecimalFuncWithOperatorType:0 first:model.balance secend:second value:8];
@@ -820,7 +822,9 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                             if (![NSObject isNulllWithObject:balance]) {
                                 NSString *temp, *second = @"0";
                                 if (isETH) { //ETH
-                                    temp = [NSString numberHexString:[balance substringFromIndex:2]];
+                                    if (balance.length > 2) {
+                                        temp = [NSString numberHexString:[balance substringFromIndex:2]];
+                                    }
                                     second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:[NSString stringWithFormat:@"%lf", pow(10, decimals)] value:8];
                                     
                                     NSLog(@"priceCny = %f  second = %f", model.priceCny.doubleValue, model.balance.doubleValue);

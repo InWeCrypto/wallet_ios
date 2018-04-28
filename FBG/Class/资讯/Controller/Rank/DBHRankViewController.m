@@ -90,6 +90,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 }
+
 #pragma mark -----Set UI -----
 - (void)setUI {
      WEAKSELF
@@ -201,6 +202,10 @@
             return;
         }
         
+        if ([self currentRankViewIndex] != index) {
+            return;
+        }
+        
         switch (index) {
             case 0: { // 市值排行
                 NSMutableArray *tempArr = [NSMutableArray array];
@@ -284,6 +289,10 @@
         }
     }
     
+}
+
+- (NSInteger)currentRankViewIndex {
+    return self.currentRankView.tag - RANKVIEW_TAG_START;
 }
 
 #pragma mark ----- Getters and Setters -----

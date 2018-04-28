@@ -1136,8 +1136,8 @@
 		1BC4AFEF20933AB0007DA66C /* YYRedPacketMySentListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketMySentListModel.h; sourceTree = "<group>"; };
 		1BC4AFF020933AB0007DA66C /* YYRedPacketMySentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketMySentListModel.m; sourceTree = "<group>"; };
 		1BC4AFF220933AC1007DA66C /* YYRedPacketModels.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketModels.h; sourceTree = "<group>"; };
-		1BC4AFF3209416ED007DA66C /* YYRedPacketSentCountModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSentCountModel.h; sourceTree = "<group>"; };
 		1BC4AFF4209416ED007DA66C /* YYRedPacketSentCountModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSentCountModel.m; sourceTree = "<group>"; };
+		1BC4AFF620941BA1007DA66C /* YYRedPacketSentCountModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSentCountModel.h; sourceTree = "<group>"; };
 		1BDA485A205C88EC006A0E9D /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		1BDA485B205C88EC006A0E9D /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		1BDA485C205C88EC006A0E9D /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -2570,7 +2570,7 @@
 				1BC4AFEF20933AB0007DA66C /* YYRedPacketMySentListModel.h */,
 				1BC4AFF020933AB0007DA66C /* YYRedPacketMySentListModel.m */,
 				1BC4AFF220933AC1007DA66C /* YYRedPacketModels.h */,
-				1BC4AFF3209416ED007DA66C /* YYRedPacketSentCountModel.h */,
+				1BC4AFF620941BA1007DA66C /* YYRedPacketSentCountModel.h */,
 				1BC4AFF4209416ED007DA66C /* YYRedPacketSentCountModel.m */,
 			);
 			path = RedPacket;

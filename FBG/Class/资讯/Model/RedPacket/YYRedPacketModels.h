@@ -6,6 +6,7 @@
 //  Copyright © 2018年 ButtonRoot. All rights reserved.
 //
 
+#import "PPNetworkCache.h"
 #import "YYRedPacketMySentListModel.h"
 #import "YYRedPacketSentCountModel.h"
 

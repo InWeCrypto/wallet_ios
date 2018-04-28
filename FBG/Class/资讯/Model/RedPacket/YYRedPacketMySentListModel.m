@@ -10,6 +10,8 @@
 
 @implementation YYRedPacketMySentListModel
 
+MJCodingImplementation
+
 + (NSDictionary *)mj_replacedKeyFromPropertyName {
     return @{
              @"redPacketId" : @"id"

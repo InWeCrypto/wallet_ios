@@ -409,9 +409,7 @@
         self.progresslayer.frame = CGRectMake(0, 0, self.view.bounds.size.width * [change[NSKeyValueChangeNewKey] floatValue], 3);
         if ([change[NSKeyValueChangeNewKey] floatValue] == 1) {
             _isLoadFinish = YES;
-            if (self.shareIconImg) {
-                self.navigationItem.rightBarButtonItem.enabled = YES;
-            }
+            self.navigationItem.rightBarButtonItem.enabled = YES;
           
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.progresslayer.opacity = 0;
@@ -509,10 +507,6 @@
 
 - (void)setShareIconImg:(UIImage *)shareIconImg {
     _shareIconImg = shareIconImg;
-    
-    if (_isLoadFinish && shareIconImg) {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    }
 }
 
 /**

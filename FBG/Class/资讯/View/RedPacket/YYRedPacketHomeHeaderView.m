@@ -7,7 +7,6 @@
 //
 
 #import "YYRedPacketHomeHeaderView.h"
-#import "YYRedPacketSendFirstViewController.h"
 
 @interface YYRedPacketHomeHeaderView()
 
@@ -33,9 +32,9 @@
 }
 
 - (IBAction)respondsSendRedPacketBtn:(UIButton *)sender {
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil];
-    YYRedPacketSendFirstViewController *vc = [sb instantiateViewControllerWithIdentifier:REDPACKET_SEND_FIRST_STORYBOARD_ID];
-    [[self parentController].navigationController pushViewController:vc animated:YES];
+    if (self.clickBlock) {
+        self.clickBlock();
+    }
 }
 
 @end

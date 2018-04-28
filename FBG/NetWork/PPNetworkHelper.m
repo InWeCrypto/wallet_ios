@@ -480,6 +480,7 @@ static NetworkStatus _status;
     }
     WEAKSELF
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManagerWithUrl:URL baseUrlType:baseUrlType];
+    
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

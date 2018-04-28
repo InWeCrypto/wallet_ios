@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^SendRedPacketClickBlock) (void);
+
 @interface YYRedPacketHomeHeaderView : UIView
+
+@property (nonatomic, copy) SendRedPacketClickBlock clickBlock;
 
 @end

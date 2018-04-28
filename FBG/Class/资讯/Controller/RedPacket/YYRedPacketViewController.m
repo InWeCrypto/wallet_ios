@@ -8,12 +8,23 @@
 
 #import "YYRedPacketViewController.h"
 #import "YYRedPacketHomeHeaderView.h"
+#import "YYRedPacketSendFirstViewController.h"
 
 #import "YYRedPacketSection0TableViewCell.h"
 #import "YYRedPacketSection1TableViewCell.h"
 #import "YYRedPacketSendHistoryViewController.h"
+#import "YYRedPacketOpenedHistoryViewController.h"
+
+#import "DBHWalletManagerForNeoDataModels.h"
+#import "YYRedPacketModels.h"
 
 #define HEADER_VIEW_HEIGHT 223
+
+#define REDPACKET_HOME_KEY(lastUserEmail) [NSString stringWithFormat:@"REDPACKET_HOME_%@_%@", lastUserEmail, [APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
+
+#define DATASOURCE_LIST @"datasource_list"
+#define SENT_COUNT_MODEL @"sent_count_model"
+#define ETH_WALLET_LIST @"eth_wallet_list"
 
 @interface YYRedPacketViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -21,6 +32,8 @@
 @property (nonatomic, weak) YYRedPacketHomeHeaderView *headerView;
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) NSMutableArray *ethWalletsArray;
+@property (nonatomic, strong) YYRedPacketSentCountModel *countModel;
 
 @end
 
@@ -30,6 +43,8 @@
     [super viewDidLoad];
     
     [self setUI];
+    [self getDataFromCache];
+    [self getWalletList];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -38,7 +53,14 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 }
 
+- (void)setNavigationTintColor {
+    self.navigationController.navigationBar.tintColor = WHITE_COLOR;
+}
+
 - (void)setUI {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Opened Record", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToRecordBarButtonItem)];
+    
+    
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     
     tableView.estimatedRowHeight = 0;
@@ -78,7 +100,223 @@
     }];
 }
 
+#pragma mark ------- Cache ---------
+/**
+ 缓存的key
+
+ @return key
+ */
+- (NSString *)keyForCacheData {
+    NSString *lastUserEmail = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_USER_EMAIL];
+    return REDPACKET_HOME_KEY(lastUserEmail);
+}
+
+/**
+ 从缓存中获取数据
+
+ @return 一个不为空的NSMutableDictionary
+ */
+- (NSMutableDictionary *)dataFromCache {
+    NSMutableDictionary *data = [PPNetworkCache getResponseCacheForKey:[self keyForCacheData]];
+    if (![NSObject isNulllWithObject:data]) {
+        return data;
+    }
+    return [NSMutableDictionary dictionary];
+}
+
+/**
+ 将data存入指定key的值
+
+ @param data value
+ @param key key
+ */
+- (void)cacheData:(id)data withKey:(NSString *)key {
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        NSMutableDictionary *cacheData = [self dataFromCache];
+        if (![NSObject isNulllWithObject:data]) {
+            [cacheData setObject:data forKey:key];
+            
+            NSString *keyForCacheData = [self keyForCacheData];
+            [PPNetworkCache saveResponseCache:cacheData forKey:keyForCacheData];
+        }
+    });
+}
+
+/**
+ 从缓存中获取数据并显示
+ */
+- (void)getDataFromCache {
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        NSMutableDictionary *data = [self dataFromCache];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.ethWalletsArray = data[ETH_WALLET_LIST];
+            self.countModel = data[SENT_COUNT_MODEL];
+            self.dataSource = data[DATASOURCE_LIST];
+        });
+    });
+}
+
+#pragma mark ------- Data ---------
+/**
+ 获取钱包列表
+ */
+- (void)getWalletList {
+    if (![UserSignData share].user.isLogin) {
+        return;
+    }
+    
+    [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"Loading...", nil)];
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        WEAKSELF
+        [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject) {
+            [weakSelf handleResponse:responseObject type:0];
+        } failure:^(NSString *error) {
+            [LCProgressHUD hide];
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        }];
+    });
+}
+
+/**
+ 获取已发送的红包列表 和 发送的红包总个数
+ */
+- (void)getData {
+    if (![UserSignData share].user.isLogin) {
+        return;
+    }
+    
+    NSString *urlStr = @"redbag/send_record";
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        
+        NSMutableArray *tempAddrArr = [NSMutableArray array];
+        for (DBHWalletManagerForNeoModelList *model in self.ethWalletsArray) {
+            @autoreleasepool {
+                NSString *addr = model.address;
+                if (![NSObject isNulllWithObject:addr]) {
+                    [tempAddrArr addObject:addr];
+                }
+            }
+        }
+
+        NSDictionary *params = @{
+                                 @"wallet_addrs" : tempAddrArr
+                                 };
+        
+        WEAKSELF
+        [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+            [LCProgressHUD hide];
+            [weakSelf handleResponse:responseObject type:1];
+        } failure:^(NSString *error) {
+            [LCProgressHUD hide];
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        }];
+        
+        [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+            [weakSelf handleResponse:responseObject type:2];
+        } failure:^(NSString *error) {
+            [LCProgressHUD hide];
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        }];
+    });
+}
+
+- (void)handleResponse:(id)responseObj type:(NSInteger)type {
+    if (type == 0) {
+        [self walletListResponse:responseObj];
+    } else if (type == 1) { // 我发送的红包列表
+        [self sentListResponse:responseObj];
+    } else if (type == 2) { // 发送的红包个数
+        [self sentCountResponse:responseObj];
+    }
+}
+
+/**
+ 钱包列表的返回处理
+
+ @param responseObj 返回体
+ */
+- (void)walletListResponse:(id)responseObj {
+    NSMutableArray *tempArr = nil;
+    if (![NSObject isNulllWithObject:responseObj]) {
+        if ([responseObj isKindOfClass:[NSDictionary class]]) {
+            NSArray *list = responseObj[LIST];
+            
+            if (![NSObject isNulllWithObject:list] && list.count != 0) { // 不为空
+                tempArr = [NSMutableArray array];
+                for (NSDictionary *dict in list) {
+                    @autoreleasepool {
+                        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dict];
+                        BOOL isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+                        if (model.categoryId == 1 && !isLookWallet) { //ETH 且不是观察钱包
+                            model.isLookWallet = isLookWallet;
+                            model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
+                            [tempArr addObject:model];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    self.ethWalletsArray = tempArr;
+    [self cacheData:tempArr withKey:ETH_WALLET_LIST];
+    
+    if (tempArr.count > 0) {
+        [self getData];
+    }
+}
+
+/**
+ 已发送的红包列表返回处理
+
+ @param responseObj 返回体
+ */
+- (void)sentListResponse:(id)responseObj {
+    NSMutableArray *tempArr = nil;
+    if (![NSObject isNulllWithObject:responseObj]) {
+        if ([responseObj isKindOfClass:[NSArray class]]) {
+            tempArr = [NSMutableArray array];
+            for (NSDictionary *dict in responseObj) {
+                @autoreleasepool {
+                    YYRedPacketMySentListModel *model = [YYRedPacketMySentListModel mj_objectWithKeyValues:dict];
+                    [tempArr addObject:model];
+                }
+            }
+        }
+    }
+    self.dataSource = tempArr;
+    [self cacheData:tempArr withKey:DATASOURCE_LIST];
+}
+/**
+ 已发送的红包个数返回处理
+ 
+ @param responseObj 返回体
+ */
+- (void)sentCountResponse:(id)responseObj {
+    YYRedPacketSentCountModel *model = nil;
+    if (![NSObject isNulllWithObject:responseObj]) {
+        if ([responseObj isKindOfClass:[NSDictionary class]]) {
+            model = [YYRedPacketSentCountModel mj_objectWithKeyValues:responseObj];
+        }
+    }
+    self.countModel = model;
+    [self cacheData:model withKey:SENT_COUNT_MODEL];
+}
+
 #pragma mark ----- RespondsToSelector ---------
+- (void)respondsToRecordBarButtonItem {
+    YYRedPacketOpenedHistoryViewController *vc = [[YYRedPacketOpenedHistoryViewController alloc]
+                                                  init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)respondsToMoreBtn {
     YYRedPacketSendHistoryViewController *vc = [[YYRedPacketSendHistoryViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -86,19 +324,27 @@
 
 #pragma mark ----- UITableView ---------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 6;
+    NSInteger count = self.dataSource.count;
+    if (count > 5) {
+        return 6;
+    } else {
+        return self.dataSource.count + 1;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = indexPath.row;
     if (row == 0) {
         YYRedPacketSection0TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION0_CELL_ID forIndexPath:indexPath];
-        
+        cell.model = self.countModel;
         return cell;
     }
   
     YYRedPacketSection1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION1_CELL_ID forIndexPath:indexPath];
-    
+    if (row - 1 < self.dataSource.count) {
+        cell.model = self.dataSource[row - 1];
+    }
     return cell;
 }
 
@@ -119,6 +365,9 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (self.dataSource.count == 0) {
+        return nil;
+    }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
     view.backgroundColor = WHITE_COLOR;
     
@@ -140,15 +389,47 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (self.dataSource.count == 0) {
+        return 0;
+    }
     return 60;
 }
 
+#pragma mark ------- Push To VC ---------
+- (void)pushToSendRedPacketVC {
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil];
+    YYRedPacketSendFirstViewController *vc = [sb instantiateViewControllerWithIdentifier:REDPACKET_SEND_FIRST_STORYBOARD_ID];
+    vc.ethWalletsArr = self.ethWalletsArray;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark ----- Setters And Getters ---------
 - (YYRedPacketHomeHeaderView *)headerView {
     if (!_headerView) {
         YYRedPacketHomeHeaderView *headerView = [[YYRedPacketHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 223 - 20 + STATUS_HEIGHT)];
+        WEAKSELF
+        [headerView setClickBlock:^{
+            [weakSelf pushToSendRedPacketVC];
+        }];
+        
         _headerView = headerView;
     }
     return _headerView;
 }
 
+- (void)setDataSource:(NSMutableArray *)dataSource {
+    if ([_dataSource isEqualToArray:dataSource]) {
+        return;
+    }
+    _dataSource = dataSource;
+    [self.tableView reloadData];
+}
+
+- (void)setCountModel:(YYRedPacketSentCountModel *)countModel {
+    if ([_countModel isEqual:countModel]) {
+        return;
+    }
+    _countModel = countModel;
+    [self.tableView reloadData];
+}
 @end

@@ -10,4 +10,6 @@
 
 @implementation YYRedPacketSentCountModel
 
+MJCodingImplementation
+
 @end
