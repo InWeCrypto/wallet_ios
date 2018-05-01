@@ -63,7 +63,7 @@
                                             <color key="titleColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <segue destination="IAv-pr-i8m" kind="show" id="IvD-Dd-Cdb"/>
+                                            <action selector="respondsToChooseToken:" destination="IiP-8N-OjG" eventType="touchUpInside" id="GVo-7Y-KNx"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -88,8 +88,8 @@
                                         <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8t-cO-Hcf">
-                                        <rect key="frame" x="316" y="59" width="28" height="16"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8t-cO-Hcf">
+                                        <rect key="frame" x="344" y="67" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -101,14 +101,14 @@
                                             <constraint firstAttribute="height" constant="1" id="wjJ-D7-hm8"/>
                                         </constraints>
                                     </view>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00000000" textAlignment="natural" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="Y6X-VG-D5y">
-                                        <rect key="frame" x="0.0" y="57" width="306" height="21"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.00000000" textAlignment="natural" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="Y6X-VG-D5y">
+                                        <rect key="frame" x="0.0" y="57" width="334" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="BK2-5m-H6Q"/>
                                         </constraints>
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -143,14 +143,14 @@
                                             <constraint firstAttribute="height" constant="1" id="qVS-gc-kK3"/>
                                         </constraints>
                                     </view>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" textAlignment="natural" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="YNH-S3-GTH">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="natural" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="YNH-S3-GTH">
                                         <rect key="frame" x="0.0" y="57" width="344" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="vIE-29-9i0"/>
                                         </constraints>
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -830,6 +830,10 @@
                                                 <constraint firstItem="Iqr-zG-mfA" firstAttribute="leading" secondItem="8on-ia-QvB" secondAttribute="leading" constant="15" id="ybQ-l6-Oq5"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImgView" destination="Iqr-zG-mfA" id="Yff-8r-s42"/>
+                                            <outlet property="nameLabel" destination="EXV-ja-05R" id="4kk-lV-cY1"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -849,6 +853,9 @@
                             <constraint firstItem="B3Y-CE-5yl" firstAttribute="leading" secondItem="1ch-Nv-SJT" secondAttribute="leading" id="pSK-ax-Wgt"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="B3Y-CE-5yl" id="euN-Go-Rfx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VGk-R8-uT8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1414,7 +1421,6 @@
         <!--Red Packet Detail View Controller-->
         <scene sceneID="g4E-Fp-rKy">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="exM-NE-mcH" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController storyboardIdentifier="REDPACKET_DETAIL" id="ujS-KX-W0X" customClass="YYRedPacketDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="10" id="1oU-vg-tS1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -1661,6 +1667,7 @@
                         </connections>
                     </tableView>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="exM-NE-mcH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2882" y="89"/>
         </scene>

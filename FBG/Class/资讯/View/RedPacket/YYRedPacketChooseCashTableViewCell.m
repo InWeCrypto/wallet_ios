@@ -7,6 +7,14 @@
 //
 
 #import "YYRedPacketChooseCashTableViewCell.h"
+#import "YYRedPacketEthTokenModel.h"
+
+@interface YYRedPacketChooseCashTableViewCell()
+
+@property (weak, nonatomic) IBOutlet UIImageView *iconImgView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+
+@end
 
 @implementation YYRedPacketChooseCashTableViewCell
 
@@ -15,10 +23,12 @@
     // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)setModel:(YYRedPacketEthTokenModel *)model {
+    _model = model;
+    
+    [self.iconImgView sdsetImageWithURL:model.icon placeholderImage:[UIImage imageNamed:@"ETH"]];
+    self.nameLabel.text = model.name;
+    
 }
 
 @end

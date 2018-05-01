@@ -10,4 +10,7 @@
 
 @interface YYRedPacketSendHistoryViewController : DBHBaseViewController
 
+@property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) NSMutableArray *ethWalletsArray;
+
 @end

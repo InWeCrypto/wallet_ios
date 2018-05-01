@@ -7,9 +7,14 @@
 //
 
 #import "DBHBaseViewController.h"
+@class YYRedPacketEthTokenModel;
 
 #define CHOOSE_CASH_STORYBOARD_ID @"CHOOSE_CASH_ID"
 
+typedef void(^SelectCashModelBlcok) (YYRedPacketEthTokenModel *model);
+
 @interface YYRedPacketChooseCashViewController : DBHBaseViewController
+
+@property (nonatomic, copy) SelectCashModelBlcok block;
 
 @end

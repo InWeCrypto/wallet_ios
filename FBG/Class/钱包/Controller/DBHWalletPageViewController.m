@@ -694,7 +694,6 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                                     [walletModel.tokenStatistics setObject:second forKey:ETH];
                                 }
                             }
-                            
                         } else {
                             tempNEOBalance = [NSString DecimalFuncWithOperatorType:0 first:tempNEOBalance secend:second value:8];
                             tempNEOPriceCny = price_cny;

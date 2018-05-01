@@ -144,10 +144,8 @@ static NSString *const kDBHMyFavoriteTableViewCellIdentifier = @"kDBHMyFavoriteT
             [weakSelf.tableView reloadData];
         });
     } failure:^(NSString *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf endRefresh];
-            [LCProgressHUD showFailure:error];;
-        });
+        [weakSelf endRefresh];
+        [LCProgressHUD showFailure:error];;
     } specialBlock:^{
         
     }];

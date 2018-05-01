@@ -109,11 +109,13 @@
                     </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="4eH-m5-rdu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6ig-3K-38G" secondAttribute="trailing" constant="20" id="65E-yj-gZ2"/>
                     <constraint firstItem="0dc-8R-2ti" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="B0k-3Q-1H2"/>
                     <constraint firstItem="aTd-qO-ayr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6ig-3K-38G" secondAttribute="trailing" constant="10" id="DIy-tk-ZZS"/>
                     <constraint firstItem="aTd-qO-ayr" firstAttribute="top" secondItem="0dc-8R-2ti" secondAttribute="top" id="MA3-eR-0qd"/>
                     <constraint firstItem="aTd-qO-ayr" firstAttribute="leading" secondItem="Inn-RC-bFk" secondAttribute="trailing" constant="40" id="Rfa-vO-RPr"/>
                     <constraint firstItem="aTd-qO-ayr" firstAttribute="centerY" secondItem="0dc-8R-2ti" secondAttribute="centerY" id="XhJ-s4-bxw"/>
+                    <constraint firstItem="4eH-m5-rdu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Inn-RC-bFk" secondAttribute="trailing" constant="20" id="eCg-f3-j1E"/>
                     <constraint firstItem="0dc-8R-2ti" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="i3o-QL-eI8"/>
                     <constraint firstItem="0dc-8R-2ti" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="jaG-E5-8hk"/>
                     <constraint firstItem="aTd-qO-ayr" firstAttribute="trailing" secondItem="0dc-8R-2ti" secondAttribute="trailing" id="kFp-5F-4Ms"/>
@@ -125,6 +127,7 @@
                 <outlet property="ingLabel" destination="cPf-0o-QLG" id="yJz-OQ-lai"/>
                 <outlet property="priceLabel" destination="Inn-RC-bFk" id="hFg-b4-c4j"/>
                 <outlet property="progessView" destination="uOg-g2-W8V" id="Wea-xc-0Ap"/>
+                <outlet property="progressBgView" destination="Aob-2F-VsR" id="FUb-qh-AfS"/>
                 <outlet property="redPacketNoLabel" destination="6ig-3K-38G" id="lUb-lq-RoJ"/>
                 <outlet property="statusLabel" destination="4eH-m5-rdu" id="xYR-Rp-aY8"/>
             </connections>

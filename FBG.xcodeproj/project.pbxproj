@@ -248,6 +248,9 @@
 		1BBD786520907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD786220907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m */; };
 		1BC4AFF120933AB0007DA66C /* YYRedPacketMySentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFF020933AB0007DA66C /* YYRedPacketMySentListModel.m */; };
 		1BC4AFF5209416ED007DA66C /* YYRedPacketSentCountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFF4209416ED007DA66C /* YYRedPacketSentCountModel.m */; };
+		1BC4AFF920945F39007DA66C /* YYRedPacketEthTokenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFF820945F39007DA66C /* YYRedPacketEthTokenModel.m */; };
+		1BC4AFFC20947CDE007DA66C /* YYWalletOtherInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFFB20947CDE007DA66C /* YYWalletOtherInfoModel.m */; };
+		1BC4AFFF20981E7C007DA66C /* YYRedPacketMySentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFFE20981E7C007DA66C /* YYRedPacketMySentModel.m */; };
 		1BDA485F205C88ED006A0E9D /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BDA485C205C88EC006A0E9D /* README.txt */; };
 		1BDA4860205C88ED006A0E9D /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA485E205C88EC006A0E9D /* libWeChatSDK.a */; };
 		1BDA4862205C89E5006A0E9D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA4861205C89E5006A0E9D /* CFNetwork.framework */; };
@@ -1138,6 +1141,12 @@
 		1BC4AFF220933AC1007DA66C /* YYRedPacketModels.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketModels.h; sourceTree = "<group>"; };
 		1BC4AFF4209416ED007DA66C /* YYRedPacketSentCountModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSentCountModel.m; sourceTree = "<group>"; };
 		1BC4AFF620941BA1007DA66C /* YYRedPacketSentCountModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSentCountModel.h; sourceTree = "<group>"; };
+		1BC4AFF720945F39007DA66C /* YYRedPacketEthTokenModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketEthTokenModel.h; sourceTree = "<group>"; };
+		1BC4AFF820945F39007DA66C /* YYRedPacketEthTokenModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketEthTokenModel.m; sourceTree = "<group>"; };
+		1BC4AFFA20947CDE007DA66C /* YYWalletOtherInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYWalletOtherInfoModel.h; sourceTree = "<group>"; };
+		1BC4AFFB20947CDE007DA66C /* YYWalletOtherInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYWalletOtherInfoModel.m; sourceTree = "<group>"; };
+		1BC4AFFD20981E7C007DA66C /* YYRedPacketMySentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketMySentModel.h; sourceTree = "<group>"; };
+		1BC4AFFE20981E7C007DA66C /* YYRedPacketMySentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketMySentModel.m; sourceTree = "<group>"; };
 		1BDA485A205C88EC006A0E9D /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		1BDA485B205C88EC006A0E9D /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		1BDA485C205C88EC006A0E9D /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -2520,6 +2529,8 @@
 				1B215471207DFA0F00EB9224 /* YYWalletConversionListGntCategoryModel.m */,
 				1B861A552088948B00592B8C /* YYTransferListETHModel.h */,
 				1B861A562088948B00592B8C /* YYTransferListETHModel.m */,
+				1BC4AFFA20947CDE007DA66C /* YYWalletOtherInfoModel.h */,
+				1BC4AFFB20947CDE007DA66C /* YYWalletOtherInfoModel.m */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -2567,11 +2578,15 @@
 		1B2D32E420859A39007E4F02 /* RedPacket */ = {
 			isa = PBXGroup;
 			children = (
+				1BC4AFF220933AC1007DA66C /* YYRedPacketModels.h */,
 				1BC4AFEF20933AB0007DA66C /* YYRedPacketMySentListModel.h */,
 				1BC4AFF020933AB0007DA66C /* YYRedPacketMySentListModel.m */,
-				1BC4AFF220933AC1007DA66C /* YYRedPacketModels.h */,
 				1BC4AFF620941BA1007DA66C /* YYRedPacketSentCountModel.h */,
 				1BC4AFF4209416ED007DA66C /* YYRedPacketSentCountModel.m */,
+				1BC4AFF720945F39007DA66C /* YYRedPacketEthTokenModel.h */,
+				1BC4AFF820945F39007DA66C /* YYRedPacketEthTokenModel.m */,
+				1BC4AFFD20981E7C007DA66C /* YYRedPacketMySentModel.h */,
+				1BC4AFFE20981E7C007DA66C /* YYRedPacketMySentModel.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -4492,6 +4507,7 @@
 				D565E8D72016E3F200930274 /* DBHPersonalSettingForHeadTableViewCell.m in Sources */,
 				D572EC4B2022F77E002C8EFD /* UIImage+EMWebP.m in Sources */,
 				D5066B45202FE49400D3F86D /* DBHSearchTypeView.m in Sources */,
+				1BC4AFFC20947CDE007DA66C /* YYWalletOtherInfoModel.m in Sources */,
 				D5066B36202F46F500D3F86D /* DBHGradePromptView.m in Sources */,
 				D572EC032022F77E002C8EFD /* EaseConvertToCommonEmoticonsHelper.m in Sources */,
 				0FAC291E1F2F7C4A009B3EC9 /* AAStyle.m in Sources */,
@@ -4765,6 +4781,7 @@
 				D5B788C320298660005ACFC8 /* DBHAddressBookModelDataBase.m in Sources */,
 				D51E66E02015E20C0025B502 /* DBHHomePageViewController.m in Sources */,
 				A80713531F5563CE00C5B862 /* MASConstraint.m in Sources */,
+				1BC4AFF920945F39007DA66C /* YYRedPacketEthTokenModel.m in Sources */,
 				1B244AB12058E97100DE097C /* DBHSharePictureViewController.m in Sources */,
 				A88A788F1F6992E90058094C /* UIImage+ImageSize.m in Sources */,
 				D51E66652011F01B0025B502 /* DBHAddWalletPromptViewTableViewCell.m in Sources */,
@@ -4940,6 +4957,7 @@
 				1BAE4A812060EB95006EBB00 /* DBHUnLoginTableCell.m in Sources */,
 				D55558051FC975C100F0963B /* CHKLineChartStyle.swift in Sources */,
 				D5066B4B20301C3900D3F86D /* DBHInformationForICOModelNEO.m in Sources */,
+				1BC4AFFF20981E7C007DA66C /* YYRedPacketMySentModel.m in Sources */,
 				1B881DC520931667003D92EF /* YYRedPacketSucessTableViewCell.m in Sources */,
 				D5B788C520298660005ACFC8 /* DBHAddressBookModelUser.m in Sources */,
 				0F0CFE591F161F4C00476A86 /* ZFBadgeButton.m in Sources */,

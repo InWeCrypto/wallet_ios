@@ -10,6 +10,7 @@
 
 @class DBHWalletManagerForNeoModelCategory;
 @class DBHProjectDetailInformationModelIco;
+@class YYWalletOtherInfoModel;
 
 @interface DBHWalletManagerForNeoModelList : NSObject
 
@@ -34,5 +35,6 @@
 @property (nonatomic, assign) BOOL isBackUpMnemonnic; // 是否备份助记词
 @property (nonatomic, strong) NeomobileWallet *neoWallet;
 @property (nonatomic, strong) EthmobileWallet *ethWallet;
+@property (nonatomic, strong) YYWalletOtherInfoModel *infoModel; // 只是ETH钱包  ETH代币列表，ETHModel
 
 @end

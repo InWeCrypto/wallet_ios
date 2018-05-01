@@ -220,6 +220,7 @@
         }];
         
         [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+            [LCProgressHUD hide];
             [weakSelf handleResponse:responseObject type:2];
         } failure:^(NSString *error) {
             [LCProgressHUD hide];
@@ -229,13 +230,17 @@
 }
 
 - (void)handleResponse:(id)responseObj type:(NSInteger)type {
-    if (type == 0) {
-        [self walletListResponse:responseObj];
-    } else if (type == 1) { // 我发送的红包列表
-        [self sentListResponse:responseObj];
-    } else if (type == 2) { // 发送的红包个数
-        [self sentCountResponse:responseObj];
-    }
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        if (type == 0) {
+            [self walletListResponse:responseObj];
+        } else if (type == 1) { // 我发送的红包列表
+            [self sentListResponse:responseObj];
+        } else if (type == 2) { // 发送的红包个数
+            [self sentCountResponse:responseObj];
+        }
+    });
 }
 
 /**
@@ -281,12 +286,16 @@
 - (void)sentListResponse:(id)responseObj {
     NSMutableArray *tempArr = nil;
     if (![NSObject isNulllWithObject:responseObj]) {
-        if ([responseObj isKindOfClass:[NSArray class]]) {
-            tempArr = [NSMutableArray array];
-            for (NSDictionary *dict in responseObj) {
-                @autoreleasepool {
-                    YYRedPacketMySentListModel *model = [YYRedPacketMySentListModel mj_objectWithKeyValues:dict];
-                    [tempArr addObject:model];
+        if ([responseObj isKindOfClass:[NSDictionary class]]) {
+            YYRedPacketMySentModel *sentModel = [YYRedPacketMySentModel mj_objectWithKeyValues:responseObj];
+            NSArray *dataArray = sentModel.data;
+            if (![NSObject isNulllWithObject:dataArray] &&
+                [dataArray isKindOfClass:[NSArray class]] &&
+                dataArray.count > 0) {
+                
+                tempArr = [NSMutableArray array];
+                for (YYRedPacketMySentListModel *listModel in dataArray) {
+                    [tempArr addObject:listModel];
                 }
             }
         }
@@ -319,6 +328,8 @@
 
 - (void)respondsToMoreBtn {
     YYRedPacketSendHistoryViewController *vc = [[YYRedPacketSendHistoryViewController alloc] init];
+    vc.dataSource = self.dataSource;
+    vc.ethWalletsArray = self.ethWalletsArray;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -422,7 +433,6 @@
         return;
     }
     _dataSource = dataSource;
-    [self.tableView reloadData];
 }
 
 - (void)setCountModel:(YYRedPacketSentCountModel *)countModel {
@@ -430,6 +440,8 @@
         return;
     }
     _countModel = countModel;
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 @end

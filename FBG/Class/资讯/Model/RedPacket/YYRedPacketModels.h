@@ -9,5 +9,7 @@
 #import "PPNetworkCache.h"
 #import "YYRedPacketMySentListModel.h"
 #import "YYRedPacketSentCountModel.h"
+#import "YYRedPacketEthTokenModel.h"
+#import "YYRedPacketMySentModel.h"
 
 

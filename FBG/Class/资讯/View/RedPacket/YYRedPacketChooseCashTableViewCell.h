@@ -7,9 +7,12 @@
 //
 
 #import "DBHBaseTableViewCell.h"
+@class YYRedPacketEthTokenModel;
 
 #define CHOOSE_CASH_CELL_ID @"CHOOSE_CASH_CELL"
 
 @interface YYRedPacketChooseCashTableViewCell : DBHBaseTableViewCell
+
+@property (nonatomic, strong) YYRedPacketEthTokenModel *model;
 
 @end
