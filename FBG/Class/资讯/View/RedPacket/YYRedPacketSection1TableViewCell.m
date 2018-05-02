@@ -32,40 +32,55 @@
     [self.statusLabel setBorderWidth:1 color:COLORFROM16(0xED7421, 1)];
 }
 
-- (void)setModel:(YYRedPacketMySentListModel *)model {
-    if ([model isEqual:_model]) {
-        return;
-    }
-    
-    _model = model;
-    
-    self.redPacketNoLabel.text = model.redbag_addr;
-    
-    NSString *number = [NSString notRounding:model.redbag afterPoint:8];
-    self.priceLabel.text = [NSString stringWithFormat:@"%.8lfETH", number.doubleValue];
-    
-    switch (model.status) {
-        case RedBagStatusDone: {
-            [self showProgressView:NO];
-            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Done", nil));
-            break;
+- (void)setModel:(id)model from:(CellFrom)from {
+    if (from == CellFromSentHistory && [model isKindOfClass:[YYRedPacketMySentListModel class]]) {
+        YYRedPacketMySentListModel *sentModel = model;
+        self.redPacketNoLabel.text = sentModel.redbag_addr;
+        
+        NSString *number = [NSString notRounding:sentModel.redbag afterPoint:8];
+        self.priceLabel.text = [NSString stringWithFormat:@"%.8lf%@", number.doubleValue, sentModel.redbag_symbol];
+        
+        switch (sentModel.status) {
+            case RedBagStatusDone: {
+                [self showProgressView:NO];
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Done", nil));
+                break;
+            }
+            case RedBagStatusCashPackaging: {
+                [self showProgressView:NO];
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Cash Packaging", nil));
+                break;
+            }
+            case RedBagStatusCreating: {
+                [self showProgressView:NO];
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Red Packet Creating", nil));
+                break;
+            }
+                
+            case RedBagStatusOpening: {
+                [self showProgressView:YES];
+                self.ingLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Openning", nil));
+                [self.progessView setProgress:sentModel.draw_redbag_number total:sentModel.redbag_number];
+                break;
+            }
         }
-        case RedBagStatusCashPackaging: {
-            [self showProgressView:NO];
-            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Cash Packaging", nil));
-            break;
-        }
-        case RedBagStatusCreating: {
-            [self showProgressView:NO];
-            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Red Packet Creating", nil));
-            break;
-        }
+    } else if (from == CellFromOpenedHistory && [model isKindOfClass:[YYRedPacketOpenedModel class]]) {
+        YYRedPacketOpenedModel *openedModel = model;
+        
+        self.redPacketNoLabel.text = openedModel.draw_addr;
+        
+        NSString *openedRedBag = openedModel.model.redbag;
+        
+        
+        [self showProgressView:NO];
+        if (openedModel.model.done) { // 已开奖
+            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Awarded Prize", nil));
             
-        case RedBagStatusOpening: {
-            [self showProgressView:YES];
-            self.ingLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Openning", nil));
-            [self.progessView setProgress:model.draw_redbag_number total:model.redbag_number];
-            break;
+            NSString *number = [NSString notRounding:openedRedBag afterPoint:8];
+            self.priceLabel.text = [NSString stringWithFormat:@"%.8lf%@", number.doubleValue, openedModel.model.redbag_symbol];
+        } else { // 待开奖
+            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Waitting Award", nil));
+            self.priceLabel.text = [NSString stringWithFormat:@"???%@", openedModel.model.redbag_symbol];
         }
     }
 }

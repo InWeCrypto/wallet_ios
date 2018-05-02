@@ -11,6 +11,7 @@
 @class DBHWalletManagerForNeoModelCategory;
 @class DBHProjectDetailInformationModelIco;
 @class YYWalletOtherInfoModel;
+@class DBHWalletDetailTokenInfomationModelData;
 
 @interface DBHWalletManagerForNeoModelList : NSObject
 

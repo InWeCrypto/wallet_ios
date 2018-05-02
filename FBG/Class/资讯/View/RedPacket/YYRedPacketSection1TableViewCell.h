@@ -7,13 +7,17 @@
 //
 
 #import "DBHBaseTableViewCell.h"
-@class YYRedPacketMySentListModel;
 
 #define REDPACKET_SECTION1_CELL_HEIGHT 80
 #define REDPACKET_SECTION1_CELL_ID @"REDPACKET_SECTION1_CELL"
 
+typedef enum _cell_from {
+    CellFromSentHistory = 0, // 发送记录
+    CellFromOpenedHistory // 领取记录
+}CellFrom;
+
 @interface YYRedPacketSection1TableViewCell : DBHBaseTableViewCell
 
-@property (nonatomic, strong) YYRedPacketMySentListModel *model;
+- (void)setModel:(id)model from:(CellFrom)from;
 
 @end

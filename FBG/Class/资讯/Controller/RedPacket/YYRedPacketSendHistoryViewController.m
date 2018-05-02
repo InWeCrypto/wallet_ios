@@ -145,7 +145,7 @@
                 if (![NSObject isNulllWithObject:dataArray] &&
                     [dataArray isKindOfClass:[NSArray class]] &&
                     dataArray.count > 0) {
-                    if (dataArray.count < 10) {
+                    if (dataArray.count <= 10) {
                         [self.tableView.mj_footer endRefreshingWithNoMoreData];
                     }
                     
@@ -175,7 +175,7 @@
         [weakSelf getSentRedPacketListIsLoadMore:YES];
     }];
     
-    if (self.dataSource.count < 10) {
+    if (self.dataSource.count <= 10) {
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }
 }
@@ -199,7 +199,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YYRedPacketSection1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION1_CELL_ID forIndexPath:indexPath];
     if (indexPath.row < self.dataSource.count) {
-        cell.model = self.dataSource[indexPath.row];
+        YYRedPacketMySentListModel *model = self.dataSource[indexPath.row];
+        [cell setModel:model from:CellFromSentHistory];
     }
     return cell;
 }

@@ -41,6 +41,8 @@
 
     self.titleLabel.text = DBHGetStringWithKeyFromTable(@"Choose Pay Style", nil);
     
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     self.tableView.estimatedRowHeight = 58;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
@@ -74,13 +76,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YYChoosePayStyleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CHOOSE_PAY_STYLE_CELL_ID forIndexPath:indexPath];
+    if (indexPath.row < self.dataSource.count) {
+        [cell setModel:self.dataSource[indexPath.row] currentWalletID:self.currentWalletId tokenName:self.tokenName];
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = indexPath.row;
     if (row < self.dataSource.count) {
-        id model = self.dataSource[row];
+        DBHWalletManagerForNeoModelList *model = self.dataSource[row];
+        if (model.listIdentifier != self.currentWalletId) {
+            self.currentWalletId = model.listIdentifier;
+            [tableView reloadData];
+        }
+        
+        [self respondsToExitBtn:nil];
         if (self.block) {
             self.block(model);
         }
@@ -97,6 +108,12 @@
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];
+}
+
+#pragma mark ----- Setters And Getters ---------
+- (void)setDataSource:(NSMutableArray *)dataSource {
+    _dataSource = dataSource;
+    [self.tableView reloadData];
 }
 
 @end

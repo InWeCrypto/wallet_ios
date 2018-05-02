@@ -140,25 +140,22 @@
         
         if (![NSObject isNulllWithObject:responseObj]) {
             if ([responseObj isKindOfClass:[NSDictionary class]]) {
-//                id *sentModel = [YYRedPacketMySentModel mj_objectWithKeyValues:responseObj];
-//                NSArray *dataArray = sentModel.data;
-//                if (![NSObject isNulllWithObject:dataArray] &&
-//                    [dataArray isKindOfClass:[NSArray class]] &&
-//                    dataArray.count > 0) {
-//                    if (dataArray.count < 10) {
-//                        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-//                    }
-//
-//                    for (YYRedPacketMySentListModel *listModel in dataArray) {
-//                        [tempArr addObject:listModel];
-//                    }
-//                }
+                YYRedPacketOpenedListModel *listModel = [YYRedPacketOpenedListModel mj_objectWithKeyValues:responseObj];
+                NSArray *dataArray = listModel.data;
+                if (![NSObject isNulllWithObject:dataArray] &&
+                    [dataArray isKindOfClass:[NSArray class]] &&
+                    dataArray.count > 0) {
+                    if (dataArray.count < 10) {
+                        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+
+                    for (YYRedPacketOpenedModel *model in dataArray) {
+                        [tempArr addObject:model];
+                    }
+                }
             }
         }
         self.dataSource = tempArr;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
     });
 }
 
@@ -199,6 +196,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YYRedPacketSection1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION1_CELL_ID forIndexPath:indexPath];
+    if (indexPath.row < self.dataSource.count) {
+       YYRedPacketOpenedModel *model = self.dataSource[indexPath.row];
+        [cell setModel:model from:CellFromOpenedHistory];
+    }
     return cell;
 }
 
@@ -213,6 +214,13 @@
 }
 
 #pragma mark ----- Setters And Getters ---------
+- (void)setDataSource:(NSMutableArray *)dataSource {
+    _dataSource = dataSource;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
 
 - (UIView *)grayLineView {
     if (!_grayLineView) {

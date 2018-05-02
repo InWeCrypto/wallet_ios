@@ -61,7 +61,7 @@
     
     self.secondLabel.text = DBHGetStringWithKeyFromTable(@"Second:", nil);
     self.tipLabel.text = DBHGetStringWithKeyFromTable(@"Pay Some Poundage, Finish The Creation of Red Packet", nil);
-    self.walletMaxUseTitleLabel.text = DBHGetStringWithKeyFromTable(@"Max Avaliable Amount:", nil);
+    self.walletMaxUseTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Max Avaliable Amount", nil)];
     self.poundageLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Fees", nil)];
     
     [self.startCreateBtn setTitle:DBHGetStringWithKeyFromTable(@"Start Create Red Packet", nil) forState:UIControlStateNormal];

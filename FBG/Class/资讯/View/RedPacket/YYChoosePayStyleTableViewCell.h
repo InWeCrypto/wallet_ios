@@ -12,4 +12,6 @@
 
 @interface YYChoosePayStyleTableViewCell : DBHBaseTableViewCell
 
+- (void)setModel:(DBHWalletManagerForNeoModelList *)model currentWalletID:(NSInteger)currentWalletID tokenName:(NSString *)tokenName;
+
 @end

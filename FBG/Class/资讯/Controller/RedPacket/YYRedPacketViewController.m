@@ -216,7 +216,7 @@
             [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
         }];
         
-        [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+        [PPNetworkHelper GET:@"redbag/send_count" baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
             [LCProgressHUD hide];
             [weakSelf handleResponse:responseObject type:2];
         } failure:^(NSString *error) {
@@ -247,12 +247,14 @@
  */
 - (void)walletListResponse:(id)responseObj {
     NSMutableArray *tempArr = nil;
+    BOOL isHasData = NO;
     if (![NSObject isNulllWithObject:responseObj]) {
         if ([responseObj isKindOfClass:[NSDictionary class]]) {
             NSArray *list = responseObj[LIST];
             
             if (![NSObject isNulllWithObject:list] && list.count != 0) { // 不为空
                 tempArr = [NSMutableArray array];
+                isHasData = YES;
                 for (NSDictionary *dict in list) {
                     @autoreleasepool {
                         DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dict];
@@ -272,6 +274,10 @@
     
     if (tempArr.count > 0) {
         [self getData];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [LCProgressHUD hide];
+        });
     }
 }
 
@@ -352,7 +358,7 @@
   
     YYRedPacketSection1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION1_CELL_ID forIndexPath:indexPath];
     if (row - 1 < self.dataSource.count) {
-        cell.model = self.dataSource[row - 1];
+        [cell setModel:self.dataSource[row - 1] from:CellFromSentHistory];
     }
     return cell;
 }

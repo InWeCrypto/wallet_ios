@@ -55,10 +55,10 @@
                     <constraint firstItem="wO4-1c-YI5" firstAttribute="top" secondItem="dpk-v9-yWM" secondAttribute="bottom" constant="6" id="Ny6-nv-wJu"/>
                     <constraint firstAttribute="trailing" secondItem="nCt-fD-avp" secondAttribute="trailing" constant="15" id="W7F-w4-Nez"/>
                     <constraint firstItem="nCt-fD-avp" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="eEr-L1-NKs"/>
-                    <constraint firstItem="nCt-fD-avp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wO4-1c-YI5" secondAttribute="trailing" constant="2" id="fYm-kh-ifU"/>
+                    <constraint firstItem="nCt-fD-avp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wO4-1c-YI5" secondAttribute="trailing" constant="20" id="fYm-kh-ifU"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wO4-1c-YI5" secondAttribute="bottom" constant="10" id="ijg-V3-843"/>
                     <constraint firstItem="dpk-v9-yWM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="oF7-ZR-DXe"/>
-                    <constraint firstItem="nCt-fD-avp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="dpk-v9-yWM" secondAttribute="trailing" constant="2" id="rfk-m9-ouh"/>
+                    <constraint firstItem="nCt-fD-avp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="dpk-v9-yWM" secondAttribute="trailing" constant="20" id="rfk-m9-ouh"/>
                     <constraint firstItem="dpk-v9-yWM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="w7C-EG-jyg"/>
                     <constraint firstItem="eKi-y1-qBa" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" id="zQH-xB-CUM"/>
                 </constraints>

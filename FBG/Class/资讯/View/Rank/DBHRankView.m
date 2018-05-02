@@ -158,7 +158,7 @@
 }
 
 //列表头
-- (UIView *)titleCellForStockView:(JJStockView *)stockView atRowPath:(NSUInteger)row { //TODO
+- (UIView *)titleCellForStockView:(JJStockView *)stockView atRowPath:(NSUInteger)row {
     if (row < self.rowDatasArray.count) {
         CGFloat width = [self rowHeaderViewWidthByIndex:0];
         NSInteger currentRankViewIndex = [self indexForRankView];

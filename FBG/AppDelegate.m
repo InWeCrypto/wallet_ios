@@ -723,15 +723,20 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
                 if (index < 0 || index > 4) {
                     continue;
                 }
-                if ([[UserSignData share].user.realTimeDeliveryArray[index] isEqualToString:@"0"]) {
-                    continue;
+                
+                if ([UserSignData share].user.realTimeDeliveryArray.count > index) {
+                    if ([[UserSignData share].user.realTimeDeliveryArray[index] isEqualToString:@"0"]) {
+                        continue;
+                    }
                 }
             }
         } else if (msg.chatType == EMChatTypeChat) {
             // 单聊
             if ([msg.conversationId isEqualToString:@"sys_msg"]) {
-                if ([[UserSignData share].user.realTimeDeliveryArray[5] isEqualToString:@"0"]) {
-                    continue;
+                if ([UserSignData share].user.realTimeDeliveryArray.count > 5) {
+                    if ([[UserSignData share].user.realTimeDeliveryArray[5] isEqualToString:@"0"]) {
+                        continue;
+                    }
                 }
             }
         }

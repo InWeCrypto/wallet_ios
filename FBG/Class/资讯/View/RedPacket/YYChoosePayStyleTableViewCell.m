@@ -8,6 +8,8 @@
 
 #import "YYChoosePayStyleTableViewCell.h"
 
+#define MAX_USE(balance, name) [NSString stringWithFormat:@"%@：%.8lf %@", DBHGetStringWithKeyFromTable(@"Amount Available", nil), balance, name]
+
 @interface YYChoosePayStyleTableViewCell()
 
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
@@ -24,10 +26,20 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)setModel:(DBHWalletManagerForNeoModelList *)model currentWalletID:(NSInteger)currentWalletID tokenName:(NSString *)tokenName {
+    self.addressLabel.text = model.address;
+    NSString *balance = [model.tokenStatistics objectForKey:tokenName];
+    NSString *number = [NSString notRounding:balance afterPoint:8];
+    self.maxUseLabel.text = MAX_USE(number.doubleValue, tokenName);
+    
+    if (currentWalletID == model.listIdentifier) {
+        self.selectBtn.selected = YES;
+    } else {
+        self.selectBtn.selected = NO;
+    }
+    
+    
 }
+
 
 @end

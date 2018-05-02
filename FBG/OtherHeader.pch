@@ -45,7 +45,12 @@
 #define BLOCK_NUMBER            @"block_number"
 #define CATEGORY_ID             @"category_id"
 #define CATEGORY                @"category"
-
+#define AUTH_TX_ID              @"auth_tx_id"
+#define AUTH_BLOCK              @"auth_block"
+#define REDBAG                  @"redbag"
+#define REDBAG_NUMBER           @"redbag_number"
+#define REDBAG_ADDR             @"redbag_addr"
+#define REDBAG_SYMBOL           @"redbag_symbol"
 
 // 根据钱包地址存储密码
 #define KEYCHAIN_PWD(address) [NSString stringWithFormat:@"%@-password", address]

@@ -188,6 +188,10 @@ static NSString *const kDBHWalletManageListTableViewCellIdentifier = @"kDBHWalle
 
 #pragma mark ------ UITableViewDelegate ------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= self.dataSource.count) {
+        return;
+    }
+    
     DBHWalletManagerForNeoModelList *model = self.dataSource[indexPath.row];
     if (model.category.categoryIdentifier == 1) {
         // ETH
