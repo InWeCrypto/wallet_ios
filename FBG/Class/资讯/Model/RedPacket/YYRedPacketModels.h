@@ -11,5 +11,9 @@
 #import "YYRedPacketSentCountModel.h"
 #import "YYRedPacketEthTokenModel.h"
 #import "YYRedPacketMySentModel.h"
+#import "YYRedPacketOpenedListModel.h"
+#import "YYRedPacketOpenedModel.h"
+#import "YYRedPacketOpenedRedBagModel.h"
+#import "YYRedPacketOpenedRedBagGntCategoryModel.h"
 
 

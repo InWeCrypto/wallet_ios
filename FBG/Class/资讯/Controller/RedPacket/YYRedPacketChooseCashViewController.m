@@ -9,7 +9,7 @@
 #import "YYRedPacketChooseCashViewController.h"
 #import "YYRedPacketChooseCashTableViewCell.h"
 #import "YYRedPacketChoosePayStyleView.h"
-#import "YYRedPacketModels.h"
+
 
 @interface YYRedPacketChooseCashViewController ()<UITableViewDelegate, UITableViewDataSource>
 

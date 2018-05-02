@@ -10,7 +10,7 @@
 
 #import "DBHSelectWalletTableViewCell.h"
 
-#import "DBHWalletManagerForNeoDataModels.h"
+
 
 static NSString *const kDBHSelectWalletTableViewCellIdentifier = @"kDBHSelectWalletTableViewCellIdentifier";
 

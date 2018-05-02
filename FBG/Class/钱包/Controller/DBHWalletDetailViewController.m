@@ -25,7 +25,7 @@
 #import "DBHWalletDetailTableViewCell.h"
 
 #import "WalletLeftListModel.h"
-#import "DBHWalletManagerForNeoDataModels.h"
+
 #import "DBHWalletDetailTokenInfomationDataModels.h"
 #import "DBHLookWalletInfoViewController.h"
 #import "CustomActivity.h"

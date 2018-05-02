@@ -14,8 +14,8 @@
 #import "DBHWalletLookPromptView.h"
 #import "YYRedPacketPackagingViewController.h"
 #import "YYRedPacketChooseCashViewController.h"
-#import "YYRedPacketModels.h"
-#import "DBHWalletManagerForNeoDataModels.h"
+
+
 #import "DBHWalletDetailTokenInfomationModelData.h"
 #import "YYWalletOtherInfoModel.h"
 #import "IQKeyboardManager.h"

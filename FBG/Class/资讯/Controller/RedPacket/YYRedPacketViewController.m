@@ -15,9 +15,6 @@
 #import "YYRedPacketSendHistoryViewController.h"
 #import "YYRedPacketOpenedHistoryViewController.h"
 
-#import "DBHWalletManagerForNeoDataModels.h"
-#import "YYRedPacketModels.h"
-
 #define HEADER_VIEW_HEIGHT 223
 
 #define REDPACKET_HOME_KEY(lastUserEmail) [NSString stringWithFormat:@"REDPACKET_HOME_%@_%@", lastUserEmail, [APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
@@ -323,6 +320,7 @@
 - (void)respondsToRecordBarButtonItem {
     YYRedPacketOpenedHistoryViewController *vc = [[YYRedPacketOpenedHistoryViewController alloc]
                                                   init];
+    vc.ethWalletsArray = self.ethWalletsArray;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -9,6 +9,7 @@
 #import "YYRedPacketPackagingViewController.h"
 #import "YYRedPacketSendSecondViewController.h"
 #import "YYRedPacketSendThirdViewController.h"
+#import "LDProgressView.h"
 
 @interface YYRedPacketPackagingViewController ()
 
@@ -18,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *afterTipLabel;
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 @property (weak, nonatomic) IBOutlet UIView *progressView;
+@property (weak, nonatomic) IBOutlet LDProgressView *progress;
+
 @end
 
 @implementation YYRedPacketPackagingViewController
@@ -51,7 +54,6 @@
         self.titleLabel.text = DBHGetStringWithKeyFromTable(@"Red Packet Creating", nil);
     }
     
-    
     self.statusLabel.text = [NSString stringWithFormat:@"(%@)", DBHGetStringWithKeyFromTable(@"Waiting Confirm", nil)];
     self.afterTipLabel.text = DBHGetStringWithKeyFromTable(@"Check the creation of the red packets later", nil);
     [self.backToHomeBtn setTitle:DBHGetStringWithKeyFromTable(@"Back To RedPacket Home Page", nil) forState:UIControlStateNormal];
@@ -71,6 +73,9 @@
     
     layer.backgroundColor = COLORFROM16(0x029857, 1).CGColor;
     [self.progressView.layer addSublayer:layer];
+    
+    self.progress.progress = 0.5;
+    self.progress.showText = @0;
     
 //    self.nextBtn.enabled = NO; YYTODO
 }

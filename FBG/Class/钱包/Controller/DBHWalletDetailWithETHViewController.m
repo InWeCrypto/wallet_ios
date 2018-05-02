@@ -27,7 +27,7 @@
 #import "DBHWalletDetailTableViewCell.h"
 
 #import "WalletLeftListModel.h"
-#import "DBHWalletManagerForNeoDataModels.h"
+
 #import "DBHWalletDetailTokenInfomationDataModels.h"
 #import "YYTransferListViewController.h"
 

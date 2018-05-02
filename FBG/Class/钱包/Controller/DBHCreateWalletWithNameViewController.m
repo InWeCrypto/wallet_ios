@@ -12,7 +12,7 @@
 #import "DBHWalletDetailViewController.h"
 #import "DBHWalletDetailWithETHViewController.h"
 
-#import "DBHWalletManagerForNeoDataModels.h"
+
 #import "AddWalletSucessVC.h"
 
 @interface DBHCreateWalletWithNameViewController ()

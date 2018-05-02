@@ -20,7 +20,7 @@
 #import "DBHHomePageView.h"
 #import "DBHHomePageTableViewCell.h"
 
-#import "DBHWalletManagerForNeoDataModels.h"
+
 #import "DBHWalletDetailTokenInfomationDataModels.h"
 
 #import "DBHAddWalletPromptView.h"

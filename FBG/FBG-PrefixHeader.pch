@@ -204,6 +204,8 @@
 #import "MyNavigationController.h"
 #import "MJExtension.h"
 #import "UIView+Extension.h"
+#import "YYRedPacketModels.h"
+#import "DBHWalletManagerForNeoDataModels.h"
 /**
  *  语言工具类
  */

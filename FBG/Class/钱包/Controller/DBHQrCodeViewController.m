@@ -9,7 +9,7 @@
 #import "DBHQrCodeViewController.h"
 #import "WXApi.h"
 #import "LYShareMenuView.h"
-#import "DBHWalletManagerForNeoDataModels.h"
+
 #import <TencentOpenAPI/QQApiInterface.h>
 
 @interface DBHQrCodeViewController ()<LYShareMenuViewDelegate>

@@ -7,7 +7,7 @@
 //
 
 #import "DBHWalletManageListTableViewCell.h"
-#import "DBHWalletManagerForNeoDataModels.h"
+
 
 @interface DBHWalletManageListTableViewCell()
 

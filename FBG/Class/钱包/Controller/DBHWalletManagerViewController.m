@@ -20,7 +20,7 @@
 #import "DBHImportWalletWithETHViewController.h"
 #import "DBHWalletManageListTableViewCell.h"
 
-#import "DBHWalletManagerForNeoDataModels.h"
+
 #import "DBHShowAddWalletViewController.h"
 #import "MyNavigationController.h"
 

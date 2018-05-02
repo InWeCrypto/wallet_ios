@@ -13,7 +13,7 @@
 #import "WXApi.h"
 #import "DBHSelectWalletViewController.h"
 #import <TencentOpenApi/QQApiInterface.h>
-#import "DBHWalletManagerForNeoDataModels.h"
+
 
 @interface DBHPaymentReceivedViewController ()<LYShareMenuViewDelegate>
 

@@ -10,7 +10,7 @@
 #import "YYRedPacketSection1TableViewCell.h"
 #import "YYRedPacketDetailViewController.h"
 #import "DBHWalletManagerForNeoModelList.h"
-#import "YYRedPacketModels.h"
+
 
 #define REDPACKET_STORYBOARD_NAME @"RedPacket"
 
@@ -174,6 +174,10 @@
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [weakSelf getSentRedPacketListIsLoadMore:YES];
     }];
+    
+    if (self.dataSource.count < 10) {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    }
 }
 /**
  结束刷新

@@ -9,13 +9,16 @@
 #import "YYRedPacketOpenedHistoryViewController.h"
 #import "YYRedPacketSection1TableViewCell.h"
 #import "YYRedPacketSuccessViewController.h"
+#import "DBHWalletManagerForNeoModelList.h"
+
 #define REDPACKET_STORYBOARD_NAME @"RedPacket"
 
 @interface YYRedPacketOpenedHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) NSMutableArray *dataSource;
 @property (weak, nonatomic) UITableView *tableView;
 @property (nonatomic, strong) UIView *grayLineView;
+@property (nonatomic, assign) NSInteger page;
+@property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
 
@@ -25,7 +28,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setUI];
-    self.title = DBHGetStringWithKeyFromTable(@"Opened Record", nil);
+    [self addRefresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -35,6 +38,8 @@
 }
 
 - (void)setUI {
+    self.title = DBHGetStringWithKeyFromTable(@"Opened Record", nil);
+    
     [self.view addSubview:self.grayLineView];
     
     WEAKSELF
@@ -78,10 +83,118 @@
     }];
 }
 
+#pragma mark ------- Data ---------
+- (void)getOpenedRedPacketListIsLoadMore:(BOOL)isLoadMore {
+    if (![UserSignData share].user.isLogin) {
+        return;
+    }
+    
+    if (isLoadMore) {
+        self.page += 1;
+    } else {
+        self.page = 0;
+    }
+    
+    NSString *urlStr = @"redbag/draw_record";
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        
+        NSMutableArray *tempAddrArr = [NSMutableArray array];
+        for (DBHWalletManagerForNeoModelList *model in self.ethWalletsArray) {
+            @autoreleasepool {
+                NSString *addr = model.address;
+                if (![NSObject isNulllWithObject:addr]) {
+                    [tempAddrArr addObject:addr];
+                }
+            }
+        }
+        
+        NSDictionary *params = @{
+                                 @"wallet_addrs" : tempAddrArr
+                                 };
+        
+        WEAKSELF
+        [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+            [weakSelf endRefresh];
+            [weakSelf handleResponse:responseObject isLoadMore:isLoadMore];
+        } failure:^(NSString *error) {
+            [weakSelf endRefresh];
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        }];
+    });
+}
+
+- (void)handleResponse:(id)responseObj isLoadMore:(BOOL)isLoadMore {
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        if ([NSObject isNulllWithObject:responseObj]) {
+            return;
+        }
+        
+        NSMutableArray *tempArr = [NSMutableArray array];
+        if (isLoadMore) {
+            [tempArr addObjectsFromArray:self.dataSource];
+        }
+        
+        if (![NSObject isNulllWithObject:responseObj]) {
+            if ([responseObj isKindOfClass:[NSDictionary class]]) {
+//                id *sentModel = [YYRedPacketMySentModel mj_objectWithKeyValues:responseObj];
+//                NSArray *dataArray = sentModel.data;
+//                if (![NSObject isNulllWithObject:dataArray] &&
+//                    [dataArray isKindOfClass:[NSArray class]] &&
+//                    dataArray.count > 0) {
+//                    if (dataArray.count < 10) {
+//                        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+//                    }
+//
+//                    for (YYRedPacketMySentListModel *listModel in dataArray) {
+//                        [tempArr addObject:listModel];
+//                    }
+//                }
+            }
+        }
+        self.dataSource = tempArr;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });
+}
+
+#pragma mark ------ Private Methods ------
+/**
+ 添加刷新
+ */
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf getOpenedRedPacketListIsLoadMore:NO];
+    }];
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf getOpenedRedPacketListIsLoadMore:YES];
+    }];
+    
+    [self.tableView.mj_header beginRefreshing];
+    if (self.dataSource.count < 10) {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    }
+}
+/**
+ 结束刷新
+ */
+- (void)endRefresh {
+    if ([self.tableView.mj_header isRefreshing]) {
+        [self.tableView.mj_header endRefreshing];
+    }
+    if ([self.tableView.mj_footer isRefreshing]) {
+        [self.tableView.mj_footer endRefreshing];
+    }
+}
+
 #pragma mark ----- UITableView ---------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //    return self.dataSource.count;
-    return 5;
+    return self.dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

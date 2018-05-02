@@ -8,7 +8,7 @@
 
 #import "DBHWalletDetailHeaderView.h"
 
-#import "DBHWalletManagerForNeoDataModels.h"
+
 
 @interface DBHWalletDetailHeaderView ()
 

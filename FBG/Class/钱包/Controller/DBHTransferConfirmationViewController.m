@@ -13,7 +13,7 @@
 #import "DBHInputPasswordPromptView.h"
 
 #import "DBHWalletDetailTokenInfomationModelData.h"
-#import "DBHWalletManagerForNeoDataModels.h"
+
 
 @interface DBHTransferConfirmationViewController ()
 

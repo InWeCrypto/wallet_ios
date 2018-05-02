@@ -137,6 +137,12 @@
 		1B48BAF1206276BD004E74EB /* DBHPieChartFormTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B48BAF0206276BD004E74EB /* DBHPieChartFormTableViewCell.m */; };
 		1B48BAF92062794D004E74EB /* DBHICODistributionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B48BAF82062794D004E74EB /* DBHICODistributionTableViewCell.m */; };
 		1B48BAFF20637F56004E74EB /* RTDragCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B48BAFE20637F55004E74EB /* RTDragCellTableView.m */; };
+		1B530D2520987E6F00AA7D0B /* YYRedPacketOpenedListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D2420987E6F00AA7D0B /* YYRedPacketOpenedListModel.m */; };
+		1B530D2820987ED800AA7D0B /* YYRedPacketOpenedModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D2720987ED800AA7D0B /* YYRedPacketOpenedModel.m */; };
+		1B530D2B20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D2A20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m */; };
+		1B530D2E209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D2D209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m */; };
+		1B530D3420995F4200AA7D0B /* LDProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3020995F3E00AA7D0B /* LDProgressView.m */; };
+		1B530D3520995F4200AA7D0B /* UIColor+RGBValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3220995F4000AA7D0B /* UIColor+RGBValues.m */; };
 		1B544278204A635300746FA7 /* UserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B544277204A635300746FA7 /* UserLogin.m */; };
 		1B5BA456207F567700B03A4F /* YYEvaluateDetailAnalysisModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5BA455207F567700B03A4F /* YYEvaluateDetailAnalysisModel.m */; };
 		1B5BA45F2080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5BA45D2080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.m */; };
@@ -944,6 +950,18 @@
 		1B48BAF82062794D004E74EB /* DBHICODistributionTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHICODistributionTableViewCell.m; sourceTree = "<group>"; };
 		1B48BAFD20637F55004E74EB /* RTDragCellTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTDragCellTableView.h; sourceTree = "<group>"; };
 		1B48BAFE20637F55004E74EB /* RTDragCellTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTDragCellTableView.m; sourceTree = "<group>"; };
+		1B530D2320987E6F00AA7D0B /* YYRedPacketOpenedListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketOpenedListModel.h; sourceTree = "<group>"; };
+		1B530D2420987E6F00AA7D0B /* YYRedPacketOpenedListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenedListModel.m; sourceTree = "<group>"; };
+		1B530D2620987ED800AA7D0B /* YYRedPacketOpenedModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketOpenedModel.h; sourceTree = "<group>"; };
+		1B530D2720987ED800AA7D0B /* YYRedPacketOpenedModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenedModel.m; sourceTree = "<group>"; };
+		1B530D2920987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketOpenedRedBagModel.h; sourceTree = "<group>"; };
+		1B530D2A20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenedRedBagModel.m; sourceTree = "<group>"; };
+		1B530D2C209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketOpenedRedBagGntCategoryModel.h; sourceTree = "<group>"; };
+		1B530D2D209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenedRedBagGntCategoryModel.m; sourceTree = "<group>"; };
+		1B530D3020995F3E00AA7D0B /* LDProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDProgressView.m; sourceTree = "<group>"; };
+		1B530D3120995F3E00AA7D0B /* LDProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDProgressView.h; sourceTree = "<group>"; };
+		1B530D3220995F4000AA7D0B /* UIColor+RGBValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RGBValues.m"; sourceTree = "<group>"; };
+		1B530D3320995F4100AA7D0B /* UIColor+RGBValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RGBValues.h"; sourceTree = "<group>"; };
 		1B544276204A635300746FA7 /* UserLogin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserLogin.h; sourceTree = "<group>"; };
 		1B544277204A635300746FA7 /* UserLogin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserLogin.m; sourceTree = "<group>"; };
 		1B5BA454207F567700B03A4F /* YYEvaluateDetailAnalysisModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYEvaluateDetailAnalysisModel.h; sourceTree = "<group>"; };
@@ -2587,6 +2605,14 @@
 				1BC4AFF820945F39007DA66C /* YYRedPacketEthTokenModel.m */,
 				1BC4AFFD20981E7C007DA66C /* YYRedPacketMySentModel.h */,
 				1BC4AFFE20981E7C007DA66C /* YYRedPacketMySentModel.m */,
+				1B530D2320987E6F00AA7D0B /* YYRedPacketOpenedListModel.h */,
+				1B530D2420987E6F00AA7D0B /* YYRedPacketOpenedListModel.m */,
+				1B530D2620987ED800AA7D0B /* YYRedPacketOpenedModel.h */,
+				1B530D2720987ED800AA7D0B /* YYRedPacketOpenedModel.m */,
+				1B530D2920987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.h */,
+				1B530D2A20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m */,
+				1B530D2C209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.h */,
+				1B530D2D209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2594,6 +2620,7 @@
 		1B2D32E520859A3F007E4F02 /* RedPacket */ = {
 			isa = PBXGroup;
 			children = (
+				1B530D2F20995F2D00AA7D0B /* ProgressView */,
 				1B881DC920931CAA003D92EF /* YYRedPacketDetailTableViewCell.xib */,
 				1BBD7844208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.h */,
 				1BBD7845208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.m */,
@@ -2628,6 +2655,17 @@
 				1B881DC420931667003D92EF /* YYRedPacketSucessTableViewCell.m */,
 			);
 			path = RedPacket;
+			sourceTree = "<group>";
+		};
+		1B530D2F20995F2D00AA7D0B /* ProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				1B530D3120995F3E00AA7D0B /* LDProgressView.h */,
+				1B530D3020995F3E00AA7D0B /* LDProgressView.m */,
+				1B530D3320995F4100AA7D0B /* UIColor+RGBValues.h */,
+				1B530D3220995F4000AA7D0B /* UIColor+RGBValues.m */,
+			);
+			path = ProgressView;
 			sourceTree = "<group>";
 		};
 		1B99F88520738599004FD7F7 /* Comment */ = {
@@ -4586,6 +4624,7 @@
 				1B99F89820747D8A004FD7F7 /* DBHCommentDetailTableViewCell.m in Sources */,
 				A807135D1F5563CE00C5B862 /* View+MASAdditions.m in Sources */,
 				D50254542019AF4E00B82A7B /* DBHSelectWalletViewController.m in Sources */,
+				1B530D2820987ED800AA7D0B /* YYRedPacketOpenedModel.m in Sources */,
 				0FDD5F3A1F2DD6E800228CE0 /* YCXMenuItem.m in Sources */,
 				0F0CFE3D1F15FC2A00476A86 /* UIButton+SDSetImage.m in Sources */,
 				D56CEED0201C60B80081DE05 /* DBHHistoricalInformationModelData.m in Sources */,
@@ -4679,6 +4718,7 @@
 				D5B20DB9201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m in Sources */,
 				1B7B89A720862197009F7D69 /* YYTransferListViewController.m in Sources */,
 				D565E8FB201728C200930274 /* DBHAddressBookMenuView.m in Sources */,
+				1B530D2E209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m in Sources */,
 				D51E66D42015E20C0025B502 /* AddWalletSucessVC.m in Sources */,
 				D572EBFD2022F77E002C8EFD /* NSDate+Category.m in Sources */,
 				D55558031FC975C100F0963B /* CHSection.swift in Sources */,
@@ -4751,6 +4791,7 @@
 				D565E92C2018961D00930274 /* DBHPaymentReceivedViewController.m in Sources */,
 				D56CEEE8201DD0820081DE05 /* DBHIotificationTableViewCell.m in Sources */,
 				1B27607C20728EA900FFB7B1 /* DBHHotInfoRankModel.m in Sources */,
+				1B530D3420995F4200AA7D0B /* LDProgressView.m in Sources */,
 				A8A818531F44889D00FFF088 /* CommitOrderView.m in Sources */,
 				A8B804631F4D16F600633C34 /* ChoseNetView.m in Sources */,
 				0FFEA9D31F170361009F6151 /* CDNavigationController.m in Sources */,
@@ -4836,6 +4877,7 @@
 				D572EC3B2022F77E002C8EFD /* PSTGridLayoutSection.m in Sources */,
 				D572D23520219A7E002C8EFD /* DBHFunctionalUnitLookTableViewCell.m in Sources */,
 				D572EC662022F77E002C8EFD /* EaseRecordView.m in Sources */,
+				1B530D2B20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m in Sources */,
 				D572EC252022F77E002C8EFD /* EMCDDeviceManager+ProximitySensor.m in Sources */,
 				1BDA487D205FA94F006A0E9D /* DBHSharedItem.m in Sources */,
 				1B99F93E207A037A004FD7F7 /* YYEvaluateTagTableViewCell.m in Sources */,
@@ -4914,6 +4956,7 @@
 				1B5BA4662081074300B03A4F /* YYRankTotalMarketValueModel.m in Sources */,
 				A80713541F5563CE00C5B862 /* MASConstraintMaker.m in Sources */,
 				D55558021FC975C100F0963B /* CHKLineChart.swift in Sources */,
+				1B530D2520987E6F00AA7D0B /* YYRedPacketOpenedListModel.m in Sources */,
 				D56CEE95201C1AE50081DE05 /* DBHProjectHomeNewsModelData.m in Sources */,
 				1B27607320723C7600FFB7B1 /* DBHExchangeRankTypeModel.m in Sources */,
 				0F0CFE4D1F1609E300476A86 /* CoustromViewController.m in Sources */,
@@ -4941,6 +4984,7 @@
 				0F0CFE321F15FB3F00476A86 /* NSObject+Tool.m in Sources */,
 				D565E8D12016D55700930274 /* DBHMyTableViewCell.m in Sources */,
 				D572D5832021CD34002C8EFD /* DBHTradingMarketViewController.m in Sources */,
+				1B530D3520995F4200AA7D0B /* UIColor+RGBValues.m in Sources */,
 				0FAC29101F2F7C4A009B3EC9 /* AADataLabels.m in Sources */,
 				1B27606D20721AB000FFB7B1 /* DBHRankDetailModel.m in Sources */,
 				1B99F92C2079B9EF004FD7F7 /* YYEvaluateGradeTableViewCell.m in Sources */,
