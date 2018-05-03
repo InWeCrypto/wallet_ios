@@ -6,9 +6,9 @@
 #ifndef __Neomobile_H__
 #define __Neomobile_H__
 
-@import Foundation;
-#include "Universe.objc.h"
-
+#include <Foundation/Foundation.h>
+#include "Neomobile.h"
+#include "ref.h"
 
 @class NeomobileTx;
 @class NeomobileWallet;

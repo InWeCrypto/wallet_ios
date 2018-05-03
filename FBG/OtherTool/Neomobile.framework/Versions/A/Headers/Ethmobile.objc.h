@@ -6,9 +6,8 @@
 #ifndef __Ethmobile_H__
 #define __Ethmobile_H__
 
-@import Foundation;
-#include "Universe.objc.h"
-
+#include <Foundation/Foundation.h>
+#include "Neomobile.h"
 
 @class EthmobileEthCall;
 @class EthmobileWallet;
