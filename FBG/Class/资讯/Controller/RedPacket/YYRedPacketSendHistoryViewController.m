@@ -29,6 +29,8 @@
     // Do any additional setup after loading the view.
     [self setUI];
     [self addRefresh];
+    
+    self.page = 1;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -36,6 +38,7 @@
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:WHITE_COLOR] forBarMetrics:UIBarMetricsDefault];
 }
+
 
 - (void)setUI {
     self.title = DBHGetStringWithKeyFromTable(@"Send History", nil);
@@ -92,10 +95,10 @@
     if (isLoadMore) {
         self.page += 1;
     } else {
-        self.page = 0;
+        self.page = 1;
     }
     
-    NSString *urlStr = @"redbag/send_record";
+    NSString *urlStr = [NSString stringWithFormat:@"redbag/send_record?per_page=10&page=%ld", self.page];
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT,
                                              0), ^{
@@ -145,8 +148,10 @@
                 if (![NSObject isNulllWithObject:dataArray] &&
                     [dataArray isKindOfClass:[NSArray class]] &&
                     dataArray.count > 0) {
-                    if (dataArray.count <= 10) {
+                    if (dataArray.count < 10) {
                         [self.tableView.mj_footer endRefreshingWithNoMoreData];
+                    } else {
+                        [self.tableView.mj_footer endRefreshing];
                     }
                     
                     for (YYRedPacketMySentListModel *listModel in dataArray) {
@@ -174,10 +179,6 @@
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [weakSelf getSentRedPacketListIsLoadMore:YES];
     }];
-    
-    if (self.dataSource.count <= 10) {
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    }
 }
 /**
  结束刷新
@@ -208,6 +209,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     YYRedPacketDetailViewController *vc = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_DETAIL_STORYBOARD_ID];
+    NSInteger row = indexPath.row;
+    if (row < self.dataSource.count) {
+        YYRedPacketMySentListModel *sentModel = self.dataSource[row];
+        vc.model = sentModel;
+    }
+    vc.ethWalletsArr = self.ethWalletsArray;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

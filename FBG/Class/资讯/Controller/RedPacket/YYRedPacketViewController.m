@@ -14,6 +14,7 @@
 #import "YYRedPacketSection1TableViewCell.h"
 #import "YYRedPacketSendHistoryViewController.h"
 #import "YYRedPacketOpenedHistoryViewController.h"
+#import "YYRedPacketDetailViewController.h"
 
 #define HEADER_VIEW_HEIGHT 223
 
@@ -71,7 +72,6 @@
     tableView.sectionFooterHeight = 0;
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.allowsSelection = NO;
     
     [tableView registerNib:[UINib nibWithNibName:NSStringFromClass([YYRedPacketSection0TableViewCell class]) bundle:nil] forCellReuseIdentifier:REDPACKET_SECTION0_CELL_ID];
     [tableView registerNib:[UINib nibWithNibName:NSStringFromClass([YYRedPacketSection1TableViewCell class]) bundle:nil] forCellReuseIdentifier:REDPACKET_SECTION1_CELL_ID];
@@ -188,7 +188,7 @@
         return;
     }
     
-    NSString *urlStr = @"redbag/send_record";
+    NSString *urlStr = @"redbag/send_record?per_page=10";
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT,
                                              0), ^{
@@ -216,7 +216,7 @@
             [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
         }];
         
-        [PPNetworkHelper GET:@"redbag/send_count" baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+        [PPNetworkHelper POST:@"redbag/send_count" baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
             [LCProgressHUD hide];
             [weakSelf handleResponse:responseObject type:2];
         } failure:^(NSString *error) {
@@ -361,6 +361,22 @@
         [cell setModel:self.dataSource[row - 1] from:CellFromSentHistory];
     }
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+     NSInteger row = indexPath.row;
+    if (row == 0) {
+        return;
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    YYRedPacketDetailViewController *vc = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_DETAIL_STORYBOARD_ID];
+    if (row - 1 < self.dataSource.count) {
+         YYRedPacketMySentListModel *sentModel = self.dataSource[row - 1];
+        vc.model = sentModel;
+    }
+    vc.ethWalletsArr = self.ethWalletsArray;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

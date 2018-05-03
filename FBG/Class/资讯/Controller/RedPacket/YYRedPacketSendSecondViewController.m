@@ -54,6 +54,28 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:WHITE_COLOR, NSFontAttributeName:FONT(18)}];
 }
 
+#pragma mark ------- Data ---------
+/**
+ 获取手续费
+ */
+- (void)getFees {
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        NSString *minValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:self.tokenModel.gas value:8];
+        minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"21000" value:8];
+        minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"1000000000000000000" value:8];
+        
+        NSString *maxValue = [NSString DecimalFuncWithOperatorType:2 first:@"2520120000000000" secend:self.tokenModel.gas value:8];
+        maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"21000"  value:8];
+        maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"1000000000000000000" value:8];
+    });
+}
+
+- (void)getPerRedPacketHandleFee {
+//    [self.ethWallet transfer:@"" to:@"" amount:@"" gasPrice:@"" gasLimits:@"" error:nil];
+}
+
 #pragma mark ------- SetUI ---------
 - (void)setUI {
     self.backIndex = 2;

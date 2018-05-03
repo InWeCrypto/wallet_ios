@@ -12,4 +12,8 @@
 
 @interface YYRedPacketSendSecondViewController : DBHBaseViewController
 
+@property (nonatomic, strong) YYRedPacketEthTokenModel *tokenModel;
+@property (nonatomic, strong) EthmobileWallet *ethWallet;
+@property (nonatomic, strong) DBHWalletManagerForNeoModelList *walletModel;
+
 @end

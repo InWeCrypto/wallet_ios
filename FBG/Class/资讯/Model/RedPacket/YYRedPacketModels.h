@@ -16,4 +16,7 @@
 #import "YYRedPacketOpenedRedBagModel.h"
 #import "YYRedPacketOpenedRedBagGntCategoryModel.h"
 #import "YYRedPacketWalletTokenModel.h"
+#import "YYRedPacketDrawModel.h"
+#import "YYRedPacketRedBagInfoModel.h"
+#import "YYRedPacketDetailModel.h"
 

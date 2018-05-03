@@ -71,7 +71,6 @@
         
         NSString *openedRedBag = openedModel.model.redbag;
         
-        
         [self showProgressView:NO];
         if (openedModel.model.done) { // 已开奖
             self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Awarded Prize", nil));

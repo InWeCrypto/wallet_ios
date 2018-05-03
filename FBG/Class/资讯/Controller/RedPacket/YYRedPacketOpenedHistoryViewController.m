@@ -92,10 +92,10 @@
     if (isLoadMore) {
         self.page += 1;
     } else {
-        self.page = 0;
+        self.page = 1;
     }
     
-    NSString *urlStr = @"redbag/draw_record";
+    NSString *urlStr = [NSString stringWithFormat:@"redbag/draw_record?per_page=10&page=%ld", self.page];
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT,
                                              0), ^{
@@ -147,6 +147,8 @@
                     dataArray.count > 0) {
                     if (dataArray.count < 10) {
                         [self.tableView.mj_footer endRefreshingWithNoMoreData];
+                    } else {
+                        [self.tableView.mj_footer endRefreshing];
                     }
 
                     for (YYRedPacketOpenedModel *model in dataArray) {
@@ -173,9 +175,6 @@
     }];
     
     [self.tableView.mj_header beginRefreshing];
-    if (self.dataSource.count < 10) {
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    }
 }
 /**
  结束刷新

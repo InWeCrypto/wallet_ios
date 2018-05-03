@@ -14,5 +14,6 @@
 @interface YYRedPacketDetailTableViewCell : DBHBaseTableViewCell
 
 @property (nonatomic, assign) BOOL isLastCellInSection;
+@property (nonatomic, strong) YYRedPacketDetailModel *model;
 
 @end

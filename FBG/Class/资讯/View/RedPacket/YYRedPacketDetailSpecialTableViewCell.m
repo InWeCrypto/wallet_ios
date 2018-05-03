@@ -25,6 +25,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topHeight;
 
+@property (nonatomic, assign) BOOL canShare;
+@property (nonatomic, assign) RedBagStatus status;
+
 @end
 
 @implementation YYRedPacketDetailSpecialTableViewCell
@@ -37,12 +40,6 @@
     self.senderAddrTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Sender's Wallet Address", nil)];
     self.createTimeTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Create Time", nil)];
     
-    NSString *title = DBHGetStringWithKeyFromTable(@"Look Up Red Packet", nil);
-    if (self.canShare) {
-        title = DBHGetStringWithKeyFromTable(@"Look Up And Share Red Packet", nil);
-    }
-    [self.lookBtn setTitle:title forState:UIControlStateNormal];
-    
     NSString *text = DBHGetStringWithKeyFromTable(@"Money in expired red packet will be saved to your Balance After 24H", nil);
     
     NSRange range = [text localizedStandardRangeOfString:@"24H"];
@@ -52,16 +49,55 @@
     self.tipLabel.attributedText = attributedString;
     
     [self.lookBtn setCorner:2];
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToCopyAddressLabel:)];
+    [self.senderAddrLabel addGestureRecognizer:longPressGR];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+- (void)setModel:(YYRedPacketDetailModel *)model {
+    _model = model;
+    
+    NSString *number = [NSString notRounding:model.redbag afterPoint:8];
+    self.priceLabel.text = [NSString stringWithFormat:@"%.8lf%@", number.doubleValue, model.redbag_symbol];
+//    self.statusLabel.text = DBHGetStringWithKeyFromTable(model.done ? @"Done" : @"Sending", nil);
+//    self.canShare = !model.done;
+    
+    
+    
+    self.feesLabel.text = FEES_TEXT(model.fee);
+    
+    self.senderAddrLabel.text = model.redbag_addr;
+    self.txidLabel.text = model.redbag_tx_id;
+    self.createTimeLabel.text = model.created_at;
+}
 
-    // Configure the view for the selected state
+- (void)setCanShare:(BOOL)canShare {
+    _canShare = canShare;
+    
+    NSString *title = DBHGetStringWithKeyFromTable(@"Look Up Red Packet", nil);
+    if (canShare) {
+        title = DBHGetStringWithKeyFromTable(@"Look Up And Share Red Packet", nil);
+    }
+    [self.lookBtn setTitle:title forState:UIControlStateNormal];
+    
 }
 
 #pragma mark ----- RespondsToSelector ---------
 - (IBAction)respondsToLookBtn:(UIButton *)sender {
+    if (self.block) {
+        self.block(self.status);
+    }
 }
 
+/**
+ 长按地址复制
+ */
+- (void)respondsToCopyAddressLabel:(UILongPressGestureRecognizer *)recognizer {
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    UILabel *label = (UILabel *)recognizer.view;
+    
+    pasteboard.string = label.text;
+    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Copy success, you can send it to friends", nil)];
+}
 @end

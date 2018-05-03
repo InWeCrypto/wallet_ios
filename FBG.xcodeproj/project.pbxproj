@@ -144,6 +144,9 @@
 		1B530D3420995F4200AA7D0B /* LDProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3020995F3E00AA7D0B /* LDProgressView.m */; };
 		1B530D3520995F4200AA7D0B /* UIColor+RGBValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3220995F4000AA7D0B /* UIColor+RGBValues.m */; };
 		1B530D38209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D37209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m */; };
+		1B530D3B209ABC0300AA7D0B /* YYRedPacketDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3A209ABC0300AA7D0B /* YYRedPacketDetailModel.m */; };
+		1B530D3E209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3D209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m */; };
+		1B530D41209ABD1500AA7D0B /* YYRedPacketDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D40209ABD1500AA7D0B /* YYRedPacketDrawModel.m */; };
 		1B544278204A635300746FA7 /* UserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B544277204A635300746FA7 /* UserLogin.m */; };
 		1B5BA456207F567700B03A4F /* YYEvaluateDetailAnalysisModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5BA455207F567700B03A4F /* YYEvaluateDetailAnalysisModel.m */; };
 		1B5BA45F2080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5BA45D2080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.m */; };
@@ -965,6 +968,12 @@
 		1B530D3320995F4100AA7D0B /* UIColor+RGBValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RGBValues.h"; sourceTree = "<group>"; };
 		1B530D36209986CC00AA7D0B /* YYRedPacketWalletTokenModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketWalletTokenModel.h; sourceTree = "<group>"; };
 		1B530D37209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketWalletTokenModel.m; sourceTree = "<group>"; };
+		1B530D39209ABC0300AA7D0B /* YYRedPacketDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDetailModel.h; sourceTree = "<group>"; };
+		1B530D3A209ABC0300AA7D0B /* YYRedPacketDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDetailModel.m; sourceTree = "<group>"; };
+		1B530D3C209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketRedBagInfoModel.h; sourceTree = "<group>"; };
+		1B530D3D209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketRedBagInfoModel.m; sourceTree = "<group>"; };
+		1B530D3F209ABD1500AA7D0B /* YYRedPacketDrawModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDrawModel.h; sourceTree = "<group>"; };
+		1B530D40209ABD1500AA7D0B /* YYRedPacketDrawModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDrawModel.m; sourceTree = "<group>"; };
 		1B544276204A635300746FA7 /* UserLogin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserLogin.h; sourceTree = "<group>"; };
 		1B544277204A635300746FA7 /* UserLogin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserLogin.m; sourceTree = "<group>"; };
 		1B5BA454207F567700B03A4F /* YYEvaluateDetailAnalysisModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYEvaluateDetailAnalysisModel.h; sourceTree = "<group>"; };
@@ -2618,6 +2627,12 @@
 				1B530D2D209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m */,
 				1B530D36209986CC00AA7D0B /* YYRedPacketWalletTokenModel.h */,
 				1B530D37209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m */,
+				1B530D39209ABC0300AA7D0B /* YYRedPacketDetailModel.h */,
+				1B530D3A209ABC0300AA7D0B /* YYRedPacketDetailModel.m */,
+				1B530D3C209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.h */,
+				1B530D3D209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m */,
+				1B530D3F209ABD1500AA7D0B /* YYRedPacketDrawModel.h */,
+				1B530D40209ABD1500AA7D0B /* YYRedPacketDrawModel.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -4680,6 +4695,7 @@
 				D51E66E22015E20C0025B502 /* SurePackupsWordVC.m in Sources */,
 				A807135C1F5563CE00C5B862 /* UploadToken.m in Sources */,
 				D55558001FC975C100F0963B /* CHAxisModel.swift in Sources */,
+				1B530D41209ABD1500AA7D0B /* YYRedPacketDrawModel.m in Sources */,
 				D51E666E2011F01B0025B502 /* DBHWalletLookPromptViewTableViewCell.m in Sources */,
 				D51E66E82015E20C0025B502 /* DBHTransferDetailViewController.m in Sources */,
 				D572EC5E2022F77E002C8EFD /* EaseMessageCell.m in Sources */,
@@ -4971,6 +4987,7 @@
 				D51E66992011F59C0025B502 /* DBHInformationViewController.m in Sources */,
 				1B215463207CFC3800EB9224 /* YYWalletModel.m in Sources */,
 				D51E66D82015E20C0025B502 /* DBHTransferConfirmationViewController.m in Sources */,
+				1B530D3E209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m in Sources */,
 				D572EC592022F77E002C8EFD /* EaseViewController.m in Sources */,
 				D565E8E32017132100930274 /* DBHSetNicknameTableViewCell.m in Sources */,
 				D572EC312022F77E002C8EFD /* MWGridViewController.m in Sources */,
@@ -4981,6 +4998,7 @@
 				0FDD5F3D1F2DE0C400228CE0 /* AlertView.m in Sources */,
 				D56CEE87201B32BE0081DE05 /* DBHProjectLookForProjectCommunityTableViewCell.m in Sources */,
 				0FAC29211F2F7C4A009B3EC9 /* AATooltip.m in Sources */,
+				1B530D3B209ABC0300AA7D0B /* YYRedPacketDetailModel.m in Sources */,
 				1B99F958207B2CB5004FD7F7 /* YYEvaluateGradeHeaderView.m in Sources */,
 				D572EBFE2022F77E002C8EFD /* NSString+Valid.m in Sources */,
 				D565E9322018B8E700930274 /* DBHInformationHeaderView.m in Sources */,

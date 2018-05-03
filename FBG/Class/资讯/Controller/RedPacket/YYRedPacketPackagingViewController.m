@@ -309,16 +309,18 @@
                 
                 if (number < self.minBlockNumber.integerValue) {
                     self.isHaveNoFinishOrder = YES;
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        self.statusLabel.text = [NSString stringWithFormat:@"(%@%ld/%@)", DBHGetStringWithKeyFromTable(@"Confirmed", nil), number, self.minBlockNumber];
-                        self.progress.progress = (CGFloat)number / self.minBlockNumber.floatValue;
-                    });
                 } else {
+                    number = self.minBlockNumber.integerValue;
                     self.isHaveNoFinishOrder = NO;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         self.nextBtn.enabled = YES;
                     });
                 }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.statusLabel.text = [NSString stringWithFormat:@"(%@%ld/%@)", DBHGetStringWithKeyFromTable(@"Confirmed", nil), number, self.minBlockNumber];
+                    self.progress.progress = (CGFloat)number / self.minBlockNumber.floatValue;
+                });
             }
         }
     });
@@ -363,6 +365,9 @@
 - (IBAction)respondsToNextBtn:(UIButton *)sender {
     if (self.packageType == PackageTypeCash) {
         YYRedPacketSendSecondViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_SEND_SECOND_STORYBOARD_ID];
+        vc.tokenModel = self.tokenModel;
+        vc.walletModel = self.walletModel;
+        vc.ethWallet = self.ethWallet;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         YYRedPacketSendThirdViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_SEND_THIRD_STORYBOARD_ID];

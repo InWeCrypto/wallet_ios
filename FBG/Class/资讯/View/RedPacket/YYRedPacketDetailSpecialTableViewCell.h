@@ -11,8 +11,11 @@
 #define REDPACKET_DETAIL_SPECIAL_CELL_ID @"REDPACKET_DETAIL_SPECIAL_CELL"
 #define REDPACKET_DETAIL_SPECIAL_CELL_HEIGHT 399
 
+typedef void(^LookClickBlock) (RedBagStatus status);
+
 @interface YYRedPacketDetailSpecialTableViewCell : DBHBaseTableViewCell
 
-@property (nonatomic, assign) BOOL canShare;
+@property (nonatomic, strong) YYRedPacketDetailModel *model;
+@property (nonatomic, copy) LookClickBlock block;
 
 @end

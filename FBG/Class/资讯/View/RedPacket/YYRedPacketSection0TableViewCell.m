@@ -49,6 +49,8 @@
     self.successValueLabel.text = countStr;
     
     [self setTotalTitle:0];
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)setModel:(YYRedPacketSentCountModel *)model {

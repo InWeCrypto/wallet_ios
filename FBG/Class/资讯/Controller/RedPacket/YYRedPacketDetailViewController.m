@@ -10,8 +10,11 @@
 #import "YYRedPacketDetailHeaderView.h"
 #import "YYRedPacketDetailTableViewCell.h"
 #import "YYRedPacketDetailSpecialTableViewCell.h"
+#import "YYRedPacketPackagingViewController.h"
 
 @interface YYRedPacketDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) YYRedPacketDetailModel *detailModel;
 
 @end
 
@@ -21,6 +24,7 @@
     [super viewDidLoad];
     
     [self setUI];
+    [self getDetailData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -42,6 +46,33 @@
     UIImage *image = [UIImage imageWithGradients:colors];
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 }
+
+#pragma mark ------- Data ---------
+- (void)getDetailData {
+    NSString *urlStr = [NSString stringWithFormat:@"redbag/send_record/%ld", self.model.redPacketId];
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        WEAKSELF
+        [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
+            [weakSelf handleResponse:responseObject];
+        } failure:^(NSString *error) {
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        }];
+    });
+}
+
+- (void)handleResponse:(id)responseObj {
+    if ([NSObject isNulllWithObject:responseObj]) {
+        return;
+    }
+    
+    if ([responseObj isKindOfClass:[NSDictionary class]]) {
+        YYRedPacketDetailModel *model = [YYRedPacketDetailModel mj_objectWithKeyValues:responseObj];
+        self.detailModel = model;
+    }
+}
+
 
 #pragma mark ------- SetUI ---------
 - (void)setUI {
@@ -84,15 +115,28 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     if (section == 0) {
         YYRedPacketDetailSpecialTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_DETAIL_SPECIAL_CELL_ID forIndexPath:indexPath];
-
+        cell.model = self.detailModel;
+        WEAKSELF
+        [cell setBlock:^(RedBagStatus status) { // YYTODO
+            switch (status) {
+                case RedBagStatusCashPackaging:
+                    [weakSelf pushToPackagingVC];
+                    break;
+                    
+                default:
+                    [weakSelf pushToPackagingVC];
+                    break;
+            }
+        }];
         return cell;
     }
 
+    NSInteger row = indexPath.row;
     YYRedPacketDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_DETAIL_CELL_ID forIndexPath:indexPath];
+    cell.model = self.detailModel;
     return cell;
 }
 
@@ -124,6 +168,28 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     view.backgroundColor = COLORFROM16(0xFAFAFA, 1);
     return view;
+}
+
+#pragma mark ------- Push To VC ---------
+- (void)pushToPackagingVC {
+//    YYRedPacketPackagingViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_PACKAGING_STORYBOARD_ID];
+//    vc.packageType = PackageTypeCash;
+//    vc.redbag_number = self.detailModel.redbag_number;
+//    vc.redbag = self.detailModel.redbag;
+//    vc.walletModel = self.currentWalletModel;
+//    vc.tokenModel = self.tokenModel;
+//    vc.poundage = self.detailModel.fee;
+//    vc.ethWallet = self;
+//    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark ----- Setters And Getters ---------
+- (void)setDetailModel:(YYRedPacketDetailModel *)detailModel {
+    _detailModel = detailModel;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 @end
