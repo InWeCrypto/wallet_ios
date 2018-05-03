@@ -6,61 +6,65 @@
 #ifndef __Ethmobile_H__
 #define __Ethmobile_H__
 
-#import "ref.h"
+@import Foundation;
 #include "Universe.objc.h"
 
 
+@class EthmobileEthCall;
 @class EthmobileWallet;
 
-/**
- * Wallet neo mobile wallet
- */
+@interface EthmobileEthCall : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) id _ref;
+
+- (instancetype)initWithRef:(id)ref;
+- (instancetype)init;
+- (NSString*)balanceOf:(NSString*)contract address:(NSString*)address error:(NSError**)error;
+- (NSString*)call:(NSString*)contract data:(NSString*)data error:(NSError**)error;
+- (NSString*)decimals:(NSString*)contract error:(NSError**)error;
+- (NSString*)description:(NSString*)contract error:(NSError**)error;
+- (NSString*)exists:(NSString*)contract value:(NSString*)value error:(NSError**)error;
+- (NSString*)landData:(NSString*)contract x:(NSString*)x y:(NSString*)y error:(NSError**)error;
+- (NSString*)landDecodeTokenId:(NSString*)contract value:(NSString*)value error:(NSError**)error;
+- (NSString*)landEncodeTokenId:(NSString*)contract x:(NSString*)x y:(NSString*)y error:(NSError**)error;
+- (NSString*)landOf:(NSString*)contract address:(NSString*)address error:(NSError**)error;
+- (NSString*)name:(NSString*)contract error:(NSError**)error;
+- (NSString*)ownerOf:(NSString*)contract value:(NSString*)value error:(NSError**)error;
+- (NSString*)ownerOfLand:(NSString*)contract x:(NSString*)x y:(NSString*)y error:(NSError**)error;
+- (NSString*)redPacketDetail:(NSString*)contract value:(NSString*)value error:(NSError**)error;
+- (NSString*)redPacketMaxCount:(NSString*)contract error:(NSError**)error;
+- (NSString*)redPacketTaxCost:(NSString*)contract error:(NSError**)error;
+- (NSString*)tokenMetadata:(NSString*)contract value:(NSString*)value error:(NSError**)error;
+- (NSString*)tokenOfOwnerByIndex:(NSString*)contract address:(NSString*)address value:(NSString*)value error:(NSError**)error;
+- (NSString*)tokensOf:(NSString*)contract address:(NSString*)address error:(NSError**)error;
+- (NSString*)totalSupply:(NSString*)contract error:(NSError**)error;
+@end
+
 @interface EthmobileWallet : NSObject <goSeqRefInterface> {
 }
 @property(strong, readonly) id _ref;
 
 - (instancetype)initWithRef:(id)ref;
 - (instancetype)init;
-/**
- * Address get wallet address
- */
 - (NSString*)address;
-/**
- * Mnemonic gete mnemonic string
- */
+- (NSString*)approve:(NSString*)contract nonce:(NSString*)nonce to:(NSString*)to value:(NSString*)value gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
 - (NSString*)mnemonic:(NSString*)lang error:(NSError**)error;
-/**
- * ToKeyStore write wallet to keystore format string
- */
+- (NSString*)newRedPacket:(NSString*)redcontract nonce:(NSString*)nonce erc20contract:(NSString*)erc20contract from:(NSString*)from amount:(NSString*)amount value:(NSString*)value count:(NSString*)count command:(NSString*)command gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
 - (NSString*)toKeyStore:(NSString*)password error:(NSError**)error;
-/**
- * Transfer transfer eth to target address
- */
 - (NSString*)transfer:(NSString*)nonce to:(NSString*)to amount:(NSString*)amount gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
-/**
- * TransferERC20 transfer eth to target address
- */
 - (NSString*)transferERC20:(NSString*)contract nonce:(NSString*)nonce to:(NSString*)to amount:(NSString*)amount gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
+- (NSString*)transferFrom:(NSString*)contract nonce:(NSString*)nonce from:(NSString*)from to:(NSString*)to value:(NSString*)value gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
+- (NSString*)transferLand:(NSString*)contract nonce:(NSString*)nonce to:(NSString*)to x:(NSString*)x y:(NSString*)y gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
 @end
 
-/**
- * FromKeyStore create wallet from keystore
- */
 FOUNDATION_EXPORT EthmobileWallet* EthmobileFromKeyStore(NSString* ks, NSString* password, NSError** error);
 
-/**
- * FromMnemonic create wallet from mnemonic
- */
 FOUNDATION_EXPORT EthmobileWallet* EthmobileFromMnemonic(NSString* mnemonic, NSString* lang, NSError** error);
 
-/**
- * FromPrivateKey .
- */
 FOUNDATION_EXPORT EthmobileWallet* EthmobileFromPrivateKey(NSData* privateKey, NSError** error);
 
-/**
- * New create a new wallet
- */
 FOUNDATION_EXPORT EthmobileWallet* EthmobileNew(NSError** error);
+
+FOUNDATION_EXPORT EthmobileEthCall* EthmobileNewEthCall(void);
 
 #endif

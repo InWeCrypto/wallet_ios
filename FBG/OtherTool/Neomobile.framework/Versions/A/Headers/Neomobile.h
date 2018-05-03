@@ -10,6 +10,6 @@
 
 #include "Neomobile.objc.h"
 #include "Ethmobile.objc.h"
-#include "Universe.objc.h"
+#include "universe.objc.h"
 
 #endif
