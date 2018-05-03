@@ -10,8 +10,6 @@
 #import "YYRedPacketReceiveProgressView.h"
 #import "YYRedPacketMySentListModel.h"
 
-#define HAS_EMPTY(str) [NSString stringWithFormat:@"  %@  ", str]
-
 @interface YYRedPacketSection1TableViewCell()
 
 @property (weak, nonatomic) IBOutlet UILabel *redPacketNoLabel;
@@ -61,6 +59,19 @@
                 [self showProgressView:YES];
                 self.ingLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Openning", nil));
                 [self.progessView setProgress:sentModel.draw_redbag_number total:sentModel.redbag_number];
+                break;
+            }
+                
+                
+            case RedBagStatusCashPackageFailed: {
+                [self showProgressView:NO];
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Cash Package Failed", nil));
+                break;
+            }
+                
+            case RedBagStatusCreateFailed: {
+                [self showProgressView:NO];
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"RedPacket Create Failed", nil));
                 break;
             }
         }

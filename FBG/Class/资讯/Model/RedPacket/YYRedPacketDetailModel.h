@@ -29,7 +29,8 @@
 @property (nonatomic, copy) NSString *share_theme_url;
 @property (nonatomic, copy) NSString *fee_tx_id;
 @property (nonatomic, assign) BOOL done; // 红包是否开奖,1.已开奖,0.待开奖
-
+@property (nonatomic, assign) RedBagStatus status; // 红包状态,1.完成,2.礼金打包,3.红包创建中,4.领取中, -2.礼金打包失败(授权失败),-3.红包创建失败
+@property (nonatomic, assign) NSInteger draw_redbag_number; // 红包已领取个数
 @property (nonatomic, assign) NSInteger auth_block; // 授权块高
 @property (nonatomic, assign) NSInteger redbag_block; // 红包块高
 @property (nonatomic, assign) NSInteger fee_block; // 手续费块高

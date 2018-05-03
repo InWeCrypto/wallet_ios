@@ -673,6 +673,9 @@
 " Total " = "合计";
 "Sending" = "发送中";
 "Success" = "成功";
+"Failed" = "失败";
+"In the packaging" = "打包中";
+"In the payment" = "支付中";
 "Sent Record Recently" = "近期发送记录";
 "Opened Record" = "领取记录";
 "Opened Success" = "领取成功";
@@ -684,3 +687,8 @@
 "Waitting Award" = "待开奖";
 "The send amount beyond max avaliable amount" = "红包发放金额超出最大可用数量";
 "The send count beyond max avaliable send count" = "红包发放个数超出最大可发送数量";
+"Cash Package Failed" = "礼金打包失败";
+"RedPacket Create Failed" = "红包创建失败";
+"Cash Package Detail Info" = "礼金打包详情";
+"Poundage Payment Detail Info" = "手续费支付详情";
+"Opened Number" = "领取数量";

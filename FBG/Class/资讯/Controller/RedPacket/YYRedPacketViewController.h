@@ -10,4 +10,6 @@
 
 @interface YYRedPacketViewController : DBHBaseViewController
 
+@property (nonatomic, strong) NSMutableArray *ethWalletsArray;
+
 @end

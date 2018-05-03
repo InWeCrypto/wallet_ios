@@ -525,13 +525,13 @@ typedef void(^CompletionBlock) (void);
                     [LCProgressHUD hide];
                     if (!error) {
                         YYRedPacketPackagingViewController *vc = [weakSelf.storyboard instantiateViewControllerWithIdentifier:REDPACKET_PACKAGING_STORYBOARD_ID];
+                        self.currentWalletModel.ethWallet = ethWallet;
                         vc.packageType = PackageTypeCash;
                         vc.redbag_number = weakSelf.sendCountValueTextField.text.integerValue;
                         vc.redbag = weakSelf.sendSumValueTextField.text;
                         vc.walletModel = weakSelf.currentWalletModel;
                         vc.tokenModel = weakSelf.tokenModel;
                         vc.poundage = weakSelf.feeValueLabel.text;
-                        vc.ethWallet = ethWallet;
                         [weakSelf.navigationController pushViewController:vc animated:YES];
                     } else {
                         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The password is incorrect. Please try again later", nil)];

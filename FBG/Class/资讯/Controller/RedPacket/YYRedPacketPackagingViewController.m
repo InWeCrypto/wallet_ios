@@ -235,12 +235,12 @@
             
             NSString *gasLimit = [NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas.integerValue]];
             
-            NSString *contractAddr = @"0x6834eA7cA59dd7B0F463B63E46048a41805ef869";
+            NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
             if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) { // 正式网还没有 YYTODO
-                contractAddr = @"";
+                contractAddr = REDPACKET_CONTRACT_ADDRESS;
             }
             
-            NSString *data = [self.ethWallet transferERC20:self.tokenModel.address
+            NSString *data = [self.walletModel.ethWallet transferERC20:self.tokenModel.address
                                                      nonce:count
                                                         to:contractAddr
                                                     amount:self.redbag
@@ -367,7 +367,7 @@
         YYRedPacketSendSecondViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_SEND_SECOND_STORYBOARD_ID];
         vc.tokenModel = self.tokenModel;
         vc.walletModel = self.walletModel;
-        vc.ethWallet = self.ethWallet;
+        vc.redbag_number = self.redbag_number;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         YYRedPacketSendThirdViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_SEND_THIRD_STORYBOARD_ID];

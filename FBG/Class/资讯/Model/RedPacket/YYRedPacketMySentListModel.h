@@ -8,12 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum _redbag_status {
-    RedBagStatusDone = 1,
-    RedBagStatusCashPackaging,
-    RedBagStatusCreating,
-    RedBagStatusOpening
-}RedBagStatus;
 
 @interface YYRedPacketMySentListModel : NSObject
 

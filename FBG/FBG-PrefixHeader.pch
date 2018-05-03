@@ -151,6 +151,7 @@
 #define TESTAPIEHEAD6 @"http://testnet.inwecrypto.com/newsdetail?art_id="  //分享网络请求头
 #define IMAGEHEAD @"https://china.inwecrypto.com:4431/"  //图片头
 #define TESTHELPCENTER @"http://testnet.inwecrypto.com/%@/helpcenter"
+#define TEST_REDPACKET_CONTRACT_ADDRESS @"0x6834eA7cA59dd7B0F463B63E46048a41805ef869" // 红包合约地址
 
 #pragma mark - 正式环境
 #define APIEHEAD1 @"https://china.inwecrypto.com:4431/v2/api/"  //网络请求头
@@ -162,6 +163,7 @@
 #define IMAGEHEAD1 @"https://china.inwecrypto.com:4431/"  //图片头
 #define HELPCENTER @"http://inwecrypto.com/%@/helpcenter" //帮助中心
 #define UPDATE_APP_URL  @"https://fir.im/InWeCrypto"
+#define REDPACKET_CONTRACT_ADDRESS @"" // 红包合约地址
 
 #define KEYCHAIN_KEY(address) [NSString stringWithFormat:@"%@_%@_%@", address, [UserSignData share].user.email, [APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
 //钱包状态

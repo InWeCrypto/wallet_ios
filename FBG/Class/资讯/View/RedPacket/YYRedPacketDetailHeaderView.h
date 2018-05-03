@@ -12,4 +12,8 @@
 
 @interface YYRedPacketDetailHeaderView : UIView
 
+@property (nonatomic, copy) NSString *headerTitle;
+@property (nonatomic, strong) YYRedPacketDetailModel *model;
+@property (nonatomic, assign) BOOL showTotal; // 是否显示合计
+
 @end

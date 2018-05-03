@@ -39,6 +39,7 @@
     [super viewDidLoad];
     
     [self setUI];
+    [self getPerRedPacketHandleFee];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,22 +59,46 @@
 /**
  获取手续费
  */
-- (void)getFees {
+- (void)getPerRedPacketHandleFee {
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT,
                                              0), ^{
-        NSString *minValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:self.tokenModel.gas value:8];
+        EthmobileEthCall *call = EthmobileNewEthCall();
+        
+        NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
+        if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) {
+            contractAddr = REDPACKET_CONTRACT_ADDRESS;
+        }
+        
+        NSError *error = nil;
+        NSString *cost = [call redPacketTaxCost:contractAddr error:&error];
+        if ([NSObject isNulllWithObject:cost]) {
+            cost = @"0";
+        }
+        NSString *redbagHandleFee = [NSString DecimalFuncWithOperatorType:2 first:cost secend:@(self.redbag_number) value:0];
+        
+        NSString *minValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:@"90000" value:8];
         minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"21000" value:8];
         minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"1000000000000000000" value:8];
         
-        NSString *maxValue = [NSString DecimalFuncWithOperatorType:2 first:@"2520120000000000" secend:self.tokenModel.gas value:8];
+        NSString *maxValue = [NSString DecimalFuncWithOperatorType:2 first:@"2520120000000000" secend:@"90000" value:8];
         maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"21000"  value:8];
         maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"1000000000000000000" value:8];
+        
+        NSString *totalMinValue = [NSString DecimalFuncWithOperatorType:0 first:minValue secend:redbagHandleFee value:8];
+        NSString *totalMaxValue = [NSString DecimalFuncWithOperatorType:0 first:maxValue secend:redbagHandleFee value:8];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *number = [NSString notRounding:totalMinValue afterPoint:8];
+            self.minLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+            
+            number = [NSString notRounding:totalMaxValue afterPoint:8];
+            self.maxLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+            self.slider.minimumValue = totalMinValue.doubleValue;
+            self.slider.maximumValue = totalMaxValue.doubleValue;
+            self.slider.value = totalMinValue.doubleValue;
+        });
     });
-}
-
-- (void)getPerRedPacketHandleFee {
-//    [self.ethWallet transfer:@"" to:@"" amount:@"" gasPrice:@"" gasLimits:@"" error:nil];
 }
 
 #pragma mark ------- SetUI ---------
@@ -93,6 +118,8 @@
     layer.frame = CGRectMake(0, 0, SCREEN_WIDTH * 0.5, 4);
     layer.backgroundColor = COLORFROM16(0x029857, 1).CGColor;
     [self.progressView.layer addSublayer:layer];
+    [self.slider addTarget:self action:@selector(respondsToGasSlider) forControlEvents:UIControlEventValueChanged];
+    self.slider.value = 0;
 }
 
 #pragma mark ----- RespondsToSelector ---------
@@ -108,6 +135,9 @@
 - (IBAction)respondsToChooseWalletBtn:(UIButton *)sender {
 }
 
+- (void)respondsToGasSlider {
+    self.poundageLabel.text = [NSString stringWithFormat:@"%@", @(self.slider.value)];
+}
 #pragma mark ----- Setters And Getters ---------
 - (DBHInputPasswordPromptView *)inputPasswordPromptView {
     if (!_inputPasswordPromptView) {

@@ -10,6 +10,8 @@
 
 #define FEES_TEXT(fees) [NSString stringWithFormat:@"%@：%@ETH", DBHGetStringWithKeyFromTable(@"Fees", nil), fees]
 
+#define TIPLABEL_HEIGHT 29
+
 @interface YYRedPacketDetailSpecialTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
@@ -24,6 +26,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tipLabelHeight;
 
 @property (nonatomic, assign) BOOL canShare;
 @property (nonatomic, assign) RedBagStatus status;
@@ -51,6 +54,7 @@
     [self.lookBtn setCorner:2];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToCopyAddressLabel:)];
     [self.senderAddrLabel addGestureRecognizer:longPressGR];
 }
@@ -60,16 +64,53 @@
     
     NSString *number = [NSString notRounding:model.redbag afterPoint:8];
     self.priceLabel.text = [NSString stringWithFormat:@"%.8lf%@", number.doubleValue, model.redbag_symbol];
-//    self.statusLabel.text = DBHGetStringWithKeyFromTable(model.done ? @"Done" : @"Sending", nil);
-//    self.canShare = !model.done;
+    switch (model.status) {
+        case RedBagStatusDone: {
+            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Done", nil));
+            break;
+        }
+        case RedBagStatusCashPackaging: {
+            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Cash Packaging", nil));
+            break;
+        }
+        case RedBagStatusCreating: {
+            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Red Packet Creating", nil));
+            break;
+        }
+            
+        case RedBagStatusOpening: {
+            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Sending", nil));
+            break;
+        }
+            
+        case RedBagStatusCashPackageFailed: {
+            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Cash Package Failed", nil));
+            break;
+        }
+            
+        case RedBagStatusCreateFailed: {
+            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"RedPacket Create Failed", nil));
+            break;
+        }
+    }
     
+    self.canShare = (model.status == RedBagStatusOpening);
     
-    
-    self.feesLabel.text = FEES_TEXT(model.fee);
+    NSString *fee = model.fee;
+    if ([NSObject isNulllWithObject:fee]) {
+        fee = @"0.0";
+    }
+    self.feesLabel.text = FEES_TEXT(fee);
     
     self.senderAddrLabel.text = model.redbag_addr;
-    self.txidLabel.text = model.redbag_tx_id;
-    self.createTimeLabel.text = model.created_at;
+    self.txidLabel.text = model.auth_tx_id;
+    self.createTimeLabel.text = [NSString formatTimeDelayEight:model.created_at];
+    
+    if (model.status == RedBagStatusOpening || model.status == RedBagStatusDone) {
+        _tipLabelHeight.constant = 29;
+    } else {
+        _tipLabelHeight.constant = 0;
+    }
 }
 
 - (void)setCanShare:(BOOL)canShare {

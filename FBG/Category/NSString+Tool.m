@@ -504,41 +504,48 @@ yy-MM-dd HH:mm:ss
     if ([first isKindOfClass:[NSNumber class]]) {
         first = [NSString stringWithFormat:@"%@", first];
     }
-    NSDecimalNumber *firstNumber = [[NSDecimalNumber alloc] initWithString:first];
-
-    if ([NSObject isNulllWithObject:secend]) {
-        secend = @"0";
-    }
     
-    if ([secend isKindOfClass:[NSNumber class]]) {
-        secend = [NSString stringWithFormat:@"%@", secend];
-    }
     
-    NSDecimalNumber *secondNumber = [[NSDecimalNumber alloc] initWithString:secend];
-    
-    switch (operatorType)
-    {
-        case 0:
-//            resultNumber = SNAdd_handler(first, secend, NSRoundPlain, value);
-            resultNumber = [firstNumber decimalNumberByAdding:secondNumber];
-            
-            break;
-        case 1:
-//            resultNumber = SNSub_handler(first, secend, NSRoundPlain, value);
-            resultNumber = [firstNumber decimalNumberBySubtracting:secondNumber];
-            break;
-        case 2:
-//            resultNumber = SNMul_handler(first, secend, NSRoundPlain, value);
-            resultNumber = [firstNumber decimalNumberByMultiplyingBy:secondNumber];
-            break;
-        case 3: {
-//            resultNumber = SNDiv_handler(first, secend, NSRoundPlain, value);
-            if (secondNumber.intValue == 0) {
-                return @"0";
-            }
-            resultNumber = [firstNumber decimalNumberByDividingBy:secondNumber];
-            break;
+    @try {
+        NSDecimalNumber *firstNumber = [[NSDecimalNumber alloc] initWithString:first];
+        
+        if ([NSObject isNulllWithObject:secend]) {
+            secend = @"0";
         }
+        
+        if ([secend isKindOfClass:[NSNumber class]]) {
+            secend = [NSString stringWithFormat:@"%@", secend];
+        }
+        
+        NSDecimalNumber *secondNumber = [[NSDecimalNumber alloc] initWithString:secend];
+        
+        switch (operatorType)
+        {
+            case 0:
+                //            resultNumber = SNAdd_handler(first, secend, NSRoundPlain, value);
+                resultNumber = [firstNumber decimalNumberByAdding:secondNumber];
+                
+                break;
+            case 1:
+                //            resultNumber = SNSub_handler(first, secend, NSRoundPlain, value);
+                resultNumber = [firstNumber decimalNumberBySubtracting:secondNumber];
+                break;
+            case 2:
+                //            resultNumber = SNMul_handler(first, secend, NSRoundPlain, value);
+                resultNumber = [firstNumber decimalNumberByMultiplyingBy:secondNumber];
+                break;
+            case 3: {
+                //            resultNumber = SNDiv_handler(first, secend, NSRoundPlain, value);
+                if (secondNumber.intValue == 0) {
+                    return @"0";
+                }
+                resultNumber = [firstNumber decimalNumberByDividingBy:secondNumber];
+                break;
+            }
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"e = %@", exception);
+        resultNumber = @"0";
     }
      
     return resultNumber.stringValue;

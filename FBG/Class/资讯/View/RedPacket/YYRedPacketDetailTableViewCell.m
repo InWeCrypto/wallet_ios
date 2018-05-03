@@ -24,10 +24,31 @@
     // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)setModel:(YYRedPacketDetailModel *)model section:(NSInteger)section {
+    self.addressLabel.text = model.redbag_addr;
+    
+    NSString *number = [NSString notRounding:model.redbag afterPoint:8];
+    self.priceLabel.text = [NSString stringWithFormat:@"%@%.8lf%@", section == 3 ? @"" : @"-", number.doubleValue, model.redbag_symbol];
+    
+    self.timeLabel.text = [NSString formatTimeDelayEight:model.created_at]; //YYTODO
+    RedBagStatus status = model.status;
+    if (status == RedBagStatusOpening) {
+        self.statusLabel.hidden = YES;
+    } else {
+        self.statusLabel.hidden = NO;
+        
+        NSString *statusStr = @"Success";
+        if (status == RedBagStatusCashPackaging) {
+            statusStr = @"In the packaging";
+        } else if (status == RedBagStatusCashPackageFailed || status == RedBagStatusCreateFailed) {
+            statusStr = @"Failed";
+        } else if (status == RedBagStatusCreating) {
+            if (section == 2) {
+                statusStr = @"In the payment";
+            }
+        }
+        self.statusLabel.text = DBHGetStringWithKeyFromTable(statusStr, nil);
+    }
 }
 
 - (void)setIsLastCellInSection:(BOOL)isLastCellInSection {

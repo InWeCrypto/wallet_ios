@@ -26,4 +26,25 @@
     return self;
 }
 
+- (void)setHeaderTitle:(NSString *)headerTitle {
+    _headerTitle = headerTitle;
+    
+    self.titleLabel.text = headerTitle;
+}
+
+- (void)setShowTotal:(BOOL)showTotal {
+    _showTotal = showTotal;
+    
+    self.totalView.hidden = !showTotal;
+}
+
+- (void)setModel:(YYRedPacketDetailModel *)model {
+    _model = model;
+    
+    self.totalTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Total", nil)];
+    
+    NSString *number = [NSString notRounding:model.redbag afterPoint:8];
+    self.totalValueLabel.text = [NSString stringWithFormat:@"%.8lf%@", number.doubleValue, model.redbag_symbol];
+}
+
 @end

@@ -30,7 +30,6 @@
 @property (nonatomic, weak) YYRedPacketHomeHeaderView *headerView;
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
-@property (nonatomic, strong) NSMutableArray *ethWalletsArray;
 @property (nonatomic, strong) YYRedPacketSentCountModel *countModel;
 
 @end
@@ -453,6 +452,9 @@
         return;
     }
     _dataSource = dataSource;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 - (void)setCountModel:(YYRedPacketSentCountModel *)countModel {

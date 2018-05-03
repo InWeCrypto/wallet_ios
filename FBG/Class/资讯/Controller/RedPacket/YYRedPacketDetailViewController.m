@@ -99,16 +99,26 @@
 
 #pragma mark ----- UITableView ---------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    NSInteger count = 1;
+    RedBagStatus status = self.detailModel.status;
+    if (status == RedBagStatusCashPackaging || status == RedBagStatusCashPackageFailed) { // 礼金打包
+        count = count + 1;
+    } else if (status == RedBagStatusCreateFailed || status == RedBagStatusCreating) { // 红包创建
+        count = count + 2;
+    } else {
+        count = count + 3;
+    }
+    
+    return count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case 0:
-            return 1;
+        case 3:
+            return self.detailModel.draw_redbag_number;
             break;
             
         default:
-            return 2;
+            return 1;
             break;
     }
     return 0;
@@ -136,7 +146,16 @@
 
     NSInteger row = indexPath.row;
     YYRedPacketDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_DETAIL_CELL_ID forIndexPath:indexPath];
-    cell.model = self.detailModel;
+    [cell setModel:self.detailModel section:section];
+    if (section == 1 || section == 2) {
+        cell.isLastCellInSection = YES;
+    } else {
+        if (row == self.detailModel.draw_redbag_number - 1) {
+            cell.isLastCellInSection = YES;
+        } else {
+            cell.isLastCellInSection = NO;
+        }
+    }
     return cell;
 }
 
@@ -154,6 +173,18 @@
     }
     
     YYRedPacketDetailHeaderView *headerView = [[YYRedPacketDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, DETAIL_HEADERVIEW_HEIGHT)];
+    
+    NSString *titleStr = nil;
+    if (section == 1) {
+        titleStr = DBHGetStringWithKeyFromTable(@"Cash Package Detail Info", nil);
+    } else if (section == 2) {
+        titleStr = DBHGetStringWithKeyFromTable(@"Poundage Payment Detail Info", nil);
+    } else if (section == 3) {
+        titleStr = [NSString stringWithFormat:@"%@ %ld/%ld", DBHGetStringWithKeyFromTable(@"Opened Number", nil), self.detailModel.draw_redbag_number, self.detailModel.redbag_number];
+    }
+    headerView.headerTitle = titleStr;
+    headerView.model = self.detailModel;
+    headerView.showTotal = (section == 3);
     return headerView;
 }
 

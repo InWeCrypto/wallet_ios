@@ -147,20 +147,20 @@
         CGColorSpaceRelease(colorSpace);
     }
 
-    if (self.progress != 1.0) {
-        switch (self.type) {
-            case LDProgressGradient:
-                [self drawGradients:context inRect:insetRect];
-                break;
-            case LDProgressStripes:
-                [self drawStripes:context inRect:insetRect];
-                break;
-            default:
-                break;
-        }
+    
+    switch (self.type) {
+        case LDProgressGradient:
+            [self drawGradients:context inRect:insetRect];
+            break;
+        case LDProgressStripes:
+            [self drawStripes:context inRect:insetRect];
+            break;
+        default:
+            break;
     }
-    CGContextSetStrokeColorWithColor(context, [[self.color darkerColor] darkerColor].CGColor);
-    [roundedRect stroke];
+    
+//    CGContextSetStrokeColorWithColor(context, [[self.color darkerColor] darkerColor].CGColor);
+//    [roundedRect stroke];
 
     if ([self.showText boolValue]) {
         [self drawRightAlignedLabelInRect:insetRect];

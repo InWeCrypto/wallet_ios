@@ -425,7 +425,7 @@
                            
                            //生成data
                            NSError * error;
-                           NeomobileTx *tx = [Wallet createNep5Tx:self.tokenModel.address from:NeomobileDecodeAddress(self.neoWalletModel.address, nil) to:NeomobileDecodeAddress(self.address, nil) gas:0 amount:(NSInteger)(self.transferNumber.doubleValue * pow(10, self.tokenModel.decimals.doubleValue)) unspent:unspent error:&error];
+                           NeomobileTx *tx = [Wallet createNep5Tx:self.tokenModel.address from:NeomobileDecodeAddress(self.neoWalletModel.address, nil) to:NeomobileDecodeAddress(self.address, nil) amount:(NSInteger)(self.transferNumber.doubleValue * pow(10, self.tokenModel.decimals.doubleValue)) unspent:unspent error:&error];
                            
                            dispatch_queue_t mainQueue = dispatch_get_main_queue();
                            //异步返回主线程，根据获取的数据，更新UI

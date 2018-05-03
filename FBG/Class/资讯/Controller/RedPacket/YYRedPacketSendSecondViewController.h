@@ -13,7 +13,7 @@
 @interface YYRedPacketSendSecondViewController : DBHBaseViewController
 
 @property (nonatomic, strong) YYRedPacketEthTokenModel *tokenModel;
-@property (nonatomic, strong) EthmobileWallet *ethWallet;
 @property (nonatomic, strong) DBHWalletManagerForNeoModelList *walletModel;
+@property (nonatomic, assign) NSInteger redbag_number; // 红包个数
 
 @end
