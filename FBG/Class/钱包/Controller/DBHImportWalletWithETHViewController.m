@@ -548,11 +548,7 @@
                         break;
                     case 2: { // 私钥
                         @try {
-//                           const char *bytes = [data UTF8String];
-//                            weakSelf.ethWallet = EthmobileFromPrivateKey([[NSData alloc] initWithBytes:bytes length:sizeof(bytes) * 8], &error);
-                            
-                            NSData *finalData = [data dataUsingEncoding:NSUTF8StringEncoding];
-                            EthmobileWallet *ethWallet = EthmobileFromPrivateKey(finalData, &error);
+                            EthmobileWallet *ethWallet = EthmobileFromPrivateKey(data, &error);
                             weakSelf.ethWallet = ethWallet;
                         } @catch (NSException *exception) {
                             NSLog(@"@exception = %@",exception);
@@ -673,11 +669,7 @@
                             break;
                         case 2: { // 私钥
                             @try {
-//                                const char *bytes = [data UTF8String];
-//                                weakSelf.ethWallet = EthmobileFromPrivateKey([[NSData alloc] initWithBytes:bytes length:sizeof(bytes) * 8], &error);
-                                
-                                NSData *finalData = [data dataUsingEncoding:NSUTF8StringEncoding];
-                                EthmobileWallet *ethWallet = EthmobileFromPrivateKey(finalData, &error);
+                                EthmobileWallet *ethWallet = EthmobileFromPrivateKey(data, &error);
                                 weakSelf.ethWallet = ethWallet;
                             } @catch (NSException *exception) {
                                 NSLog(@"@exception = %@",exception);

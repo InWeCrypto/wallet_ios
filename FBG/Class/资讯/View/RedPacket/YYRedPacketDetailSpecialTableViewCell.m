@@ -130,7 +130,7 @@
     self.feesLabel.text = FEES_TEXT(number.doubleValue);
     
     self.senderAddrLabel.text = model.redbag_addr;
-    self.txidLabel.text = model.auth_tx_id;
+    self.txidLabel.text = model.redbag_tx_id;
     self.createTimeLabel.text = [NSString formatTimeDelayEight:model.created_at];
     
     if (self.status == RedBagStatusOpening || self.status == RedBagStatusDone) {

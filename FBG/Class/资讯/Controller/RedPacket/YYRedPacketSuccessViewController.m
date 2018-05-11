@@ -23,6 +23,10 @@
     
     [self getDetailData];
     [self setUI];
+    
+    if (self.isFromOpen) {
+        self.backIndex = 2;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {

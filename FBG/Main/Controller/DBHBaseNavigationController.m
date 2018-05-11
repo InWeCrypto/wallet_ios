@@ -9,6 +9,7 @@
 #import "DBHBaseNavigationController.h"
 
 #import "DBHBaseViewController.h"
+#import "YYRedPacketSuccessViewController.h"
 
 #define KEY_WINDOW  [[UIApplication sharedApplication] keyWindow]
 
@@ -115,6 +116,13 @@ static CGFloat min_distance = 60;// 最小回弹距离
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     if ([self.viewControllers.lastObject isKindOfClass:[DBHBaseViewController class]]) {
         DBHBaseViewController *currentVC = self.viewControllers.lastObject;
+        if (!currentVC.backIndex) {
+            return [super popViewControllerAnimated:animated];
+        } else {
+            return [self popToViewController:self.viewControllers[currentVC.backIndex - 1] animated:YES].lastObject;
+        }
+    } else if ([self.viewControllers.lastObject isKindOfClass:NSClassFromString(@"YYRedPacketSuccessViewController")]) {
+        YYRedPacketSuccessViewController *currentVC = self.viewControllers.lastObject;
         if (!currentVC.backIndex) {
             return [super popViewControllerAnimated:animated];
         } else {

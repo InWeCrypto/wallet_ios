@@ -496,7 +496,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             } else {
                 sum = [NSString stringWithFormat:@"%.02lf", sum.doubleValue];
             }
-            self.dataSource = tempArr;
+            [self.dataSource addObjectsFromArray:tempArr];
             self.noZeroDatasource = [NSMutableArray arrayWithArray:self.dataSource];
             
             WEAKSELF

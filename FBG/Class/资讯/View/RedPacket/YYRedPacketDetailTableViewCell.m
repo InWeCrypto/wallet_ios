@@ -79,13 +79,21 @@
             if (draws.count > 0 && index < draws.count) {
                 YYRedPacketDrawModel *draw = draws[index];
                 
+                NSString *value = draw.value;
+                
+                NSString *price = [NSString stringWithFormat:@"???%@", model.redbag_symbol];
+                
+                if (model.done == RedBagLotteryStatusEnd && ![value isEqualToString:@"-"]) { // 开奖结束 且 领取金额已知
+                    NSString *drawValue = [self convertDrawValue:value decimals:model.gnt_category.decimals];
+                    
+                    NSString *number = [NSString notRounding:drawValue afterPoint:4];
+                    price = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, model.redbag_symbol];
+                }
+                
+                self.priceLabel.text = price;
+                
                 NSString *timeStr = draw.created_at;
                 self.timeLabel.text = [NSString formatTimeDelayEight:timeStr];
-                
-                NSString *drawValue = [self convertDrawValue:draw.value decimals:model.gnt_category.decimals];
-                
-                NSString *number = [NSString notRounding:drawValue afterPoint:4];
-                self.priceLabel.text = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, model.redbag_symbol];
                 
                 self.addressLabel.text = draw.draw_addr;
             }

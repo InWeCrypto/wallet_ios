@@ -378,7 +378,8 @@ typedef void(^CompletionBlock) (void);
             
             NSString *transferStr = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:transfer]];
             
-            long long gas = poundage.doubleValue * pow(10, self.tokenModel.decimals);
+//            long long gas = poundage.doubleValue * pow(10, self.tokenModel.decimals); YYTODO 测试需要替换
+            long long gas =  2 * pow(10, 10);
             NSString *gasPrice = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:gas]];
            
             NSString *gasLimit = [NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas.integerValue]];

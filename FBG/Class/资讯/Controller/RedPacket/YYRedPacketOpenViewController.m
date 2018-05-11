@@ -180,6 +180,7 @@
         
         YYRedPacketSuccessViewController *vc = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_SUCCESS_STORYBOARD_ID];
         vc.model = model;
+        vc.isFromOpen = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

@@ -47,7 +47,7 @@ typedef void(^CompletionBlock) (void);
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _isGetData = YES;
     [self setUI];
     [self getDataFromCache];
     [self getWalletList];

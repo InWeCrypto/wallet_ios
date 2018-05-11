@@ -8,7 +8,7 @@
 
 #include <Foundation/Foundation.h>
 #include "universe.objc.h"
-
+#include "ref.h"
 
 @class EthmobileEthCall;
 @class EthmobileWallet;
@@ -62,7 +62,7 @@ FOUNDATION_EXPORT EthmobileWallet* EthmobileFromKeyStore(NSString* ks, NSString*
 
 FOUNDATION_EXPORT EthmobileWallet* EthmobileFromMnemonic(NSString* mnemonic, NSString* lang, NSError** error);
 
-FOUNDATION_EXPORT EthmobileWallet* EthmobileFromPrivateKey(NSData* privateKey, NSError** error);
+FOUNDATION_EXPORT EthmobileWallet* EthmobileFromPrivateKey(NSString* privateKey, NSError** error);
 
 FOUNDATION_EXPORT EthmobileWallet* EthmobileNew(NSError** error);
 

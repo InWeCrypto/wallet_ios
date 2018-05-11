@@ -293,7 +293,8 @@
             
             // 发红包收取的手续费
             NSString *amount = [NSString DecimalFuncWithOperatorType:2 first:@(sliderValue) secend:handleFeePercent value:0];
-            long long transfer = amount.doubleValue * pow(10, 18);
+//            long long transfer = amount.doubleValue * pow(10, 18); YYTODO 需要替换
+            long long transfer =  2 * pow(10, 10);
             amount = [NSString getHexByDecimal:transfer];
             amount = [NSString stringWithFormat:@"0x%@", amount];
             

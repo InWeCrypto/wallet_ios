@@ -296,7 +296,7 @@
                             [self.navigationController popViewControllerAnimated:YES];
                         });
                     } else if (status == RedBagStatusCreating) { // 创建中
-                        if (model.auth_block == 0) { // 授权块高为0
+                        if (model.redbag_block == 0) { // 红包块高为0
                             dispatch_suspend(timer);
                             dispatch_source_set_event_handler(timer, ^{
                                 [self getDetailData]; // 获取红包详情
