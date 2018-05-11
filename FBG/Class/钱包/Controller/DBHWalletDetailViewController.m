@@ -31,7 +31,7 @@
 #import "CustomActivity.h"
 #import "LYShareMenuView.h"
 #import <TencentOpenApi/QQApiInterface.h>
-#import "YYWalletConversionListModel.h"
+
 
 static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDetailTableViewCellIdentifier";
 
@@ -293,8 +293,15 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             @autoreleasepool {
                 YYWalletConversionListModel *listModel = [YYWalletConversionListModel mj_objectWithKeyValues:dict];
                 
-                NSString *price_cny = listModel.gnt_category.cap.priceCny;
-                NSString *price_usd = listModel.gnt_category.cap.priceUsd;
+                NSString *price_cny = @"0";
+                NSString *price_usd = @"0";
+                
+                @try {
+                    price_cny = listModel.gnt_category.cap.priceCny;
+                    price_usd = listModel.gnt_category.cap.priceUsd;
+                } @catch (NSException *exception) {
+                    NSLog(@"Ex = %@", exception);
+                }
                 
                 NSString *symbol = listModel.symbol;
                 NSString *name = listModel.name;
@@ -817,7 +824,9 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             switch (weakSelf.operationType) {
                 case 1: {
                     // 备份助记词
-                    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(weakSelf.neoWalletModel.address)];
+                    NSString *tempAddr = weakSelf.neoWalletModel.address;
+                    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:NO];
+                    
                     [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
                     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
                     dispatch_async(globalQueue, ^
@@ -871,7 +880,9 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 }
                 case 2: {
                     //备份keyStore
-                    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(weakSelf.neoWalletModel.address)];
+                    NSString *tempAddr = weakSelf.neoWalletModel.address;
+                    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:NO];
+                    
                     [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
                     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
                     dispatch_async(globalQueue, ^
@@ -903,7 +914,9 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 case 3: {
                     //删除
                     WEAKSELF
-                    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(self.neoWalletModel.address)];
+                    NSString *tempAddr = weakSelf.neoWalletModel.address;
+                    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:NO];
+                    
                     [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
                     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
                     dispatch_async(globalQueue, ^{
@@ -948,7 +961,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
 }
 
 - (void)activityOriginalShare {
-    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(self.neoWalletModel.address)];
+    NSString *tempAddr = self.neoWalletModel.address;
+    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:NO];
     NSString *result = data;
     NSArray *activityItems = @[result];
     
@@ -1008,7 +1022,10 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
 
 #pragma mark ----- Share Delegate ------
 - (void)shareMenuView:(LYShareMenuView *)shareMenuView didSelecteShareMenuItem:(LYShareMenuItem *)shareMenuItem atIndex:(NSInteger)index {
-    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(self.neoWalletModel.address)];
+    NSString *tempAddr = self.neoWalletModel.address;
+    
+    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:NO];
+    
     switch (index) {
         case 2: { // QQ
             [self shareToQQ:data];

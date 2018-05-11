@@ -11,7 +11,7 @@
 #import "DBHInputPasswordPromptView.h"
 #import "DBHExtractGasTableViewCell.h"
 
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTableViewCellIdentifier";
 
@@ -251,7 +251,10 @@ static NSString *const kDBHExtractGasTableViewCellIdentifier = @"kDBHExtractTabl
  NEO转账
  */
 - (void)transferAccountsForNEOWithPassword:(NSString *)password unspent:(NSString *)unspent {
-    id data = [PDKeyChain load:KEYCHAIN_KEY(self.gasTokenModel.address)];
+    NSString *tempAddr = self.gasTokenModel.address;
+    
+    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:NO];
+    
     // NEO钱包转账
     //子线程异步执行下载任务，防止主线程卡顿
     NSError * error;

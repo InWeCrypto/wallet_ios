@@ -18,10 +18,10 @@
 #import "DBHTransferListTableViewCell.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 #import "DBHTransferListDataModels.h"
 #import "DBHWalletManagerForNeoModelCategory.h"
-#import "YYWalletConversionListModel.h"
+
 #import "DBHWalletManagerForNeoModelList.h"
 #import "YYTransferListETHModel.h"
 
@@ -471,8 +471,16 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
                             @autoreleasepool {
                                 DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dict];
                                 
-                                NSString *price_cny = model.category.cap.priceCny;
-                                NSString *price_usd = model.category.cap.priceUsd;
+                                NSString *price_cny = @"0";
+                                NSString *price_usd = @"0";
+                                
+                                @try {
+                                    price_cny = model.category.cap.priceCny;
+                                    price_usd = model.category.cap.priceUsd;
+                                } @catch (NSException *exception) {
+                                    NSLog(@"Ex = %@", exception);
+                                }
+                                
                                 NSString *balance = model.balance;
                                 
                                 NSString *second = balance;

@@ -37,6 +37,7 @@
 @property (nonatomic, copy) NSString *zhujiStr;
 @property (nonatomic, copy) NSString *siyaoStr;
 @property (nonatomic, copy) NSString *watchStr;
+@property (nonatomic, strong) NSMutableArray *walletsArray;
 
 @end
 
@@ -53,6 +54,7 @@
     }
     
     [self setUI];
+    [self getWalletList];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -146,6 +148,66 @@
     self.placeHolderLabel.hidden = changeAfterString.length;
     
     return YES;
+}
+
+/**
+ 获取钱包列表
+ */
+- (void)getWalletList {
+    if (![UserSignData share].user.isLogin) {
+        return;
+    }
+    
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        WEAKSELF
+        [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) { // 不endrefresh 去获取代币中处理
+            [weakSelf handleWalletResponse:responseObject];
+        } failure:^(NSString *error) {
+            [LCProgressHUD showFailure:error];
+        }];
+    });
+}
+
+- (void)handleWalletResponse:(id)responseObj {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (![NSObject isNulllWithObject:responseObj]) { // 不为空
+            NSArray *list = responseObj[LIST];
+            
+            NSMutableArray *tempArr = nil;
+            if (![NSObject isNulllWithObject:list] && list.count != 0) { // 不为空
+                tempArr = [NSMutableArray array];
+                for (NSDictionary *dict in list) {
+                    @autoreleasepool {
+                        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dict];
+                        [tempArr addObject:model];
+                    }
+                }
+            }
+            self.walletsArray = tempArr;
+        }
+    });
+}
+
+- (NSInteger)indexOfArrByKey:(NSString *)keyStr {
+    __block NSInteger index = -1;
+    if ([NSObject isNulllWithObject:keyStr] || self.walletsArray.count == 0) {
+        return index;
+    }
+    
+    [self.walletsArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[DBHWalletManagerForNeoModelList class]]) {
+            DBHWalletManagerForNeoModelList *model = obj;
+            NSString *addrInArr = [model.address lowercaseString];
+            if ([[keyStr lowercaseString] isEqualToString:addrInArr]) {
+                index = idx;
+                *stop = YES;
+            }
+        }
+    }];
+    
+    return index;
 }
 
 #pragma mark ------ ScanVCDelegate ------
@@ -335,7 +397,15 @@
         }
         case 3: {
             // 观察
-            if ([NSString isNEOAdress:[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
+            NSString *address = [self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                
+            if ([NSString isNEOAdress:address]) {
+                NSInteger index = [self indexOfArrByKey:address];
+                if (index != -1) { // 已存在
+                    [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The wallet address already exist, please do not import repeatedly", nil)];
+                    return ;
+                }
+                
                 //创建成功
                 DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
                 createWalletWithNameViewController.walletType = 2;
@@ -485,7 +555,7 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [LCProgressHUD hide];
-                    if (!error) { //创建成功
+                    if (!error && weakSelf.neoWallet) { //创建成功
                         if (weakSelf.neoWalletModel) { // 转化钱包
                             if ([[weakSelf.neoWallet address] isEqualToString:weakSelf.neoWalletModel.address]) {
                                 if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包
@@ -526,6 +596,13 @@
                                 [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Incorrect wallet address, please confirm and try again", nil)];
                             }
                        } else { // 导入钱包
+                           
+                           NSInteger index = [self indexOfArrByKey:weakSelf.neoWallet.address];
+                           if (index != -1) { // 已存在
+                               [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The wallet address already exist, please do not import repeatedly", nil)];
+                               return ;
+                           }
+                           
                            if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore钱包
                                DBHCreateWalletWithNameViewController *createWalletWithNameViewController = [[DBHCreateWalletWithNameViewController alloc] init];
                                createWalletWithNameViewController.walletType = 2;
@@ -593,7 +670,7 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [LCProgressHUD hide];
-                    if (!error) { //创建成功
+                    if (!error && weakSelf.neoWallet) { //创建成功
                         if (weakSelf.neoWalletModel) { // 转化钱包
                             if ([[weakSelf.neoWallet address] isEqualToString:weakSelf.neoWalletModel.address]) {
                                 if (weakSelf.inputPasswordPromptView.inputPsdType == 0) { // 通过keystore转化钱包

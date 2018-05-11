@@ -33,8 +33,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
-    {
+    if (self) {
         self = [ChoseWalletView loadViewFromXIB];
         self.frame = frame;
         UITapGestureRecognizer * singleRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(maskViewSingleTap)];
@@ -52,18 +51,14 @@
 - (void)loadData
 {
     //加载左抽屉数据
-    [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil)  responseCache:^(id responseCache)
-     {
-         if (![NSString isNulllWithObject:[responseCache objectForKey:LIST]])
-         {
+    [PPNetworkHelper GET:@"wallet" baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil)  responseCache:^(id responseCache)  {
+         if (![NSString isNulllWithObject:[responseCache objectForKey:LIST]])  {
              [self.dataSource removeAllObjects];
-             for (NSDictionary * leftDic in [responseCache objectForKey:LIST])
-             {
+             for (NSDictionary * leftDic in [responseCache objectForKey:LIST]) {
                  WalletLeftListModel * model = [[WalletLeftListModel alloc] initWithDictionary:leftDic];
                  model.category_name = [[leftDic objectForKey:@"category"] objectForKey:NAME];
                  
-                 if ([NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]])
-                 {
+                 if ([NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]]) {
                      //观察钱包
                      model.isLookWallet = YES;
                  }
@@ -72,17 +67,13 @@
              }
              [self.coustromTableView reloadData];
          }
-     } success:^(id responseObject)
-     {
-         if (![NSString isNulllWithObject:[responseObject objectForKey:LIST]])
-         {
+     } success:^(id responseObject) {
+         if (![NSString isNulllWithObject:[responseObject objectForKey:LIST]]) {
              [self.dataSource removeAllObjects];
-             for (NSDictionary * leftDic in [responseObject objectForKey:LIST])
-             {
+             for (NSDictionary * leftDic in [responseObject objectForKey:LIST]) {
                  WalletLeftListModel * model = [[WalletLeftListModel alloc] initWithDictionary:leftDic];
                  model.category_name = [[leftDic objectForKey:@"category"] objectForKey:NAME];
-                 if ([NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]])
-                 {
+                 if ([NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]]) {
                      //观察钱包
                      model.isLookWallet = YES;
                  }

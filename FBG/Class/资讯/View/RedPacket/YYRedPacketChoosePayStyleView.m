@@ -39,7 +39,7 @@
 - (void)initUI {
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([YYChoosePayStyleTableViewCell class]) bundle:nil] forCellReuseIdentifier:CHOOSE_PAY_STYLE_CELL_ID];
 
-    self.titleLabel.text = DBHGetStringWithKeyFromTable(@"Choose Pay Style", nil);
+    self.titleLabel.text = DBHGetStringWithKeyFromTable(@"Choose method of payment", nil);
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;

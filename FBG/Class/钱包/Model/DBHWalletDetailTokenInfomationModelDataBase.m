@@ -6,7 +6,7 @@
 //
 
 #import "DBHWalletDetailTokenInfomationModelDataBase.h"
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 
 NSString *const kDBHWalletDetailTokenInfomationModelDataBaseCode = @"code";

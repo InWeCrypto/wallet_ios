@@ -536,7 +536,7 @@ yy-MM-dd HH:mm:ss
                 break;
             case 3: {
                 //            resultNumber = SNDiv_handler(first, secend, NSRoundPlain, value);
-                if (secondNumber.intValue == 0) {
+                if (secondNumber.doubleValue == 0) {
                     return @"0";
                 }
                 resultNumber = [firstNumber decimalNumberByDividingBy:secondNumber];
@@ -545,7 +545,7 @@ yy-MM-dd HH:mm:ss
         }
     } @catch (NSException *exception) {
         NSLog(@"e = %@", exception);
-        resultNumber = @"0";
+        resultNumber = [[NSDecimalNumber alloc] initWithString:@"0"];
     }
      
     return resultNumber.stringValue;
@@ -689,4 +689,56 @@ yy-MM-dd HH:mm:ss
     return [dateFormatter stringFromDate:newDate];
 
 }
+
++ (NSString *)getUUID {
+    NSString * strUUID = (NSString *)[PDKeyChain keyChainLoad];
+    
+    //首次执行该方法时，uuid为空
+    if (!strUUID || [strUUID isEqual:[NSNull null]] ||[strUUID isEqualToString:@""])  {
+        //生成一个uuid的方法
+        CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+        
+        strUUID = (NSString *)CFBridgingRelease(CFUUIDCreateString (kCFAllocatorDefault,uuidRef));
+        
+        //将该uuid保存到keychain
+        [PDKeyChain keyChainSave:strUUID];
+    }
+    return strUUID;
+}
+
++ (NSString *)keyChainDataFromKey:(NSString *)address isETH:(BOOL)isETH {
+    if ([NSObject isNulllWithObject:address]) {
+        return nil;
+    }
+    
+    NSString *data = nil;
+    
+    NSString *keyChainData0 = [PDKeyChain load:address];
+    if (isETH) { //ETH
+        NSString *lowerAddr = [address lowercaseString];
+        if (![NSObject isNulllWithObject:keyChainData0]) {
+            [PDKeyChain save:keyChainData0 data:KEYCHAIN_KEY(lowerAddr)];
+            [PDKeyChain delete:address];
+        }
+        
+        // 不一样 才将大写转成小写
+        if (![lowerAddr isEqualToString:address]) {
+            NSString *keyChainData1 = [PDKeyChain load:KEYCHAIN_KEY(address)];
+            if (![NSObject isNulllWithObject:keyChainData1]) {
+                [PDKeyChain save:keyChainData1 data:KEYCHAIN_KEY(lowerAddr)];
+                [PDKeyChain delete:KEYCHAIN_KEY(address)];
+            }
+        }
+        
+        data = [PDKeyChain load:KEYCHAIN_KEY(lowerAddr)];
+    } else { // NEO
+        if (![NSObject isNulllWithObject:keyChainData0]) {
+            [PDKeyChain save:keyChainData0 data:KEYCHAIN_KEY(address)];
+            [PDKeyChain delete:address];
+        }
+        data = [PDKeyChain load:KEYCHAIN_KEY(address)];
+    }
+    return data;
+}
+
 @end

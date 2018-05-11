@@ -139,14 +139,15 @@
 		1B48BAFF20637F56004E74EB /* RTDragCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B48BAFE20637F55004E74EB /* RTDragCellTableView.m */; };
 		1B530D2520987E6F00AA7D0B /* YYRedPacketOpenedListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D2420987E6F00AA7D0B /* YYRedPacketOpenedListModel.m */; };
 		1B530D2820987ED800AA7D0B /* YYRedPacketOpenedModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D2720987ED800AA7D0B /* YYRedPacketOpenedModel.m */; };
-		1B530D2B20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D2A20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m */; };
-		1B530D2E209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D2D209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m */; };
 		1B530D3420995F4200AA7D0B /* LDProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3020995F3E00AA7D0B /* LDProgressView.m */; };
 		1B530D3520995F4200AA7D0B /* UIColor+RGBValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3220995F4000AA7D0B /* UIColor+RGBValues.m */; };
-		1B530D38209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D37209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m */; };
 		1B530D3B209ABC0300AA7D0B /* YYRedPacketDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3A209ABC0300AA7D0B /* YYRedPacketDetailModel.m */; };
 		1B530D3E209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D3D209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m */; };
 		1B530D41209ABD1500AA7D0B /* YYRedPacketDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D40209ABD1500AA7D0B /* YYRedPacketDrawModel.m */; };
+		1B530D43209C32E700AA7D0B /* YYRedPacketChooseWalletView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B530D42209C32E700AA7D0B /* YYRedPacketChooseWalletView.xib */; };
+		1B530D46209C32FB00AA7D0B /* YYRedPacketChooseWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D45209C32FB00AA7D0B /* YYRedPacketChooseWalletView.m */; };
+		1B530D4A209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B530D48209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.m */; };
+		1B530D4B209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B530D49209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.xib */; };
 		1B544278204A635300746FA7 /* UserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B544277204A635300746FA7 /* UserLogin.m */; };
 		1B5BA456207F567700B03A4F /* YYEvaluateDetailAnalysisModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5BA455207F567700B03A4F /* YYEvaluateDetailAnalysisModel.m */; };
 		1B5BA45F2080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5BA45D2080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.m */; };
@@ -256,11 +257,11 @@
 		1BBD786320907AE4000FDC8E /* YYRedPacketSendFourthCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD785E20907AE2000FDC8E /* YYRedPacketSendFourthCodeViewController.m */; };
 		1BBD786420907AE4000FDC8E /* YYRedPacketSendFourthImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD786020907AE3000FDC8E /* YYRedPacketSendFourthImageViewController.m */; };
 		1BBD786520907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD786220907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m */; };
-		1BC4AFF120933AB0007DA66C /* YYRedPacketMySentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFF020933AB0007DA66C /* YYRedPacketMySentListModel.m */; };
 		1BC4AFF5209416ED007DA66C /* YYRedPacketSentCountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFF4209416ED007DA66C /* YYRedPacketSentCountModel.m */; };
 		1BC4AFF920945F39007DA66C /* YYRedPacketEthTokenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFF820945F39007DA66C /* YYRedPacketEthTokenModel.m */; };
 		1BC4AFFC20947CDE007DA66C /* YYWalletOtherInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFFB20947CDE007DA66C /* YYWalletOtherInfoModel.m */; };
 		1BC4AFFF20981E7C007DA66C /* YYRedPacketMySentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4AFFE20981E7C007DA66C /* YYRedPacketMySentModel.m */; };
+		1BCF3EE520A42B4A00F8CB13 /* YYRedPacketOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF3EE420A42B4A00F8CB13 /* YYRedPacketOpenViewController.m */; };
 		1BDA485F205C88ED006A0E9D /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BDA485C205C88EC006A0E9D /* README.txt */; };
 		1BDA4860205C88ED006A0E9D /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA485E205C88EC006A0E9D /* libWeChatSDK.a */; };
 		1BDA4862205C89E5006A0E9D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDA4861205C89E5006A0E9D /* CFNetwork.framework */; };
@@ -958,22 +959,22 @@
 		1B530D2420987E6F00AA7D0B /* YYRedPacketOpenedListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenedListModel.m; sourceTree = "<group>"; };
 		1B530D2620987ED800AA7D0B /* YYRedPacketOpenedModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketOpenedModel.h; sourceTree = "<group>"; };
 		1B530D2720987ED800AA7D0B /* YYRedPacketOpenedModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenedModel.m; sourceTree = "<group>"; };
-		1B530D2920987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketOpenedRedBagModel.h; sourceTree = "<group>"; };
-		1B530D2A20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenedRedBagModel.m; sourceTree = "<group>"; };
-		1B530D2C209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketOpenedRedBagGntCategoryModel.h; sourceTree = "<group>"; };
-		1B530D2D209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenedRedBagGntCategoryModel.m; sourceTree = "<group>"; };
 		1B530D3020995F3E00AA7D0B /* LDProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDProgressView.m; sourceTree = "<group>"; };
 		1B530D3120995F3E00AA7D0B /* LDProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDProgressView.h; sourceTree = "<group>"; };
 		1B530D3220995F4000AA7D0B /* UIColor+RGBValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RGBValues.m"; sourceTree = "<group>"; };
 		1B530D3320995F4100AA7D0B /* UIColor+RGBValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RGBValues.h"; sourceTree = "<group>"; };
-		1B530D36209986CC00AA7D0B /* YYRedPacketWalletTokenModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketWalletTokenModel.h; sourceTree = "<group>"; };
-		1B530D37209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketWalletTokenModel.m; sourceTree = "<group>"; };
 		1B530D39209ABC0300AA7D0B /* YYRedPacketDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDetailModel.h; sourceTree = "<group>"; };
 		1B530D3A209ABC0300AA7D0B /* YYRedPacketDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDetailModel.m; sourceTree = "<group>"; };
 		1B530D3C209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketRedBagInfoModel.h; sourceTree = "<group>"; };
 		1B530D3D209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketRedBagInfoModel.m; sourceTree = "<group>"; };
 		1B530D3F209ABD1500AA7D0B /* YYRedPacketDrawModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDrawModel.h; sourceTree = "<group>"; };
 		1B530D40209ABD1500AA7D0B /* YYRedPacketDrawModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDrawModel.m; sourceTree = "<group>"; };
+		1B530D42209C32E700AA7D0B /* YYRedPacketChooseWalletView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketChooseWalletView.xib; sourceTree = "<group>"; };
+		1B530D44209C32FB00AA7D0B /* YYRedPacketChooseWalletView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketChooseWalletView.h; sourceTree = "<group>"; };
+		1B530D45209C32FB00AA7D0B /* YYRedPacketChooseWalletView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketChooseWalletView.m; sourceTree = "<group>"; };
+		1B530D47209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketChooseWalletTableViewCell.h; sourceTree = "<group>"; };
+		1B530D48209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketChooseWalletTableViewCell.m; sourceTree = "<group>"; };
+		1B530D49209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketChooseWalletTableViewCell.xib; sourceTree = "<group>"; };
 		1B544276204A635300746FA7 /* UserLogin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserLogin.h; sourceTree = "<group>"; };
 		1B544277204A635300746FA7 /* UserLogin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserLogin.m; sourceTree = "<group>"; };
 		1B5BA454207F567700B03A4F /* YYEvaluateDetailAnalysisModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYEvaluateDetailAnalysisModel.h; sourceTree = "<group>"; };
@@ -1166,8 +1167,6 @@
 		1BBD786020907AE3000FDC8E /* YYRedPacketSendFourthImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFourthImageViewController.m; sourceTree = "<group>"; };
 		1BBD786120907AE3000FDC8E /* YYRedPacketSendFourthLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSendFourthLinkViewController.h; sourceTree = "<group>"; };
 		1BBD786220907AE4000FDC8E /* YYRedPacketSendFourthLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSendFourthLinkViewController.m; sourceTree = "<group>"; };
-		1BC4AFEF20933AB0007DA66C /* YYRedPacketMySentListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketMySentListModel.h; sourceTree = "<group>"; };
-		1BC4AFF020933AB0007DA66C /* YYRedPacketMySentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketMySentListModel.m; sourceTree = "<group>"; };
 		1BC4AFF220933AC1007DA66C /* YYRedPacketModels.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketModels.h; sourceTree = "<group>"; };
 		1BC4AFF4209416ED007DA66C /* YYRedPacketSentCountModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketSentCountModel.m; sourceTree = "<group>"; };
 		1BC4AFF620941BA1007DA66C /* YYRedPacketSentCountModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRedPacketSentCountModel.h; sourceTree = "<group>"; };
@@ -1177,6 +1176,8 @@
 		1BC4AFFB20947CDE007DA66C /* YYWalletOtherInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYWalletOtherInfoModel.m; sourceTree = "<group>"; };
 		1BC4AFFD20981E7C007DA66C /* YYRedPacketMySentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketMySentModel.h; sourceTree = "<group>"; };
 		1BC4AFFE20981E7C007DA66C /* YYRedPacketMySentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketMySentModel.m; sourceTree = "<group>"; };
+		1BCF3EE320A42B4A00F8CB13 /* YYRedPacketOpenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketOpenViewController.h; sourceTree = "<group>"; };
+		1BCF3EE420A42B4A00F8CB13 /* YYRedPacketOpenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketOpenViewController.m; sourceTree = "<group>"; };
 		1BDA485A205C88EC006A0E9D /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		1BDA485B205C88EC006A0E9D /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		1BDA485C205C88EC006A0E9D /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -2601,6 +2602,8 @@
 				1B24E8FD2092C0F800E1974E /* YYRedPacketDetailViewController.m */,
 				1B881DC0209315F1003D92EF /* YYRedPacketSuccessViewController.h */,
 				1B881DC1209315F1003D92EF /* YYRedPacketSuccessViewController.m */,
+				1BCF3EE320A42B4A00F8CB13 /* YYRedPacketOpenViewController.h */,
+				1BCF3EE420A42B4A00F8CB13 /* YYRedPacketOpenViewController.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2609,8 +2612,6 @@
 			isa = PBXGroup;
 			children = (
 				1BC4AFF220933AC1007DA66C /* YYRedPacketModels.h */,
-				1BC4AFEF20933AB0007DA66C /* YYRedPacketMySentListModel.h */,
-				1BC4AFF020933AB0007DA66C /* YYRedPacketMySentListModel.m */,
 				1BC4AFF620941BA1007DA66C /* YYRedPacketSentCountModel.h */,
 				1BC4AFF4209416ED007DA66C /* YYRedPacketSentCountModel.m */,
 				1BC4AFF720945F39007DA66C /* YYRedPacketEthTokenModel.h */,
@@ -2621,12 +2622,6 @@
 				1B530D2420987E6F00AA7D0B /* YYRedPacketOpenedListModel.m */,
 				1B530D2620987ED800AA7D0B /* YYRedPacketOpenedModel.h */,
 				1B530D2720987ED800AA7D0B /* YYRedPacketOpenedModel.m */,
-				1B530D2920987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.h */,
-				1B530D2A20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m */,
-				1B530D2C209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.h */,
-				1B530D2D209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m */,
-				1B530D36209986CC00AA7D0B /* YYRedPacketWalletTokenModel.h */,
-				1B530D37209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m */,
 				1B530D39209ABC0300AA7D0B /* YYRedPacketDetailModel.h */,
 				1B530D3A209ABC0300AA7D0B /* YYRedPacketDetailModel.m */,
 				1B530D3C209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.h */,
@@ -2673,6 +2668,12 @@
 				1B881DB82092D21A003D92EF /* YYRedPacketDetailHeaderView.xib */,
 				1B881DC320931667003D92EF /* YYRedPacketSucessTableViewCell.h */,
 				1B881DC420931667003D92EF /* YYRedPacketSucessTableViewCell.m */,
+				1B530D44209C32FB00AA7D0B /* YYRedPacketChooseWalletView.h */,
+				1B530D45209C32FB00AA7D0B /* YYRedPacketChooseWalletView.m */,
+				1B530D42209C32E700AA7D0B /* YYRedPacketChooseWalletView.xib */,
+				1B530D47209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.h */,
+				1B530D48209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.m */,
+				1B530D49209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.xib */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -4347,6 +4348,7 @@
 				1BBD7821208DB73D000FDC8E /* RedPacket.storyboard in Resources */,
 				A8A818551F4488A700FFF088 /* CommitOrderView.xib in Resources */,
 				D577EED9202C5EC500E96DA0 /* AboutVC.xib in Resources */,
+				1B530D43209C32E700AA7D0B /* YYRedPacketChooseWalletView.xib in Resources */,
 				A81A5ADA1F3A07950015CC0D /* TowButtonAlertView.xib in Resources */,
 				D51E66DE2015E20C0025B502 /* AddWalletSucessVC.xib in Resources */,
 				0FAC29041F2F7C4A009B3EC9 /* AAChartView.html in Resources */,
@@ -4361,6 +4363,7 @@
 				0FF783081F2B196900F5B3D2 /* Localizable.strings in Resources */,
 				1B2D32F92085DB88007E4F02 /* YYRedPacketSection0TableViewCell.xib in Resources */,
 				0FDD5F291F2D672300228CE0 /* PassWordView.xib in Resources */,
+				1B530D4B209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.xib in Resources */,
 				D51E66E72015E20C0025B502 /* SurePackupsWordVC.xib in Resources */,
 				1B99F94D207A6183004FD7F7 /* DBHCommentDetailTableViewCell.xib in Resources */,
 				0FDD5F3F1F2DE0D400228CE0 /* AlertView.xib in Resources */,
@@ -4622,7 +4625,6 @@
 				A88A78921F6992E90058094C /* SGQRCodeGenerateManager.m in Sources */,
 				A80713581F5563CE00C5B862 /* NSArray+MASAdditions.m in Sources */,
 				0FAC29131F2F7C4A009B3EC9 /* AALegend.m in Sources */,
-				1BC4AFF120933AB0007DA66C /* YYRedPacketMySentListModel.m in Sources */,
 				1BDA4871205C9C8E006A0E9D /* LYShareMenuItem.m in Sources */,
 				D534FD8F1FFF540400FDA8BE /* DBHBaseTableViewCell.m in Sources */,
 				1B99F8AA2074B007004FD7F7 /* DBHProjectCommentUserModel.m in Sources */,
@@ -4739,7 +4741,6 @@
 				D5B20DB9201E3D6500E2B935 /* DBHCandyBowlTableViewCell.m in Sources */,
 				1B7B89A720862197009F7D69 /* YYTransferListViewController.m in Sources */,
 				D565E8FB201728C200930274 /* DBHAddressBookMenuView.m in Sources */,
-				1B530D2E209880B600AA7D0B /* YYRedPacketOpenedRedBagGntCategoryModel.m in Sources */,
 				D51E66D42015E20C0025B502 /* AddWalletSucessVC.m in Sources */,
 				D572EBFD2022F77E002C8EFD /* NSDate+Category.m in Sources */,
 				D55558031FC975C100F0963B /* CHSection.swift in Sources */,
@@ -4856,6 +4857,7 @@
 				1B99F91A207773C1004FD7F7 /* DBHProjectCommentSendViewController.m in Sources */,
 				1B244AB72059090100DE097C /* WKWebView+Tool.m in Sources */,
 				1B07209E2066945000D4A0C9 /* DBHLineValueView.m in Sources */,
+				1BCF3EE520A42B4A00F8CB13 /* YYRedPacketOpenViewController.m in Sources */,
 				D565E91620182F1400930274 /* DBHMonetaryUnitViewController.m in Sources */,
 				D572EC082022F77E002C8EFD /* EaseEmotionManager.m in Sources */,
 				D572EC272022F77E002C8EFD /* EMCDDeviceManager+Microphone.m in Sources */,
@@ -4887,6 +4889,7 @@
 				D51E66D62015E20C0025B502 /* DBHWalletManagerViewController.m in Sources */,
 				D572EC282022F77E002C8EFD /* EMAudioRecorderUtil.m in Sources */,
 				1B244A8D2057701F00DE097C /* UIButton+Tool.m in Sources */,
+				1B530D46209C32FB00AA7D0B /* YYRedPacketChooseWalletView.m in Sources */,
 				D51E669F201200B40025B502 /* DBHLoginViewController.m in Sources */,
 				1B77F6E3206E212600B198A9 /* DBHRankDetailSection1TableViewCell.m in Sources */,
 				D565E907201738C100930274 /* DBHMyFavoriteTableViewCell.m in Sources */,
@@ -4898,7 +4901,7 @@
 				D572EC3B2022F77E002C8EFD /* PSTGridLayoutSection.m in Sources */,
 				D572D23520219A7E002C8EFD /* DBHFunctionalUnitLookTableViewCell.m in Sources */,
 				D572EC662022F77E002C8EFD /* EaseRecordView.m in Sources */,
-				1B530D2B20987FA100AA7D0B /* YYRedPacketOpenedRedBagModel.m in Sources */,
+				1B530D4A209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.m in Sources */,
 				D572EC252022F77E002C8EFD /* EMCDDeviceManager+ProximitySensor.m in Sources */,
 				1BDA487D205FA94F006A0E9D /* DBHSharedItem.m in Sources */,
 				1B99F93E207A037A004FD7F7 /* YYEvaluateTagTableViewCell.m in Sources */,
@@ -5095,7 +5098,6 @@
 				1B77F6E0206E205A00B198A9 /* DBHRankDetailSection0TableViewCell.m in Sources */,
 				1B99F888207385C5004FD7F7 /* DBHMyCommentsViewController.m in Sources */,
 				D51E66D92015E20C0025B502 /* DBHImportWalletViewController.m in Sources */,
-				1B530D38209986CC00AA7D0B /* YYRedPacketWalletTokenModel.m in Sources */,
 				D572EC022022F77E002C8EFD /* EaseMessageReadManager.m in Sources */,
 				A88A78941F6992E90058094C /* SGQRCodeScanManager.m in Sources */,
 				D55B5267202D8F35004D65F7 /* DBHImportWalletWithETHViewController.m in Sources */,

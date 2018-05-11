@@ -12,7 +12,7 @@
 
 @interface YYRedPacketDetailViewController : UITableViewController
 
-@property (nonatomic, strong) YYRedPacketMySentListModel *model;
+@property (nonatomic, strong) YYRedPacketDetailModel *model;
 @property (nonatomic, strong) NSMutableArray *ethWalletsArr;
 
 @end

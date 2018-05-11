@@ -10,7 +10,10 @@
 
 @interface YYRedPacketSentCountModel : NSObject
 
-@property (nonatomic, assign) NSInteger success_redbag;
-@property (nonatomic, assign) NSInteger be_on_redbag;
+@property (nonatomic, assign) NSInteger all; // 全部
+@property (nonatomic, assign) NSInteger fail;  // 发送失败
+@property (nonatomic, assign) NSInteger success; // 发送成功
+@property (nonatomic, assign) NSInteger create; // 创建中
+@property (nonatomic, assign) NSInteger send; // 发送中
 
 @end

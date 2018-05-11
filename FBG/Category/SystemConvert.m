@@ -238,6 +238,7 @@ static NSMutableDictionary *_bitQDic;
  *  十六进制 -> 十进制
  */
 + (NSString *)hexToDecimal:(NSString *)hex{
+    hex = [hex uppercaseString];
     return [self binaryToDecimal:[self hexToBinary:hex]];
 }
 @end

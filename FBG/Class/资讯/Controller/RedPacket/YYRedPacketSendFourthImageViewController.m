@@ -12,7 +12,7 @@
 #import "TZImagePickerController.h"
 #import "YYRedPacketPreviewViewController.h"
 
-@interface YYRedPacketSendFourthImageViewController ()<TZImagePickerControllerDelegate>
+@interface YYRedPacketSendFourthImageViewController ()<TZImagePickerControllerDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *progressView;
 @property (weak, nonatomic) IBOutlet UILabel *fourthLabel;
@@ -30,6 +30,10 @@
 @property (weak, nonatomic) IBOutlet UIView *photoView;
 @property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
 @property (weak, nonatomic) IBOutlet UIButton *deletePhotoBtn;
+@property (assign, nonatomic) BOOL isSendRedBag;
+
+@property (copy, nonatomic) NSString *selectedImageURL;
+
 @end
 
 @implementation YYRedPacketSendFourthImageViewController
@@ -54,7 +58,10 @@
 
 #pragma mark ------- SetUI ---------
 - (void)setUI {
-    self.title = DBHGetStringWithKeyFromTable(@"Send RedPacket", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Send Red Packet", nil);
+    
+    [self.senderNameTextField addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
+    self.bestTextView.delegate = self;
     
     CALayer *layer = [CALayer layer];
     layer.frame = CGRectMake(0, 0, SCREEN_WIDTH, 4);
@@ -69,9 +76,13 @@
     [self.senderView setBorderWidth:0.5f color:COLORFROM16(0xD9D9D9, 1)];
     [self.bestView setBorderWidth:0.5f color:COLORFROM16(0xD9D9D9, 1)];
     
-    self.senderNameTextField.placeholder = DBHGetStringWithKeyFromTable(@"Sender Name", nil);
-    self.bestTextView.placeholder = DBHGetStringWithKeyFromTable(@"Best / Message", nil);
+    self.senderNameTextField.placeholder = DBHGetStringWithKeyFromTable(@"Sender's Name", nil);
+    self.bestTextView.placeholder = DBHGetStringWithKeyFromTable(@"Wishes / Messages", nil);
     
+    [self.shareBtn setBackgroundColor:COLORFROM16(0xD5D5D5, 1) forState:UIControlStateDisabled];
+    [self.shareBtn setBackgroundColor:COLORFROM16(0xEA6204, 1) forState:UIControlStateNormal];
+    
+    self.shareBtn.enabled = NO;
     [self.shareBtn setCorner:2];
     [self.shareBtn setTitle:DBHGetStringWithKeyFromTable(@"Preview And Share", nil) forState:UIControlStateNormal];
     
@@ -176,6 +187,8 @@
                                    weakSelf.addPhotoBtn.hidden = YES;
                                    
                                    [weakSelf.photoImageView sdsetImageWithURL:publicURL placeholderImage:nil];
+                                   
+                                   weakSelf.selectedImageURL = publicURL;
                                });
             }
             else
@@ -187,17 +200,93 @@
     }];
 }
 
+#pragma mark ------- text field and text view ---------
+- (void)textFieldTextChange:(UITextField *)textField {
+    if (textField.text.length != 0 && self.bestTextView.text.length != 0 && self.selectedImageURL.length > 0) {
+        self.shareBtn.enabled = YES;
+    } else {
+        self.shareBtn.enabled = NO;
+    }
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    if (textView.text.length != 0 && self.senderNameTextField.text.length != 0 && self.selectedImageURL.length > 0) {
+        self.shareBtn.enabled = YES;
+    } else {
+        self.shareBtn.enabled = NO;
+    }
+}
+
+#pragma mark ----- Setters And Getters ---------
+- (void)setSelectedImageURL:(NSString *)selectedImageURL {
+    _selectedImageURL = selectedImageURL;
+    if (selectedImageURL.length > 0 && self.bestTextView.text.length > 0 && self.senderNameTextField.text.length > 0) {
+        self.shareBtn.enabled = YES;
+    } else {
+        self.shareBtn.enabled = NO;
+    }
+}
+
+#pragma mark ------- Data ---------
+- (void)sendRedPacket:(NSString *)senderName best:(NSString *)best {
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        NSString *urlStr = [NSString stringWithFormat:@"redbag/send/%@/%@", @(self.model.redPacketId), self.model.redbag_addr];
+        
+        if ([NSObject isNulllWithObject:self.selectedImageURL]) {
+            _selectedImageURL = @"";
+        }
+        
+        NSDictionary *params = @{
+                                 @"share_type" : @"1", // 红包分享类型,1.图片,2.文字,3.url,4code
+                                 @"share_attr" : _selectedImageURL, // 红包分享内容,图片链接,文章内容,url
+                                 @"share_user" : senderName, // 红包分享用户
+                                 @"share_msg" : best, // 红包分享消息
+                                 };
+        WEAKSELF
+        [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
+            [weakSelf handleResponse:responseObject];
+        } failure:^(NSString *error) {
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        }];
+    });
+}
+
+- (void)handleResponse:(id)responseObj {
+    if ([NSObject isNulllWithObject:responseObj]) {
+        return;
+    }
+    
+    if ([responseObj isKindOfClass:[NSDictionary class]]) {
+        _isSendRedBag = YES;
+        self.backIndex = 2;
+        
+        YYRedPacketDetailModel *model = [YYRedPacketDetailModel mj_objectWithKeyValues:responseObj];
+        
+        YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
+        previewVC.detailModel = model;
+        [self.navigationController pushViewController:previewVC animated:YES];
+    }
+}
 
 #pragma mark ----- RespondsToSelector ---------
 - (IBAction)respondsToShareBtn:(UIButton *)sender {
+    if (_isSendRedBag) {
+        return;
+    }
     NSString *bestStr = self.bestTextView.text;
-    if (bestStr.length > 0 && bestStr.length < 10) {
-        //YYTODO
-        //        return;
+    NSString *senderName = self.senderNameTextField.text;
+    
+    if ([NSObject isNulllWithObject:bestStr]) {
+        bestStr = @"";
     }
     
-    YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
-    [self.navigationController pushViewController:previewVC animated:YES];
+    if ([NSObject isNulllWithObject:senderName]) {
+        senderName = @"";
+    }
+    
+    [self sendRedPacket:senderName best:bestStr];
 }
 
 - (IBAction)respondsToAddPhotoBtn:(UIButton *)sender {
@@ -208,5 +297,7 @@
 - (IBAction)respondsToDeletePhotoBtn:(UIButton *)sender {
     self.photoView.hidden = YES;
     self.addPhotoBtn.hidden = NO;
+    
+    self.selectedImageURL = nil;
 }
 @end

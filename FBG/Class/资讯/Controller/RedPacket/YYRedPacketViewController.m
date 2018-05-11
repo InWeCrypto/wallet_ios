@@ -24,13 +24,22 @@
 #define SENT_COUNT_MODEL @"sent_count_model"
 #define ETH_WALLET_LIST @"eth_wallet_list"
 
-@interface YYRedPacketViewController () <UITableViewDelegate, UITableViewDataSource>
+typedef void(^CompletionBlock) (void);
+
+@interface YYRedPacketViewController () <UITableViewDelegate, UITableViewDataSource> {
+    dispatch_queue_t queue;
+    dispatch_group_t group;
+}
 
 @property (weak, nonatomic) UITableView *tableView;
 @property (nonatomic, weak) YYRedPacketHomeHeaderView *headerView;
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) YYRedPacketSentCountModel *countModel;
+@property (nonatomic, assign) BOOL isFinishTokenListAndETH;
+@property (nonatomic, assign) BOOL isFinishGetSentCount;
+@property (nonatomic, assign) BOOL isFinishGetSentList;
+@property (nonatomic, assign) BOOL isGetData;
 
 @end
 
@@ -44,10 +53,22 @@
     [self getWalletList];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (!_isGetData) {
+        [self getData];
+    }
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    _isGetData = NO;
 }
 
 - (void)setNavigationTintColor {
@@ -56,7 +77,6 @@
 
 - (void)setUI {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Opened Record", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToRecordBarButtonItem)];
-    
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     
@@ -82,7 +102,6 @@
     if (@available(iOS 11.0, *)) {
         tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     } else {
-        // Fallback on earlier versions
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
@@ -183,47 +202,191 @@
  获取已发送的红包列表 和 发送的红包总个数
  */
 - (void)getData {
+    _isGetData = YES;
     if (![UserSignData share].user.isLogin) {
         return;
     }
     
+    _isFinishGetSentCount = NO;
+    _isFinishGetSentList = NO;
     NSString *urlStr = @"redbag/send_record?per_page=10";
-    dispatch_async(dispatch_get_global_queue(
-                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
-                                             0), ^{
-        
-        NSMutableArray *tempAddrArr = [NSMutableArray array];
-        for (DBHWalletManagerForNeoModelList *model in self.ethWalletsArray) {
-            @autoreleasepool {
-                NSString *addr = model.address;
-                if (![NSObject isNulllWithObject:addr]) {
-                    [tempAddrArr addObject:addr];
+    NSMutableArray *tempAddrArr = [NSMutableArray array];
+    for (DBHWalletManagerForNeoModelList *model in self.ethWalletsArray) {
+        @autoreleasepool {
+            NSString *addr = model.address;
+            if (![NSObject isNulllWithObject:addr]) {
+                [tempAddrArr addObject:[addr lowercaseString]];
+            }
+        }
+    }
+
+    NSDictionary *params = @{
+                             @"wallet_addrs" : tempAddrArr
+                             };
+    
+    WEAKSELF
+    [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+        [weakSelf handleResponse:responseObject type:1];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+    }];
+    
+    [PPNetworkHelper POST:@"redbag/send_count" baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+        [weakSelf handleResponse:responseObject type:2];
+    } failure:^(NSString *error) {
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+    }];
+}
+
+#pragma mark ------- Data ---------
+- (void)handleTokenListReponse:(id)responseObj withWallet:(DBHWalletManagerForNeoModelList *)walletModel {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableArray *tempTokensArr = nil;
+        if (![NSObject isNulllWithObject:responseObj] && [responseObj isKindOfClass:[NSDictionary class]]) {
+            NSArray *dataArray = responseObj[LIST];
+            if (![NSObject isNulllWithObject:dataArray] &&
+                [dataArray isKindOfClass:[NSArray class]] &&
+                dataArray.count > 0) {
+                tempTokensArr = [NSMutableArray array];
+                NSString *typeName = walletModel.category.name;
+                for (NSDictionary *dict in dataArray) {
+                    @autoreleasepool {
+                        YYWalletConversionListModel *listModel = [YYWalletConversionListModel mj_objectWithKeyValues:dict];
+                        NSString *price_cny = @"0";
+                        NSString *price_usd = @"0";
+                        
+                        @try {
+                            price_cny = listModel.gnt_category.cap.priceCny;
+                            price_usd = listModel.gnt_category.cap.priceUsd;
+                        } @catch (NSException *exception) {
+                            NSLog(@"Ex = %@", exception);
+                        }
+                        
+                        NSString *symbol = listModel.symbol;
+                        NSString *balance = listModel.balance;
+                        NSInteger decimals = listModel.decimals;
+                        
+                        DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
+                        model.address = listModel.gnt_category.address;
+                        model.symbol = symbol;
+                        model.typeName = typeName;
+                        model.name = listModel.gnt_category.name;
+                        model.icon = listModel.gnt_category.icon;
+                        model.flag = model.name;
+                        
+                        model.priceCny = price_cny;
+                        model.priceUsd = price_usd;
+                        
+                        NSString *temp, *second = @"0";
+                        if (![NSObject isNulllWithObject:balance] && balance.length > 2) {
+                            temp = [NSString numberHexString:[balance substringFromIndex:2]];
+                            second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:[NSString stringWithFormat:@"%lf", pow(10, decimals)] value:8];
+                            
+                            // 代币数量统计
+                            if (![NSObject isNulllWithObject:second])
+                                [walletModel.tokenStatistics setObject:second forKey:model.name];
+                        }
+                        model.balance = second;
+                        
+                        [tempTokensArr addObject:model];
+                    }
                 }
             }
         }
-
-        NSDictionary *params = @{
-                                 @"wallet_addrs" : tempAddrArr
-                                 };
         
-        WEAKSELF
-        [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
-            [LCProgressHUD hide];
-            [weakSelf handleResponse:responseObject type:1];
-        } failure:^(NSString *error) {
-            [LCProgressHUD hide];
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
-        }];
+        YYWalletOtherInfoModel *infoModel = walletModel.infoModel;
+        if (!infoModel) {
+            infoModel = [[YYWalletOtherInfoModel alloc] init];
+        }
         
-        [PPNetworkHelper POST:@"redbag/send_count" baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
-            [LCProgressHUD hide];
-            [weakSelf handleResponse:responseObject type:2];
-        } failure:^(NSString *error) {
-            [LCProgressHUD hide];
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
-        }];
+        infoModel.tokensArray = tempTokensArr;
+        walletModel.infoModel = infoModel;
+        
+        dispatch_group_leave(group);
     });
 }
+
+- (void)handleConversionReponse:(id)responseObj withWallet:(DBHWalletManagerForNeoModelList *)walletModel {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (![NSObject isNulllWithObject:responseObj]) {
+            NSArray *dataArray = responseObj[LIST];
+            
+            DBHWalletDetailTokenInfomationModelData *ethModel = [[DBHWalletDetailTokenInfomationModelData alloc] init];
+            ethModel.name = ETH;
+            ethModel.icon = ETH;
+            ethModel.flag = ETH;
+            
+            if (![NSObject isNulllWithObject:dataArray] && dataArray.count > 0) {
+                for (NSDictionary *dict in dataArray) {
+                    @autoreleasepool {
+                        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dict];
+                        
+                        NSString *price_cny = @"0";
+                        NSString *price_usd = @"0";
+                        
+                        @try {
+                            price_cny = model.category.cap.priceCny;
+                            price_usd = model.category.cap.priceUsd;
+                        } @catch (NSException *exception) {
+                            NSLog(@"Ex = %@", exception);
+                        }
+                        
+                        NSString *balance = model.balance;
+                        
+                        NSString *second = balance;
+                        if (model.categoryId == 1) { //ETH
+                            NSString *temp = @"0";
+                            if (![NSObject isNulllWithObject:balance] && balance.length > 2) {
+                                temp = [NSString numberHexString:[balance substringFromIndex:2]];
+                            }
+                            second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:@"1000000000000000000" value:8];
+                            
+                            ethModel.balance = second;
+                            ethModel.priceCny = price_cny;
+                            ethModel.priceUsd = price_usd;
+                            ethModel.address = model.address;
+                        }
+                    }
+                }
+            } else {
+                ethModel.balance = @"0";
+                ethModel.priceCny = @"0";
+                ethModel.priceUsd = @"0";
+            }
+            
+            YYWalletOtherInfoModel *infoModel = walletModel.infoModel;
+            if (!infoModel) {
+                infoModel = [[YYWalletOtherInfoModel alloc] init];
+            }
+            
+            infoModel.ethModel = ethModel;
+            walletModel.infoModel = infoModel;
+            
+            dispatch_group_leave(group);
+        }
+    });
+}
+
+- (void)getTokens:(DBHWalletManagerForNeoModelList *)model {
+    WEAKSELF
+    [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%ld", (NSInteger)model.listIdentifier] baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject) {
+        [weakSelf handleTokenListReponse:responseObject withWallet:model];
+    } failure:^(NSString *error) {
+        [weakSelf handleTokenListReponse:nil withWallet:model];
+    }];
+}
+
+// 获取ETH
+- (void)getETHModel:(DBHWalletManagerForNeoModelList *)model {
+    WEAKSELF
+    NSDictionary *paramsDict = @{@"wallet_ids" : [@[@(model.listIdentifier)] toJSONStringForArray]};
+    [PPNetworkHelper GET:@"conversion" baseUrlType:1 parameters:paramsDict hudString:nil success:^(id responseObject) {
+        [weakSelf handleConversionReponse:responseObject withWallet:model];
+    } failure:^(NSString *error) {
+        [weakSelf handleConversionReponse:nil withWallet:model];
+    }];
+}
+
 
 - (void)handleResponse:(id)responseObj type:(NSInteger)type {
     dispatch_async(dispatch_get_global_queue(
@@ -245,6 +408,8 @@
  @param responseObj 返回体
  */
 - (void)walletListResponse:(id)responseObj {
+    _isFinishTokenListAndETH = NO;
+    
     NSMutableArray *tempArr = nil;
     BOOL isHasData = NO;
     if (![NSObject isNulllWithObject:responseObj]) {
@@ -257,7 +422,10 @@
                 for (NSDictionary *dict in list) {
                     @autoreleasepool {
                         DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dict];
-                        BOOL isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+                        
+                        NSString *data = [NSString keyChainDataFromKey:model.address isETH:YES];
+                        
+                        BOOL isLookWallet = [NSString isNulllWithObject:data];
                         if (model.categoryId == 1 && !isLookWallet) { //ETH 且不是观察钱包
                             model.isLookWallet = isLookWallet;
                             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
@@ -268,11 +436,47 @@
             }
         }
     }
-    self.ethWalletsArray = tempArr;
-    [self cacheData:tempArr withKey:ETH_WALLET_LIST];
     
+    self.ethWalletsArray = tempArr;
     if (tempArr.count > 0) {
         [self getData];
+        
+        if (![UserSignData share].user.isLogin) {
+            return;
+        }
+        
+        // 创建全局并行
+        queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        group = dispatch_group_create();
+        
+        WEAKSELF
+        [self.ethWalletsArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            @autoreleasepool {
+                DBHWalletManagerForNeoModelList *model = obj;
+                
+                dispatch_group_enter(group);
+                dispatch_group_async(group, queue, ^{
+                    [weakSelf getTokens:model];
+                });
+            
+                dispatch_group_enter(group);
+                dispatch_group_async(group, queue, ^{
+                    [weakSelf getETHModel:model];
+                });
+            }
+        }];
+        
+        
+        dispatch_group_notify(group, queue, ^{
+            [self cacheData:self.ethWalletsArray withKey:ETH_WALLET_LIST];
+            self.isFinishTokenListAndETH = YES;
+            
+            if (self.isFinishGetSentCount && self.isFinishGetSentList) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [LCProgressHUD hide];
+                });
+            }
+        });
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
             [LCProgressHUD hide];
@@ -286,6 +490,14 @@
  @param responseObj 返回体
  */
 - (void)sentListResponse:(id)responseObj {
+    self.isFinishGetSentList = YES;
+    
+    if (self.isFinishGetSentCount && self.isFinishTokenListAndETH) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [LCProgressHUD hide];
+        });
+    }
+    
     NSMutableArray *tempArr = nil;
     if (![NSObject isNulllWithObject:responseObj]) {
         if ([responseObj isKindOfClass:[NSDictionary class]]) {
@@ -296,7 +508,7 @@
                 dataArray.count > 0) {
                 
                 tempArr = [NSMutableArray array];
-                for (YYRedPacketMySentListModel *listModel in dataArray) {
+                for (YYRedPacketDetailModel *listModel in dataArray) {
                     [tempArr addObject:listModel];
                 }
             }
@@ -311,6 +523,14 @@
  @param responseObj 返回体
  */
 - (void)sentCountResponse:(id)responseObj {
+    self.isFinishGetSentCount = YES;
+    
+    if (self.isFinishGetSentList && self.isFinishTokenListAndETH) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [LCProgressHUD hide];
+        });
+    }
+    
     YYRedPacketSentCountModel *model = nil;
     if (![NSObject isNulllWithObject:responseObj]) {
         if ([responseObj isKindOfClass:[NSDictionary class]]) {
@@ -356,6 +576,7 @@
     }
   
     YYRedPacketSection1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION1_CELL_ID forIndexPath:indexPath];
+    cell.isShowOpening = NO;
     if (row - 1 < self.dataSource.count) {
         [cell setModel:self.dataSource[row - 1] from:CellFromSentHistory];
     }
@@ -371,7 +592,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     YYRedPacketDetailViewController *vc = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_DETAIL_STORYBOARD_ID];
     if (row - 1 < self.dataSource.count) {
-         YYRedPacketMySentListModel *sentModel = self.dataSource[row - 1];
+         YYRedPacketDetailModel *sentModel = self.dataSource[row - 1];
         vc.model = sentModel;
     }
     vc.ethWalletsArr = self.ethWalletsArray;
@@ -403,7 +624,7 @@
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [btn setTitle:DBHGetStringWithKeyFromTable(@"Check transfer Record", nil) forState:UIControlStateNormal];
+    [btn setTitle:DBHGetStringWithKeyFromTable(@"Check Transaction Records", nil) forState:UIControlStateNormal];
     [btn setTitleColor:COLORFROM16(0xDF565B, 1) forState:UIControlStateNormal];
     [btn setBorderWidth:1 color:COLORFROM16(0xDF565B, 1)];
     

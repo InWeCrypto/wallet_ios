@@ -184,8 +184,7 @@
     [timer invalidate];
 }
 
-- (void)setupCamera
-{
+- (void)setupCamera {
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // 耗时的操作
@@ -254,8 +253,7 @@
         [timer invalidate];
         NSLog(@"%@",stringValue);
         
-        if (stringValue.length > 0)
-        {
+        if (stringValue.length > 0) {
             [self.navigationController popViewControllerAnimated:YES];
             if ([self.delegate respondsToSelector:@selector(scanSucessWithObject:)])
             {

@@ -13,7 +13,7 @@
 #import "DBHTransferConfirmationViewController.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 @interface DBHTncTransferViewController ()<ScanVCDelegate, UITextFieldDelegate>
 

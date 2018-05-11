@@ -9,27 +9,32 @@
 #import "YYRedPacketSection0TableViewCell.h"
 #import "YYRedPacketSentCountModel.h"
 
-#define REDPACKET_COUNT(count) [NSString stringWithFormat:@"%ld%@", count, DBHGetStringWithKeyFromTable(@"  ", nil)]
+#define REDPACKET_COUNT(count) [NSString stringWithFormat:@"%ld%@", count, DBHGetStringWithKeyFromTable(@" Packet ", nil)]
 
 @interface YYRedPacketSection0TableViewCell()
 
 /** 我发送的红包 */
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-
-/** 合计 */
-@property (weak, nonatomic) IBOutlet UILabel *totalLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *totalLabel1;
+@property (weak, nonatomic) IBOutlet UILabel *totalLabel2;
+
+/** 创建中 */
+@property (weak, nonatomic) IBOutlet UILabel *createLabel;
+@property (weak, nonatomic) IBOutlet UILabel *createValueLabel;
 
 /** 发送中 */
 @property (weak, nonatomic) IBOutlet UILabel *sendingValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *sendingLabel;
 
 /** 成功 */
+@property (weak, nonatomic) IBOutlet UILabel *successLabel;
 @property (weak, nonatomic) IBOutlet UILabel *successValueLabel;
 
-/** 近期发送记录 */
-@property (weak, nonatomic) IBOutlet UILabel *successLabel;
+/** 失败 */
+@property (weak, nonatomic) IBOutlet UILabel *failedLabel;
+@property (weak, nonatomic) IBOutlet UILabel *failedValueLabel;
 
+/** 近期发送记录 */
 @property (weak, nonatomic) IBOutlet UILabel *recordLabel;
 
 @end
@@ -38,39 +43,32 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+  
+    self.totalLabel1.text = DBHGetStringWithKeyFromTable(@"Total Sent ", nil);
+    self.totalLabel2.text = DBHGetStringWithKeyFromTable(@" Red Packet", nil);
     
-    self.titleLabel.text = DBHGetStringWithKeyFromTable(@"My Sent Redpacket", nil);
-    self.totalLabel.text = DBHGetStringWithKeyFromTable(@" Total ", nil);
     self.sendingLabel.text = DBHGetStringWithKeyFromTable(@"Sending", nil);
     self.successLabel.text = DBHGetStringWithKeyFromTable(@"Success", nil);
-    self.recordLabel.text = DBHGetStringWithKeyFromTable(@"Sent Record Recently", nil);
+    self.createLabel.text = DBHGetStringWithKeyFromTable(@"Creating", nil);
+    self.failedLabel.text = DBHGetStringWithKeyFromTable(@"Failed", nil);
+    self.recordLabel.text = DBHGetStringWithKeyFromTable(@"Recent Sending Records", nil);
+    
     NSString *countStr = REDPACKET_COUNT(0l);
     self.sendingValueLabel.text = countStr;
+    self.createValueLabel.text = countStr;
+    self.failedValueLabel.text = countStr;
     self.successValueLabel.text = countStr;
-    
-    [self setTotalTitle:0];
+    self.totalValueLabel.text = @"0";
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)setModel:(YYRedPacketSentCountModel *)model {
-    NSInteger successCount = model.success_redbag;
-    NSInteger beingCount = model.be_on_redbag;
-    
-    NSInteger totalCount = successCount + beingCount;
-    
-    [self setTotalTitle:totalCount];
-    self.sendingValueLabel.text = REDPACKET_COUNT(beingCount);
-    self.successValueLabel.text = REDPACKET_COUNT(successCount);
-}
-
-- (void)setTotalTitle:(NSInteger)count {
-    NSString *countStr = REDPACKET_COUNT(count);
-    NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:countStr];
-    NSRange range = NSMakeRange(countStr.length - 2, 1);
-    [attributeStr addAttribute:NSForegroundColorAttributeName value:COLORFROM16(0xC63437, 1) range:range];
-    
-    self.totalValueLabel.attributedText = attributeStr;
+    self.totalValueLabel.text = [NSString stringWithFormat:@"%@", @(model.all)];
+    self.createValueLabel.text = REDPACKET_COUNT(model.create);
+    self.sendingValueLabel.text = REDPACKET_COUNT(model.send);
+    self.successValueLabel.text = REDPACKET_COUNT(model.success);
+    self.failedValueLabel.text = REDPACKET_COUNT(model.fail);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

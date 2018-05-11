@@ -10,9 +10,11 @@
 
 @interface YYRedPacketRedBagInfoModel : NSObject
 
-@property (nonatomic, assign) NSInteger command;
+@property (nonatomic, assign) NSInteger cmd;
 @property (nonatomic, copy) NSString *comtract;
 @property (nonatomic, copy) NSString *from;
+@property (nonatomic, assign) RedBagInfoStatus status; // 0:新建的未打开  1:在打开中  2:已结束
+@property (nonatomic, assign) CGFloat taxCost; // 红包搜续费
 @property (nonatomic, assign) NSInteger remainCount; // 剩余红包个数
 @property (nonatomic, assign) NSInteger remainValue; // 剩余红包金额
 @property (nonatomic, assign) BOOL takebacke; // 是否结束

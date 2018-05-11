@@ -11,9 +11,6 @@
 #import "YYRedPacketDetailViewController.h"
 #import "DBHWalletManagerForNeoModelList.h"
 
-
-#define REDPACKET_STORYBOARD_NAME @"RedPacket"
-
 @interface YYRedPacketSendHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) UITableView *tableView;
@@ -108,7 +105,7 @@
             @autoreleasepool {
                 NSString *addr = model.address;
                 if (![NSObject isNulllWithObject:addr]) {
-                    [tempAddrArr addObject:addr];
+                    [tempAddrArr addObject:[addr lowercaseString]];
                 }
             }
         }
@@ -154,7 +151,7 @@
                         [self.tableView.mj_footer endRefreshing];
                     }
                     
-                    for (YYRedPacketMySentListModel *listModel in dataArray) {
+                    for (YYRedPacketDetailModel *listModel in dataArray) {
                         [tempArr addObject:listModel];
                     }
                 }
@@ -179,6 +176,12 @@
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [weakSelf getSentRedPacketListIsLoadMore:YES];
     }];
+    
+    if (self.dataSource.count < 10) {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    } else {
+        [self.tableView.mj_footer endRefreshing];
+    }
 }
 /**
  结束刷新
@@ -199,8 +202,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YYRedPacketSection1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION1_CELL_ID forIndexPath:indexPath];
+    cell.isShowOpening = YES;
     if (indexPath.row < self.dataSource.count) {
-        YYRedPacketMySentListModel *model = self.dataSource[indexPath.row];
+        YYRedPacketDetailModel *model = self.dataSource[indexPath.row];
         [cell setModel:model from:CellFromSentHistory];
     }
     return cell;
@@ -211,7 +215,7 @@
     YYRedPacketDetailViewController *vc = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_DETAIL_STORYBOARD_ID];
     NSInteger row = indexPath.row;
     if (row < self.dataSource.count) {
-        YYRedPacketMySentListModel *sentModel = self.dataSource[row];
+        YYRedPacketDetailModel *sentModel = self.dataSource[row];
         vc.model = sentModel;
     }
     vc.ethWalletsArr = self.ethWalletsArray;

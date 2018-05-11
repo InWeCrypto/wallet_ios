@@ -436,7 +436,11 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                     for (NSDictionary *dic in list) {
                         DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
                         
-                        model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+                        NSString *tempAddr = model.address;
+                        
+                        NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:(model.categoryId == 1)];
+                        
+                        model.isLookWallet = [NSString isNulllWithObject:data];
                         model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
                         [weakSelf.walletListArray addObject:model];
                     }
@@ -461,7 +465,11 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                 for (NSDictionary *dic in list) {
                     DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
                     
-                    model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+                    NSString *tempAddr = model.address;
+                   
+                    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:(model.categoryId == 1)];
+                    
+                    model.isLookWallet = [NSString isNulllWithObject:data];
                     model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
                     [weakSelf.cacheneoWalletListArray addObject:model];
                 }
@@ -549,13 +557,15 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                         for (DBHWalletManagerForNeoModelList *model in weakSelf.walletListArray) {
                             NSString *walletId = dic[@"id"];
                             if (model.listIdentifier == walletId.integerValue) {
-                                [model.tokenStatistics setObject:price_ether forKey:@"ETH"];
+                                if (![NSObject isNulllWithObject:price_ether])
+                                    [model.tokenStatistics setObject:price_ether forKey:@"ETH"];
                             }
                         }
                         for (DBHWalletManagerForNeoModelList *model in weakSelf.cacheneoWalletListArray) {
                             NSString *walletId = dic[@"id"];
                             if (model.listIdentifier == walletId.integerValue) {
-                                [model.tokenStatistics setObject:price_ether forKey:@"ETH"];
+                                if (![NSObject isNulllWithObject:price_ether])
+                                    [model.tokenStatistics setObject:price_ether forKey:@"ETH"];
                             }
                         }
                     }
@@ -598,13 +608,15 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                         for (DBHWalletManagerForNeoModelList *model in weakSelf.walletListArray) {
                             NSString *walletId = dic[@"id"];
                             if (model.listIdentifier == walletId.integerValue) {
-                                [model.tokenStatistics setObject:price_ether forKey:@"ETH"];
+                                if (![NSObject isNulllWithObject:price_ether])
+                                    [model.tokenStatistics setObject:price_ether forKey:@"ETH"];
                             }
                         }
                         for (DBHWalletManagerForNeoModelList *model in weakSelf.cacheneoWalletListArray) {
                             NSString *walletId = dic[@"id"];
                             if (model.listIdentifier == walletId.integerValue) {
-                                [model.tokenStatistics setObject:price_ether forKey:@"ETH"];
+                                if (![NSObject isNulllWithObject:price_ether])
+                                    [model.tokenStatistics setObject:price_ether forKey:@"ETH"];
                             }
                         }
                     }
@@ -717,7 +729,8 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                                     NSString *price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:[UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd value:5];
                                     sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:price value:5];
                                     // 代币数量统计
-                                    [walletModel.tokenStatistics setObject:model.balance forKey:model.name];
+                                    if (![NSObject isNulllWithObject:model.balance])
+                                        [walletModel.tokenStatistics setObject:model.balance forKey:model.name];
                                 }
                             
                                 [self.dataSource replaceObjectAtIndex:index withObject:model];
@@ -802,8 +815,11 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                 self.gasModel.typeName = typeName;
                 
                 // 代币数量统计
-                [walletModel.tokenStatistics setObject:neoNumber forKey:self.neoModel.name];
-                [walletModel.tokenStatistics setObject:gasNumber forKey:self.gasModel.name];
+                if (![NSObject isNulllWithObject:neoNumber])
+                     [walletModel.tokenStatistics setObject:neoNumber forKey:self.neoModel.name];
+                
+                if (![NSObject isNulllWithObject:gasNumber])
+                     [walletModel.tokenStatistics setObject:gasNumber forKey:self.gasModel.name];
                 
                 for (NSDictionary * dic in [responseObject objectForKey:LIST]) { // 代币列表
                     NSString *symbol = dic[@"symbol"];
@@ -832,7 +848,8 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                             [self.dataSource replaceObjectAtIndex:index withObject:tokenModel];
                         
                             // 代币数量统计
-                            [walletModel.tokenStatistics setObject:balance forKey:tokenModel.name];
+                            if (![NSObject isNulllWithObject:balance])
+                                [walletModel.tokenStatistics setObject:balance forKey:tokenModel.name];
                         }
                     } else {
                         // 没找到
@@ -862,7 +879,8 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                         [self.dataSource addObject:tokenModel];
                         
                         // 代币数量统计
-                        [walletModel.tokenStatistics setObject:tokenModel.balance forKey:tokenModel.name];
+                        if (![NSObject isNulllWithObject:tokenModel.balance])
+                            [walletModel.tokenStatistics setObject:tokenModel.balance forKey:tokenModel.name];
                     }
                 }
             }

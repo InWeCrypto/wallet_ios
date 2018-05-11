@@ -10,7 +10,7 @@
 
 #import "KKWebView.h"
 
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 #import "DBHTransferListModelList.h"
 
 @interface DBHTransferDetailViewController ()

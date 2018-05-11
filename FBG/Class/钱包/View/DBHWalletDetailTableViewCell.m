@@ -8,7 +8,7 @@
 
 #import "DBHWalletDetailTableViewCell.h"
 
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 @interface DBHWalletDetailTableViewCell ()
 
@@ -92,32 +92,40 @@
 
 #pragma mark ------ Getters And Setters ------
 - (void)setModel:(DBHWalletDetailTokenInfomationModelData *)model {
+    if (!model) {
+        return;
+    }
+    
     _model = model;
     
     if ([_model.flag isEqualToString:@"NEO"] || [_model.flag isEqualToString:@"Gas"]) {
-        
         if ([_model.flag isEqualToString:@"NEO"]) {
             self.numberLabel.text = [NSString stringWithFormat:@"%.0lf", _model.balance.doubleValue];
         } else {
-//            self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.doubleValue];
-            
             NSString *number = [NSString notRounding:model.balance afterPoint:8];
             self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
         }
         self.iconImageView.image = [UIImage imageNamed:![_model.icon isEqual:[NSNull null]] ? _model.icon : @""];
+        
+        self.canExtractGasLabel.hidden = !_model.canExtractbalance;
+        self.extractButton.hidden = !_model.canExtractbalance;
+        if (_model.canExtractbalance) {
+            self.canExtractGasLabel.text = [NSString stringWithFormat:@"（%.8lfGas %@）", _model.canExtractbalance.doubleValue, DBHGetStringWithKeyFromTable(@"Available", nil)];
+        }
     } else {
-//        self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", _model.balance.doubleValue];
+        self.canExtractGasLabel.hidden = YES;
+        self.extractButton.hidden = YES;
         
         NSString *number = [NSString notRounding:model.balance afterPoint:8];
         self.numberLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
         
         if ([_model.icon containsString:@"http"]) {
-            [self.iconImageView sdsetImageWithURL:_model.icon placeholderImage:[UIImage imageNamed:@"NEO_add"]];
+            [self.iconImageView sdsetImageWithURL:_model.icon placeholderImage:[UIImage imageNamed:ETH]];
         } else {
             self.iconImageView.image = [UIImage imageNamed:![_model.icon isEqual:[NSNull null]] ? _model.icon : @""];
         }
     }
-    self.nameLabel.text = _model.flag;
+    self.nameLabel.text = [NSObject isNulllWithObject:_model.flag] ? @"  " : _model.flag;
     if ([UserSignData share].user.isHideAsset) {
         self.priceLabel.text = [NSString stringWithFormat:@"%@****", [UserSignData share].user.walletUnitType == 1 ? @"¥" : @"$"];
     } else {
@@ -130,11 +138,6 @@
         }
     }
     
-    self.canExtractGasLabel.hidden = !_model.canExtractbalance;
-    self.extractButton.hidden = !_model.canExtractbalance;
-    if (_model.canExtractbalance) {
-        self.canExtractGasLabel.text = [NSString stringWithFormat:@"（%.8lfGas %@）", _model.canExtractbalance.doubleValue, DBHGetStringWithKeyFromTable(@"Available", nil)];
-    }
 }
 
 - (UIImageView *)iconImageView {

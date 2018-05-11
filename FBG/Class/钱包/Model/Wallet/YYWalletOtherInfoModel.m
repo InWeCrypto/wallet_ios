@@ -10,4 +10,6 @@
 
 @implementation YYWalletOtherInfoModel
 
+MJCodingImplementation
+
 @end

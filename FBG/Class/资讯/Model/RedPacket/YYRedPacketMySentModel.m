@@ -7,13 +7,12 @@
 //
 
 #import "YYRedPacketMySentModel.h"
-#import "YYRedPacketMySentListModel.h"
 
 @implementation YYRedPacketMySentModel
 
 + (NSDictionary *)mj_objectClassInArray {
     return @{
-             @"data" : [YYRedPacketMySentListModel class]
+             @"data" : [YYRedPacketDetailModel class]
              };
 }
 

@@ -7,8 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-
-
 @interface DBHWalletDetailTokenInfomationModelData : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, strong) NSString *priceCny;

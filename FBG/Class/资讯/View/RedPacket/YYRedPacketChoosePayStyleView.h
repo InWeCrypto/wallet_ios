@@ -10,8 +10,6 @@
 
 @interface YYRedPacketChoosePayStyleView : UIView
 
-typedef void(^SelectedWalletModelBlock)(DBHWalletManagerForNeoModelList *model);
-
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger currentWalletId;
 @property (nonatomic, copy) NSString *tokenName;

@@ -11,8 +11,6 @@
 #import "YYRedPacketSuccessViewController.h"
 #import "DBHWalletManagerForNeoModelList.h"
 
-#define REDPACKET_STORYBOARD_NAME @"RedPacket"
-
 @interface YYRedPacketOpenedHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) UITableView *tableView;
@@ -105,7 +103,7 @@
             @autoreleasepool {
                 NSString *addr = model.address;
                 if (![NSObject isNulllWithObject:addr]) {
-                    [tempAddrArr addObject:addr];
+                    [tempAddrArr addObject:[addr lowercaseString]];
                 }
             }
         }
@@ -195,6 +193,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YYRedPacketSection1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION1_CELL_ID forIndexPath:indexPath];
+    cell.isShowOpening = YES;
     if (indexPath.row < self.dataSource.count) {
        YYRedPacketOpenedModel *model = self.dataSource[indexPath.row];
         [cell setModel:model from:CellFromOpenedHistory];
@@ -205,6 +204,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     YYRedPacketSuccessViewController *vc = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_SUCCESS_STORYBOARD_ID];
+    if (indexPath.row < self.dataSource.count) {
+        YYRedPacketOpenedModel *model = self.dataSource[indexPath.row];
+        vc.model = model;
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -14,4 +14,7 @@
 
 @property (nonatomic, copy) NSString *styleStr;
 
+@property (nonatomic, strong) YYRedPacketDetailModel *model;
+@property (nonatomic, strong) NSMutableArray *ethWalletsArray;
+
 @end

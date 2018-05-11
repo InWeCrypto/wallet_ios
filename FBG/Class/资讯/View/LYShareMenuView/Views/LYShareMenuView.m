@@ -46,7 +46,6 @@ static CGFloat const kCancelbuttonHeight = 50;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder: aDecoder];
     if (self) {
-        
         [self setup_];
     }
     return self;

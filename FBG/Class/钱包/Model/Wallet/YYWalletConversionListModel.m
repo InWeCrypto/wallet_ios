@@ -6,9 +6,11 @@
 //  Copyright © 2018年 ButtonRoot. All rights reserved.
 //
 
-#import "YYWalletConversionListModel.h"
+
 
 @implementation YYWalletConversionListModel
+
+MJCodingImplementation
 
 + (NSDictionary *)mj_replacedKeyFromPropertyName {
     return @{

@@ -9,8 +9,10 @@
 #import "DBHBaseTableViewCell.h"
 
 #define REDPACKET_SUCCESS_CELL_ID @"REDPACKET_SUCCESS_CELL"
-#define REDPACKET_SUCCESS_CELL_HEIGHT 327
+#define REDPACKET_SUCCESS_CELL_HEIGHT 278
 
 @interface YYRedPacketSucessTableViewCell : DBHBaseTableViewCell
+
+@property (nonatomic, strong) YYRedPacketOpenedModel *model;
 
 @end

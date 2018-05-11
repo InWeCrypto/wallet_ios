@@ -156,6 +156,10 @@
  提交
  */
 - (void)respondsToCommitButton {
+    if (self.passwordTextField.text.length == 0) {
+        [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"The password of wallet can not be empty", nil)];
+        return;
+    }
     self.commitBlock(self.passwordTextField.text);
     [self respondsToQuitButton];
 }

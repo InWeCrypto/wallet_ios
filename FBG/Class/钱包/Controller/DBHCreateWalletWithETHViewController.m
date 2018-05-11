@@ -114,13 +114,13 @@
 - (void)uploadWallet {
     NSDictionary *paramters = @{@"category_id":@"1",
                                 NAME:self.nameTextField.text,
-                                @"address":self.ethWallet.address};
+                                @"address":[self.ethWallet.address lowercaseString]};
 
     WEAKSELF
     [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Creating...", nil) success:^(id responseObject) {
         DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:[responseObject objectForKey:RECORD]];
         model.category.categoryIdentifier = 1;
-        model.category.name = @"ETH";
+        model.category.name = ETH;
         AddWalletSucessVC *addWalletSucessVC = [[AddWalletSucessVC alloc] init];
         addWalletSucessVC.neoWalletModel = model;
         addWalletSucessVC.mnemonic = weakSelf.mnemonic;
@@ -175,7 +175,7 @@
     NSError *error;
     NSString *data = [self.ethWallet toKeyStore:self.passwordTextField.text error:&error];
     NSString * address = self.ethWallet.address;
-    [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
+    [PDKeyChain save:KEYCHAIN_KEY([address lowercaseString]) data:data];
 
     [self uploadWallet];
 }
@@ -200,7 +200,7 @@
                 // 获取钱包地址
                 NSString * address = [self.ethWallet address];
                 // 存入keyChain
-                [PDKeyChain save:KEYCHAIN_KEY(address) data:data];
+                [PDKeyChain save:KEYCHAIN_KEY([address lowercaseString]) data:data];
 
                 [self uploadWallet];
             } else {

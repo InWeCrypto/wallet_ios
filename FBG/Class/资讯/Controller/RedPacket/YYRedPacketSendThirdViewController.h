@@ -12,4 +12,7 @@
 
 @interface YYRedPacketSendThirdViewController : DBHBaseViewController
 
+@property (nonatomic, strong) YYRedPacketDetailModel *model;
+@property (nonatomic, strong) NSMutableArray *ethWalletsArray;
+
 @end

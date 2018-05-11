@@ -55,7 +55,8 @@
         [NSStringFromClass([self class]) isEqualToString:@"DBHWalletDetailViewController"] ||
         [NSStringFromClass([self class]) isEqualToString:@"DBHWalletDetailWithETHViewController"] ||
         [NSStringFromClass([self class]) isEqualToString:@"AddWalletSucessVC"] ||
-        [NSStringFromClass([self class]) isEqualToString:@"YYRedPacketPackagingViewController"]) {
+        [NSStringFromClass([self class]) isEqualToString:@"YYRedPacketPackagingViewController"] ||
+        [NSStringFromClass([self class]) isEqualToString:@"YYRedPacketSendSecondViewController"]) {
                 if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
                     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
                 }

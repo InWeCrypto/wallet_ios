@@ -19,5 +19,6 @@ typedef enum _cell_from {
 @interface YYRedPacketSection1TableViewCell : DBHBaseTableViewCell
 
 - (void)setModel:(id)model from:(CellFrom)from;
+@property (nonatomic, assign) BOOL isShowOpening;
 
 @end

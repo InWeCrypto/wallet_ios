@@ -96,6 +96,9 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 }
 
 - (void)otherThings {
+    NSString *uuid = [NSString getUUID];
+    NSLog(@"uuid = %@", uuid);
+    
     //添加网络状态提醒
     [self netNotification];
     

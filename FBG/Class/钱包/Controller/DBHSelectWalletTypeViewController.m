@@ -7,6 +7,8 @@
 //
 
 #import "DBHSelectWalletTypeViewController.h"
+#import "DBHCreateWalletViewController.h"
+#import "DBHCreateWalletWithETHViewController.h"
 
 #define ANIMATE_DURATION 0.25f
 static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletManagerTableViewCellIdentifier";
@@ -97,10 +99,19 @@ static NSString *const kDBHWalletManagerTableViewCellIdentifier = @"kDBHWalletMa
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = indexPath.row;
     if (self.type == NewWalletTypeAdd) {
-        DBHSelectHotCodeWalletViewController *vc = [[DBHSelectHotCodeWalletViewController alloc] init];
-        vc.walletType = (int)row + 1;
-        vc.nc = self.nc;
-        [self.navigationController pushViewController:vc animated:YES];
+        [self.navigationController dismissViewControllerAnimated:NO completion:nil];
+        if (row == 0) { // 添加NEO
+            DBHCreateWalletViewController *createWalletViewController = [[DBHCreateWalletViewController alloc] init];
+            [self.nc pushViewController:createWalletViewController animated:YES];
+        } else { // 添加ETH
+            DBHCreateWalletWithETHViewController *createWalletWithETHViewController = [[DBHCreateWalletWithETHViewController alloc] init];
+            [self.nc pushViewController:createWalletWithETHViewController animated:YES];
+        }
+        
+//        DBHSelectHotCodeWalletViewController *vc = [[DBHSelectHotCodeWalletViewController alloc] init];
+//        vc.walletType = (int)row + 1;
+//        vc.nc = self.nc;
+//        [self.navigationController pushViewController:vc animated:YES];
     } else if (self.type == NewWalletTypeImport) {
         [self.navigationController dismissViewControllerAnimated:NO completion:nil];
         if (row == 0) { // 导入NEO

@@ -5,4 +5,4 @@
 //  Copyright (c) 2018 __MyCompanyName__. All rights reserved.
 //
 
-#import "DBHWalletDetailTokenInfomationModelData.h"#import "DBHWalletDetailTokenInfomationModelDataBase.h"
+#import "DBHWalletDetailTokenInfomationModelDataBase.h"

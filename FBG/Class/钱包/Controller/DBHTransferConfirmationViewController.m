@@ -12,7 +12,7 @@
 
 #import "DBHInputPasswordPromptView.h"
 
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 
 @interface DBHTransferConfirmationViewController ()
@@ -110,14 +110,18 @@
     // ETH钱包转账
     //子线程异步执行下载任务，防止主线程卡顿
     NSError * error;
-    id data = [PDKeyChain load:KEYCHAIN_KEY(self.neoWalletModel.address)];
+    
+    NSString *tempAddr = self.neoWalletModel.address;
+    
+    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:YES];
+    
     EthmobileWallet * Wallet = EthmobileFromKeyStore(data,password,&error);
     
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
     //异步返回主线程，根据获取的数据，更新UI
     dispatch_async(mainQueue, ^ {
                        if (!error) {
-                           if (![self.tokenModel.name isEqualToString:@"ETH"]) { // eth代币
+                           if (![self.tokenModel.name isEqualToString:ETH]) { // eth代币
                                    //热钱包代币转账
                                 NSString *addr = self.neoWalletModel.address;
                                if (addr.length > 0) {
@@ -126,7 +130,7 @@
                                    }
                                    
                                    NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-                                   [parametersDic setObject:addr forKey:@"address"];
+                                   [parametersDic setObject:[addr lowercaseString] forKey:@"address"];
                                    
                                    WEAKSELF
                                    [PPNetworkHelper POST:@"extend/getTransactionCount" baseUrlType:1 parameters:parametersDic hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
@@ -281,7 +285,9 @@
  NEO转账
  */
 - (void)transferAccountsForNEOWithPassword:(NSString *)password unspent:(NSString *)unspent {
-    id data = [PDKeyChain load:KEYCHAIN_KEY(self.neoWalletModel.address)];
+    NSString *tempAddr = self.neoWalletModel.address;
+    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:NO];
+    
     NSString *assert = [self.tokenModel.flag isEqualToString:@"NEO"] ? @"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b" : @"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
     // NEO钱包转账
     //子线程异步执行下载任务，防止主线程卡顿
@@ -369,7 +375,9 @@
  TNC转账
  */
 - (void)transferAccountsForTNCWithPassword:(NSString *)password unspent:(NSString *)unspent {
-    id data = [PDKeyChain load:KEYCHAIN_KEY(self.neoWalletModel.address)];
+    NSString *tempAddr = self.neoWalletModel.address;
+    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:NO];
+    
     // NEO钱包转账
     //子线程异步执行下载任务，防止主线程卡顿
     NSError * error;

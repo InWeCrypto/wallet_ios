@@ -401,159 +401,10 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         
         WEAKSELF
         [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%ld", (NSInteger)self.ethWalletModel.listIdentifier] baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
-            if (weakSelf.dataSource.count < 1) {
-                return ;
-            }
-            
-            [weakSelf.dataSource removeObjectsInRange:NSMakeRange(1, weakSelf.dataSource.count - 1)];
-            DBHWalletDetailTokenInfomationModelData *firstModel = weakSelf.dataSource.firstObject;
-            
-            NSString *price = [UserSignData share].user.walletUnitType == 1 ? firstModel.priceCny : firstModel.priceUsd;
-            NSString *sum = [NSString DecimalFuncWithOperatorType:2 first:firstModel.balance secend:price value:0];
-            if ([NSObject isNulllWithObject:sum] || [sum isEqualToString:@"0"]) {
-                sum = @"0.00";
-            }
-            
-            if ([NSObject isNulllWithObject:responseCache]) {
-                return;
-            }
-            
-            for (NSDictionary *dic in responseCache[LIST]) {
-                DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
-                
-                @try {
-                    model.dataIdentifier = [NSString stringWithFormat:@"%@", dic[@"id"]];
-                    model.address = dic[GNT_CATEGORY][@"address"];
-                    model.name = dic[GNT_CATEGORY][NAME];
-                    model.icon = dic[GNT_CATEGORY][@"icon"];
-                    model.gas = dic[GNT_CATEGORY][@"gas"];
-                    model.decimals = dic[DECIMALS];
-                    
-                    model.symbol = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:@"symbol"];
-                    if (![NSString isNulllWithObject:dic[BALANCE]])
-                    {
-                        model.balance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[dic[BALANCE] substringFromIndex:2]] secend:[NSString stringWithFormat:@"%lf", pow(10, model.decimals.doubleValue)] value:8];
-                    }
-                    else
-                    {
-                        model.balance = @"0.0000";
-                    }
-                    
-                    NSString *price_cny = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:PRICE_CNY];
-                    NSString *price_usd = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:PRICE_USD];
-                    if ([NSObject isNulllWithObject:dic[GNT_CATEGORY][CAP]]) {
-                        price_cny = @"0";
-                        price_usd = @"0";
-                    }
-                    model.priceCny = price_cny;
-                    model.priceUsd = price_usd;
-                    model.flag = dic[GNT_CATEGORY][NAME];
-                } @catch (NSException *exception) {
-                    NSLog(@"NSDictionary objectForkey failed: %@", exception);
-                } @finally {
-                    NSString *price = [UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd;
-                    NSString *tempPrice = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price value:0];
-                    sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:tempPrice value:5];
-                    
-                    [weakSelf.dataSource addObject:model];
-                }
-            }
-            
-            if ([NSObject isNulllWithObject:sum] || [sum isEqualToString:@"0"]) {
-                sum = @"0.00";
-            } else {
-                sum = [NSString stringWithFormat:@"%.02lf", sum.doubleValue];
-            }
-            
-            weakSelf.titleView.totalAsset = sum;
-            weakSelf.headerView.asset = sum;
-            
-            weakSelf.noZeroDatasource = [NSMutableArray arrayWithArray:weakSelf.dataSource];
-            [weakSelf.dataSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                DBHWalletDetailTokenInfomationModelData *model = (DBHWalletDetailTokenInfomationModelData *)obj;
-                if (![model.flag isEqualToString:ETH]) {
-                    if (model.balance.doubleValue == 0 && [weakSelf.noZeroDatasource containsObject:model]) {
-                        [weakSelf.noZeroDatasource removeObject:model];
-                    }
-                }
-            }];
-            [weakSelf.tableView reloadData];
+            [weakSelf handleResponseObj:responseCache];
         } success:^(id responseObject) {
             [weakSelf endRefresh];
-            if (weakSelf.dataSource.count < 1) {
-                return ;
-            }
-            
-            [weakSelf.dataSource removeObjectsInRange:NSMakeRange(1, weakSelf.dataSource.count - 1)];
-            
-            DBHWalletDetailTokenInfomationModelData *firstModel = weakSelf.dataSource.firstObject;
-            
-            NSString *price = [UserSignData share].user.walletUnitType == 1 ? firstModel.priceCny : firstModel.priceUsd;
-            NSString *sum = [NSString DecimalFuncWithOperatorType:2 first:firstModel.balance secend:price value:0];
-            
-            if ([NSObject isNulllWithObject:sum] || [sum isEqualToString:@"0"]) {
-                sum = @"0.00";
-            }
-            
-            if ([NSObject isNulllWithObject:responseObject]) {
-                return;
-            }
-            for (NSDictionary *dic in responseObject[LIST]) {
-                DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
-                @try {
-                    model.dataIdentifier = [NSString stringWithFormat:@"%@", dic[@"id"]];
-                    model.address = dic[GNT_CATEGORY][@"address"];
-                    model.name = dic[GNT_CATEGORY][NAME];
-                    model.icon = dic[GNT_CATEGORY][@"icon"];
-                    model.gas = dic[GNT_CATEGORY][@"gas"];
-                    model.decimals = dic[DECIMALS];
-                    
-                    model.symbol = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:@"symbol"];
-                    if (![NSString isNulllWithObject:dic[BALANCE]]) {
-                        model.balance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[dic[BALANCE] substringFromIndex:2]] secend:[NSString stringWithFormat:@"%lf", pow(10, model.decimals.doubleValue)] value:8];
-                    } else {
-                        model.balance = @"0.0000";
-                    }
-                    
-                    NSString *price_cny = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:PRICE_CNY];
-                    NSString *price_usd = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:PRICE_USD];
-                    if ([NSObject isNulllWithObject:dic[GNT_CATEGORY][CAP]]) {
-                        price_cny = @"0";
-                        price_usd = @"0";
-                    }
-                    model.priceCny = price_cny;
-                    model.priceUsd = price_usd;
-                    model.flag = dic[GNT_CATEGORY][NAME];
-                } @catch (NSException *exception) {
-                    NSLog(@"NSDictionary objectForkey failed: %@", exception);
-                } @finally {
-                    NSString *price = [UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd;
-                    price = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price value:0];
-                    sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:price value:5];
-                    
-                    [weakSelf.dataSource addObject:model];
-                }
-            }
-            
-            if ([NSObject isNulllWithObject:sum] || [sum isEqualToString:@"0"]) {
-                sum = @"0.00";
-            } else {
-                sum = [NSString stringWithFormat:@"%.02lf", sum.doubleValue];
-            }
-            
-            weakSelf.noZeroDatasource = [NSMutableArray arrayWithArray:weakSelf.dataSource];
-            [weakSelf.dataSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                DBHWalletDetailTokenInfomationModelData *model = (DBHWalletDetailTokenInfomationModelData *)obj;
-                if (![model.flag isEqualToString:ETH]) {
-                    if (model.balance.doubleValue == 0 && [weakSelf.noZeroDatasource containsObject:model]) {
-                        [weakSelf.noZeroDatasource removeObject:model];
-                    }
-                }
-            }];
-            
-            weakSelf.titleView.totalAsset = sum;
-            weakSelf.headerView.asset = sum;
-            [weakSelf.tableView reloadData];
+            [weakSelf handleResponseObj:responseObject];
         } failure:^(NSString *error) {
             [weakSelf endRefresh];
             [LCProgressHUD showFailure:error];
@@ -562,6 +413,109 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 return ;
             }
         }];
+    });
+}
+
+- (void)handleResponseObj:(id)responseObj {
+    if (self.dataSource.count < 1) {
+        return ;
+    }
+    
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        [self.dataSource removeObjectsInRange:NSMakeRange(1, self.dataSource.count - 1)];
+        DBHWalletDetailTokenInfomationModelData *firstModel = self.dataSource.firstObject;
+        
+        NSString *price = [UserSignData share].user.walletUnitType == 1 ? firstModel.priceCny : firstModel.priceUsd;
+        NSString *sum = [NSString DecimalFuncWithOperatorType:2 first:firstModel.balance secend:price value:0];
+        if ([NSObject isNulllWithObject:sum] || [sum isEqualToString:@"0"]) {
+            sum = @"0.00";
+        }
+        
+        if ([NSObject isNulllWithObject:responseObj]) {
+            return;
+        }
+        
+        NSMutableArray *tempArr = [NSMutableArray array];
+        
+        NSArray *list = responseObj[LIST];
+        if (![NSObject isNulllWithObject:list] && [list isKindOfClass:[NSArray class]]) {
+            
+            for (NSDictionary *dic in list) {
+                @autoreleasepool {
+                    YYWalletConversionListModel *listModel = [YYWalletConversionListModel mj_objectWithKeyValues:dic];
+                    NSString *price_cny = @"0";
+                    NSString *price_usd = @"0";
+                    NSString *symbol = listModel.gnt_category.name;
+                    @try {
+                        price_cny = listModel.gnt_category.cap.priceCny;
+                        price_usd = listModel.gnt_category.cap.priceUsd;
+                        symbol = listModel.gnt_category.cap.symbol;
+                    } @catch (NSException *exception) {
+                        NSLog(@"Ex = %@", exception);
+                    }
+                    
+                    NSString *balance = listModel.balance;
+                    NSInteger decimals = listModel.decimals;
+                    
+                    DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
+                    model.name = listModel.gnt_category.name;
+                    model.icon = listModel.gnt_category.icon;
+                    model.address = listModel.gnt_category.address;
+                    model.flag = model.name;
+                    model.symbol = symbol;
+                    model.gas = listModel.gnt_category.gas;
+                    model.dataIdentifier = [NSString stringWithFormat:@"%@", @(listModel.listId)];
+                    model.typeName = ETH;
+                    
+                    model.decimals = [NSString stringWithFormat:@"%@", @(decimals)];
+                    
+                    if (balance.length > 2) {
+                        balance = [balance substringFromIndex:2];
+                    }
+                    @try {
+                        model.balance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:balance] secend:[NSString stringWithFormat:@"%lf", pow(10, decimals)] value:8];
+                    } @catch (NSException *exception) {
+                        model.balance = @"0.0000";
+                    }
+                    
+                    model.priceUsd = price_usd;
+                    model.priceCny = price_cny;
+                    
+                    NSString *price = [UserSignData share].user.walletUnitType == 1 ? model.priceCny : model.priceUsd;
+                    NSString *tempPrice = [NSString DecimalFuncWithOperatorType:2 first:model.balance secend:price value:0];
+                    sum = [NSString DecimalFuncWithOperatorType:0 first:sum secend:tempPrice value:5];
+                    
+                    [tempArr addObject:model];
+                }
+            }
+            
+            if ([NSObject isNulllWithObject:sum] || [sum isEqualToString:@"0"]) {
+                sum = @"0.00";
+            } else {
+                sum = [NSString stringWithFormat:@"%.02lf", sum.doubleValue];
+            }
+            self.dataSource = tempArr;
+            self.noZeroDatasource = [NSMutableArray arrayWithArray:self.dataSource];
+            
+            WEAKSELF
+            [self.dataSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                DBHWalletDetailTokenInfomationModelData *model = (DBHWalletDetailTokenInfomationModelData *)obj;
+                if (![model.flag isEqualToString:ETH]) {
+                    if (model.balance.doubleValue == 0 && [weakSelf.noZeroDatasource containsObject:model]) {
+                        [weakSelf.noZeroDatasource removeObject:model];
+                    }
+                }
+            }];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.titleView.totalAsset = sum;
+                self.headerView.asset = sum;
+                
+                [self.tableView reloadData];
+            });
+        }
     });
 }
 
@@ -752,7 +706,10 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                         DBHLookWalletInfoViewController *lookInfoVC = [[DBHLookWalletInfoViewController alloc] init];
                         NSMutableArray *flagArr = [NSMutableArray array];
                         for (DBHWalletDetailTokenInfomationModelData *data in weakSelf.dataSource) {
-                            [flagArr addObject:data.flag];
+                            NSString *flag = data.flag;
+                            if (![NSObject isNulllWithObject:flag]) {
+                                [flagArr addObject:data.flag];
+                            }
                         }
                         lookInfoVC.unitsArr = [NSArray arrayWithArray:flagArr];
                         [weakSelf.navigationController pushViewController:lookInfoVC animated:YES];
@@ -825,7 +782,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                                                              0), ^{
                         // 删除钱包
                         [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%ld", self.ethWalletModel.listIdentifier] baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Deleting...", nil) success:^(id responseObject) {
-                            [PDKeyChain delete:KEYCHAIN_KEY(weakSelf.ethWalletModel.address)];
+                            [PDKeyChain delete:KEYCHAIN_KEY([weakSelf.ethWalletModel.address lowercaseString])];
                             [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Delete successfully", nil)]; 
                             NSLog(@"删除成功  %@", [NSThread currentThread]);
                             [weakSelf.navigationController popViewControllerAnimated:YES];
@@ -857,7 +814,9 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             switch (weakSelf.operationType) {
                 case 1: {
                     // 备份助记词
-                    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(self.ethWalletModel.address)];
+                    NSString *tempAddr = weakSelf.ethWalletModel.address;
+                    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:YES];
+                    
                     [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
                     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
                     dispatch_async(globalQueue, ^
@@ -905,7 +864,9 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 }
                 case 2: {
                     //备份keyStore
-                    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(self.ethWalletModel.address)];
+                    NSString *tempAddr = weakSelf.ethWalletModel.address;
+                    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:YES];
+                    
                     [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
                     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
                     dispatch_async(globalQueue, ^ {
@@ -934,7 +895,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                 }
                 case 3: {
                     //删除
-                    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(self.ethWalletModel.address)];
+                    NSString *tempAddr = weakSelf.ethWalletModel.address;
+                    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:YES];
                     
                     [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
                     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -953,8 +915,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                                 dispatch_async(dispatch_get_global_queue(
                                                                         DISPATCH_QUEUE_PRIORITY_DEFAULT,
                                                                         0), ^{
-                                   [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%ld", (NSInteger)self.ethWalletModel.listIdentifier] baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Deleting...", nil) success:^(id responseObject) {
-                                        [PDKeyChain delete:KEYCHAIN_KEY(weakSelf.ethWalletModel.address)];
+                                   [PPNetworkHelper DELETE:[NSString stringWithFormat:@"wallet/%ld", (NSInteger)weakSelf.ethWalletModel.listIdentifier] baseUrlType:1 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Deleting...", nil) success:^(id responseObject) {
+                                        [PDKeyChain delete:KEYCHAIN_KEY([weakSelf.ethWalletModel.address lowercaseString])];
                                         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Delete successfully", nil)];
                                         [weakSelf.navigationController popViewControllerAnimated:YES];
                                         
@@ -984,7 +946,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
 }
 
 - (void)activityOriginalShare {
-    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(self.ethWalletModel.address)];
+    NSString *data = [NSString keyChainDataFromKey: self.ethWalletModel.address isETH:YES];
+
     NSString *result = data;
     NSArray *activityItems = @[result];
     
@@ -1065,7 +1028,10 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
 
 #pragma mark ----- Share Delegate ------
 - (void)shareMenuView:(LYShareMenuView *)shareMenuView didSelecteShareMenuItem:(LYShareMenuItem *)shareMenuItem atIndex:(NSInteger)index {
-    NSString *data = [PDKeyChain load:KEYCHAIN_KEY(self.ethWalletModel.address)];
+    NSString *tempAddr = self.ethWalletModel.address;
+   
+    NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:YES];
+    
     switch (index) {
         case 2: { // QQ
             [self shareToQQ:data];

@@ -8,7 +8,7 @@
 
 #import "YYChoosePayStyleTableViewCell.h"
 
-#define MAX_USE(balance, name) [NSString stringWithFormat:@"%@：%.8lf %@", DBHGetStringWithKeyFromTable(@"Amount Available", nil), balance, name]
+#define MAX_USE(balance, name) [NSString stringWithFormat:@"%@：%.4lf %@", DBHGetStringWithKeyFromTable(@"Amount Available", nil), balance, name]
 
 @interface YYChoosePayStyleTableViewCell()
 
@@ -28,17 +28,24 @@
 
 - (void)setModel:(DBHWalletManagerForNeoModelList *)model currentWalletID:(NSInteger)currentWalletID tokenName:(NSString *)tokenName {
     self.addressLabel.text = model.address;
-    NSString *balance = [model.tokenStatistics objectForKey:tokenName];
-    NSString *number = [NSString notRounding:balance afterPoint:8];
-    self.maxUseLabel.text = MAX_USE(number.doubleValue, tokenName);
+    
+    if ([tokenName isEqualToString:ETH]) { //ETH
+        NSString *balance = model.infoModel.ethModel.balance;
+        NSString *number = [NSString notRounding:balance afterPoint:4];
+        
+        self.maxUseLabel.text = MAX_USE(number.doubleValue, tokenName);
+    } else { // 代币
+        NSString *balance = [model.tokenStatistics objectForKey:tokenName];
+        
+        NSString *number = [NSString notRounding:balance afterPoint:4];
+        self.maxUseLabel.text = MAX_USE(number.doubleValue, tokenName);
+    }
     
     if (currentWalletID == model.listIdentifier) {
         self.selectBtn.selected = YES;
     } else {
         self.selectBtn.selected = NO;
     }
-    
-    
 }
 
 

@@ -74,8 +74,12 @@
         return;
     }
     [PPNetworkHelper GET:[NSString stringWithFormat:@"ico/currencies/%@/%@/%@", ico_type, @"usdt", interval] baseUrlType:2 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) responseCache:^(id responseCache) {
-        NSArray *dataArray = responseCache;
+        if ([NSObject isNulllWithObject:responseCache] || ![responseCache isKindOfClass:[NSArray class]]) {
+            weakSelf.requestBlock(@[]);
+            return ;
+        }
         
+        NSArray *dataArray = responseCache;
         if (!dataArray.count) {
             weakSelf.requestBlock(@[]);
             return ;
@@ -83,7 +87,7 @@
         
         NSMutableArray *kLineDataArray = [NSMutableArray array];
         for (NSDictionary *dic in dataArray) {
-            if (![dic isKindOfClass:[NSDictionary class]]) {
+            if ([NSObject isNulllWithObject:dic] || ![dic isKindOfClass:[NSDictionary class]]) {
                 continue;
             }
             DBHMarketDetailKLineViewModelData *model = [DBHMarketDetailKLineViewModelData modelObjectWithDictionary:dic];
@@ -93,6 +97,10 @@
         
         weakSelf.requestBlock(kLineDataArray);
     } success:^(id responseObject) {
+        if ([NSObject isNulllWithObject:responseObject] || ![responseObject isKindOfClass:[NSArray class]]) {
+            weakSelf.requestBlock(@[]);
+            return ;
+        }
         NSArray *dataArray = responseObject;
         
         if (!dataArray.count) {
@@ -102,7 +110,7 @@
         
         NSMutableArray *kLineDataArray = [NSMutableArray array];
         for (NSDictionary *dic in dataArray) {
-            if (![dic isKindOfClass:[NSDictionary class]]) {
+            if([NSObject isNulllWithObject:dic] || ![dic isKindOfClass:[NSDictionary class]]) {
                 continue;
             }
             DBHMarketDetailKLineViewModelData *model = [DBHMarketDetailKLineViewModelData modelObjectWithDictionary:dic];

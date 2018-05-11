@@ -8,20 +8,15 @@
 
 #import "PDKeyChain.h"
 
-static NSString * const kPDDictionaryKey = @"com.FBG.dictionaryKey";
-static NSString * const kPDKeyChainKey = @"com.FBG.keychainKey";
-
 @implementation PDKeyChain
 
-+ (void)keyChainSave:(NSString *)string
-{
++ (void)keyChainSave:(NSString *)string {
     NSMutableDictionary *tempDic = [NSMutableDictionary dictionary];
     [tempDic setObject:string forKey:kPDDictionaryKey];
     [self save:kPDKeyChainKey data:tempDic];
 }
 
-+ (NSString *)keyChainLoad
-{
++ (NSString *)keyChainLoad {
     NSMutableDictionary *tempDic = (NSMutableDictionary *)[self load:kPDKeyChainKey];
     return [tempDic objectForKey:kPDDictionaryKey];
 }
@@ -39,8 +34,7 @@ static NSString * const kPDKeyChainKey = @"com.FBG.keychainKey";
             nil];
 }
 
-+ (void)save:(NSString *)service data:(id)data
-{
++ (void)save:(NSString *)service data:(id)data {
     //Get search dictionary
     NSMutableDictionary *keychainQuery = [self getKeychainQuery:service];
     //Delete old item before add new item

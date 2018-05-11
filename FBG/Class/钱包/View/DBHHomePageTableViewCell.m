@@ -8,7 +8,7 @@
 
 #import "DBHHomePageTableViewCell.h"
 
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 @interface DBHHomePageTableViewCell ()
 

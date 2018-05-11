@@ -12,4 +12,6 @@
 
 @interface YYRedPacketSuccessViewController : UITableViewController
 
+@property (nonatomic, strong) YYRedPacketOpenedModel *model;
+
 @end

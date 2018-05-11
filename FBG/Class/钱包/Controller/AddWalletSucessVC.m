@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Add Wallet", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Backup Wallet", nil);
     
 //    if ([self.model.category_name isEqualToString:@"ETH"])
 //    {
@@ -43,7 +43,7 @@
 //        self.headImage.image = [UIImage imageNamed:@"BTC_pic_sucess"];
 //    }
     self.sucessLB.text = DBHGetStringWithKeyFromTable(@"Add Success", nil);
-    self.infoLB.text = DBHGetStringWithKeyFromTable(@"Please enter the wallet and back up your security code and Key Store to protect your wallet. Once the security code is backed up, it will disappear on the app. You need to keep it in mind. Otherwise, the wallet cannot be retrieved.", nil);
+    self.infoLB.text = DBHGetStringWithKeyFromTable(@"Please enter the wallet and back up your mnemonic and Key Store to protect your wallet. Once the security code is backed up, it will disappear on the app. You need to keep it in mind. Otherwise, the wallet cannot be retrieved.", nil);
     [self.sureButton setTitle:DBHGetStringWithKeyFromTable(@"Start Backup Mnemonics", nil) forState:UIControlStateNormal];
     
    UIImageView *tipImageView = (UIImageView *)[self.view viewWithTag:998];
@@ -79,8 +79,8 @@
     vc.mnemonic = self.mnemonic;
     
     WalletLeftListModel *model = [[WalletLeftListModel alloc] init];
-    model.id = self.neoWalletModel.listIdentifier;
-    model.category_id = self.neoWalletModel.categoryId;
+    model.id = (int)self.neoWalletModel.listIdentifier;
+    model.category_id = (int)self.neoWalletModel.categoryId;
     model.name = self.neoWalletModel.name;
     model.address = self.neoWalletModel.address;
     model.created_at = self.neoWalletModel.createdAt;

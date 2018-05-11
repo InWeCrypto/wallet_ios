@@ -14,14 +14,11 @@
 #import "DBHWalletLookPromptView.h"
 #import "YYRedPacketPackagingViewController.h"
 #import "YYRedPacketChooseCashViewController.h"
-
-
-#import "DBHWalletDetailTokenInfomationModelData.h"
-#import "YYWalletOtherInfoModel.h"
 #import "IQKeyboardManager.h"
 #import "YYWalletConversionListModel.h"
+#import "SystemConvert.h"
 
-#define MAX_SEND_COUNT(count) [NSString stringWithFormat:@"%d%@", count, DBHGetStringWithKeyFromTable(@"  ", nil)]
+#define MAX_SEND_COUNT(count) [NSString stringWithFormat:@"%d%@", count, DBHGetStringWithKeyFromTable(@" Packet ", nil)]
 
 #define MAX_SEND 100
 
@@ -68,6 +65,7 @@ typedef void(^CompletionBlock) (void);
 @property (weak, nonatomic) IBOutlet UISlider *slider;
 @property (weak, nonatomic) IBOutlet UILabel *feeValueLabel;
 
+@property (nonatomic, copy) NSString *maxSentCount;
 
 @property (nonatomic, strong) YYRedPacketChoosePayStyleView *choosePayStyleView;
 @property (nonatomic, strong) YYRedPacketEthTokenModel *tokenModel; // 作为礼金的代币
@@ -86,7 +84,7 @@ typedef void(^CompletionBlock) (void);
     self.walletInfoView.hidden = YES;
     self.noWalletView.hidden = YES;
     
-    [self getWalletETHModelAndTokenList];
+    [self getMaxSentCount];
     
     [[IQKeyboardManager sharedManager] setEnable:NO];
 }
@@ -109,23 +107,25 @@ typedef void(^CompletionBlock) (void);
 }
 
 - (void)setUI {
-    self.title = DBHGetStringWithKeyFromTable(@"Send RedPacket", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Send Red Packet", nil);
     
     self.firstLabel.text = DBHGetStringWithKeyFromTable(@"First:", nil);
-    self.pullMoneyLabel.text = DBHGetStringWithKeyFromTable(@"Authorization For Use RedPacket", nil);
+    self.pullMoneyLabel.text = DBHGetStringWithKeyFromTable(@"Authorize Red Packet Usage", nil);
     
-    [self.chooseETHBtn setTitle:DBHGetStringWithKeyFromTable(@"Choose Below Authorization", nil) forState:UIControlStateNormal];
+    [self.chooseETHBtn setTitle:DBHGetStringWithKeyFromTable(@"Pack ETH tokens", nil) forState:UIControlStateNormal];
     
-    self.sendSumTitleLabel.text = DBHGetStringWithKeyFromTable(@"Send Amount", nil);
-    self.sendCountTitleLabel.text = DBHGetStringWithKeyFromTable(@"Send Count", nil);
+    self.sendSumTitleLabel.text = DBHGetStringWithKeyFromTable(@" Amount ", nil);
+    self.sendCountTitleLabel.text = DBHGetStringWithKeyFromTable(@"Package Number", nil);
     
-    self.maxSendTipLabel.text = DBHGetStringWithKeyFromTable(@"(Max Availuable Send:", nil);
+    self.maxSendTipLabel.text = DBHGetStringWithKeyFromTable(@"(Max:", nil);
     self.maxSendValueLabel.text = MAX_SEND_COUNT(MAX_SEND);
+    
+    self.maxSentCount = [NSString stringWithFormat:@"%@", @(MAX_SEND)];
     
     self.slider.value = 0;
     
-    [self.payBtn setTitle:DBHGetStringWithKeyFromTable(@"Pay", nil) forState:UIControlStateNormal];
-    self.walletMaxUseTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Max Avaliable Amount", nil)];
+    [self.payBtn setTitle:DBHGetStringWithKeyFromTable(@"Payment", nil) forState:UIControlStateNormal];
+    self.walletMaxUseTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Max Amount", nil)];
 
     self.slowLabel.text = DBHGetStringWithKeyFromTable(@"Slow", nil);
     self.fastLabel.text = DBHGetStringWithKeyFromTable(@"Fast", nil);
@@ -141,10 +141,10 @@ typedef void(^CompletionBlock) (void);
     [self.payBtn setBackgroundColor:COLORFROM16(0xEA6204, 1) forState:UIControlStateNormal];
     [self.payBtn setBackgroundColor:COLORFROM16(0xD5D5D5, 1) forState:UIControlStateDisabled];
     
-    self.noWalletTip1Label.text = DBHGetStringWithKeyFromTable(@"Your wallet has not this property,", nil);
+    self.noWalletTip1Label.text = DBHGetStringWithKeyFromTable(@"Your wallet do not have this asset,", nil);
     self.noWalletTip2Label.text = DBHGetStringWithKeyFromTable(@"Please ", nil);
     [self.addWalletBtn setTitle:DBHGetStringWithKeyFromTable(@"Add Wallet", nil) forState:UIControlStateNormal];
-    self.noWalletTip3Label.text = DBHGetStringWithKeyFromTable(@" Send redpacket after saved property", nil);
+    self.noWalletTip3Label.text = DBHGetStringWithKeyFromTable(@" Deposit assets before sending Red Packet", nil);
     
     self.sendUnitLabel.text = @"";
     [self.slider addTarget:self action:@selector(respondsToGasSlider) forControlEvents:UIControlEventValueChanged];
@@ -154,18 +154,19 @@ typedef void(^CompletionBlock) (void);
 
 #pragma mark ----- respondsToBtn ---------
 - (void)respondsToGasSlider {
-    self.feeValueLabel.text = [NSString stringWithFormat:@"%@", @(self.slider.value)];
+    NSString *number = [NSString notRounding:[NSString stringWithFormat:@"%@", @(self.slider.value)] afterPoint:8];
+    self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
 }
 
 - (IBAction)respondsToPayBtn:(UIButton *)sender {
     NSString *currentBalance = [self.currentWalletModel.tokenStatistics objectForKey:self.tokenModel.name];
     if (self.sendSumValueTextField.text.doubleValue > currentBalance.doubleValue) {
-        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send amount beyond max avaliable amount", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send assets is beyond max amount", nil)];
         return;
     }
     
     if (self.sendCountValueTextField.text.integerValue > self.maxSendValueLabel.text.integerValue) {
-        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send count beyond max avaliable send count", nil)];
+        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send number is beyond max amount", nil)];
         return;
     }
     
@@ -213,172 +214,214 @@ typedef void(^CompletionBlock) (void);
 }
 
 #pragma mark ------- Data ---------
-- (void)handleTokenListReponse:(id)responseObj withWallet:(DBHWalletManagerForNeoModelList *)walletModel completion:(CompletionBlock)completion {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableArray *tempTokensArr = nil;
-        if (![NSObject isNulllWithObject:responseObj] && [responseObj isKindOfClass:[NSDictionary class]]) {
-            NSArray *dataArray = responseObj[LIST];
-            if (![NSObject isNulllWithObject:dataArray] &&
-                [dataArray isKindOfClass:[NSArray class]] &&
-                dataArray.count > 0) {
-                tempTokensArr = [NSMutableArray array];
-                NSString *typeName = walletModel.category.name;
-                for (NSDictionary *dict in dataArray) {
-                    @autoreleasepool {
-                        YYWalletConversionListModel *listModel = [YYWalletConversionListModel mj_objectWithKeyValues:dict];
-                        
-                        NSString *price_cny = listModel.gnt_category.cap.priceCny;
-                        NSString *price_usd = listModel.gnt_category.cap.priceUsd;
-                        
-                        NSString *symbol = listModel.symbol;
-                        NSString *balance = listModel.balance;
-                        NSInteger decimals = listModel.decimals;
-                        
-                        DBHWalletDetailTokenInfomationModelData *model = [[DBHWalletDetailTokenInfomationModelData alloc] init];
-                        model.address = listModel.gnt_category.address;
-                        model.symbol = symbol;
-                        model.typeName = typeName;
-                        model.name = listModel.gnt_category.name;
-                        model.icon = listModel.gnt_category.icon;
-                        model.flag = model.name;
-                        
-                        model.priceCny = price_cny;
-                        model.priceUsd = price_usd;
-                        
-                        NSString *temp, *second = @"0";
-                        if (![NSObject isNulllWithObject:balance] && balance.length > 2) {
-                            temp = [NSString numberHexString:[balance substringFromIndex:2]];
-                            second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:[NSString stringWithFormat:@"%lf", pow(10, decimals)] value:8];
-                            
-                            // 代币数量统计
-                            [walletModel.tokenStatistics setObject:second forKey:model.name];
-                        }
-                        model.balance = second;
-                        
-                        [tempTokensArr addObject:model];
-                    }
-                }
+- (void)getMaxSentCount {
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        NSString *maxCount = @"0";
+        @try {
+            EthmobileEthCall *call = EthmobileNewEthCall();
+            
+            NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
+            if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) {
+                contractAddr = REDPACKET_CONTRACT_ADDRESS;
             }
+            
+            NSError *error = nil;
+            maxCount = [call redPacketMaxCount:contractAddr error:&error];
+        } @catch (NSException *exception) {
+            maxCount = @"0";
         }
         
-        YYWalletOtherInfoModel *infoModel = walletModel.infoModel;
-        if (!infoModel) {
-            infoModel = [[YYWalletOtherInfoModel alloc] init];
-        }
-        
-        infoModel.tokensArray = tempTokensArr;
-        walletModel.infoModel = infoModel;
-        
-        if (completion) {
-            completion();
-        }
+        NSDictionary *params = [NSDictionary dictionaryWithJsonString:maxCount];
+        WEAKSELF
+        [PPNetworkHelper POST:@"offline_wallet/rpc" baseUrlType:3 parameters:params hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
+            if (![NSObject isNulllWithObject:responseObject] && [responseObject isKindOfClass:[NSString class]]) {
+                NSString *maxCount = responseObject;
+                maxCount = [SystemConvert hexToDecimal:maxCount];
+                
+                weakSelf.maxSendValueLabel.text = MAX_SEND_COUNT(maxCount.intValue);
+                weakSelf.maxSentCount = [NSString stringWithFormat:@"%@", @(maxCount.intValue)];
+            }
+        } failure:^(NSString *error) {
+            [LCProgressHUD showFailure:error];
+        }];
     });
 }
 
-- (void)handleConversionReponse:(id)responseObj withWallet:(DBHWalletManagerForNeoModelList *)walletModel completion:(CompletionBlock)completion {
+/**
+ 获取count
+ */
+- (void)getTransactionCount {
+    [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"Authorizing", nil)];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (![NSObject isNulllWithObject:responseObj]) {
-            NSArray *dataArray = responseObj[LIST];
-            
-            DBHWalletDetailTokenInfomationModelData *ethModel = [[DBHWalletDetailTokenInfomationModelData alloc] init];
-            ethModel.name = ETH;
-            ethModel.icon = ETH;
-            ethModel.flag = ETH;
-            
-            if (![NSObject isNulllWithObject:dataArray] && dataArray.count > 0) {
-                for (NSDictionary *dict in dataArray) {
-                    @autoreleasepool {
-                        DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dict];
-                        
-                        NSString *price_cny = model.category.cap.priceCny;
-                        NSString *price_usd = model.category.cap.priceUsd;
-                        NSString *balance = model.balance;
-                        
-                        NSString *second = balance;
-                        if (model.categoryId == 1) { //ETH
-                            NSString *temp = @"0";
-                            if (![NSObject isNulllWithObject:balance] && balance.length > 2) {
-                                temp = [NSString numberHexString:[balance substringFromIndex:2]];
-                            }
-                            second = [NSString DecimalFuncWithOperatorType:3 first:temp secend:@"1000000000000000000" value:8];
-                            
-                            ethModel.balance = second;
-                            ethModel.priceCny = price_cny;
-                            ethModel.priceUsd = price_usd;
-                            ethModel.address = model.address;
-                        }
-                    }
-                }
-            } else {
-                ethModel.balance = @"0";
-                ethModel.priceCny = @"0";
-                ethModel.priceUsd = @"0";
+        NSString *addr = self.currentWalletModel.address;
+        if (addr.length > 0) {
+            if (![addr hasPrefix:@"0x"]) {
+                addr = [NSString stringWithFormat:@"0x%@", addr];
             }
             
-            YYWalletOtherInfoModel *infoModel = walletModel.infoModel;
-            if (!infoModel) {
-                infoModel = [[YYWalletOtherInfoModel alloc] init];
-            }
-            
-            infoModel.ethModel = ethModel;
-            walletModel.infoModel = infoModel;
-        }
-        
-        if (completion) {
-            completion();
-        }
-    });
-}
-
-// 遍历钱包，获取该钱包的代币列表和eth
-- (void)getWalletETHModelAndTokenList {
-    [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"Loading...", nil)];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (self.ethWalletsArr.count > 0) {
-            // 创建全局并行
-            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_group_t group = dispatch_group_create();
+            NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
+            [parametersDic setObject:[addr lowercaseString] forKey:@"address"];
             
             WEAKSELF
-            [self.ethWalletsArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                @autoreleasepool {
-                    DBHWalletManagerForNeoModelList *model = obj;
-                    dispatch_group_enter(group);
-                    dispatch_group_async(group, queue, ^{ // 获取该ETH钱包下的代币列表
-                        [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%ld", (NSInteger)model.listIdentifier] baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject) {
-                            [weakSelf handleTokenListReponse:responseObject withWallet:model completion:^{
-                                dispatch_group_leave(group);
-                            }];
-                        } failure:^(NSString *error) {
-                            [weakSelf handleTokenListReponse:nil withWallet:model completion:^{
-                                dispatch_group_leave(group);
-                            }];
-                        }];
-                    });
-                    
-                    NSDictionary *paramsDict = @{@"wallet_ids" : [@[@(model.listIdentifier)] toJSONStringForArray]};
-                    dispatch_group_enter(group);
-                    dispatch_group_async(group, queue, ^{
-                        // 获取ETH
-                        [PPNetworkHelper GET:@"conversion" baseUrlType:1 parameters:paramsDict hudString:nil success:^(id responseObject) {
-                            [weakSelf handleConversionReponse:responseObject withWallet:model completion:^{
-                                dispatch_group_leave(group);
-                            }];
-                        } failure:^(NSString *error) {
-                            [weakSelf handleConversionReponse:nil withWallet:model completion:^{
-                                dispatch_group_leave(group);
-                            }];
-                        }];
-                    });
-                    
-                }
+            [PPNetworkHelper POST:@"extend/getTransactionCount" baseUrlType:1 parameters:parametersDic hudString:nil success:^(id responseObject) {
+                [weakSelf handleResponseObj:responseObject type:0];
+            } failure:^(NSString *error) {
+                [LCProgressHUD hide];
+                [LCProgressHUD showFailure:error];
             }];
             
-            dispatch_group_notify(group, queue, ^{
+        }
+    });
+}
+
+/**
+ 授权
+ */
+- (void)gotoAuth:(NSString *)data asset_id:(NSString *)asset_id transferNum:(NSString *)transferNum handleFee:(NSString *)handleFee contractAddr:(NSString *)contractAddr {
+    @autoreleasepool {
+        NSString *redBag_number = self.sendCountValueTextField.text;
+        NSString *redBag = self.sendSumValueTextField.text;
+        NSString *poundage = self.feeValueLabel.text;
+        dispatch_async(dispatch_get_global_queue(
+                                                 DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                                 0), ^{
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            
+            NSString *addr = self.currentWalletModel.address;
+            NSString *symbol = self.tokenModel.name;
+            if (![NSObject isNulllWithObject:addr]) {
+                [params setObject:addr forKey:REDBAG_ADDR];
+            }
+            
+            if (![NSObject isNulllWithObject:symbol]) {
+                [params setObject:symbol forKey:REDBAG_SYMBOL];
+            }
+            
+            if (![NSObject isNulllWithObject:redBag]) {
+                [params setObject:redBag forKey:REDBAG];
+            }
+            
+            if (![NSObject isNulllWithObject:redBag_number]) {
+                [params setObject:redBag_number forKey:REDBAG_NUMBER];
+            }
+            
+            NSMutableDictionary *transferParams = [NSMutableDictionary dictionary];
+            
+            if (![NSObject isNulllWithObject:asset_id]) {
+                [transferParams setObject:asset_id forKey:ASSET_ID];
+            }
+            
+            NSString *payAddr = [self.currentWalletModel.address lowercaseString];
+            if (![NSObject isNulllWithObject:payAddr]) {
+                [transferParams setObject:payAddr forKey:PAY_ADDRESS];
+            }
+            
+            if (![NSObject isNulllWithObject:contractAddr]) {
+                [transferParams setObject:[contractAddr lowercaseString] forKey:RECEIVE_ADDRESS];
+            }
+            
+            if (![NSObject isNulllWithObject:transferNum]) {
+                [transferParams setObject:transferNum forKey:FEE];
+            }
+            
+            NSString *tempHandleFee = handleFee;
+            if ([self.tokenModel.name isEqualToString:ETH]) { // eth
+                tempHandleFee = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:[NSString DecimalFuncWithOperatorType:2 first:poundage secend:@"1000000000000000000" value:8].integerValue]];
+            }
+            
+            if (![NSObject isNulllWithObject:tempHandleFee]) {
+                [transferParams setObject:tempHandleFee forKey:HANDLE_FEE];
+            }
+            [transferParams setObject:data forKey:DATA];
+            [transferParams setObject:@"" forKey:REMARK];
+            
+            [params setObject:transferParams forKey:TRANSACTION_PARAM];
+            
+            WEAKSELF
+            [PPNetworkHelper POST:@"redbag/auth" baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
+                [weakSelf handleResponseObj:responseObject type:1];
+            } failure:^(NSString *error) {
+                [LCProgressHUD hide];
+                [LCProgressHUD showFailure:error];
+            }];
+        });
+    }
+}
+
+- (void)handleResponseObj:(id)responseObj type:(NSInteger)type {
+    if ([NSObject isNulllWithObject:responseObj]) {
+        [LCProgressHUD hide];
+        return;
+    }
+    
+    NSString *redBag = self.sendSumValueTextField.text;
+    NSString *poundage = self.feeValueLabel.text;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (type == 0) { // getTransactionCount
+            if (![responseObj isKindOfClass:[NSDictionary class]]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [LCProgressHUD hide];
+                    [LCProgressHUD hide];
                 });
+                return;
+            }
+            
+            NSString *count = responseObj[@"count"];
+            if ([NSObject isNulllWithObject:count]) {
+                count = @"0";
+            }
+            
+            NSError * error;
+            
+            long long transfer = redBag.doubleValue * pow(10, self.tokenModel.decimals);
+            
+            NSString *transferStr = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:transfer]];
+            
+            long long gas = poundage.doubleValue * pow(10, self.tokenModel.decimals);
+            NSString *gasPrice = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:gas]];
+           
+            NSString *gasLimit = [NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas.integerValue]];
+            
+            NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
+            if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) { // 正式网还没有 YYTODO
+                contractAddr = REDPACKET_CONTRACT_ADDRESS;
+            }
+            
+            NSString *data = [self.currentWalletModel.ethWallet approve:self.tokenModel.address
+                                                        nonce:count
+                                                           to:contractAddr
+                                                        value:transferStr
+                                                     gasPrice:gasPrice
+                                                    gasLimits:gasLimit
+                                                        error:&error];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!error) {
+                    [self gotoAuth:[NSString stringWithFormat:@"0x%@", data] asset_id:[self.tokenModel.address lowercaseString] transferNum:transferStr handleFee:gasLimit contractAddr:contractAddr];
+                } else {
+                    [LCProgressHUD hide];
+                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Authorization failed", nil)];
+                }
             });
+        } else if (type == 1) { // 授权
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [LCProgressHUD hide];
+            });
+            
+            if (![responseObj isKindOfClass:[NSDictionary class]]) {
+                return;
+            }
+            
+            YYRedPacketDetailModel *model = [YYRedPacketDetailModel mj_objectWithKeyValues:responseObj];
+            if (model.status == RedBagStatusCashPackaging || model.status == RedBagStatusCashAuthPending) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    YYRedPacketPackagingViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_PACKAGING_STORYBOARD_ID];
+                    vc.packageType = PackageTypeCash;
+                    vc.model = model;
+                    vc.ethWalletsArray = self.ethWalletsArr;
+                    [self.navigationController pushViewController:vc animated:YES];
+                });
+            }
         }
     });
 }
@@ -393,8 +436,8 @@ typedef void(^CompletionBlock) (void);
             self.payBtn.enabled = YES;
         }
         if (textField.text.integerValue > self.maxSendValueLabel.text.integerValue) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send count beyond max avaliable send count", nil)];
-            textField.text = [NSString stringWithFormat:@"%d", MAX_SEND];
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send number is beyond max amount", nil)];
+            textField.text = self.maxSentCount;
         }
     } else if ([textField isEqual:self.sendSumValueTextField]) {
         if (textField.text.doubleValue == 0) {
@@ -404,10 +447,10 @@ typedef void(^CompletionBlock) (void);
         }
         
         if (textField.text.doubleValue > currentBalance.doubleValue) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send amount beyond max avaliable amount", nil)];
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send assets is beyond max amount", nil)];
             
-            NSString *number = [NSString notRounding:currentBalance afterPoint:8];
-            number = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+            NSString *number = [NSString notRounding:currentBalance afterPoint:4];
+            number = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
             textField.text = number;
         }
     }
@@ -459,9 +502,12 @@ typedef void(^CompletionBlock) (void);
             maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"21000"  value:8];
             maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"1000000000000000000" value:8];
             
-            self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", minValue.doubleValue];
+            NSString *number = [NSString notRounding:minValue afterPoint:8];
+            self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+            
             self.slider.minimumValue = minValue.doubleValue;
             self.slider.maximumValue = maxValue.doubleValue;
+            self.slider.value = self.slider.minimumValue;
         });
     });
 }
@@ -498,8 +544,8 @@ typedef void(^CompletionBlock) (void);
             self.walletInfoView.hidden = NO;
             self.walletAddressLabel.text = self.currentWalletModel.address;
             
-            NSString *number = [NSString notRounding:balance afterPoint:8];
-            number = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+            NSString *number = [NSString notRounding:balance afterPoint:4];
+            number = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
             self.walletMaxUseValueLabel.text = [NSString stringWithFormat:@"%@%@", number, self.tokenModel.name];
         }
     });
@@ -512,27 +558,20 @@ typedef void(^CompletionBlock) (void);
         _inputPasswordPromptView.placeHolder = DBHGetStringWithKeyFromTable(@"Please input a password", nil);
         WEAKSELF
         [_inputPasswordPromptView commitBlock:^(NSString *password) {
-            // 备份助记词
-            NSString *data = [PDKeyChain load:KEYCHAIN_KEY(weakSelf.currentWalletModel.address)];
+            NSString *tempAddr = weakSelf.currentWalletModel.address;
+            NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:YES];
+            
             [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"In the validation...", nil)];
             dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(globalQueue, ^ {
                 //子线程异步执行下载任务，防止主线程卡顿
                 NSError * error;
                 
-                EthmobileWallet *ethWallet = EthmobileFromKeyStore(data,password,&error);
+                weakSelf.currentWalletModel.ethWallet = EthmobileFromKeyStore(data, password, &error);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [LCProgressHUD hide];
                     if (!error) {
-                        YYRedPacketPackagingViewController *vc = [weakSelf.storyboard instantiateViewControllerWithIdentifier:REDPACKET_PACKAGING_STORYBOARD_ID];
-                        self.currentWalletModel.ethWallet = ethWallet;
-                        vc.packageType = PackageTypeCash;
-                        vc.redbag_number = weakSelf.sendCountValueTextField.text.integerValue;
-                        vc.redbag = weakSelf.sendSumValueTextField.text;
-                        vc.walletModel = weakSelf.currentWalletModel;
-                        vc.tokenModel = weakSelf.tokenModel;
-                        vc.poundage = weakSelf.feeValueLabel.text;
-                        [weakSelf.navigationController pushViewController:vc animated:YES];
+                        [weakSelf getTransactionCount];
                     } else {
                         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The password is incorrect. Please try again later", nil)];
                    }

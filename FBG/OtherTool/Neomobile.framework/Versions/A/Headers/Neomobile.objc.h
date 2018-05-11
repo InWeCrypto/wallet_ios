@@ -7,7 +7,7 @@
 #define __Neomobile_H__
 
 #include <Foundation/Foundation.h>
-#include "Neomobile.h"
+#include "universe.objc.h"
 #include "ref.h"
 
 @class NeomobileTx;

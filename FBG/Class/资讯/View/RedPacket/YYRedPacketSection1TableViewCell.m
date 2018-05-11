@@ -8,17 +8,15 @@
 
 #import "YYRedPacketSection1TableViewCell.h"
 #import "YYRedPacketReceiveProgressView.h"
-#import "YYRedPacketMySentListModel.h"
 
 @interface YYRedPacketSection1TableViewCell()
 
 @property (weak, nonatomic) IBOutlet UILabel *redPacketNoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
-@property (weak, nonatomic) IBOutlet UIView *progressBgView;
-@property (weak, nonatomic) IBOutlet YYRedPacketReceiveProgressView *progessView;
-@property (weak, nonatomic) IBOutlet UILabel *ingLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *ingHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIView *progessSuperView;
+
+@property (strong, nonatomic) YYRedPacketReceiveProgressView *progressView;
 
 @end
 
@@ -28,50 +26,70 @@
     [super awakeFromNib];
     
     [self.statusLabel setBorderWidth:1 color:COLORFROM16(0xED7421, 1)];
+    [self.progessSuperView addSubview:self.progressView];
+    
+    WEAKSELF
+    [self.progressView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(weakSelf.progessSuperView);
+        make.width.height.offset(44);
+        make.left.greaterThanOrEqualTo(weakSelf.progessSuperView);
+    }];
 }
 
 - (void)setModel:(id)model from:(CellFrom)from {
-    if (from == CellFromSentHistory && [model isKindOfClass:[YYRedPacketMySentListModel class]]) {
-        YYRedPacketMySentListModel *sentModel = model;
-        self.redPacketNoLabel.text = sentModel.redbag_addr;
+    if (from == CellFromSentHistory && [model isKindOfClass:[YYRedPacketDetailModel class]]) {
+        YYRedPacketDetailModel *detailModel = model;
+        self.redPacketNoLabel.text = detailModel.redbag_addr;
         
-        NSString *number = [NSString notRounding:sentModel.redbag afterPoint:8];
-        self.priceLabel.text = [NSString stringWithFormat:@"%.8lf%@", number.doubleValue, sentModel.redbag_symbol];
+        NSString *number = [NSString notRounding:detailModel.redbag afterPoint:4];
+        self.priceLabel.text = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, detailModel.redbag_symbol];
         
-        switch (sentModel.status) {
+        switch (detailModel.status) {
             case RedBagStatusDone: {
                 [self showProgressView:NO];
                 self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Done", nil));
                 break;
             }
+                
             case RedBagStatusCashPackaging: {
                 [self showProgressView:NO];
-                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Cash Packaging", nil));
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Packet preparation successful", nil));
                 break;
             }
+                
             case RedBagStatusCreating: {
                 [self showProgressView:NO];
-                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Red Packet Creating", nil));
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Red Packet creation successful", nil));
+                break;
+            }
+            
+            case RedBagStatusCashAuthPending: {
+                [self showProgressView:NO];
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Packaging Assets", nil));
+                break;
+            }
+            case RedBagStatusCreatePending: {
+                [self showProgressView:NO];
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Creating Red Packet", nil));
                 break;
             }
                 
             case RedBagStatusOpening: {
                 [self showProgressView:YES];
-                self.ingLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Openning", nil));
-                [self.progessView setProgress:sentModel.draw_redbag_number total:sentModel.redbag_number];
+                [self.progressView setProgress:detailModel.draw_redbag_number total:detailModel.redbag_number];
                 break;
             }
                 
                 
             case RedBagStatusCashPackageFailed: {
                 [self showProgressView:NO];
-                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Cash Package Failed", nil));
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Packing Failed", nil));
                 break;
             }
                 
             case RedBagStatusCreateFailed: {
                 [self showProgressView:NO];
-                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"RedPacket Create Failed", nil));
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Creation Failed", nil));
                 break;
             }
         }
@@ -80,36 +98,61 @@
         
         self.redPacketNoLabel.text = openedModel.draw_addr;
         
-        NSString *openedRedBag = openedModel.model.redbag;
+        NSString *openedRedBag = openedModel.redbag.redbag;
         
         [self showProgressView:NO];
-        if (openedModel.model.done) { // 已开奖
-            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Awarded Prize", nil));
-            
-            NSString *number = [NSString notRounding:openedRedBag afterPoint:8];
-            self.priceLabel.text = [NSString stringWithFormat:@"%.8lf%@", number.doubleValue, openedModel.model.redbag_symbol];
-        } else { // 待开奖
-            self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Waitting Award", nil));
-            self.priceLabel.text = [NSString stringWithFormat:@"???%@", openedModel.model.redbag_symbol];
+        RedBagLotteryStatus status = openedModel.redbag.done;
+        switch (status) {
+            case RedBagLotteryStatusHad: { // 已开奖
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Launched", nil));
+                
+                NSString *number = [NSString notRounding:openedRedBag afterPoint:4];
+                self.priceLabel.text = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, openedModel.redbag.redbag_symbol];
+                break;
+            }
+            case RedBagLotteryStatusWait: { // 待开奖
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"To be launched", nil));
+                self.priceLabel.text = [NSString stringWithFormat:@"???%@", openedModel.redbag.redbag_symbol];
+                break;
+            }
+            case RedBagLotteryStatusEnd: { // 开奖结束
+                self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@" Ended ", nil));
+                
+                NSString *number = [NSString notRounding:openedRedBag afterPoint:4];
+                self.priceLabel.text = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, openedModel.redbag.redbag_symbol];
+                break;
+            }
         }
     }
 }
 
 - (void)showProgressView:(BOOL)isShow {
-    self.progressBgView.hidden = YES;
+    self.progressView.hidden = !isShow;
     
-    self.statusLabel.hidden = NO;
+    self.statusLabel.hidden = isShow;
+    
+    if (!isShow) {
+        return;
+    }
+    
+    self.progressView.isShowOpening = self.isShowOpening;
+    
+    WEAKSELF
+    [self.progressView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(weakSelf.progessSuperView);
+        make.width.offset(44);
+        make.height.offset(self.isShowOpening ? 44 : 29);
+        make.left.greaterThanOrEqualTo(weakSelf.progessSuperView);
+    }];
 }
 
-- (void)setModel:(id)model showIng:(BOOL)showIng {
-    _ingHeightConstraint.constant = showIng ? 15 : 0;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-    
+#pragma mark ----- Setters And Getters ---------
+- (YYRedPacketReceiveProgressView *)progressView {
+    if (!_progressView) {
+        _progressView = [[YYRedPacketReceiveProgressView alloc] init];
+        _progressView.backgroundColor = [UIColor clearColor];
+    }
+    return _progressView;
 }
 
 @end

@@ -271,7 +271,7 @@
     if (!_hotAttentionLabel) {
         _hotAttentionLabel = [[UILabel alloc] init];
         _hotAttentionLabel.font = FONT(11);
-        _hotAttentionLabel.text = DBHGetStringWithKeyFromTable(@"Rank", nil);
+        _hotAttentionLabel.text = DBHGetStringWithKeyFromTable(@"Attention", nil);
         _hotAttentionLabel.textColor = COLORFROM16(0xC5C5C5, 1);
         _hotAttentionLabel.textAlignment = NSTextAlignmentCenter;
     }

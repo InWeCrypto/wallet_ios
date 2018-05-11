@@ -10,6 +10,7 @@
 
 @interface YYRedPacketReceiveProgressView : UIView
 
+@property (nonatomic, assign) BOOL isShowOpening;
 - (void)setProgress:(NSInteger)progress total:(NSInteger)total;
 
 @end

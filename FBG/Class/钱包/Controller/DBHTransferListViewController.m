@@ -19,7 +19,7 @@
 #import "DBHTransferListTableViewCell.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 #import "DBHTransferListDataModels.h"
 #import "DBHWalletManagerForNeoModelCategory.h"
 
@@ -188,32 +188,50 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
 - (void)getNeoBalance {
     WEAKSELF
     [PPNetworkHelper GET:[NSString stringWithFormat:@"conversion/%ld", (NSInteger)self.neoWalletModel.listIdentifier] baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
+        
+        @try {
         if ([weakSelf isEth]) { // ETH及其代币
+            if ([NSObject isNulllWithObject:responseCache]) {
+                return ;
+            }
+            
             if ([[weakSelf flag] isEqualToString:ETH]) {
                 
             }
-            for (NSDictionary *dic in [responseCache objectForKey:LIST]) {
-                if ([dic[NAME] isEqualToString:weakSelf.tokenModel.name]) {
-                    NSString *price_cny = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:PRICE_CNY];
-                    NSString *price_usd = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:PRICE_USD];
-                    NSString *balance = [dic objectForKey:BALANCE];
-                   
-                    NSString *tempBalance = balance;
-                    if ([dic[NAME] isEqualToString:ETH]) {
-                        tempBalance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
-                    } else {
-                        NSString *decimals = dic[DECIMALS];
-                        tempBalance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:[NSString stringWithFormat:@"%lf", pow(10, decimals.doubleValue)] value:4];
+            
+            for (NSDictionary *dic in responseCache[LIST]) {
+                if (![NSObject isNulllWithObject:dic]) {
+                    if ([dic[NAME] isEqualToString:weakSelf.tokenModel.name]) {
+                        NSDictionary *gntcategory = dic[GNT_CATEGORY];
+                        
+                        NSString *balance = [dic objectForKey:BALANCE];
+                        NSString *price_cny = @"0", *price_usd = @"0";
+                        if (![NSObject isNulllWithObject:gntcategory]) {
+                            NSDictionary *cap = [gntcategory objectForKey:CAP];
+                            if (![NSObject isNulllWithObject:cap]) {
+                                price_cny = [cap objectForKey:PRICE_CNY];
+                                price_usd = [cap objectForKey:PRICE_USD];
+                            }
+                            
+                        }
+                        NSString *tempBalance = balance;
+                        if ([dic[NAME] isEqualToString:ETH]) {
+                            tempBalance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                        } else {
+                            NSString *decimals = dic[DECIMALS];
+                            tempBalance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:[NSString stringWithFormat:@"%lf", pow(10, decimals.doubleValue)] value:4];
+                        }
+                        
+                        NSString *price = [UserSignData share].user.walletUnitType == 1 ? price_cny : price_usd;
+                        NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.headerView.balance value:2];
+                        weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
+                        
+                        NSString *number = [NSString notRounding:tempBalance afterPoint:4];
+                        weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
+                        //                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
                     }
-                    
-                    NSString *price = [UserSignData share].user.walletUnitType == 1 ? price_cny : price_usd;
-                    NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.headerView.balance value:2];
-                    weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
-                    
-                    NSString *number = [NSString notRounding:tempBalance afterPoint:4];
-                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
-//                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
                 }
+                
             }
         } else {  // NEO
             NSDictionary *record = responseCache[RECORD];
@@ -301,32 +319,53 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
             NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.tokenModel.balance value:2];
             weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
             weakSelf.headerView.balance = tempBalance;
+         
+        }
+            
+        } @catch (NSException *exception) {
+            
         }
     } success:^(id responseObject) {
+        if ([NSObject isNulllWithObject:responseObject]) {
+            return ;
+        }
+        
+        @try {
         if ([weakSelf isEth]) {
             // ETH 及其代币
             for (NSDictionary *dic in [responseObject objectForKey:LIST]) {
-                if ([dic[NAME] isEqualToString:weakSelf.tokenModel.name]) {
-                    NSString *price_cny = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:PRICE_CNY];
-                    NSString *price_usd = [[[dic objectForKey:GNT_CATEGORY] objectForKey:CAP] objectForKey:PRICE_CNY];
-                    NSString *balance = [dic objectForKey:BALANCE];
-                    
-                    NSString *tempBalance = balance;
-                    if ([dic[NAME] isEqualToString:ETH]) {
-                        tempBalance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
-                    } else {
-                        NSString *decimals = dic[DECIMALS];
-                        tempBalance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:[NSString stringWithFormat:@"%lf", pow(10, decimals.doubleValue)] value:4];
+                if (![NSObject isNulllWithObject:dic]) {
+                    if ([dic[NAME] isEqualToString:weakSelf.tokenModel.name]) {
+                        NSDictionary *gntcategory = dic[GNT_CATEGORY];
+                        
+                        NSString *balance = [dic objectForKey:BALANCE];
+                        NSString *price_cny = @"0", *price_usd = @"0";
+                        if (![NSObject isNulllWithObject:gntcategory]) {
+                            NSDictionary *cap = [gntcategory objectForKey:CAP];
+                            if (![NSObject isNulllWithObject:cap]) {
+                                price_cny = [cap objectForKey:PRICE_CNY];
+                                price_usd = [cap objectForKey:PRICE_USD];
+                            }
+                            
+                        }
+                        
+                        NSString *tempBalance = balance;
+                        if ([dic[NAME] isEqualToString:ETH]) {
+                            tempBalance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:@"1000000000000000000" value:4];
+                        } else {
+                            NSString *decimals = dic[DECIMALS];
+                            tempBalance = [NSString DecimalFuncWithOperatorType:3 first:[NSString numberHexString:[balance substringFromIndex:2]] secend:[NSString stringWithFormat:@"%lf", pow(10, decimals.doubleValue)] value:4];
+                        }
+                        
+                        NSString *price = [UserSignData share].user.walletUnitType == 1 ? price_cny : price_usd;
+                        NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.headerView.balance value:2];
+                        weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
+                        
+                        NSString *number = [NSString notRounding:tempBalance afterPoint:4];
+                        weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
+                        
+    //                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
                     }
-                    
-                    NSString *price = [UserSignData share].user.walletUnitType == 1 ? price_cny : price_usd;
-                    NSString *asset = [NSString DecimalFuncWithOperatorType:2 first:price secend:weakSelf.headerView.balance value:2];
-                    weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
-                    
-                    NSString *number = [NSString notRounding:tempBalance afterPoint:4];
-                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
-                    
-//                    weakSelf.headerView.balance = [NSString stringWithFormat:@"%.4lf", tempBalance.doubleValue];
                 }
             }
         } else { // NEO
@@ -411,6 +450,10 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
             weakSelf.headerView.asset = [NSString stringWithFormat:@"%.4lf", asset.doubleValue];
             weakSelf.headerView.balance = tempBalance;
         }
+        
+    } @catch (NSException *exception) {
+        
+    }
     } failure:^(NSString *error) {
 //        [LCProgressHUD showFailure:error];
     } specialBlock:^{

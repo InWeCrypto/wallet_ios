@@ -221,7 +221,10 @@ static NSString *const kDBHWalletManageListTableViewCellIdentifier = @"kDBHWalle
         for (NSDictionary *dic in responseCache[LIST]) {
             DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
             
-            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+            NSString *tempAddr = model.address;
+            
+            NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:(model.categoryId == 1)];
+            model.isLookWallet = [NSString isNulllWithObject:data];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
         }
@@ -241,7 +244,11 @@ static NSString *const kDBHWalletManageListTableViewCellIdentifier = @"kDBHWalle
         for (NSDictionary *dic in responseObject[LIST]) {
             DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dic];
             
-            model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+            NSString *tempAddr = model.address;
+           
+            NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:(model.categoryId == 1)];
+            
+            model.isLookWallet = [NSString isNulllWithObject:data];
             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
             [weakSelf.dataSource addObject:model];
         }

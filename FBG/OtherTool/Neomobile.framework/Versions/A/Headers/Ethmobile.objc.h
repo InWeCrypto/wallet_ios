@@ -7,7 +7,8 @@
 #define __Ethmobile_H__
 
 #include <Foundation/Foundation.h>
-#include "Neomobile.h"
+#include "universe.objc.h"
+
 
 @class EthmobileEthCall;
 @class EthmobileWallet;
@@ -30,8 +31,9 @@
 - (NSString*)name:(NSString*)contract error:(NSError**)error;
 - (NSString*)ownerOf:(NSString*)contract value:(NSString*)value error:(NSError**)error;
 - (NSString*)ownerOfLand:(NSString*)contract x:(NSString*)x y:(NSString*)y error:(NSError**)error;
-- (NSString*)redPacketDetail:(NSString*)contract value:(NSString*)value error:(NSError**)error;
 - (NSString*)redPacketMaxCount:(NSString*)contract error:(NSError**)error;
+- (NSString*)redPacketOpenDetail:(NSString*)contract value:(NSString*)value error:(NSError**)error;
+- (NSString*)redPacketStatus:(NSString*)contract value:(NSString*)value error:(NSError**)error;
 - (NSString*)redPacketTaxCost:(NSString*)contract error:(NSError**)error;
 - (NSString*)tokenMetadata:(NSString*)contract value:(NSString*)value error:(NSError**)error;
 - (NSString*)tokenOfOwnerByIndex:(NSString*)contract address:(NSString*)address value:(NSString*)value error:(NSError**)error;
@@ -48,7 +50,7 @@
 - (NSString*)address;
 - (NSString*)approve:(NSString*)contract nonce:(NSString*)nonce to:(NSString*)to value:(NSString*)value gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
 - (NSString*)mnemonic:(NSString*)lang error:(NSError**)error;
-- (NSString*)newRedPacket:(NSString*)redcontract nonce:(NSString*)nonce erc20contract:(NSString*)erc20contract from:(NSString*)from amount:(NSString*)amount value:(NSString*)value count:(NSString*)count command:(NSString*)command gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
+- (NSString*)newRedPacket:(NSString*)redcontract nonce:(NSString*)nonce erc20contract:(NSString*)erc20contract tokenId:(NSString*)tokenId from:(NSString*)from amount:(NSString*)amount value:(NSString*)value count:(NSString*)count command:(NSString*)command gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
 - (NSString*)toKeyStore:(NSString*)password error:(NSError**)error;
 - (NSString*)transfer:(NSString*)nonce to:(NSString*)to amount:(NSString*)amount gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;
 - (NSString*)transferERC20:(NSString*)contract nonce:(NSString*)nonce to:(NSString*)to amount:(NSString*)amount gasPrice:(NSString*)gasPrice gasLimits:(NSString*)gasLimits error:(NSError**)error;

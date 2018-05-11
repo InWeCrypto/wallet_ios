@@ -21,6 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self getDetailData];
     [self setUI];
 }
 
@@ -44,6 +45,34 @@
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 }
 
+#pragma mark ------- Data ---------
+//获取红包详情
+- (void)getDetailData {
+    NSString *urlStr = [NSString stringWithFormat:@"redbag/send_record/%ld", self.model.redbag.redPacketId];
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        WEAKSELF
+        [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
+            [weakSelf handleResponseObj:responseObject];
+        } failure:^(NSString *error) {
+            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        }];
+    });
+}
+
+- (void)handleResponseObj:(id)responseObj {
+    if ([NSObject isNulllWithObject:responseObj]) {
+        return;
+    }
+    
+    if ([responseObj isKindOfClass:[NSDictionary class]]) {
+        YYRedPacketDetailModel *model = [YYRedPacketDetailModel mj_objectWithKeyValues:responseObj];
+        self.model.redbag = model;
+        
+        [self.tableView reloadData];
+    }
+}
 
 #pragma mark ------- SetUI ---------
 - (void)setUI {
@@ -79,22 +108,30 @@
             break;
             
         default:
-            return 2;
+            return self.model.redbag.draws.count;
             break;
     }
     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //    NSInteger row = indexPath.row;
+    NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     if (section == 0) {
         YYRedPacketSucessTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SUCCESS_CELL_ID forIndexPath:indexPath];
-        
+        cell.model = self.model;
         return cell;
     }
     
     YYRedPacketDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_DETAIL_CELL_ID forIndexPath:indexPath];
+    
+    if (row == self.model.redbag.draw_redbag_number - 1) {
+        cell.isLastCellInSection = YES;
+    } else {
+        cell.isLastCellInSection = NO;
+    }
+    
+    [cell setModel:self.model.redbag redbagCellType:RedBagCellTypeDrawNum index:row];
     return cell;
 }
 
@@ -112,6 +149,7 @@
     }
     
     YYRedPacketDetailHeaderView *headerView = [[YYRedPacketDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, DETAIL_HEADERVIEW_HEIGHT)];
+    [headerView setModel:self.model.redbag redbagCellType:RedBagCellTypeDrawNum];
     return headerView;
 }
 
@@ -128,5 +166,13 @@
     return view;
 }
 
-
+- (void)setModel:(YYRedPacketOpenedModel *)model {
+    if (!model) {
+        return;
+    }
+    
+    _model = model;
+    
+    [self.tableView reloadData];
+}
 @end

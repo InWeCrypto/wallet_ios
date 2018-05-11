@@ -105,26 +105,26 @@
         
     }
     
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSError *err;
-    
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
-                         
-                                                        options:NSJSONReadingMutableContainers
-                         
-                                                          error:&err];
-    
-    if(err) {
+    NSDictionary *dic = nil;
+    @try {
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         
-        NSLog(@"json解析失败：%@",err);
+        NSError *err;
         
-        return nil;
+        dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                             
+                                                            options:NSJSONReadingMutableContainers
+                             
+                                                              error:&err];
         
+        if(err) {
+            NSLog(@"json解析失败：%@",err);
+            dic = nil;
+        }
+    } @catch (NSException *exception) {
+        dic = nil;
     }
-    
     return dic;
-    
 }
 
 @end

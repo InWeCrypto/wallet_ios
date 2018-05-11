@@ -15,6 +15,6 @@
 
 @property (nonatomic, assign) BOOL isLastCellInSection;
 
-- (void)setModel:(YYRedPacketDetailModel *)model section:(NSInteger)section;
+- (void)setModel:(YYRedPacketDetailModel *)model redbagCellType:(RedBagCellType)cellType index:(NSInteger)index;
 
 @end

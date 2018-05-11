@@ -5,7 +5,7 @@
 //  Copyright (c) 2018 __MyCompanyName__. All rights reserved.
 //
 
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 
 NSString *const kDBHWalletDetailTokenInfomationModelDataPriceCny = PRICE_CNY;

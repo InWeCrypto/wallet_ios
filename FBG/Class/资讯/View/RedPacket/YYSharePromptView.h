@@ -10,8 +10,7 @@
 
 @interface YYSharePromptView : UIView
 
-@property (nonatomic, copy) NSString *urlStr;
-//@property (nonatomic, strong) UIImage *longPictureImg;
+@property (nonatomic, strong) YYRedPacketDetailModel *model;
 
 - (void)show;
 

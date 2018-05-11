@@ -8,7 +8,7 @@
 
 #import "DBHExtractGasTableViewCell.h"
 
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 @interface DBHExtractGasTableViewCell ()
 

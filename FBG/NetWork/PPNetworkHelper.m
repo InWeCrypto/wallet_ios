@@ -127,6 +127,7 @@ static NetworkStatus _status;
 
 + (void)gotoLoginVC {
     dispatch_async(dispatch_get_main_queue(), ^{
+        [LCProgressHUD hide];
         UIViewController *targetVC = [UIView currentViewController];
         [[AppDelegate delegate] goToLoginVC:targetVC];
     });
@@ -156,13 +157,39 @@ static NetworkStatus _status;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
           
             if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
-                success([responseObject objectForKey:@"data"]);
+                if (success) {
+                    success([responseObject objectForKey:@"data"]);
+                }
                 PPLog(@"responseObject = %@",responseObject);
             } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
-                success([responseObject objectForKey:@"url"]);
+                if (success) {
+                    success([responseObject objectForKey:@"url"]);
+                }
             } else {
                 NSString *code = responseObject[@"code"];
                 if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
+                    if (code.integerValue == 4001) { // 未登录
+                        if ([UserSignData share].user.isLogin) { // 登录状态 --> 未登录状态
+                            EMError *error = [[EMClient sharedClient] logout:YES];
+                            if (!error) {
+                                [[UserSignData share] storageData:nil];
+                                
+                                UserModel *user = [UserSignData share].user;
+                                // 货币单位跟随语言
+                                user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+                                [[UserSignData share] storageData:user];
+                                
+                                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:IS_LOGIN_KEY];
+                                [[NSUserDefaults standardUserDefaults] synchronize];
+                                
+                                [[EMClient sharedClient].options setIsAutoLogin:NO];
+                                // 需要先登录
+                                [weakSelf gotoLoginVC];
+                                
+                                return ;
+                            }
+                        }
+                    }
                     // 需要先登录
                     [weakSelf gotoLoginVC];
                     
@@ -171,12 +198,15 @@ static NetworkStatus _status;
                     return ;
                 }
                 
+                NSLog(@"url = %@", URL);
                 if (![UserSignData share].user.token.length) {
                     [weakSelf gotoLoginVC];
                     return ;
                 }
                 
-                failure([responseObject objectForKey:@"msg"]);
+                if (failure) {
+                    failure([responseObject objectForKey:@"msg"]);
+                }
             }
         });
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -255,6 +285,29 @@ static NetworkStatus _status;
                     if (special) {
                         special();
                     } else {
+                        if (code.integerValue == 4001) { // 未登录
+                            if ([UserSignData share].user.isLogin) { // 登录状态 --> 未登录状态
+                                EMError *error = [[EMClient sharedClient] logout:YES];
+                                if (!error) {
+                                    [[UserSignData share] storageData:nil];
+                                    
+                                    UserModel *user = [UserSignData share].user;
+                                    // 货币单位跟随语言
+                                    user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+                                    [[UserSignData share] storageData:user];
+                                    
+                                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:IS_LOGIN_KEY];
+                                    [[NSUserDefaults standardUserDefaults] synchronize];
+                                    
+                                    [[EMClient sharedClient].options setIsAutoLogin:NO];
+                                    // 需要先登录
+                                    [weakSelf gotoLoginVC];
+                                    
+                                    return ;
+                                }
+                            }
+                        }
+                        
                         // 需要先登录
                         [weakSelf gotoLoginVC];
                         
@@ -330,12 +383,37 @@ static NetworkStatus _status;
                 return ;
             }
             if ([[responseObject objectForKey:@"code"] intValue] == 4000 || [URL containsString:@"http"]) {
-                success([responseObject objectForKey:@"data"]);
+                if (success)
+                    success([responseObject objectForKey:@"data"]);
             } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
-                success([responseObject objectForKey:@"url"]);
+                if (success)
+                    success([responseObject objectForKey:@"url"]);
             }  else {
                 NSString *code = responseObject[@"code"];
                 if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
+                    if (code.integerValue == 4001) { // 未登录
+                        if ([UserSignData share].user.isLogin) { // 登录状态 --> 未登录状态
+                            EMError *error = [[EMClient sharedClient] logout:YES];
+                            if (!error) {
+                                [[UserSignData share] storageData:nil];
+                                
+                                UserModel *user = [UserSignData share].user;
+                                // 货币单位跟随语言
+                                user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+                                [[UserSignData share] storageData:user];
+                                
+                                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:IS_LOGIN_KEY];
+                                [[NSUserDefaults standardUserDefaults] synchronize];
+                                
+                                [[EMClient sharedClient].options setIsAutoLogin:NO];
+                                // 需要先登录
+                                [weakSelf gotoLoginVC];
+                                
+                                return ;
+                            }
+                        }
+                    }
+                    
                     // 需要先登录
                     [weakSelf gotoLoginVC];
                     
@@ -346,6 +424,7 @@ static NetworkStatus _status;
                 
                 if (![URL isEqualToString:@"login"] &&
                     ![URL isEqualToString:@"register"] &&
+                    ![URL containsString:@"send_code"] &&
                     ![UserSignData share].user.token.length) {
                     [weakSelf gotoLoginVC];
                     return ;
@@ -356,7 +435,9 @@ static NetworkStatus _status;
                     error = DBHGetStringWithKeyFromTable(@"Has Uncompleted Orders", nil);
                 }
                 
-                failure(error);
+                if (failure) {
+                    failure(error);
+                }
             }
         });
         
@@ -407,17 +488,43 @@ static NetworkStatus _status;
                     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                     
                     if ([URL containsString:@"http"]) {
-                        success([responseObject objectForKey:@"result"]);
+                        if (success)
+                            success([responseObject objectForKey:@"result"]);
                         return ;
                     }
                     if ([[responseObject objectForKey:@"code"] intValue] == 4000 || [URL containsString:@"http"]) {
-                        success([responseObject objectForKey:@"data"]);
+                        if (success)
+                            success([responseObject objectForKey:@"data"]);
                         PPLog(@"responseObject = %@",responseObject);
                     } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
-                        success([responseObject objectForKey:@"url"]);
+                        if (success)
+                            success([responseObject objectForKey:@"url"]);
                     } else {
                         NSString *code = responseObject[@"code"];
                         if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
+                            if (code.integerValue == 4001) { // 未登录
+                                if ([UserSignData share].user.isLogin) { // 登录状态 --> 未登录状态
+                                    EMError *error = [[EMClient sharedClient] logout:YES];
+                                    if (!error) {
+                                        [[UserSignData share] storageData:nil];
+                                        
+                                        UserModel *user = [UserSignData share].user;
+                                        // 货币单位跟随语言
+                                        user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+                                        [[UserSignData share] storageData:user];
+                                        
+                                        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:IS_LOGIN_KEY];
+                                        [[NSUserDefaults standardUserDefaults] synchronize];
+                                        
+                                        [[EMClient sharedClient].options setIsAutoLogin:NO];
+                                        // 需要先登录
+                                        [weakSelf gotoLoginVC];
+                                        
+                                        return ;
+                                    }
+                                }
+                            }
+                            
                             // 需要先登录
                             [weakSelf gotoLoginVC];
                             
@@ -430,8 +537,8 @@ static NetworkStatus _status;
                             [weakSelf gotoLoginVC];
                             return ;
                         }
-                        
-                        failure([responseObject objectForKey:@"msg"]);
+                        if (failure)
+                            failure([responseObject objectForKey:@"msg"]);
                     }
                 });
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -492,17 +599,42 @@ static NetworkStatus _status;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
             if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
-                success([responseObject objectForKey:@"data"]);
+                if (success)
+                    success([responseObject objectForKey:@"data"]);
                 [PPNetworkCache saveResponseCache:[responseObject objectForKey:@"data"] forKey:[NSString stringWithFormat:@"%@/%@", URL, [NSString dataTOjsonString:parameters]]];
                 PPLog(@"responseObject = %@",responseObject);
             } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
-                success([responseObject objectForKey:@"url"]);
+                if (success)
+                    success([responseObject objectForKey:@"url"]);
             } else {
                 NSString *code = responseObject[@"code"];
                 if (code.integerValue == 4009 || code.integerValue == 4010 || code.integerValue == 4011  || code.integerValue == 4001) {
                     if (special) {
                         special();
                     } else {
+                        if (code.integerValue == 4001) { // 未登录
+                            if ([UserSignData share].user.isLogin) { // 登录状态 --> 未登录状态
+                                EMError *error = [[EMClient sharedClient] logout:YES];
+                                if (!error) {
+                                    [[UserSignData share] storageData:nil];
+                                    
+                                    UserModel *user = [UserSignData share].user;
+                                    // 货币单位跟随语言
+                                    user.walletUnitType = [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? 1 : 2;
+                                    [[UserSignData share] storageData:user];
+                                    
+                                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:IS_LOGIN_KEY];
+                                    [[NSUserDefaults standardUserDefaults] synchronize];
+                                    
+                                    [[EMClient sharedClient].options setIsAutoLogin:NO];
+                                    // 需要先登录
+                                    [weakSelf gotoLoginVC];
+                                    
+                                    return ;
+                                }
+                            }
+                        }
+                        
                         // 需要先登录
                         [weakSelf gotoLoginVC];
                         
@@ -521,8 +653,8 @@ static NetworkStatus _status;
                     }
                     return ;
                 }
-                
-                failure([responseObject objectForKey:@"msg"]);
+                if (failure)
+                    failure([responseObject objectForKey:@"msg"]);
             }
         });
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -562,12 +694,15 @@ static NetworkStatus _status;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             
             if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
-                success([responseObject objectForKey:@"data"]);
+                if (success)
+                    success([responseObject objectForKey:@"data"]);
                 PPLog(@"responseObject = %@",responseObject);
             } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
-                success([responseObject objectForKey:@"url"]);
+                if (success)
+                    success([responseObject objectForKey:@"url"]);
             } else {
-                failure([responseObject objectForKey:@"msg"]);
+                if (failure)
+                    failure([responseObject objectForKey:@"msg"]);
             }
         });
         
@@ -610,12 +745,15 @@ static NetworkStatus _status;
                     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                 
                     if ([[responseObject objectForKey:@"code"] intValue] == 4000) {
-                        success([responseObject objectForKey:@"data"]);
+                        if (success)
+                            success([responseObject objectForKey:@"data"]);
                         PPLog(@"responseObject = %@",responseObject);
                     } else if ([[responseObject objectForKey:@"code"] intValue] == 4007) {
-                        success([responseObject objectForKey:@"url"]);
+                        if (success)
+                            success([responseObject objectForKey:@"url"]);
                     } else {
-                        failure([responseObject objectForKey:@"msg"]);
+                        if (failure)
+                            failure([responseObject objectForKey:@"msg"]);
                     }
                 });
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -666,7 +804,7 @@ static NetworkStatus _status;
             }
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            success(responseObject);
+            success ? success(responseObject) :nil;
             PPLog(@"responseObject = %@",responseObject);
         });
         

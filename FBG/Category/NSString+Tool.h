@@ -119,6 +119,16 @@
 
 + (NSString *)formatTimeDelayEight:(NSString *)timeStr;
 - (NSArray *)componentsSeparatedFromString:(NSString *)fromString toString:(NSString *)toString;
++ (NSString *)getUUID;
+
+/**
+ keychain中存储
+
+ @param address 键的address
+ @param isETH  是否是ETH
+ @return keychain中的值
+ */
++ (NSString *)keyChainDataFromKey:(NSString *)address isETH:(BOOL)isETH;
 
 @end
 

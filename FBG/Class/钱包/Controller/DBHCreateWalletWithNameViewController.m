@@ -123,7 +123,7 @@
     NSError *error;
     NSString *data = [self.ethWallet toKeyStore:self.password error:&error];
 //    NSString * address = self.ethWallet.address;
-    [PDKeyChain save:KEYCHAIN_KEY(self.address) data:data];
+    [PDKeyChain save:KEYCHAIN_KEY([self.address lowercaseString]) data:data];
     
     [self uploadWalletETH];
 }
@@ -131,25 +131,27 @@
 - (void)uploadWalletETH {
     NSDictionary *paramters = @{@"category_id":@"1",
                                 @"name":self.nameTextField.text,
-                                @"address":self.ethWallet.address};
+                                @"address":[self.ethWallet.address lowercaseString]};
     
     WEAKSELF
     [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Creating...", nil) success:^(id responseObject) {
         DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:[responseObject objectForKey:@"record"]];
-        model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+        
+        NSString *tempAddr = model.address;
+        
+        NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:(model.categoryId == 1)];
+        
+        model.isLookWallet = [NSString isNulllWithObject:data];
         
         NSInteger count = weakSelf.navigationController.viewControllers.count;
-        if (weakSelf.walletType == 1) {
-            // ETH
+        if (weakSelf.walletType == 1) { // ETH
             model.category.categoryIdentifier = 1;
             model.category.name = @"ETH";
             DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
             walletDetailWithETHViewController.ethWalletModel = model;
-            
             walletDetailWithETHViewController.backIndex = (count == 4) ? 2 : 1;
             [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
-        } else {
-            // NEO
+        } else { // NEO
             DBHWalletDetailViewController *walletDetailViewController = [[DBHWalletDetailViewController alloc] init];
             walletDetailViewController.neoWalletModel = model;
             walletDetailViewController.backIndex = (count == 4) ? 2 : 1;
@@ -179,7 +181,7 @@
     [paramters setObject:@(self.walletType) forKey:@"category_id"];
     [paramters setObject:self.nameTextField.text forKey:NAME];
     [paramters setObject:self.walletType == 1 ? @"ETH" : @"NEO" forKey:@"category_name"];
-    [paramters setObject:self.address forKey:@"address"];
+    [paramters setObject:self.walletType == 1 ? [self.address lowercaseString] : self.address forKey:@"address"];
     
     if (self.walletType == 2) {
         NSError *error;
@@ -196,7 +198,12 @@
     WEAKSELF
     [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Creating...", nil) success:^(id responseObject) {
         DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:[responseObject objectForKey:RECORD]];
-        NSString *modelAddr = [PDKeyChain load:KEYCHAIN_KEY(model.address)];
+        
+        NSString *tempAddr = model.address;
+        
+        NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:(model.categoryId == 1)];
+        
+        NSString *modelAddr = data;
         NSLog(@"是否观察钱包  ---- adr = %@", modelAddr);
         model.isLookWallet = (modelAddr == nil || [modelAddr isEqual:[NSNull null]] || [modelAddr isEqualToString:@""]);
         
@@ -207,7 +214,6 @@
             model.category.name = @"ETH";
             DBHWalletDetailWithETHViewController *walletDetailWithETHViewController = [[DBHWalletDetailWithETHViewController alloc] init];
             walletDetailWithETHViewController.ethWalletModel = model;
-            
             walletDetailWithETHViewController.backIndex = (count == 4) ? 2 : 1;
             [weakSelf.navigationController pushViewController:walletDetailWithETHViewController animated:YES];
         } else {
@@ -248,7 +254,12 @@
     WEAKSELF
     [PPNetworkHelper POST:@"wallet" baseUrlType:1 parameters:paramters hudString:DBHGetStringWithKeyFromTable(@"Creating...", nil)  success:^(id responseObject) {
         DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:[responseObject objectForKey:RECORD]];
-        model.isLookWallet = [NSString isNulllWithObject:[PDKeyChain load:KEYCHAIN_KEY(model.address)]];
+        
+        NSString *tempAddr = model.address;
+       
+        NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:(model.categoryId == 1)];
+        
+        model.isLookWallet = [NSString isNulllWithObject:data];
         
         NSInteger count = weakSelf.navigationController.viewControllers.count;
         if (weakSelf.walletType == 1) {

@@ -44,13 +44,14 @@
 #import "DBHProjectHomeNewsModelData.h"
 #import "DBHRankViewController.h"
 
+#import "YYRedPacketOpenViewController.h"
 #import "ScanVC.h"
 
 static NSString *const kDBHInformationTableViewCellIdentifier = @"kDBHInformationTableViewCellIdentifier";
 static NSString *const kDBHInfoScrollTableViewCell = @"kDBHInfoScrollTableViewCell";
 static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
 
-@interface DBHInformationViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, EMChatManagerDelegate>
+@interface DBHInformationViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, EMChatManagerDelegate, ScanVCDelegate>
 
 @property (nonatomic, strong) DBHInformationTitleView *informationTitleView;
 @property (nonatomic, strong) DBHMenuView *menuView;
@@ -611,7 +612,8 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
         } failure:^(NSString *error) {
             [weakSelf.informationHeaderView stopAnimation];
             [LCProgressHUD showFailure:error];
-        } specialBlock:nil];
+        } specialBlock:^{
+        }];
     });
 }
 - (void)getICOData {
@@ -624,20 +626,20 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
     
     WEAKSELF
     [PPNetworkHelper POST:@"ico/ranks" baseUrlType:3 parameters:paramters hudString:nil responseCache:^(id responseCache) {
-        [weakSelf.icoArray[self.informationHeaderView.currentSelectedIndex] removeAllObjects];
+        [weakSelf.icoArray[weakSelf.informationHeaderView.currentSelectedIndex] removeAllObjects];
         
-        for (DBHInformationModelData *model in weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex]) {
+        for (DBHInformationModelData *model in weakSelf.dataSource[weakSelf.informationHeaderView.currentSelectedIndex]) {
             DBHInformationModelIco *icoModel = [DBHInformationModelIco modelObjectWithDictionary:responseCache[model.unit]];
-            [weakSelf.icoArray[self.informationHeaderView.currentSelectedIndex] addObject:icoModel];
+            [weakSelf.icoArray[weakSelf.informationHeaderView.currentSelectedIndex] addObject:icoModel];
         }
         
         [weakSelf.tableView reloadData];
     } success:^(id responseObject) {
-        [weakSelf.icoArray[self.informationHeaderView.currentSelectedIndex] removeAllObjects];
+        [weakSelf.icoArray[weakSelf.informationHeaderView.currentSelectedIndex] removeAllObjects];
         
-        for (DBHInformationModelData *model in weakSelf.dataSource[self.informationHeaderView.currentSelectedIndex]) {
+        for (DBHInformationModelData *model in weakSelf.dataSource[weakSelf.informationHeaderView.currentSelectedIndex]) {
             DBHInformationModelIco *icoModel = [DBHInformationModelIco modelObjectWithDictionary:responseObject[model.unit]];
-            [weakSelf.icoArray[self.informationHeaderView.currentSelectedIndex] addObject:icoModel];
+            [weakSelf.icoArray[weakSelf.informationHeaderView.currentSelectedIndex] addObject:icoModel];
         }
         
         [weakSelf.tableView reloadData];
@@ -857,6 +859,22 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
     [self getProjectList:NO];
 }
 
+#pragma mark ------- ScanVC Delegate ---------
+- (void)scanSucessWithObject:(id)object {
+    if ([NSObject isNulllWithObject:object]) {
+        return;
+    }
+    
+    if ([object isKindOfClass:[NSString class]]) {
+        NSString *str = object;
+        if ([str hasSuffix:@"inwe"]) { // 如果是红包
+            YYRedPacketOpenViewController *openVC = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_OPEN_STORYBOARD_ID];
+            openVC.urlStr = str;
+            [self.navigationController pushViewController:openVC animated:YES];
+        }
+    }
+}
+
 #pragma mark ------ Getters And Setters ------
 - (DBHInformationTitleView *)informationTitleView {
     if (!_informationTitleView) {
@@ -901,9 +919,8 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
             
                 case 1: { // 扫一扫
                     ScanVC * vc = [[ScanVC alloc] init];
-                    //                    vc.delegate = self;
+                    vc.delegate = weakSelf;
                     [weakSelf.navigationController pushViewController:vc animated:YES];
-                    
                     break;
                 }
                  //  */
@@ -1073,7 +1090,7 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
     if (!_menuArray) {
         _menuArray = @[
       //  /**
-                        @"Red  Packet",
+                        @"InWe Red Packet",
                        @"Scan QR Code",
        //  */
                        @"Add Wallet",

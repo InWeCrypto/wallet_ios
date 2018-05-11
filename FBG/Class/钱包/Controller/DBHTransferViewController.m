@@ -13,7 +13,7 @@
 #import "DBHAddressBookViewController.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 @interface DBHTransferViewController ()<ScanVCDelegate>
 

@@ -10,6 +10,9 @@
 #import <Security/Security.h>
 
 
+static NSString * const kPDDictionaryKey = @"com.FBG.dictionaryKey";
+static NSString * const kPDKeyChainKey = @"com.FBG.keychainKey";
+
 @interface PDKeyChain : NSObject
 
 /**

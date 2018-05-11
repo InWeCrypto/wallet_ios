@@ -14,7 +14,7 @@
 #import "DBHAddressBookViewController.h"
 
 #import "DBHWalletManagerForNeoModelList.h"
-#import "DBHWalletDetailTokenInfomationModelData.h"
+
 
 @interface DBHTransferWithETHViewController ()<ScanVCDelegate>
 
@@ -226,7 +226,7 @@
 - (void)loadWalletData {
     //获取交易次数
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
-    [dic setObject:self.tokenModel.address forKey:@"address"];
+    [dic setObject:[self.tokenModel.address lowercaseString] forKey:@"address"];
     
     [PPNetworkHelper POST:@"extend/getTransactionCount" baseUrlType:1 parameters:dic hudString:nil success:^(id responseObject)
      {

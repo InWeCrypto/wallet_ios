@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = DBHGetStringWithKeyFromTable(@"Choose Cash", nil);
+    self.title = DBHGetStringWithKeyFromTable(@"Choose Assets", nil);
     [self getData];
 }
 

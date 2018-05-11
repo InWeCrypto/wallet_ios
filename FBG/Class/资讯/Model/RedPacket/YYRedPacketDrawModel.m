@@ -12,4 +12,10 @@
 
 MJCodingImplementation
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{
+             @"drawId" : @"id"
+             };
+}
+
 @end

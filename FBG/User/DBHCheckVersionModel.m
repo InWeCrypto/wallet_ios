@@ -64,7 +64,9 @@ static DBHCheckVersionModel *shareModel = nil;
                     [weakSelf handleResponse:dict];
                 }
             }
-        } failure:nil];
+        } failure:^(NSString *error) {
+            
+        }];
     });
 }
 

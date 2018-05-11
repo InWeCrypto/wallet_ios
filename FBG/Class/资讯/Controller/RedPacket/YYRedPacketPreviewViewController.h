@@ -10,7 +10,8 @@
 
 @interface YYRedPacketPreviewViewController : DBHBaseViewController
 
-@property (nonatomic, copy) NSString *url;
+@property (nonatomic, strong) YYRedPacketDetailModel *detailModel;
 @property (nonatomic, assign) BOOL hideShareBtn;
+- (void)loadUrl:(NSString *)url;
 
 @end
