@@ -12,6 +12,8 @@
 #import "YYRedPacketDetailSpecialTableViewCell.h"
 #import "YYRedPacketPackagingViewController.h"
 #import "YYRedPacketPreviewViewController.h"
+#import "YYRedPacketSendFirstViewController.h"
+#import "YYRedPacketSendSecondViewController.h"
 
 @interface YYRedPacketDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -25,14 +27,17 @@
     [super viewDidLoad];
     
     [self setUI];
-    [self getDetailData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self getDetailData];
+    
     [self setNavigationBarTitleColor];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    
+    [self.tableView setContentOffset:CGPointZero animated:NO]; // 滚到顶部
 }
 
 /**
@@ -58,7 +63,7 @@
         [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
             [weakSelf handleResponse:responseObject];
         } failure:^(NSString *error) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -70,22 +75,37 @@
     
     if ([responseObj isKindOfClass:[NSDictionary class]]) {
         YYRedPacketDetailModel *model = [YYRedPacketDetailModel mj_objectWithKeyValues:responseObj];
-        self.detailModel = model;
+        
+        WEAKSELF
+        [PPNetworkHelper POST:@"extend/blockNumber" baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject) {
+            [weakSelf loadCurrentBlockResponse:responseObject model:model];
+        } failure:^(NSString *error) {
+        }];
     }
 }
 
+- (void)loadCurrentBlockResponse:(id)responseObj model:(YYRedPacketDetailModel *)model {
+    if (![NSObject isNulllWithObject:responseObj]) {
+        NSString *value = [responseObj objectForKey:VALUE];
+        if (value.length > 2) {
+            value = [value substringFromIndex:2];
+            model.current_block = [NSString numberHexString:value].integerValue;
+        }
+    }
+    
+    self.detailModel = model;
+}
 
 #pragma mark ------- SetUI ---------
 - (void)setUI {
     self.title = DBHGetStringWithKeyFromTable(@"Red Packet Detail", nil);
-    
-    self.tableView.contentInset = UIEdgeInsetsMake(-44, 0, -20, 0);
 
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    self.tableView.bounces = NO;
 }
 
 #pragma mark ------ UIScrollViewDelegate ------
@@ -106,14 +126,19 @@
         count = count + 1;
     } else if (status == RedBagStatusCreateFailed || status == RedBagStatusCreating || status == RedBagStatusCreatePending) { // 红包创建
         count = count + 2;
-    } else if (status == RedBagStatusOpening || status == RedBagStatusDone) {
+    } else if (status == RedBagStatusOpening) {
         count = count + 3;
-    } else if (self.detailModel.redbag_back.doubleValue > 0) { // 有退回金额
-        count = count + 4;
+    } else if (status == RedBagStatusDone) {
+        count = count + 3;
+        
+        NSString *backPrice = [NSString convertValue:self.detailModel.redbag_back decimals:self.detailModel.gnt_category.decimals];
+        if (backPrice.doubleValue > 0) // 有退回金额
+            count = count + 1;
     }
     
     return count;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 3:
@@ -166,7 +191,10 @@
     if (indexPath.section == 0) {
         CGFloat height = REDPACKET_DETAIL_SPECIAL_CELL_HEIGHT - 20 + STATUS_HEIGHT;
         RedBagStatus status = self.detailModel.status;
-        if (status == RedBagStatusOpening || status == RedBagStatusDone) {
+        if (status == RedBagStatusOpening ||
+            status == RedBagStatusDone ||
+            status == RedBagStatusCreateFailed ||
+            status == RedBagStatusCashPackageFailed) {
             height += REDPACKET_ADD_HEIGHT;
         }
         
@@ -178,7 +206,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return nil;
+        return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.01)];
     }
     
     YYRedPacketDetailHeaderView *headerView = [[YYRedPacketDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, DETAIL_HEADERVIEW_HEIGHT)];
@@ -188,7 +216,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return 0;
+        return 0.01;
     }
     return DETAIL_HEADERVIEW_HEIGHT;
 }
@@ -197,6 +225,10 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     view.backgroundColor = COLORFROM16(0xFAFAFA, 1);
     return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 10;
 }
 
 #pragma mark ------- Push To VC ---------
@@ -212,7 +244,6 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
 - (void)pushToPreviewVC:(RedBagStatus)status {
     YYRedPacketPreviewViewController *vc = [[YYRedPacketPreviewViewController alloc] init];
     if (status == RedBagStatusOpening) {
@@ -221,9 +252,9 @@
        vc.hideShareBtn = YES;
     }
     vc.detailModel = self.detailModel;
+    vc.from = PreViewVCFromDetail;
     [self.navigationController pushViewController:vc animated:YES];
 }
-
 
 #pragma mark ----- Setters And Getters ---------
 - (void)setDetailModel:(YYRedPacketDetailModel *)detailModel {

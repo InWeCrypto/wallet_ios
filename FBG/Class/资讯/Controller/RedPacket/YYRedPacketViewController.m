@@ -9,12 +9,14 @@
 #import "YYRedPacketViewController.h"
 #import "YYRedPacketHomeHeaderView.h"
 #import "YYRedPacketSendFirstViewController.h"
+#import "YYRedPacketPreviewViewController.h"
 
 #import "YYRedPacketSection0TableViewCell.h"
 #import "YYRedPacketSection1TableViewCell.h"
 #import "YYRedPacketSendHistoryViewController.h"
 #import "YYRedPacketOpenedHistoryViewController.h"
 #import "YYRedPacketDetailViewController.h"
+#import "YYRedPacketProtocolView.h"
 
 #define HEADER_VIEW_HEIGHT 223
 
@@ -23,8 +25,6 @@
 #define DATASOURCE_LIST @"datasource_list"
 #define SENT_COUNT_MODEL @"sent_count_model"
 #define ETH_WALLET_LIST @"eth_wallet_list"
-
-typedef void(^CompletionBlock) (void);
 
 @interface YYRedPacketViewController () <UITableViewDelegate, UITableViewDataSource> {
     dispatch_queue_t queue;
@@ -48,6 +48,7 @@ typedef void(^CompletionBlock) (void);
 - (void)viewDidLoad {
     [super viewDidLoad];
     _isGetData = YES;
+  
     [self setUI];
     [self getDataFromCache];
     [self getWalletList];
@@ -59,15 +60,14 @@ typedef void(^CompletionBlock) (void);
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     if (!_isGetData) {
         [self getData];
     }
-    
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     _isGetData = NO;
 }
 
@@ -78,14 +78,10 @@ typedef void(^CompletionBlock) (void);
 - (void)setUI {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Opened Record", nil) style:UIBarButtonItemStylePlain target:self action:@selector(respondsToRecordBarButtonItem)];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStyleGrouped];
     
-    tableView.estimatedRowHeight = 0;
-    tableView.estimatedSectionFooterHeight = 0;
-    tableView.estimatedSectionHeaderHeight = 0;
-    
-    tableView.tableHeaderView = nil;
-    tableView.sectionHeaderHeight = 0;
+    tableView.tableHeaderView = self.headerView;
+    tableView.sectionHeaderHeight = self.headerView.height;
     
     tableView.tableFooterView = nil;
     tableView.sectionFooterHeight = 0;
@@ -95,12 +91,13 @@ typedef void(^CompletionBlock) (void);
     [tableView registerNib:[UINib nibWithNibName:NSStringFromClass([YYRedPacketSection0TableViewCell class]) bundle:nil] forCellReuseIdentifier:REDPACKET_SECTION0_CELL_ID];
     [tableView registerNib:[UINib nibWithNibName:NSStringFromClass([YYRedPacketSection1TableViewCell class]) bundle:nil] forCellReuseIdentifier:REDPACKET_SECTION1_CELL_ID];
     
-    tableView.contentInset = UIEdgeInsetsMake(0, 0, -20, 0);
-    
     tableView.delegate = self;
     tableView.dataSource = self;
     if (@available(iOS 11.0, *)) {
         tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        tableView.estimatedRowHeight = 0;
+        tableView.estimatedSectionFooterHeight = 0;
+        tableView.estimatedSectionHeaderHeight = 0;
     } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
@@ -110,9 +107,29 @@ typedef void(^CompletionBlock) (void);
     
     WEAKSELF
     [_tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.right.left.bottom.equalTo(weakSelf.view);
-        make.top.offset(- 44);
+        make.width.centerX.bottom.equalTo(weakSelf.view);
+        make.top.offset(0);
     }];
+    
+    [self addRefresh];
+}
+
+/**
+ 添加刷新
+ */
+- (void)addRefresh {
+    WEAKSELF
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf getData];
+    }];
+}
+/**
+ 结束刷新
+ */
+- (void)endRefresh {
+    if ([self.tableView.mj_header isRefreshing]) {
+        [self.tableView.mj_header endRefreshing];
+    }
 }
 
 #pragma mark ------- Cache ---------
@@ -193,7 +210,7 @@ typedef void(^CompletionBlock) (void);
             [weakSelf handleResponse:responseObject type:0];
         } failure:^(NSString *error) {
             [LCProgressHUD hide];
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -228,17 +245,18 @@ typedef void(^CompletionBlock) (void);
     [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
         [weakSelf handleResponse:responseObject type:1];
     } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        [weakSelf endRefresh];
+        [LCProgressHUD showFailure:error];
     }];
     
     [PPNetworkHelper POST:@"redbag/send_count" baseUrlType:3 parameters:params hudString:nil success:^(id responseObject) {
         [weakSelf handleResponse:responseObject type:2];
     } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+        [weakSelf endRefresh];
+        [LCProgressHUD showFailure:error];
     }];
 }
 
-#pragma mark ------- Data ---------
 - (void)handleTokenListReponse:(id)responseObj withWallet:(DBHWalletManagerForNeoModelList *)walletModel {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableArray *tempTokensArr = nil;
@@ -426,7 +444,7 @@ typedef void(^CompletionBlock) (void);
                         NSString *data = [NSString keyChainDataFromKey:model.address isETH:YES];
                         
                         BOOL isLookWallet = [NSString isNulllWithObject:data];
-                        if (model.categoryId == 1 && !isLookWallet) { //ETH 且不是观察钱包
+                        if (model.categoryId == 1) { //ETH
                             model.isLookWallet = isLookWallet;
                             model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
                             [tempArr addObject:model];
@@ -490,15 +508,9 @@ typedef void(^CompletionBlock) (void);
  @param responseObj 返回体
  */
 - (void)sentListResponse:(id)responseObj {
-    self.isFinishGetSentList = YES;
+    __block NSMutableArray *tempArr = [NSMutableArray array];
     
-    if (self.isFinishGetSentCount && self.isFinishTokenListAndETH) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [LCProgressHUD hide];
-        });
-    }
-    
-    NSMutableArray *tempArr = nil;
+    BOOL isHasData = NO;
     if (![NSObject isNulllWithObject:responseObj]) {
         if ([responseObj isKindOfClass:[NSDictionary class]]) {
             YYRedPacketMySentModel *sentModel = [YYRedPacketMySentModel mj_objectWithKeyValues:responseObj];
@@ -506,17 +518,57 @@ typedef void(^CompletionBlock) (void);
             if (![NSObject isNulllWithObject:dataArray] &&
                 [dataArray isKindOfClass:[NSArray class]] &&
                 dataArray.count > 0) {
+                isHasData = YES;
                 
-                tempArr = [NSMutableArray array];
+                // 创建全局并行
+                dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                dispatch_group_t group = dispatch_group_create();
+                
                 for (YYRedPacketDetailModel *listModel in dataArray) {
                     [tempArr addObject:listModel];
+                    dispatch_group_enter(group);
+                    dispatch_group_async(group, queue, ^{
+                        WEAKSELF
+                        [PPNetworkHelper POST:@"extend/blockNumber" baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject) {
+                            [weakSelf loadCurrentBlockResponse:responseObject model:listModel completion:^{
+                                dispatch_group_leave(group);
+                            }];
+                        } failure:^(NSString *error) {
+                            dispatch_group_leave(group);
+                        }];
+                    });
                 }
+                
+                dispatch_group_notify(group, queue, ^{
+                    self.isFinishGetSentList = YES;
+                    self.dataSource = tempArr;
+                    [self cacheData:tempArr withKey:DATASOURCE_LIST];
+                });
             }
         }
     }
-    self.dataSource = tempArr;
-    [self cacheData:tempArr withKey:DATASOURCE_LIST];
+    
+    if (!isHasData) {
+        self.dataSource = tempArr;
+        self.isFinishGetSentList = YES;
+        [self cacheData:tempArr withKey:DATASOURCE_LIST];
+    }
 }
+
+- (void)loadCurrentBlockResponse:(id)responseObj model:(YYRedPacketDetailModel *)model completion:(CompletionBlock)completion {
+    if (![NSObject isNulllWithObject:responseObj]) {
+        NSString *value = [responseObj objectForKey:VALUE];
+        if (value.length > 2) {
+            value = [value substringFromIndex:2];
+            model.current_block = [NSString numberHexString:value].integerValue;
+        }
+    }
+    
+    if (completion) {
+        completion();
+    }
+}
+
 /**
  已发送的红包个数返回处理
  
@@ -559,12 +611,7 @@ typedef void(^CompletionBlock) (void);
 #pragma mark ----- UITableView ---------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger count = self.dataSource.count;
-    if (count > 5) {
-        return 6;
-    } else {
-        return self.dataSource.count + 1;
-    }
-    return 0;
+    return MIN(5, count) + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -576,7 +623,7 @@ typedef void(^CompletionBlock) (void);
     }
   
     YYRedPacketSection1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_SECTION1_CELL_ID forIndexPath:indexPath];
-    cell.isShowOpening = NO;
+    cell.isShowOpening = YES;
     if (row - 1 < self.dataSource.count) {
         [cell setModel:self.dataSource[row - 1] from:CellFromSentHistory];
     }
@@ -607,16 +654,8 @@ typedef void(^CompletionBlock) (void);
     return REDPACKET_SECTION1_CELL_HEIGHT;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return self.headerView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return self.headerView.height;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (self.dataSource.count == 0) {
+    if (self.dataSource.count < 5) {
         return nil;
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
@@ -646,6 +685,32 @@ typedef void(^CompletionBlock) (void);
     return 60;
 }
 
+#pragma mark ------- Private Method --------
+/**
+ 判断是不是第一次点击 ，如果第一次 需要弹出查看协议的view
+ */
+- (void)judgeIsShowProtocol {
+    BOOL isShow = [[NSUserDefaults standardUserDefaults] boolForKey:IS_SHOW_REDPACKET_PROTOCOL];
+    if (!isShow) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:IS_SHOW_REDPACKET_PROTOCOL];
+        [self addNoticeProtocolView];
+    } else {
+        [self pushToSendRedPacketVC];
+    }
+}
+
+- (void)addNoticeProtocolView {
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    CGRect frame = [UIScreen mainScreen].bounds;
+    YYRedPacketProtocolView *view = [[YYRedPacketProtocolView alloc] initWithFrame:frame];
+    
+    WEAKSELF
+    [view setBlock:^{
+        [weakSelf pushToPreviewVC];
+    }];
+    [keyWindow addSubview:view];
+}
+
 #pragma mark ------- Push To VC ---------
 - (void)pushToSendRedPacketVC {
     UIStoryboard *sb = [UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil];
@@ -654,13 +719,24 @@ typedef void(^CompletionBlock) (void);
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)pushToPreviewVC {
+    NSString *protocolURL = [APP_APIEHEAD isEqualToString:APIEHEAD1] ? REDPACKET_PROTOCOL_URL : TEST_REDPACKET_PROTOCOL_URL;
+    YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
+    previewVC.from = PreViewVCFromProtocol;
+    [self.navigationController pushViewController:previewVC animated:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [previewVC loadUrl:protocolURL];
+    });
+}
+
 #pragma mark ----- Setters And Getters ---------
 - (YYRedPacketHomeHeaderView *)headerView {
     if (!_headerView) {
-        YYRedPacketHomeHeaderView *headerView = [[YYRedPacketHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 223 - 20 + STATUS_HEIGHT)];
+        YYRedPacketHomeHeaderView *headerView = [[YYRedPacketHomeHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, HEADER_VIEW_HEIGHT - 20 + STATUS_HEIGHT)];
         WEAKSELF
         [headerView setClickBlock:^{
-            [weakSelf pushToSendRedPacketVC];
+            [weakSelf judgeIsShowProtocol];
         }];
         
         _headerView = headerView;
@@ -676,6 +752,17 @@ typedef void(^CompletionBlock) (void);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
+}
+
+- (void)setIsFinishGetSentList:(BOOL)isFinishGetSentList {
+    _isFinishGetSentList = isFinishGetSentList;
+    
+    if (self.isFinishGetSentCount && self.isFinishTokenListAndETH) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [LCProgressHUD hide];
+            [self endRefresh];
+        });
+    }
 }
 
 - (void)setCountModel:(YYRedPacketSentCountModel *)countModel {

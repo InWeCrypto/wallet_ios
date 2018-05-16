@@ -18,17 +18,23 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([YYRedPacketHomeHeaderView class]) owner:nil options:nil] lastObject];
+        self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil] lastObject];
+        [self initUI];
     }
     return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([YYRedPacketHomeHeaderView class]) owner:nil options:nil] lastObject];
+        self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil] lastObject];
         self.frame = frame;
+        [self initUI];
     }
     return self;
+}
+
+- (void)initUI {
+    self.bgImgView.image = [UIImage imageNamed:DBHGetStringWithKeyFromTable(@"redpacket_home_bg_en", nil)];
 }
 
 - (IBAction)respondsSendRedPacketBtn:(UIButton *)sender {

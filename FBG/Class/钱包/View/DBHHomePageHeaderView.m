@@ -28,6 +28,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.frame = frame;
         self.backgroundColor = WHITE_COLOR;
         self.clipsToBounds = YES;
         

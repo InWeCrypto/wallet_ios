@@ -31,6 +31,8 @@
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     if (self = [super initWithFrame:frame style:style]) {
+        self.frame = frame;
+        
         self.dataSource = self;
         self.delegate = self;
         

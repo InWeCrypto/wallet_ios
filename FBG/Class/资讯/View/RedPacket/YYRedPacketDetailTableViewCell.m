@@ -47,14 +47,14 @@
             NSString *statusStr = @"Success";
             if (status == RedBagStatusCashAuthPending) {
                 statusStr = @"Packing…";
-            } else if (status == RedBagStatusCashPackageFailed || status == RedBagStatusCreateFailed) {
+            } else if (status == RedBagStatusCashPackageFailed) {
                 statusStr = @"Failed";
             }
             self.statusLabel.text = DBHGetStringWithKeyFromTable(statusStr, nil);
             break;
         }
         case RedBagCellTypeHanldeFee: { // 手续费
-            self.addressLabel.text = model.redbag_addr;
+            self.addressLabel.text = model.fee_addr;
             
             NSString *timeStr = model.redbag_at;
             self.timeLabel.text = [NSString formatTimeDelayEight:timeStr];
@@ -84,7 +84,7 @@
                 NSString *price = [NSString stringWithFormat:@"???%@", model.redbag_symbol];
                 
                 if (model.done == RedBagLotteryStatusEnd && ![value isEqualToString:@"-"]) { // 开奖结束 且 领取金额已知
-                    NSString *drawValue = [self convertDrawValue:value decimals:model.gnt_category.decimals];
+                    NSString *drawValue = [NSString convertValue:value decimals:model.gnt_category.decimals];
                     
                     NSString *number = [NSString notRounding:drawValue afterPoint:4];
                     price = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, model.redbag_symbol];
@@ -105,7 +105,14 @@
             NSString *timeStr = model.redbag_back_at;
             self.timeLabel.text = [NSString formatTimeDelayEight:timeStr];
             
-            NSString *number = [NSString notRounding:model.redbag_back afterPoint:4];
+            NSString *backValue = model.redbag_back;
+            if ([backValue isEqualToString:@"-"]) {
+                backValue = @"0";
+            } else {
+                backValue = [NSString convertValue:backValue decimals:model.gnt_category.decimals];
+            }
+            
+            NSString *number = [NSString notRounding:backValue afterPoint:4];
             self.priceLabel.text = [NSString stringWithFormat:@"+%.4lf%@", number.doubleValue, model.redbag_symbol];
             
             NSString *statusStr = @"Success";
@@ -116,8 +123,8 @@
                 statusStr = @"Failed";
             }
             self.statusLabel.text = DBHGetStringWithKeyFromTable(statusStr, nil);
-            break;
         }
+        break;
     }
 }
 
@@ -129,21 +136,6 @@
     
     _isLastCellInSection = isLastCellInSection;
     self.bottomLineView.hidden = isLastCellInSection;
-}
-
-- (NSString *)convertDrawValue:(NSString *)value decimals:(NSInteger)decimals {
-    NSString *drawValue = value;
-    if (![NSObject isNulllWithObject:drawValue]) {
-        if ([drawValue hasPrefix:@"0x"] && drawValue.length > 2) {
-            drawValue = [drawValue substringFromIndex:2];
-        }
-        
-        drawValue = [NSString numberHexString:drawValue];
-        
-        drawValue = [NSString DecimalFuncWithOperatorType:3 first:drawValue secend:@(pow(10, decimals)) value:0];
-        
-    }
-    return drawValue;
 }
 
 @end

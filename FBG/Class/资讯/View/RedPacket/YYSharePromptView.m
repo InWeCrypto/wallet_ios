@@ -18,6 +18,7 @@
 @property (nonatomic, strong) LYShareMenuView *sharedMenuView;
 @property (nonatomic, strong) NSMutableArray *sharedMenuItems;
 @property (nonatomic, copy) NSString *sharedUrl;
+@property (nonatomic, strong) UIViewController *target;
 
 @end
 
@@ -25,6 +26,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
+        self.frame = frame;
         self.backgroundColor = [UIColor clearColor];
         [self addSubview:self.sharedMenuView];
     }
@@ -37,17 +39,18 @@
     shareVC.model = self.model;
     shareVC.index = index;
     DBHBaseNavigationController *navigationController = [[DBHBaseNavigationController alloc] initWithRootViewController:shareVC];
-    [[UIView currentViewController] presentViewController:navigationController animated:YES completion:nil];
+    [self.target presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark ------- Private Method ---------
-- (void)show {
+- (void)showWithTarget:(UIViewController *)target {
+    self.target = target;
     [self.sharedMenuView show];
 }
 
 - (void)shareToTwitter {
     NSString *urlStr = self.sharedUrl;
-    NSString *titleStr = self.model.share_msg;
+    NSString *titleStr = @"You have a redpacket to pick up！";
     
     TWTRComposer *composer = [[TWTRComposer alloc] init];
     [composer setURL:[NSURL URLWithString:urlStr]];
@@ -55,13 +58,13 @@
     [composer setText:titleStr];
     
     WEAKSELF
-    [composer showFromViewController:[UIView currentViewController] completion:^(TWTRComposerResult result) {
+    [composer showFromViewController:self.target completion:^(TWTRComposerResult result) {
         [weakSelf shareSuccess:result == TWTRComposerResultDone];
     }];
 }
 
 - (void)shareToTelegram {
-    NSString *urlStr = [NSString stringWithFormat:@"https://t.me/share/url?text=%@&url=%@", self.model.share_msg, self.sharedUrl];
+    NSString *urlStr = [NSString stringWithFormat:@"https://t.me/share/url?text=%@&url=%@", @"You have a redpacket to pick up！", self.sharedUrl];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:urlStr];
     
@@ -125,7 +128,7 @@
         }
         
         NSString *user = [self.model.share_user stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&inwe", @(self.model.redPacketId), self.model.redbag_addr, user];
+        NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&inwe", @(self.model.redPacketId), self.model.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw"];
         _sharedUrl = createCodeUrl;
     }
     return _sharedUrl;

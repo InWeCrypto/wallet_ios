@@ -431,9 +431,9 @@ static NetworkStatus _status;
                 }
                 
                 NSString *error = [responseObject objectForKey:@"msg"];
-                if ([URL isEqualToString:@"wallet-order"] && code.integerValue == 4006) {
-                    error = DBHGetStringWithKeyFromTable(@"Has Uncompleted Orders", nil);
-                }
+//                if ([URL isEqualToString:@"wallet-order"] && code.integerValue == 4006) {
+//                    error = DBHGetStringWithKeyFromTable(@"Has Uncompleted Orders", nil);
+//                }
                 
                 if (failure) {
                     failure(error);
@@ -612,7 +612,7 @@ static NetworkStatus _status;
                     if (special) {
                         special();
                     } else {
-                        if (code.integerValue == 4001) { // 未登录
+                        if (code.integerValue == 4001 || code.integerValue == 4009) { // 未登录 TOKEN过期
                             if ([UserSignData share].user.isLogin) { // 登录状态 --> 未登录状态
                                 EMError *error = [[EMClient sharedClient] logout:YES];
                                 if (!error) {

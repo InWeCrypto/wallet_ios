@@ -39,7 +39,15 @@
 
 #pragma mark ------- SetUI ---------
 - (void)setUI {
-    self.title = DBHGetStringWithKeyFromTable(@"Preview", nil);
+    if (self.from == PreViewVCFromSendRedPacket) {
+        self.backIndex = 2;
+    }
+    NSString *titleStr = @"Preview";
+    if (self.from == PreViewVCFromProtocol) {
+        _hideShareBtn = YES;
+        titleStr = @"InWeCrypto Red Packet Use Agreement";
+    }
+    self.title = DBHGetStringWithKeyFromTable(titleStr, nil);
     
     if (!self.hideShareBtn) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"redpacket_share"] style:UIBarButtonItemStylePlain target:self action:@selector(respondsToShareBarButtonItem)];
@@ -63,7 +71,7 @@
     
 }
 
-#pragma mark ------- SetUI ---------
+#pragma mark ------- load URL ---------
 - (void)loadUrl:(NSString *)url {
     if ([NSObject isNulllWithObject:url]) {
         return;
@@ -83,7 +91,8 @@
     }
     
     NSString *user = [self.detailModel.share_user stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&inwe", @(self.detailModel.redPacketId), self.detailModel.redbag_addr, user];
+    NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&inwe", @(self.detailModel.redPacketId), self.detailModel.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw"];
+    
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:createCodeUrl]]];
 }
 
@@ -105,7 +114,7 @@
     
     [[UIApplication sharedApplication].keyWindow addSubview:shareView];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [shareView show];
+        [shareView showWithTarget:self];
     });
 }
 

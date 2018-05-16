@@ -143,7 +143,7 @@
         [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
             [weakSelf handleResponse:responseObject];
         } failure:^(NSString *error) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -164,18 +164,22 @@
         }
         
         NSString *user = [model.share_user stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&inwe", @(model.redPacketId), model.redbag_addr, user];
+        NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&inwe", @(model.redPacketId), model.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw2"];
         
         NSString *codeStr = [NSString stringWithFormat:@"<iframe height=498 width=510 src='%@'></iframe>", createCodeUrl];
         self.codeLabel.text = codeStr;
         
         [self respondsToTipCopyBtn:nil];
+        
+        self.sureBtn.enabled = NO;
     }
 }
 
 #pragma mark ------- text field and text view ---------
 - (void)textFieldTextChange:(UITextField *)textField {
-    if (textField.text.length != 0 && self.bestTextView.text.length != 0) {
+    if (textField.text.length != 0 &&
+        self.bestTextView.text.length != 0 &&
+        !_isSendRedBag) {
         self.sureBtn.enabled = YES;
     } else {
         self.sureBtn.enabled = NO;
@@ -183,7 +187,9 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    if (textView.text.length != 0 && self.senderNameTextField.text.length != 0) {
+    if (textView.text.length != 0 &&
+        self.senderNameTextField.text.length != 0 &&
+        !_isSendRedBag) {
         self.sureBtn.enabled = YES;
     } else {
         self.sureBtn.enabled = NO;

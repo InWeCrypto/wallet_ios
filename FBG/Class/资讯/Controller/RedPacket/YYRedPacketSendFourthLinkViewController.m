@@ -123,7 +123,7 @@
         [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
             [weakSelf handleResponse:responseObject];
         } failure:^(NSString *error) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -138,15 +138,24 @@
         self.backIndex = 2;
         
         YYRedPacketDetailModel *model = [YYRedPacketDetailModel mj_objectWithKeyValues:responseObj];
+        self.model = model;
         
-        YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
-        previewVC.detailModel = model;
-        [self.navigationController pushViewController:previewVC animated:YES];
+        [self pushToPreviewVC];
     }
 }
+
+#pragma mark ------- Push VC ---------
+- (void)pushToPreviewVC {
+    YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
+    previewVC.detailModel = self.model;
+    previewVC.from = PreViewVCFromSendRedPacket;
+    [self.navigationController pushViewController:previewVC animated:YES];
+}
+
 #pragma mark ----- RespondsToSelector ---------
 - (IBAction)respondsToShareBtn:(UIButton *)sender {
     if (_isSendRedBag) {
+        [self pushToPreviewVC];
         return;
     }
     

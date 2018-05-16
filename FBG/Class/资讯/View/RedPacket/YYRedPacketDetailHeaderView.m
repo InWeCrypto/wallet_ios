@@ -23,6 +23,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil] lastObject];
+        self.frame = frame;
         self.totalTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@" Total ", nil)];
     }
     return self;
@@ -50,9 +51,15 @@
         NSString *price = [NSString stringWithFormat:@"???%@", model.redbag_symbol];
         if (model.done == RedBagLotteryStatusEnd) { // 已开奖
             NSString *total = model.redbag;
-            NSString *back = model.redbag_back;
             
-            NSString *drawed = [NSString DecimalFuncWithOperatorType:1 first:total secend:back value:0]; // 已领取的
+            NSString *backValue = model.redbag_back;
+            if ([backValue isEqualToString:@"-"]) {
+                backValue = @"0";
+            } else {
+                backValue = [NSString convertValue:backValue decimals:model.gnt_category.decimals];
+            }
+            
+            NSString *drawed = [NSString DecimalFuncWithOperatorType:1 first:total secend:backValue value:0]; // 已领取的
             if (drawed.doubleValue >= 0) {
                 NSString *number = [NSString notRounding:drawed afterPoint:4];
                 price = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, model.redbag_symbol];
@@ -62,12 +69,23 @@
         self.totalValueLabel.text = price;
     } else if (cellType == RedBagCellTypeBackNum) {
         self.iconImgView.image = [UIImage imageNamed:@"get_count_icon"];
-        titleStr = [NSString stringWithFormat:@"%@ 1", DBHGetStringWithKeyFromTable(@"Withdrawing Number", nil)];
+        
+        NSInteger backNum = model.redbag_number -  model.draw_redbag_number;
+        if (backNum < 0) {
+            backNum = 0;
+        }
+        
+        titleStr = [NSString stringWithFormat:@"%@ %ld", DBHGetStringWithKeyFromTable(@"Withdrawing Number", nil), backNum];
         showTotal = YES;
         
-        NSString *price = model.redbag_back;
+        NSString *backValue = model.redbag_back;
+        if ([backValue isEqualToString:@"-"]) {
+            backValue = @"0";
+        } else {
+            backValue = [NSString convertValue:backValue decimals:model.gnt_category.decimals];
+        }
         
-        NSString *number = [NSString notRounding:price afterPoint:4];
+        NSString *number = [NSString notRounding:backValue afterPoint:4];
         self.totalValueLabel.text = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, model.redbag_symbol];
     }
     self.titleLabel.text = titleStr;

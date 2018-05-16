@@ -80,6 +80,7 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
 @property (nonatomic, strong) NSMutableArray *scrollInfoDatasource;
 
 @property (nonatomic, strong) DBHInfoScrollTableViewCell *cell;
+@property (nonatomic, assign) BOOL isExitCurrentUI;
 
 @end
 
@@ -108,6 +109,7 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    _isExitCurrentUI = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREENWIDTH, STATUSBARHEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
     [super viewWillAppear:animated];
     // 注册消息回调
@@ -122,19 +124,20 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
 }
 
 - (void)enterBackground {
-    if (self.cell) {
+    if (self.cell || _isExitCurrentUI) {
         [self.cell invalidateTimers];
     }
 }
 
 - (void)enterForeground {
-    if (self.cell) {
+    if (self.cell && !_isExitCurrentUI) {
         [self.cell scrollToZero];
     }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    _isExitCurrentUI = YES;
     [self enterBackground];
     //移除消息回调
     [[EMClient sharedClient].chatManager removeDelegate:self];
@@ -867,10 +870,12 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
     
     if ([object isKindOfClass:[NSString class]]) {
         NSString *str = object;
-        if ([str hasSuffix:@"inwe"]) { // 如果是红包
+        if ([str containsString:@"inwe"]) { // 如果是红包
             YYRedPacketOpenViewController *openVC = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_OPEN_STORYBOARD_ID];
             openVC.urlStr = str;
             [self.navigationController pushViewController:openVC animated:YES];
+        } else {
+            [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Please scan Inwe QR code", nil)];
         }
     }
 }

@@ -25,6 +25,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame numberOfStars:(NSInteger)numberOfStar {
     if (self = [super initWithFrame:frame]) {
+        self.frame = frame;
         _numberOfStars = numberOfStar;
         [self buildDataAndUI];
     }

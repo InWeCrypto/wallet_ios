@@ -126,8 +126,15 @@
         self.isHaveNoFinishOrder = YES;
         
         BOOL pending = NO;
-        if (self.model.auth_block == 0) {
-            pending = YES;
+        
+        if (self.packageType == PackageTypeCash) { // 礼金打包
+            if ( self.model.auth_block == 0) {
+                pending = YES;
+            }
+        }  if (self.packageType == PackageTypeRedPacket) { // 创建红包
+            if ( self.model.redbag_block == 0) {
+                pending = YES;
+            }
         }
         
         timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
@@ -154,7 +161,6 @@
         [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
             [weakSelf handleResponseObj:responseObject type:3];
         } failure:^(NSString *error) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
         }];
     });
 }
@@ -195,7 +201,6 @@
     [PPNetworkHelper POST:@"extend/blockNumber" baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject) {
         [weakSelf handleResponseObj:responseObject type:2];
     } failure:^(NSString *error) {
-        [LCProgressHUD showFailure:error];
     }];
 }
 
@@ -231,18 +236,21 @@
                 
                 if (number < self.minBlockNumber.integerValue) {
                     self.isHaveNoFinishOrder = YES;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.statusLabel.text = [NSString stringWithFormat:@"(%@%ld/%@)", DBHGetStringWithKeyFromTable(@"Confirmed", nil), number, self.minBlockNumber];
+                        self.progress.progress = (CGFloat)number / self.minBlockNumber.floatValue;
+                    });
                 } else {
                     number = self.minBlockNumber.integerValue;
                     self.isHaveNoFinishOrder = NO;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         self.nextBtn.enabled = YES;
+                        
+                        self.statusLabel.text = [NSString stringWithFormat:@"%@", DBHGetStringWithKeyFromTable((self.packageType == PackageTypeCash) ? @"Packet preparation sucessful" : @"Red Packet creation successful", nil)];
+                        self.progress.progress = (CGFloat)number / self.minBlockNumber.floatValue;
                     });
                 }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.statusLabel.text = [NSString stringWithFormat:@"(%@%ld/%@)", DBHGetStringWithKeyFromTable(@"Confirmed", nil), number, self.minBlockNumber];
-                    self.progress.progress = (CGFloat)number / self.minBlockNumber.floatValue;
-                });
             }
         } else if (type == 3) { // 红包详情
             if ([responseObj isKindOfClass:[NSDictionary class]]) {
@@ -266,19 +274,11 @@
                             [self.navigationController popViewControllerAnimated:YES];
                         });
                     } else if (status == RedBagStatusCashPackaging) { // 打包中
-                        if (model.auth_block == 0) { // 授权块高为0
-                            dispatch_suspend(timer);
-                            dispatch_source_set_event_handler(timer, ^{
-                                [self getDetailData]; // 获取红包详情
-                            });
-                            dispatch_resume(timer);
-                        } else { // 授权块高不为0
-                            dispatch_suspend(timer);
-                            dispatch_source_set_event_handler(timer, ^{
-                                [self loadCurrentblockNumber];
-                            });
-                            dispatch_resume(timer);
-                        }
+                        dispatch_suspend(timer);
+                        dispatch_source_set_event_handler(timer, ^{
+                            [self loadCurrentblockNumber];
+                        });
+                        dispatch_resume(timer);
                     }
                 } else if (self.packageType == PackageTypeRedPacket) { // 红包创建
                     if (status == RedBagStatusCreatePending) { // 创建pending中
@@ -296,19 +296,11 @@
                             [self.navigationController popViewControllerAnimated:YES];
                         });
                     } else if (status == RedBagStatusCreating) { // 创建中
-                        if (model.redbag_block == 0) { // 红包块高为0
-                            dispatch_suspend(timer);
-                            dispatch_source_set_event_handler(timer, ^{
-                                [self getDetailData]; // 获取红包详情
-                            });
-                            dispatch_resume(timer);
-                        } else { // 授权块高不为0
-                            dispatch_suspend(timer);
-                            dispatch_source_set_event_handler(timer, ^{
-                                [self loadCurrentblockNumber];
-                            });
-                            dispatch_resume(timer);
-                        }
+                        dispatch_suspend(timer);
+                        dispatch_source_set_event_handler(timer, ^{
+                            [self loadCurrentblockNumber];
+                        });
+                        dispatch_resume(timer);
                     }
                 }
             }

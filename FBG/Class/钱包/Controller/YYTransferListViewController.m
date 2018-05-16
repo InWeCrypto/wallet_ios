@@ -70,10 +70,6 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     [self setUI];
 }
 
-- (void)dealloc {
-//    [self removeTimer];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -152,11 +148,7 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
     // 交易详情
     DBHTransferDetailViewController *transferDetailViewController = [[DBHTransferDetailViewController alloc] init];
     transferDetailViewController.tokenModel = self.tokenModel;
-//    if ([self isEth]) {
-//        transferDetailViewController.ethModel = self.dataSource[indexPath.row];
-//    } else {
-//        transferDetailViewController.neoModel = self.dataSource[indexPath.row];
-//    }
+
     [self.navigationController pushViewController:transferDetailViewController animated:YES];
 }
 
@@ -775,11 +767,14 @@ static NSString *const kDBHTransferListTableViewCellIdentifier = @"kDBHTransferL
             NSArray *list = responseObject[LIST];
             if (![NSObject isNulllWithObject:list] && [list isKindOfClass:[NSArray class]]) {
                 BOOL isHaveNoFinishOrder = NO;
-                if (list.count < 10) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (list.count < 10) {
                         [self.tableView.mj_footer endRefreshingWithNoMoreData];
-                    });
-                }
+                    } else {
+                        [self.tableView.mj_footer endRefreshing];
+                    }
+                });
                 
                 for (NSDictionary *dict in list) {
                     @autoreleasepool {

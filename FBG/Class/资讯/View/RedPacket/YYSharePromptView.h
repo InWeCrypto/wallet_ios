@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong) YYRedPacketDetailModel *model;
 
-- (void)show;
+- (void)showWithTarget:(UIViewController *)target;
 
 @end

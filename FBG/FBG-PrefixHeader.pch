@@ -32,6 +32,8 @@
 #define LAST_USER_EMAIL @"LAST_USER_EMAIL"
 
 #pragma mark - UserDefaults的key(key必须放在获取UserDefaults之前)
+// 是否显示红包协议
+#define IS_SHOW_REDPACKET_PROTOCOL @"isShowRedPacketProtocol"
 // 是否登录
 #define IS_LOGIN_KEY @"isLogin"
 // 是否隐藏币种为0

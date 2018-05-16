@@ -27,6 +27,15 @@
     [self setNavigationTintColor];
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.view endEditing:YES];
+}
+
 - (void)setNavigationTintColor {
     self.navigationController.navigationBar.tintColor = COLORFROM16(0x333333, 1);
 }
@@ -61,7 +70,9 @@
                     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
                 }
     } else {
-        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+        if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+            self.navigationController.interactivePopGestureRecognizer.enabled = NO; //YYTODO
+        }
     }
 }
 

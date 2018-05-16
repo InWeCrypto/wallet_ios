@@ -51,4 +51,6 @@ typedef enum {
 
 - (void)setBorderWidth:(CGFloat)width color:(UIColor *)color;
 
++ (void)setRoundForView:(UIView *)view borderColor:(UIColor *)color;
+
 @end

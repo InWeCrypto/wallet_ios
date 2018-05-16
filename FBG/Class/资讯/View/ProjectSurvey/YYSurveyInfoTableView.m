@@ -39,6 +39,7 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCell = @"kDBHProject
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     if (self = [super initWithFrame:frame style:style]) {
+        self.frame = frame;
         [self initTableView];
         _heightOfCell = SURVEY_SECTION1_HEIGHT(SCREEN_HEIGHT, SURVEY_HEADER_HEIGHT, SURVEY_DEFAULT_Y);
     }

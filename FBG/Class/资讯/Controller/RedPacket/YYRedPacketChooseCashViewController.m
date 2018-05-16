@@ -44,7 +44,7 @@
         } success:^(id responseObject) {
             [weakSelf handleResponse:responseObject];
         } failure:^(NSString *error) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         } specialBlock:nil];
     });
 }

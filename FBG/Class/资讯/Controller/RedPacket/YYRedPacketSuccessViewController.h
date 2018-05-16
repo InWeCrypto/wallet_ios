@@ -19,6 +19,4 @@
  */
 @property (nonatomic, assign) NSInteger backIndex;
 
-@property (nonatomic, assign) BOOL isFromOpen; // 如果从拆红包界面push过来，就应该backindex = 2;
-
 @end

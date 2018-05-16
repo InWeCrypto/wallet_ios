@@ -120,7 +120,7 @@
             [weakSelf handleResponse:responseObject isLoadMore:isLoadMore];
         } failure:^(NSString *error) {
             [weakSelf endRefresh];
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -138,30 +138,63 @@
             [tempArr addObjectsFromArray:self.dataSource];
         }
         
+        // 创建全局并行
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_group_t group = dispatch_group_create();
+        
         if (![NSObject isNulllWithObject:responseObj]) {
             if ([responseObj isKindOfClass:[NSDictionary class]]) {
                 YYRedPacketMySentModel *sentModel = [YYRedPacketMySentModel mj_objectWithKeyValues:responseObj];
                 NSArray *dataArray = sentModel.data;
                 if (![NSObject isNulllWithObject:dataArray] &&
-                    [dataArray isKindOfClass:[NSArray class]] &&
-                    dataArray.count > 0) {
-                    if (dataArray.count < 10) {
-                        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-                    } else {
-                        [self.tableView.mj_footer endRefreshing];
-                    }
+                    [dataArray isKindOfClass:[NSArray class]]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (dataArray.count < 10) {
+                            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+                        } else {
+                            [self.tableView.mj_footer endRefreshing];
+                        }
+                    });
                     
                     for (YYRedPacketDetailModel *listModel in dataArray) {
                         [tempArr addObject:listModel];
+                        dispatch_group_enter(group);
+                        dispatch_group_async(group, queue, ^{
+                            WEAKSELF
+                            [PPNetworkHelper POST:@"extend/blockNumber" baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject) {
+                                [weakSelf loadCurrentBlockResponse:responseObject model:listModel completion:^{
+                                    dispatch_group_leave(group);
+                                }];
+                            } failure:^(NSString *error) {
+                                dispatch_group_leave(group);
+                            }];
+                        });
                     }
                 }
             }
         }
-        self.dataSource = tempArr;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
+        
+        dispatch_group_notify(group, queue, ^{
+            self.dataSource = tempArr;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
         });
     });
+}
+
+- (void)loadCurrentBlockResponse:(id)responseObj model:(YYRedPacketDetailModel *)model completion:(CompletionBlock)completion {
+    if (![NSObject isNulllWithObject:responseObj]) {
+        NSString *value = [responseObj objectForKey:VALUE];
+        if (value.length > 2) {
+            value = [value substringFromIndex:2];
+            model.current_block = [NSString numberHexString:value].integerValue;
+        }
+    }
+    
+    if (completion) {
+        completion();
+    }
 }
 
 #pragma mark ------ Private Methods ------

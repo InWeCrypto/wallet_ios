@@ -117,6 +117,9 @@
 		1B24E8FE2092C0F800E1974E /* YYRedPacketDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E8FD2092C0F800E1974E /* YYRedPacketDetailViewController.m */; };
 		1B24E9022092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E9002092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m */; };
 		1B24E9072092C9B700E1974E /* YYRedPacketDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B24E9052092C9B700E1974E /* YYRedPacketDetailTableViewCell.m */; };
+		1B26296B20A59C3B000CEDCC /* YYRedPacketConfigGasModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B26296A20A59C3B000CEDCC /* YYRedPacketConfigGasModel.m */; };
+		1B26296E20A93459000CEDCC /* YYRedPacketProtocolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B26296D20A93459000CEDCC /* YYRedPacketProtocolView.m */; };
+		1B26297020A93460000CEDCC /* YYRedPacketProtocolView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B26296F20A93460000CEDCC /* YYRedPacketProtocolView.xib */; };
 		1B27606D20721AB000FFB7B1 /* DBHRankDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27606C20721AB000FFB7B1 /* DBHRankDetailModel.m */; };
 		1B27607020723AFE00FFB7B1 /* DBHExchangeRankModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27606F20723AFE00FFB7B1 /* DBHExchangeRankModel.m */; };
 		1B27607320723C7600FFB7B1 /* DBHExchangeRankTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27607220723C7600FFB7B1 /* DBHExchangeRankTypeModel.m */; };
@@ -919,6 +922,11 @@
 		1B24E9002092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDetailSpecialTableViewCell.m; sourceTree = "<group>"; };
 		1B24E9042092C9B700E1974E /* YYRedPacketDetailTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketDetailTableViewCell.h; sourceTree = "<group>"; };
 		1B24E9052092C9B700E1974E /* YYRedPacketDetailTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketDetailTableViewCell.m; sourceTree = "<group>"; };
+		1B26296920A59C3B000CEDCC /* YYRedPacketConfigGasModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketConfigGasModel.h; sourceTree = "<group>"; };
+		1B26296A20A59C3B000CEDCC /* YYRedPacketConfigGasModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketConfigGasModel.m; sourceTree = "<group>"; };
+		1B26296C20A93459000CEDCC /* YYRedPacketProtocolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketProtocolView.h; sourceTree = "<group>"; };
+		1B26296D20A93459000CEDCC /* YYRedPacketProtocolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketProtocolView.m; sourceTree = "<group>"; };
+		1B26296F20A93460000CEDCC /* YYRedPacketProtocolView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketProtocolView.xib; sourceTree = "<group>"; };
 		1B27606B20721AB000FFB7B1 /* DBHRankDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHRankDetailModel.h; sourceTree = "<group>"; };
 		1B27606C20721AB000FFB7B1 /* DBHRankDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHRankDetailModel.m; sourceTree = "<group>"; };
 		1B27606E20723AFE00FFB7B1 /* DBHExchangeRankModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHExchangeRankModel.h; sourceTree = "<group>"; };
@@ -2628,6 +2636,8 @@
 				1B530D3D209ABD0A00AA7D0B /* YYRedPacketRedBagInfoModel.m */,
 				1B530D3F209ABD1500AA7D0B /* YYRedPacketDrawModel.h */,
 				1B530D40209ABD1500AA7D0B /* YYRedPacketDrawModel.m */,
+				1B26296920A59C3B000CEDCC /* YYRedPacketConfigGasModel.h */,
+				1B26296A20A59C3B000CEDCC /* YYRedPacketConfigGasModel.m */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2636,7 +2646,6 @@
 			isa = PBXGroup;
 			children = (
 				1B530D2F20995F2D00AA7D0B /* ProgressView */,
-				1B881DC920931CAA003D92EF /* YYRedPacketDetailTableViewCell.xib */,
 				1BBD7844208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.h */,
 				1BBD7845208F13BA000FDC8E /* YYRedPacketChooseCashTableViewCell.m */,
 				1B2D32F02085CEB7007E4F02 /* YYRedPacketHomeHeaderView.h */,
@@ -2663,6 +2672,7 @@
 				1B24E9002092C9A800E1974E /* YYRedPacketDetailSpecialTableViewCell.m */,
 				1B24E9042092C9B700E1974E /* YYRedPacketDetailTableViewCell.h */,
 				1B24E9052092C9B700E1974E /* YYRedPacketDetailTableViewCell.m */,
+				1B881DC920931CAA003D92EF /* YYRedPacketDetailTableViewCell.xib */,
 				1B881DB52092D215003D92EF /* YYRedPacketDetailHeaderView.h */,
 				1B881DB62092D215003D92EF /* YYRedPacketDetailHeaderView.m */,
 				1B881DB82092D21A003D92EF /* YYRedPacketDetailHeaderView.xib */,
@@ -2674,6 +2684,9 @@
 				1B530D47209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.h */,
 				1B530D48209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.m */,
 				1B530D49209C370000AA7D0B /* YYRedPacketChooseWalletTableViewCell.xib */,
+				1B26296C20A93459000CEDCC /* YYRedPacketProtocolView.h */,
+				1B26296D20A93459000CEDCC /* YYRedPacketProtocolView.m */,
+				1B26296F20A93460000CEDCC /* YYRedPacketProtocolView.xib */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -4390,6 +4403,7 @@
 				0FAC29081F2F7C4A009B3EC9 /* AAHighchartsMore.js in Resources */,
 				A8A818501F44849B00FFF088 /* ChoseCell.xib in Resources */,
 				A8AAFBCE1F3EF6BD00724FF6 /* PayPriceView.xib in Resources */,
+				1B26297020A93460000CEDCC /* YYRedPacketProtocolView.xib in Resources */,
 				1B99F95A207B2CBC004FD7F7 /* YYEvaluateGradeHeaderView.xib in Resources */,
 				A8B4DA751F61705D00FC8EC7 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -4617,6 +4631,7 @@
 				1B5BA45F2080538C00B03A4F /* YYEvaluateAnalysisTableViewCell.m in Sources */,
 				0FAC290A1F2F7C4A009B3EC9 /* AAAnimation.m in Sources */,
 				D572EC4E2022F77E002C8EFD /* EMSDWebImageCompat.m in Sources */,
+				1B26296B20A59C3B000CEDCC /* YYRedPacketConfigGasModel.m in Sources */,
 				D51E66552011F01B0025B502 /* DBHAddPropertyModelList.m in Sources */,
 				D536E2C82031808B0076E3D4 /* DBHProjectDetailInformationModelCategoryScore.m in Sources */,
 				1B99F8B62074D2E8004FD7F7 /* DBHProjectCommentAllListModel.m in Sources */,
@@ -5096,6 +5111,7 @@
 				1B2D32E820859D7D007E4F02 /* YYRedPacketViewController.m in Sources */,
 				1BE63AFB205B8C5D00AE53E1 /* DBHTradingMarketCharTableViewCell.m in Sources */,
 				1B77F6E0206E205A00B198A9 /* DBHRankDetailSection0TableViewCell.m in Sources */,
+				1B26296E20A93459000CEDCC /* YYRedPacketProtocolView.m in Sources */,
 				1B99F888207385C5004FD7F7 /* DBHMyCommentsViewController.m in Sources */,
 				D51E66D92015E20C0025B502 /* DBHImportWalletViewController.m in Sources */,
 				D572EC022022F77E002C8EFD /* EaseMessageReadManager.m in Sources */,
@@ -5392,7 +5408,7 @@
 				PODS_ROOT = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raistone.inwecrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dc80cee2-ca2f-4b87-8421-3a830d263006";
+				PROVISIONING_PROFILE = "88b3b5f1-63e0-40b2-bd37-242dc3862bed";
 				PROVISIONING_PROFILE_SPECIFIER = iOS_development;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
@@ -5514,7 +5530,7 @@
 				PODS_ROOT = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raistone.inwecrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dc80cee2-ca2f-4b87-8421-3a830d263006";
+				PROVISIONING_PROFILE = "88b3b5f1-63e0-40b2-bd37-242dc3862bed";
 				PROVISIONING_PROFILE_SPECIFIER = iOS_development;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/FBG/Class/资讯/Controller/FBG-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";

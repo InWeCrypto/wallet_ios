@@ -45,6 +45,8 @@ typedef enum _redbag_cell_type {
     RedBagCellTypeBackNum // 撤回数量
 }RedBagCellType;
 
+typedef void(^CompletionBlock) (void);
+
 #import "PPNetworkCache.h"
 #import "YYRedPacketSentCountModel.h"
 #import "YYRedPacketEthTokenModel.h"
@@ -54,5 +56,6 @@ typedef enum _redbag_cell_type {
 #import "YYRedPacketDrawModel.h"
 #import "YYRedPacketRedBagInfoModel.h"
 #import "YYRedPacketDetailModel.h"
+#import "YYRedPacketConfigGasModel.h"
 
 #define HAS_EMPTY(str) [NSString stringWithFormat:@"  %@  ", str]

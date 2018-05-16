@@ -62,7 +62,9 @@ static CGFloat min_distance = 60;// 最小回弹距离
         // 设置返回按钮
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         NSString *backImageName;
-        if ([viewController isKindOfClass:NSClassFromString(@"DBHImportWalletViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHAddWalletViewController")]) {
+        if ([viewController isKindOfClass:NSClassFromString(@"DBHImportWalletViewController")] ||
+            [viewController isKindOfClass:NSClassFromString(@"DBHAddWalletViewController")] ||
+            [viewController isKindOfClass:NSClassFromString(@"YYRedPacketOpenViewController")]) {
             backImageName = @"login_close";
         } else if ([viewController isKindOfClass:NSClassFromString(@"DBHWalletDetailViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHWalletDetailWithETHViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHQrCodeViewController")] || [viewController isKindOfClass:NSClassFromString(@"DBHPaymentReceivedViewController")]) {
             backImageName = @"关闭-4";
@@ -147,6 +149,12 @@ static CGFloat min_distance = 60;// 最小回弹距离
         if (currentVC.backIndex && currentVC.backIndex < self.viewControllers.count) {
             [self popToViewController:self.viewControllers[currentVC.backIndex - 1] animated:YES];
             return;
+        }
+    } else if ([self.viewControllers.lastObject isKindOfClass:NSClassFromString(@"YYRedPacketSuccessViewController")]) {
+        YYRedPacketSuccessViewController *currentVC = self.viewControllers.lastObject;
+        if (currentVC.backIndex && currentVC.backIndex < self.viewControllers.count) {
+            [self popToViewController:self.viewControllers[currentVC.backIndex - 1] animated:YES];
+            return ;
         }
     }
     [self popViewControllerAnimated:YES];
@@ -237,7 +245,7 @@ static CGFloat min_distance = 60;// 最小回弹距离
 //- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
 //    [self setBackItem:viewController];
 //    [self.screenShotList addObject:[self capture]];
-//    
+//
 //    if (animated) {
 //        [self pushAnimation:viewController];
 //        return;

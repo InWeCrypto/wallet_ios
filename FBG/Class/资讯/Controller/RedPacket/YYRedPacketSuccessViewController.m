@@ -23,10 +23,6 @@
     
     [self getDetailData];
     [self setUI];
-    
-    if (self.isFromOpen) {
-        self.backIndex = 2;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,7 +56,7 @@
         [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
             [weakSelf handleResponseObj:responseObject];
         } failure:^(NSString *error) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -82,13 +78,12 @@
 - (void)setUI {
     self.title = DBHGetStringWithKeyFromTable(@"Opened Success", nil);
     
-    self.tableView.contentInset = UIEdgeInsetsMake(-44, 0, -20, 0);
-    
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    self.tableView.bounces = NO;
 }
 
 #pragma mark ------ UIScrollViewDelegate ------
@@ -149,7 +144,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return nil;
+        return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.01)];
     }
     
     YYRedPacketDetailHeaderView *headerView = [[YYRedPacketDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, DETAIL_HEADERVIEW_HEIGHT)];
@@ -159,7 +154,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return 0;
+        return 0.01;
     }
     return DETAIL_HEADERVIEW_HEIGHT;
 }
@@ -168,6 +163,10 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     view.backgroundColor = COLORFROM16(0xFAFAFA, 1);
     return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 10;
 }
 
 - (void)setModel:(YYRedPacketOpenedModel *)model {

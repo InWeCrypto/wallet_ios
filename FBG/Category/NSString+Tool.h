@@ -130,5 +130,13 @@
  */
 + (NSString *)keyChainDataFromKey:(NSString *)address isETH:(BOOL)isETH;
 
+/**
+ 将16进制的value转成10进制 再除以10的decimal次方
+ 
+ @param value value
+ @param decimals decimals
+ @return 十进制
+ */
++ (NSString *)convertValue:(NSString *)value decimals:(NSInteger)decimals;
 @end
 

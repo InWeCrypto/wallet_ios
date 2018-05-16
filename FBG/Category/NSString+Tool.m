@@ -741,4 +741,25 @@ yy-MM-dd HH:mm:ss
     return data;
 }
 
+/**
+ 将16进制的value转成10进制 再除以10的decimal次方
+ 
+ @param value value
+ @param decimals decimals
+ @return 十进制
+ */
++ (NSString *)convertValue:(NSString *)value decimals:(NSInteger)decimals {
+    NSString *backValue = value;
+    if (![NSObject isNulllWithObject:backValue]) {
+        if ([backValue hasPrefix:@"0x"] && backValue.length > 2) {
+            backValue = [backValue substringFromIndex:2];
+        }
+        
+        backValue = [NSString numberHexString:backValue];
+        
+        backValue = [NSString DecimalFuncWithOperatorType:3 first:backValue secend:@(pow(10, decimals)) value:0];
+    }
+    return backValue;
+}
+
 @end

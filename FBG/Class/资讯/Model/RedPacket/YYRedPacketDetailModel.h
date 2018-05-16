@@ -44,6 +44,8 @@
 @property (nonatomic, assign) RedBagTXStatus redbag_back_tx_status;// 红包退回状态
 @property (nonatomic, strong) YYRedPacketEthTokenModel *gnt_category; // 红包发送情况
 
+@property (nonatomic, assign) NSInteger current_block; // 当前块高
+
 //@property (nonatomic, strong) YYRedPacketRedBagInfoModel *redbag_info;
 
 @property (nonatomic, strong) NSArray *draws;

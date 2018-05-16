@@ -137,14 +137,14 @@
 - (void)getTransactionCount {
     [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"Creating...", nil)];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *addr = self.currentWalletModel.infoModel.ethModel.address;
+        NSString *addr = self.currentWalletModel.ethWallet.address;
         if (addr.length > 0) {
             if (![addr hasPrefix:@"0x"]) {
                 addr = [NSString stringWithFormat:@"0x%@", addr];
             }
             
             NSMutableDictionary * parametersDic = [[NSMutableDictionary alloc] init];
-            [parametersDic setObject:addr forKey:@"address"];
+            [parametersDic setObject:[addr lowercaseString] forKey:@"address"];
             
             WEAKSELF
             [PPNetworkHelper POST:@"extend/getTransactionCount" baseUrlType:1 parameters:parametersDic hudString:nil success:^(id responseObject) {
@@ -173,6 +173,15 @@
             NSLog(@"💣💣----获取红包ID失败");
         }];
     });
+}
+
+- (void)getMinFees {
+    WEAKSELF
+    [PPNetworkHelper GET:@"config/get_key/REDBAG_MAX_GAS" baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
+        [weakSelf handleResponseObj:responseObject type:4];
+    } failure:^(NSString *error) {
+        [weakSelf handleResponseObj:nil type:4];
+    }];
 }
 
 - (void)handleResponseObj:(id)responseObj type:(NSInteger)type {
@@ -215,6 +224,9 @@
                     vc.model = model;
                     vc.ethWalletsArray = self.ethWalletsArray;
                     [self.navigationController pushViewController:vc animated:YES];
+                } else if (model.status == RedBagStatusCreateFailed) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                    [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Creation Failed", nil)];
                 }
             });
         } else if (type == 2) { // 获取手续费
@@ -245,10 +257,87 @@
                 }
             }
             
-            // 最小矿工费
-            minValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:GAS_LIMITS value:8];
-            minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"21000" value:8];
-            minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"1000000000000000000" value:8];
+            [self getMinFees];
+        } else if (type == 3) { // 获取红包ID
+            NSError * error;
+            NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
+            if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) { // 正式网还没有 YYTODO
+                contractAddr = REDPACKET_CONTRACT_ADDRESS;
+            }
+            
+            NSString *totalValue = [NSString DecimalFuncWithOperatorType:0 first:minValue secend:maxValue value:0]; // 矿工费 最大最小的和
+            NSString *totalHandleFeeShow = [NSString DecimalFuncWithOperatorType:0 first:minHandlefeeShow secend:maxHandlefeeShow value:0]; // 多个红包手续费原值 最大最小的和
+            // 手续费总和
+            NSString *total = [NSString DecimalFuncWithOperatorType:0 first:totalValue secend:totalHandleFeeShow value:0];
+            
+            // 多个红包手续费所占比例
+            NSString *handleFeePercent = [NSString DecimalFuncWithOperatorType:3 first:totalHandleFeeShow secend:total value:0];
+            
+            // 矿工费所占比例
+            NSString *percent = [NSString DecimalFuncWithOperatorType:3 first:totalValue secend:total value:0];
+            
+            // 发红包收取的手续费
+            NSString *amount = [NSString DecimalFuncWithOperatorType:2 first:@(sliderValue) secend:handleFeePercent value:0];
+            long long transfer = amount.doubleValue * pow(10, 18);
+            amount = [NSString getHexByDecimal:transfer];
+            amount = [NSString stringWithFormat:@"0x%@", amount];
+            
+            // 燃料费价格
+            NSString *gasPrice = [NSString DecimalFuncWithOperatorType:2 first:@(sliderValue) secend:percent value:0];
+            gasPrice = [NSString DecimalFuncWithOperatorType:3 first:gasPrice secend:GAS_LIMITS value:0];
+            gasPrice = [NSString DecimalFuncWithOperatorType:2 first:gasPrice secend:@(pow(10, 18)) value:0];
+            gasPrice = [SystemConvert decimalToHex:gasPrice.integerValue];
+            gasPrice = [NSString stringWithFormat:@"0x%@", [gasPrice lowercaseString]];
+            
+            long long gasPriceLong =  2 * pow(10, 10);
+            NSString *tempgasPrice = [SystemConvert decimalToHex:gasPriceLong];
+            tempgasPrice = [NSString stringWithFormat:@"0x%@", [tempgasPrice lowercaseString]];
+            
+            
+            long long redbagID = [responseObj longLongValue];
+            
+            NSString *redBagIDStr = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:redbagID]];
+            
+            NSString *redBagValue = self.model.redbag;
+            redBagValue = [NSString DecimalFuncWithOperatorType:2 first:redBagValue secend:@(pow(10, self.model.gnt_category.decimals)) value:0];
+            redBagValue = [[NSString stringWithFormat:@"0x%@", [SystemConvert decimalToHex:redBagValue.doubleValue]] lowercaseString];
+            
+            NSString *redBagNumber = [NSString stringWithFormat:@"0x%@", [SystemConvert decimalToHex:self.model.redbag_number]];
+            
+            NSString *data = [self.currentWalletModel.ethWallet newRedPacket:contractAddr
+                                                                       nonce:self.transactionCount
+                                                               erc20contract:[self.model.gnt_category.address lowercaseString]
+                                                                     tokenId:redBagIDStr
+                                                                        from:[self.model.redbag_addr lowercaseString]
+                                                                      amount:amount
+                                                                       value:redBagValue
+                                                                       count:redBagNumber
+                                                                     command:@"0"
+                                                                    gasPrice:gasPrice
+                                                                   gasLimits:@"0x57e40"
+                                                                       error:&error];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!error) {
+                    [self gotoPay:[NSString stringWithFormat:@"0x%@", data] asset_id:@"0x0000000000000000000000000000000000000000" transferNum:amount handleFee:gasPrice contractAddr:contractAddr redBagID:redbagID];
+                } else {
+                    [LCProgressHUD hide];
+                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Creation Failed", nil)];
+                }
+            });
+        } else if (type == 4) { //  最小矿工费
+            if ([responseObj isKindOfClass:[NSDictionary class]]) {
+                YYRedPacketConfigGasModel *gasModel = [YYRedPacketConfigGasModel mj_objectWithKeyValues:responseObj];
+                minValue = gasModel.value;
+            }
+            
+            NSString *minSelfValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:GAS_LIMITS value:8];
+            minSelfValue = [NSString DecimalFuncWithOperatorType:3 first:minSelfValue secend:@"21000" value:8];
+            minSelfValue = [NSString DecimalFuncWithOperatorType:3 first:minSelfValue secend:@"1000000000000000000" value:8];
+            
+            if (minValue.doubleValue < minSelfValue.doubleValue) {
+                minValue = minSelfValue;
+            }
             
             // 最大矿工费
             maxValue = [NSString DecimalFuncWithOperatorType:2 first:@"2520120000000000" secend:GAS_LIMITS value:8];
@@ -257,7 +346,7 @@
             
             totalShowMinValue = [NSString DecimalFuncWithOperatorType:0 first:minValue secend:minHandlefeeShow value:8];
             totalShowMaxValue = [NSString DecimalFuncWithOperatorType:0 first:maxValue secend:maxHandlefeeShow value:8];
-           
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *number = [NSString notRounding:totalShowMinValue afterPoint:8];
                 self.minLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
@@ -273,64 +362,6 @@
             });
             
             [self getMaxETHBalanceModel];
-        } else if (type == 3) { // 获取红包ID
-            NSError * error;
-            NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
-            if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) { // 正式网还没有 YYTODO
-                contractAddr = REDPACKET_CONTRACT_ADDRESS;
-            }
-            
-            NSString *totalValue = [NSString DecimalFuncWithOperatorType:0 first:minValue secend:maxValue value:0]; // 矿工费 最大最小的和
-            NSString *totalHandleFeeShow = [NSString DecimalFuncWithOperatorType:0 first:minHandlefeeShow secend:maxHandlefeeShow value:0]; // 多个红包手续费显示的值 最大最小的和
-            // 手续费总和
-            NSString *total = [NSString DecimalFuncWithOperatorType:0 first:totalValue secend:totalHandleFeeShow value:0];
-            
-            // 多个红包手续费所占比例
-            NSString *handleFeePercent = [NSString DecimalFuncWithOperatorType:3 first:totalHandleFeeShow secend:total value:0];
-            
-            // 矿工费所占比例
-            NSString *percent = [NSString DecimalFuncWithOperatorType:3 first:totalValue secend:total value:0];
-            
-            // 发红包收取的手续费
-            NSString *amount = [NSString DecimalFuncWithOperatorType:2 first:@(sliderValue) secend:handleFeePercent value:0];
-//            long long transfer = amount.doubleValue * pow(10, 18); YYTODO 需要替换
-            long long transfer =  2 * pow(10, 10);
-            amount = [NSString getHexByDecimal:transfer];
-            amount = [NSString stringWithFormat:@"0x%@", amount];
-            
-            // 燃料费价格
-            NSString *gasPrice = [NSString DecimalFuncWithOperatorType:2 first:@(sliderValue) secend:percent value:0];
-            gasPrice = [NSString DecimalFuncWithOperatorType:3 first:gasPrice secend:GAS_LIMITS value:0];
-            gasPrice = [NSString DecimalFuncWithOperatorType:2 first:gasPrice secend:@(pow(10, 18)) value:0];
-            
-            gasPrice = [SystemConvert decimalToHex:gasPrice.integerValue];
-            gasPrice = [NSString stringWithFormat:@"0x%@", [gasPrice lowercaseString]];
-            
-            long long redbagID = [responseObj longLongValue];
-            
-            NSString *redBagIDStr = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:redbagID]];
-            
-            NSString *data = [self.currentWalletModel.ethWallet newRedPacket:contractAddr
-                                                                       nonce:self.transactionCount
-                                                               erc20contract:self.model.gnt_category.address
-                                                                     tokenId:redBagIDStr
-                                                                        from:self.model.redbag_addr
-                                                                      amount:amount
-                                                                       value:self.model.redbag
-                                                                       count:[NSString stringWithFormat:@"%@", @(self.model.redbag_number)]
-                                                                     command:@"0"
-                                                                    gasPrice:gasPrice
-                                                                   gasLimits:@"0x57e40"
-                                                                       error:&error];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (!error) {
-                    [self gotoPay:[NSString stringWithFormat:@"0x%@", data] asset_id:@"0x0000000000000000000000000000000000000000" transferNum:amount handleFee:gasPrice contractAddr:contractAddr redBagID:redbagID];
-                } else {
-                    [LCProgressHUD hide];
-                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Creation Failed", nil)];
-                }
-            });
         }
     });
 }
@@ -351,7 +382,7 @@
             
             NSString *redbag_fee_addr = self.currentWalletModel.address;
             if (![NSObject isNulllWithObject:redbag_fee_addr]) {
-                [params setObject:redbag_fee_addr forKey:FEE_ADDR];
+                [params setObject:[redbag_fee_addr lowercaseString] forKey:FEE_ADDR];
             }
             
             [params setObject:[NSString stringWithFormat:@"%@", @(redBagID)] forKey:REDBAG_ID];
@@ -374,13 +405,14 @@
                 [transferParams setObject:transferNum forKey:FEE];
             }
             
-            NSString *tempHandleFee = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:[NSString DecimalFuncWithOperatorType:2 first:@(sliderValue) secend:@(pow(10, 18)) value:0].integerValue]];
-            
-            if (![NSObject isNulllWithObject:tempHandleFee]) {
-                [transferParams setObject:tempHandleFee forKey:HANDLE_FEE];
+            if (![NSObject isNulllWithObject:handleFee]) {
+                [transferParams setObject:handleFee forKey:HANDLE_FEE];
             }
             
-            [transferParams setObject:data forKey:DATA];
+            if (![NSObject isNulllWithObject:data]) {
+                [transferParams setObject:data forKey:DATA];
+            }
+            
             [transferParams setObject:@"" forKey:REMARK];
             
             [params setObject:transferParams forKey:TRANSACTION_PARAM];
@@ -449,7 +481,8 @@
     NSString *balance = self.currentWalletModel.infoModel.ethModel.balance;
     if (balance.doubleValue != 0) {
         CGFloat selectedPoundage = self.slider.value;
-        if (selectedPoundage <= balance.doubleValue) {
+        if (selectedPoundage <= balance.doubleValue &&
+            !self.currentWalletModel.isLookWallet) {
             self.startCreateBtn.enabled = YES;
         }
     }
@@ -479,7 +512,11 @@
         if (balance.doubleValue != 0) {
             CGFloat selectedPoundage = self.slider.value;
             if (selectedPoundage <= balance.doubleValue) {
-                self.startCreateBtn.enabled = YES;
+                if (currentWalletModel.isLookWallet) {
+                    [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Watch wallet is invalid", nil)];
+                } else {
+                    self.startCreateBtn.enabled = YES;
+                }
             }
         }
     });

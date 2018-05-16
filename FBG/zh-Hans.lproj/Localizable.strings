@@ -629,15 +629,17 @@
 "Package Number" = "红包发放个数";
 "(Max:" = "(最大可发送：";
 " Packet " = "个";
-"Payment" = "支付礼金";
+" Payment " = "支付礼金";
 "Max Amount" = "最大可用数量";
 "Your wallet do not have this asset," = "您的钱包暂无此类资产，";
 "Please " = "请";
 " Deposit assets before sending Red Packet" = "存入资产后再继续发红包";
 "Choose Assets" = "选择礼金";
 "Choose method of payment" = "选择付款方式";
-"Packet preparation successful" = "礼金打包成功";
+"Packet preparation sucessful" = "礼金打包成功";
 "Red Packet creation successful" = "红包创建成功";
+" Packing… " = "准备打包礼金";
+"Creating the Red Packet" = "准备创建红包";
 "Packaging Assets" = "礼金打包中";
 "Creating Red Packet" = "红包创建中";
 "Waiting for Confirmation" = "等待确认";
@@ -713,4 +715,9 @@
 "Total Sent " = "一共发送了";
 " Red Packet" = "个红包";
 "Creating" = "创建中";
-
+"Please Read Carefully 《InWeCrypto Red Packet Use Agreement》 Please read and make sure you understand all the terms of the agreement." = "请仔细阅读《InWeCrypto红包使用协议》全部条款，并确认你已完全了解本协议之规定。";
+"Please scan Inwe QR code" = "请扫描 inwe 红包二维码";
+"Watch wallet is invalid" = "不能使用观察钱包";
+"Completed" = "完成";
+ "InWeCrypto Red Packet Use Agreement" = "InWeCrypto红包使用协议";
+",need to recreate redpacket.Please contact us if you have any questions." = ",需重新创建红包.如有疑问请联系我们.";

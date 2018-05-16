@@ -38,6 +38,9 @@
 - (void)setUI {
     self.titleLabel.text = DBHGetStringWithKeyFromTable(@"Open the Red Packet and Mining ", nil);
     
+    self.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.titleLabel.minimumScaleFactor = 0.6;
+    
     self.tip1Label.text = DBHGetStringWithKeyFromTable(@"The technology is provided by", nil);
     self.tip2Label.text = DBHGetStringWithKeyFromTable(@"   ", nil);
 }
@@ -69,6 +72,7 @@
                 self.redBagAddr = arr2[1];
             }
             
+            //share_user=%@&lang=%@&target=%@&inwe
             NSString *paramsStr = arr1[1];
             NSArray *params = [paramsStr componentsSeparatedByString:@"&"];
             if (params.count > 0) {
@@ -107,7 +111,7 @@
             [weakSelf walletListResponse:responseObject];
         } failure:^(NSString *error) {
             [LCProgressHUD hide];
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -160,12 +164,12 @@
         if ([NSObject isNulllWithObject:addr]) {
             addr = @"";
         }
-        NSDictionary *params = @{@"wallet_addr" : addr};
+        NSDictionary *params = @{@"wallet_addr" : [addr lowercaseString]};
         WEAKSELF
         [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:params hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
             [weakSelf handleResponse:responseObject];
         } failure:^(NSString *error) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -180,7 +184,7 @@
         
         YYRedPacketSuccessViewController *vc = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_SUCCESS_STORYBOARD_ID];
         vc.model = model;
-        vc.isFromOpen = YES;
+        vc.backIndex = 1;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

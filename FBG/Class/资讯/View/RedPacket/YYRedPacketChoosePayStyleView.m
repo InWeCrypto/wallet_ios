@@ -23,6 +23,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil] lastObject];
+        self.frame = frame;
         [self initUI];
     }
     return self;
@@ -87,13 +88,17 @@
     if (row < self.dataSource.count) {
         DBHWalletManagerForNeoModelList *model = self.dataSource[row];
         if (model.listIdentifier != self.currentWalletId) {
-            self.currentWalletId = model.listIdentifier;
-            [tableView reloadData];
-        }
-        
-        [self respondsToExitBtn:nil];
-        if (self.block) {
-            self.block(model);
+            if (model.isLookWallet) { // 观察钱包
+                [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Watch wallet is invalid", nil)];
+            } else {
+                self.currentWalletId = model.listIdentifier;
+                [tableView reloadData];
+                
+                [self respondsToExitBtn:nil];
+                if (self.block) {
+                    self.block(model);
+                }
+            }
         }
     }
 }

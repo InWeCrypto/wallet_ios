@@ -49,6 +49,7 @@
 #pragma mark ----- Life Cycle -----
 - (instancetype)initWithFrame:(CGRect)frame withModel:(DBHRankTitleAndDataModel *)model {
     if (self = [super initWithFrame:frame]) {
+        self.frame = frame;
         _rowDatasArray = model.datasArr;
         _rowHeaderTitlesArray = model.titlesArr;
         _minWidth = model.minWidth;

@@ -25,6 +25,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.frame = frame;
         [self setUI];
     }
     return self;

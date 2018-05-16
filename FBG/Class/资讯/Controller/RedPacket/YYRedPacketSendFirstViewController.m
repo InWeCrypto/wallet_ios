@@ -22,8 +22,6 @@
 
 #define MAX_SEND 100
 
-typedef void(^CompletionBlock) (void);
-
 @interface YYRedPacketSendFirstViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *firstLabel;
@@ -124,9 +122,9 @@ typedef void(^CompletionBlock) (void);
     
     self.slider.value = 0;
     
-    [self.payBtn setTitle:DBHGetStringWithKeyFromTable(@"Payment", nil) forState:UIControlStateNormal];
+    [self.payBtn setTitle:DBHGetStringWithKeyFromTable(@" Payment ", nil) forState:UIControlStateNormal];
     self.walletMaxUseTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Max Amount", nil)];
-
+    
     self.slowLabel.text = DBHGetStringWithKeyFromTable(@"Slow", nil);
     self.fastLabel.text = DBHGetStringWithKeyFromTable(@"Fast", nil);
     self.feeLabel.text = DBHGetStringWithKeyFromTable(@"Pitman Cost", nil);
@@ -292,7 +290,7 @@ typedef void(^CompletionBlock) (void);
             NSString *addr = self.currentWalletModel.address;
             NSString *symbol = self.tokenModel.name;
             if (![NSObject isNulllWithObject:addr]) {
-                [params setObject:addr forKey:REDBAG_ADDR];
+                [params setObject:[addr lowercaseString] forKey:REDBAG_ADDR];
             }
             
             if (![NSObject isNulllWithObject:symbol]) {
@@ -350,6 +348,15 @@ typedef void(^CompletionBlock) (void);
     }
 }
 
+- (void)getMinFees {
+    WEAKSELF
+    [PPNetworkHelper GET:@"config/get_key/REDBAG_MAX_GAS" baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
+        [weakSelf handleResponseObj:responseObject type:2];
+    } failure:^(NSString *error) {
+        [weakSelf handleResponseObj:nil type:2];
+    }];
+}
+
 - (void)handleResponseObj:(id)responseObj type:(NSInteger)type {
     if ([NSObject isNulllWithObject:responseObj]) {
         [LCProgressHUD hide];
@@ -378,10 +385,10 @@ typedef void(^CompletionBlock) (void);
             
             NSString *transferStr = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:transfer]];
             
-//            long long gas = poundage.doubleValue * pow(10, self.tokenModel.decimals); YYTODO 测试需要替换
-            long long gas =  2 * pow(10, 10);
+            long long gas = poundage.doubleValue * pow(10, self.tokenModel.decimals);// YYTODO 测试需要替换
+//            long long gas =  2 * pow(10, 10);
             NSString *gasPrice = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:gas]];
-           
+            
             NSString *gasLimit = [NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas.integerValue]];
             
             NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
@@ -389,13 +396,13 @@ typedef void(^CompletionBlock) (void);
                 contractAddr = REDPACKET_CONTRACT_ADDRESS;
             }
             
-            NSString *data = [self.currentWalletModel.ethWallet approve:self.tokenModel.address
-                                                        nonce:count
-                                                           to:contractAddr
-                                                        value:transferStr
-                                                     gasPrice:gasPrice
-                                                    gasLimits:gasLimit
-                                                        error:&error];
+            NSString *data = [self.currentWalletModel.ethWallet approve:[self.tokenModel.address lowercaseString]
+                                                                  nonce:count
+                                                                     to:contractAddr
+                                                                  value:transferStr
+                                                               gasPrice:gasPrice
+                                                              gasLimits:gasLimit
+                                                                  error:&error];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (!error) {
                     [self gotoAuth:[NSString stringWithFormat:@"0x%@", data] asset_id:[self.tokenModel.address lowercaseString] transferNum:transferStr handleFee:gasLimit contractAddr:contractAddr];
@@ -423,6 +430,33 @@ typedef void(^CompletionBlock) (void);
                     [self.navigationController pushViewController:vc animated:YES];
                 });
             }
+        } else if (type == 2) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *minValue = @"0";
+                if ([responseObj isKindOfClass:[NSDictionary class]]) {
+                    YYRedPacketConfigGasModel *gasModel = [YYRedPacketConfigGasModel mj_objectWithKeyValues:responseObj];
+                    minValue = gasModel.value;
+                }
+                
+                NSString *minSelfValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:self.tokenModel.gas value:8];
+                minSelfValue = [NSString DecimalFuncWithOperatorType:3 first:minSelfValue secend:@"21000" value:8];
+                minSelfValue = [NSString DecimalFuncWithOperatorType:3 first:minSelfValue secend:@"1000000000000000000" value:8];
+                
+                if (minValue.doubleValue < minSelfValue.doubleValue) {
+                    minValue = minSelfValue;
+                }
+                
+                NSString *maxValue = [NSString DecimalFuncWithOperatorType:2 first:@"2520120000000000" secend:self.tokenModel.gas value:8];
+                maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"21000"  value:8];
+                maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"1000000000000000000" value:8];
+                
+                NSString *number = [NSString notRounding:minValue afterPoint:8];
+                self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+                
+                self.slider.minimumValue = minValue.doubleValue;
+                self.slider.maximumValue = maxValue.doubleValue;
+                self.slider.value = self.slider.minimumValue;
+            });
         }
     });
 }
@@ -433,8 +467,14 @@ typedef void(^CompletionBlock) (void);
     if ([textField isEqual:self.sendCountValueTextField]) {
         if (textField.text.integerValue == 0) {
             self.payBtn.enabled = NO;
-        } else if (self.sendSumValueTextField.text.doubleValue != 0 && currentBalance.doubleValue != 0) {
-            self.payBtn.enabled = YES;
+        } else if (self.sendSumValueTextField.text.doubleValue != 0 &&
+                   currentBalance.doubleValue != 0) {
+            if (self.currentWalletModel.isLookWallet) {
+                self.payBtn.enabled = NO;
+                [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Watch wallet is invalid", nil)];
+            } else {
+                self.payBtn.enabled = YES;
+            }
         }
         if (textField.text.integerValue > self.maxSendValueLabel.text.integerValue) {
             [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send number is beyond max amount", nil)];
@@ -443,8 +483,14 @@ typedef void(^CompletionBlock) (void);
     } else if ([textField isEqual:self.sendSumValueTextField]) {
         if (textField.text.doubleValue == 0) {
             self.payBtn.enabled = NO;
-        } else if (self.sendCountValueTextField.text.integerValue != 0 && currentBalance.doubleValue != 0) {
-            self.payBtn.enabled = YES;
+        } else if (self.sendCountValueTextField.text.integerValue != 0 &&
+                   currentBalance.doubleValue != 0) {
+            if (self.currentWalletModel.isLookWallet) {
+                self.payBtn.enabled = NO;
+                [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Watch wallet is invalid", nil)];
+            } else {
+                self.payBtn.enabled = YES;
+            }
         }
         
         if (textField.text.doubleValue > currentBalance.doubleValue) {
@@ -469,7 +515,7 @@ typedef void(^CompletionBlock) (void);
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT,
                                              0), ^{
-       
+        
         _maxBalanceWalletModel = nil;
         
         NSMutableArray *tempWalletsArray = [NSMutableArray array];
@@ -494,22 +540,7 @@ typedef void(^CompletionBlock) (void);
         self.currentTokenWalletsArray = tempWalletsArray;
         self.currentWalletModel = self.maxBalanceWalletModel;
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *minValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:tokenModel.gas value:8];
-            minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"21000" value:8];
-            minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"1000000000000000000" value:8];
-            
-            NSString *maxValue = [NSString DecimalFuncWithOperatorType:2 first:@"2520120000000000" secend:tokenModel.gas value:8];
-            maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"21000"  value:8];
-            maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"1000000000000000000" value:8];
-            
-            NSString *number = [NSString notRounding:minValue afterPoint:8];
-            self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
-            
-            self.slider.minimumValue = minValue.doubleValue;
-            self.slider.maximumValue = maxValue.doubleValue;
-            self.slider.value = self.slider.minimumValue;
-        });
+        [self getMinFees];
     });
 }
 
@@ -538,7 +569,12 @@ typedef void(^CompletionBlock) (void);
             if (balance.doubleValue == 0) {
                 self.payBtn.enabled = NO;
             } else if (self.sendCountValueTextField.text.integerValue != 0 && self.sendSumValueTextField.text.doubleValue != 0) {
-                self.payBtn.enabled = YES;
+                if (currentWalletModel.isLookWallet) { // 观察钱包
+                    self.payBtn.enabled = NO;
+                    [LCProgressHUD showInfoMsg:DBHGetStringWithKeyFromTable(@"Watch wallet is invalid", nil)];
+                } else {
+                    self.payBtn.enabled = YES;
+                }
             }
             
             self.noWalletView.hidden = YES;
@@ -575,9 +611,9 @@ typedef void(^CompletionBlock) (void);
                         [weakSelf getTransactionCount];
                     } else {
                         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The password is incorrect. Please try again later", nil)];
-                   }
+                    }
                 });
-           });
+            });
         }];
     }
     return _inputPasswordPromptView;

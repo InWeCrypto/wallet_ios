@@ -32,11 +32,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:WHITE_COLOR] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREEN_WIDTH, 44 + STATUS_HEIGHT)] forBarMetrics:UIBarMetricsDefault];
 }
+
 
 - (void)setUI {
     self.title = DBHGetStringWithKeyFromTable(@"Opened Record", nil);
+    self.view.backgroundColor = BACKGROUNDCOLOR;
     
     [self.view addSubview:self.grayLineView];
     
@@ -118,7 +120,7 @@
             [weakSelf handleResponse:responseObject isLoadMore:isLoadMore];
         } failure:^(NSString *error) {
             [weakSelf endRefresh];
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -141,8 +143,7 @@
                 YYRedPacketOpenedListModel *listModel = [YYRedPacketOpenedListModel mj_objectWithKeyValues:responseObj];
                 NSArray *dataArray = listModel.data;
                 if (![NSObject isNulllWithObject:dataArray] &&
-                    [dataArray isKindOfClass:[NSArray class]] &&
-                    dataArray.count > 0) {
+                    [dataArray isKindOfClass:[NSArray class]]) {
                     if (dataArray.count < 10) {
                         [self.tableView.mj_footer endRefreshingWithNoMoreData];
                     } else {
@@ -174,6 +175,7 @@
     
     [self.tableView.mj_header beginRefreshing];
 }
+
 /**
  结束刷新
  */

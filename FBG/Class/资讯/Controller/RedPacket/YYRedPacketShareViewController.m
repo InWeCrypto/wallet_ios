@@ -45,7 +45,9 @@
     }
     
     NSString *user = [self.model.share_user stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *url = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&inwe", @(self.model.redPacketId), self.model.redbag_addr, user];
+    
+    NSString *url = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&inwe", @(self.model.redPacketId), self.model.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw2"];
+    
     NSData *data = [url dataUsingEncoding:NSUTF8StringEncoding];
     // 注意，这里的value必须是NSData类型
     [filter setValue:data forKeyPath:@"inputMessage"];
@@ -204,7 +206,6 @@
 }
 
 - (void)shareSuccess:(BOOL)isSuccess {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     if (isSuccess) {
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Share successfully", nil)];
     } else {

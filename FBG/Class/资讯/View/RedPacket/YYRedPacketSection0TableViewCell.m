@@ -47,7 +47,7 @@
     self.totalLabel1.text = DBHGetStringWithKeyFromTable(@"Total Sent ", nil);
     self.totalLabel2.text = DBHGetStringWithKeyFromTable(@" Red Packet", nil);
     
-    self.sendingLabel.text = DBHGetStringWithKeyFromTable(@"Sending", nil);
+    self.sendingLabel.text = DBHGetStringWithKeyFromTable(@"Openning", nil);
     self.successLabel.text = DBHGetStringWithKeyFromTable(@"Success", nil);
     self.createLabel.text = DBHGetStringWithKeyFromTable(@"Creating", nil);
     self.failedLabel.text = DBHGetStringWithKeyFromTable(@"Failed", nil);
@@ -64,6 +64,11 @@
 }
 
 - (void)setModel:(YYRedPacketSentCountModel *)model {
+    if (!model) {
+        return;
+    }
+    _model = model;
+    
     self.totalValueLabel.text = [NSString stringWithFormat:@"%@", @(model.all)];
     self.createValueLabel.text = REDPACKET_COUNT(model.create);
     self.sendingValueLabel.text = REDPACKET_COUNT(model.send);

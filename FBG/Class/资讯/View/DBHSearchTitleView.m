@@ -32,6 +32,7 @@
 - (instancetype)initWithFrame:(CGRect)frame isShowBtn:(BOOL)isShowCancelBtn {
     self = [super initWithFrame:frame];
     if (self) {
+        self.frame = frame;
         self.isShowCancelBtn = isShowCancelBtn;
         [self setUI];
     }

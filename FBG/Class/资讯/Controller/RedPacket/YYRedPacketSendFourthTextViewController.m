@@ -98,7 +98,7 @@
         [PPNetworkHelper POST:urlStr baseUrlType:3 parameters:params hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
             [weakSelf handleResponse:responseObject];
         } failure:^(NSString *error) {
-            [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"Load failed", nil)];
+            [LCProgressHUD showFailure:error];
         }];
     });
 }
@@ -113,17 +113,22 @@
         self.backIndex = 2;
         
         YYRedPacketDetailModel *model = [YYRedPacketDetailModel mj_objectWithKeyValues:responseObj];
+        self.model = model;
         
-        YYSharePromptView *shareView = [[YYSharePromptView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        shareView.model = model;
-        
-        [[UIApplication sharedApplication].keyWindow addSubview:shareView];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [shareView show];
-        });
+        [self pushToShareView];
     }
 }
 
+#pragma mark ------- Push ---------
+- (void)pushToShareView {
+    YYSharePromptView *shareView = [[YYSharePromptView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    shareView.model = self.model;
+    
+    [[UIApplication sharedApplication].keyWindow addSubview:shareView];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [shareView showWithTarget:self];
+    });
+}
 
 #pragma mark ------- text field and text view ---------
 - (void)textFieldTextChange:(UITextField *)textField {
@@ -145,6 +150,7 @@
 #pragma mark ----- RespondsToSelector ---------
 - (IBAction)respondsToShareBtn:(UIButton *)sender {
     if (_isSendRedBag) {
+        [self pushToShareView];
         return;
     }
     

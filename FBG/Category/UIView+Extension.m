@@ -200,4 +200,13 @@
     self.layer.borderColor = color.CGColor;
 }
 
++ (void)setRoundForView:(UIView *)view borderColor:(UIColor *)color {
+    [view layoutIfNeeded];
+    [view.layer setCornerRadius:view.bounds.size.width * 0.5];
+    view.layer.masksToBounds = YES;
+    view.layer.borderColor = color.CGColor;
+    view.layer.borderWidth = 1;
+}
+
+
 @end
