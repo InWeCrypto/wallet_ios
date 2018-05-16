@@ -186,7 +186,11 @@
  获取转账所需手续费
  */
 - (void)getPoundageWithAcount:(NSString *)Acount {
-    NSDictionary *paramters = @{@"treaty_address":[self.tokenModel.address substringFromIndex:2],
+    NSString *treaty_address = self.tokenModel.address;
+    if ([treaty_address hasPrefix:@"0x"] && treaty_address.length > 2) {
+        treaty_address = [treaty_address substringFromIndex:2];
+    }
+    NSDictionary *paramters = @{@"treaty_address":treaty_address,
                                 @"from_address":NeomobileDecodeAddress(self.neoWalletModel.address, nil),
                                 @"to_address":NeomobileDecodeAddress(self.neoWalletModel.address, nil),
                                 @"amount":@"1"/*Acount*/}; //TODO amount固定=1?
