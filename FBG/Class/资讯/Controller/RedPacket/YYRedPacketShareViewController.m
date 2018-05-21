@@ -117,6 +117,12 @@
     } else {
         self.messgeLabel.superview.hidden = YES;
     }
+    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+}
+
+- (void)setNavigationTintColor {
+    self.navigationController.navigationBar.tintColor = COLORFROM16(0x000000, 1);
 }
 
 #pragma mark - respondsToSelector

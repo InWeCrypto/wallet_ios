@@ -1566,16 +1566,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="redpacket_share_bg" translatesAutoresizingMaskIntoConstraints="NO" id="Qiz-15-mfh">
-                                <rect key="frame" x="0.0" y="20" width="375" height="627"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xaq-Qf-sKw">
-                                <rect key="frame" x="109.5" y="218.5" width="157.5" height="157"/>
+                                <rect key="frame" x="109" y="219" width="157.5" height="157"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="xaq-Qf-sKw" secondAttribute="height" multiplier="1:1" id="deu-ou-lhx"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press the QR code" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lkJ-k8-kaw">
-                                <rect key="frame" x="109" y="377.5" width="157.5" height="17"/>
+                                <rect key="frame" x="110.5" y="384" width="155.5" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.72156862745098038" green="0.29019607843137252" blue="0.20784313725490194" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1608,7 +1608,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="领取TNC-ETH" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aS5-66-GI4">
-                                <rect key="frame" x="142" y="398.5" width="91" height="17"/>
+                                <rect key="frame" x="142" y="405" width="91" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.72156862749999995" green="0.2901960784" blue="0.20784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1621,18 +1621,17 @@
                             <constraint firstItem="aS5-66-GI4" firstAttribute="top" secondItem="lkJ-k8-kaw" secondAttribute="bottom" constant="4" id="GXg-VC-URh"/>
                             <constraint firstItem="Qiz-15-mfh" firstAttribute="centerX" secondItem="lCQ-qi-Vqy" secondAttribute="centerX" id="IVs-vk-BZA"/>
                             <constraint firstItem="xaq-Qf-sKw" firstAttribute="centerY" secondItem="Qiz-15-mfh" secondAttribute="centerY" multiplier="0.89" id="KCU-7C-N91"/>
-                            <constraint firstAttribute="bottom" secondItem="Qiz-15-mfh" secondAttribute="bottom" constant="20" id="PBm-tZ-BH7"/>
+                            <constraint firstAttribute="bottom" secondItem="Qiz-15-mfh" secondAttribute="bottom" id="PBm-tZ-BH7"/>
                             <constraint firstItem="giU-z3-JX7" firstAttribute="centerX" secondItem="lCQ-qi-Vqy" secondAttribute="centerX" id="TWo-OE-EYp"/>
                             <constraint firstItem="ijI-jK-MgG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="giU-z3-JX7" secondAttribute="bottom" constant="20" id="YQo-qX-r1c"/>
-                            <constraint firstItem="Qiz-15-mfh" firstAttribute="top" secondItem="lCQ-qi-Vqy" secondAttribute="top" constant="20" id="ZAJ-tW-nmh"/>
+                            <constraint firstItem="Qiz-15-mfh" firstAttribute="top" secondItem="lCQ-qi-Vqy" secondAttribute="top" id="ZAJ-tW-nmh"/>
                             <constraint firstItem="aS5-66-GI4" firstAttribute="centerX" secondItem="lkJ-k8-kaw" secondAttribute="centerX" id="aJg-og-Xme"/>
                             <constraint firstItem="lkJ-k8-kaw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="lCQ-qi-Vqy" secondAttribute="leading" constant="20" id="cWK-Zz-O52"/>
                             <constraint firstItem="giU-z3-JX7" firstAttribute="centerY" secondItem="Qiz-15-mfh" secondAttribute="centerY" multiplier="1.69" id="pFk-R2-5U1"/>
                             <constraint firstItem="Qiz-15-mfh" firstAttribute="leading" secondItem="lCQ-qi-Vqy" secondAttribute="leading" id="pTG-MX-nqi"/>
                             <constraint firstItem="giU-z3-JX7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="lCQ-qi-Vqy" secondAttribute="leading" constant="30" id="pjz-hK-cfr"/>
                             <constraint firstItem="lkJ-k8-kaw" firstAttribute="centerX" secondItem="Qiz-15-mfh" secondAttribute="centerX" id="qVD-D0-2nD"/>
-                            <constraint firstItem="lkJ-k8-kaw" firstAttribute="top" secondItem="xaq-Qf-sKw" secondAttribute="bottom" constant="2" id="u9r-ve-0m6"/>
-                            <constraint firstItem="lkJ-k8-kaw" firstAttribute="width" relation="lessThanOrEqual" secondItem="xaq-Qf-sKw" secondAttribute="width" id="wzD-YK-3eQ"/>
+                            <constraint firstItem="lkJ-k8-kaw" firstAttribute="top" secondItem="xaq-Qf-sKw" secondAttribute="bottom" constant="8" id="u9r-ve-0m6"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="375" height="667"/>
