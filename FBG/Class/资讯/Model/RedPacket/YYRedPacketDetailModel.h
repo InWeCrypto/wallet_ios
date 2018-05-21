@@ -20,6 +20,7 @@
 @property (nonatomic, copy) NSString *redbag_addr; // 发红包钱包地址
 @property (nonatomic, assign) NSInteger redbag_number; // 红包数量
 @property (nonatomic, copy) NSString *fee; // 手续费
+@property (nonatomic, copy) NSString *auth_gas;
 @property (nonatomic, copy) NSString *fee_addr; // 手续费地址
 @property (nonatomic, assign) NSInteger share_type;
 @property (nonatomic, copy) NSString *share_attr;
@@ -30,11 +31,15 @@
 @property (nonatomic, copy) NSString *share_theme_url;
 @property (nonatomic, assign) RedBagLotteryStatus done; // 红包是否完成
 @property (nonatomic, assign) RedBagStatus status; // 红包状态,1.完成,2.礼金打包,3.红包创建中,4.领取中,-2.礼金打包失败(授权失败),-3.红包创建失败,-202 礼包授权pending中, -303.红包创建pending中
+@property (nonatomic, assign) NSInteger global_status; // 状态 如果是-3 判断为8
 @property (nonatomic, assign) NSInteger draw_redbag_number; // 红包已领取个数
 @property (nonatomic, assign) NSInteger auth_block; // 授权块高
 @property (nonatomic, assign) NSInteger redbag_block; // 红包块高
 @property (nonatomic, assign) NSInteger fee_block; // 手续费块高
 @property (nonatomic, assign) NSInteger redbag_back_block; // 红包退回块高
+
+@property (nonatomic, copy) NSString *redbag_tx_nonce;
+@property (nonatomic, copy) NSString *auth_tx_nonce;
 
 @property (nonatomic, copy) NSString *redbag_back; // 红包退回金额
 @property (nonatomic, copy) NSString *redbag_back_tx_id; // 红包退回tx_id

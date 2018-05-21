@@ -9,14 +9,16 @@
 #import "DBHBaseTableViewCell.h"
 
 #define REDPACKET_DETAIL_SPECIAL_CELL_ID @"REDPACKET_DETAIL_SPECIAL_CELL"
-#define REDPACKET_DETAIL_SPECIAL_CELL_HEIGHT 399
+#define REDPACKET_DETAIL_SPECIAL_CELL_HEIGHT 423
 #define REDPACKET_ADD_HEIGHT 29
 
 typedef void(^LookClickBlock) (RedBagStatus status);
+typedef void(^ClickCopyBlock) (NSString *orderNumber);
 
 @interface YYRedPacketDetailSpecialTableViewCell : DBHBaseTableViewCell
 
 @property (nonatomic, strong) YYRedPacketDetailModel *model;
 @property (nonatomic, copy) LookClickBlock block;
+@property (nonatomic, copy) ClickCopyBlock clickCopyBlock;
 
 @end

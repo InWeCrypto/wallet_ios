@@ -50,10 +50,21 @@
 }
 
 - (void)setProgress:(NSInteger)progress total:(NSInteger)total {
+    if (progress > total) {
+        progress = total;
+    }
+    
     self.progressLabel.text = [NSString stringWithFormat:@"%ld/%ld", progress, total];
     CGFloat width = self.bgView.width;
     
     CGFloat value = (CGFloat)progress / (CGFloat)total;
+    if (value < 0) {
+        value = 0;
+    }
+    
+    if (value > 1) {
+        value = 1;
+    }
     self.progressWidthConstaint.constant = width * value;
 }
 

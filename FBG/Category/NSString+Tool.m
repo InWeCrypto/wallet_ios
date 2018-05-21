@@ -243,7 +243,7 @@ yy-MM-dd HH:mm:ss
     
 }
 
-// 16进制 转10进制
+// 16进制 转10进制 aHexString 不包含0x
 + (NSString *)numberHexString:(NSString *)aHexString
 {
     JKBigInteger *int1 = [[JKBigInteger alloc] initWithString:aHexString andRadix:16];

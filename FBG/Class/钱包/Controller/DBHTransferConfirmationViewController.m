@@ -137,7 +137,7 @@
                                        if (responseObject) {
                                            NSString *count = responseObject[@"count"];
                                            if ([NSObject isNulllWithObject:count]) {
-                                               count = @"0";
+                                               count = @"0x0";
                                            }
                                            
                                            NSError * error;
@@ -147,7 +147,8 @@
                                            
                                            NSString *gas = [NSString DecimalFuncWithOperatorType:2 first:weakSelf.poundage secend:@"1000000000000000000" value:10];
                                            
-                                           gas = [NSString DecimalFuncWithOperatorType:3 first:gas secend:weakSelf.tokenModel.gas value:8];
+                                           NSString *gasPrice = [NSString DecimalFuncWithOperatorType:3 first:weakSelf.tokenModel.gas secend:@"6" value:0];
+                                           gas = [NSString DecimalFuncWithOperatorType:3 first:gas secend:gasPrice value:8];
                                            
                                            if ([NSObject isNulllWithObject:gas]) {
                                                gas = @"0";
@@ -169,7 +170,7 @@
                                                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Transfer successfully", nil)];
                                                
                                                //热钱包生成订单
-                                               [weakSelf creatOrderWithData:[NSString stringWithFormat:@"0x%@",data] asset_id:[weakSelf.tokenModel.address lowercaseString] transferNum:transferStr handleFee:gasLimit];
+                                               [weakSelf creatOrderWithData:[NSString stringWithFormat:@"0x%@",data] asset_id:[weakSelf.tokenModel.address lowercaseString] transferNum:transferStr handleFee:gas];
                                            } else {
                                                [LCProgressHUD hide];
                                                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Transfer failed, please try again later", nil)];
@@ -499,7 +500,7 @@
          
      } failure:^(NSString *error)
      {
-         [LCProgressHUD showFailure:error];
+         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(error, nil)];
          //         [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
      }];
    
@@ -571,7 +572,7 @@
          [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
          
      } failure:^(NSString *error) {
-         [LCProgressHUD showFailure:error];
+         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(error, nil)];
          //         [self.navigationController popToViewController:self.navigationController.viewControllers[2] animated:YES];
      }];
     /*

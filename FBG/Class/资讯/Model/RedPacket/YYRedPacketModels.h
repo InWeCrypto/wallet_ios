@@ -17,6 +17,10 @@ typedef enum _redbag_status {
     RedBagStatusCreatePending = -303 //红包创建pending中
 }RedBagStatus;
 
+//typedef enum _redbag_global_status {
+//    RedBagGlobalStatus
+//}RedBagGlobalStatus;
+
 // 0:新建的未打开  1:在打开中  2:已结束
 typedef enum _redbag_info_status {
     RedBagInfoStatusNewUnOpen,

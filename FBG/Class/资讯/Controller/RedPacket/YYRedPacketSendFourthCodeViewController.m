@@ -164,7 +164,7 @@
         }
         
         NSString *user = [model.share_user stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&inwe", @(model.redPacketId), model.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw2"];
+        NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&symbol=%@&inwe", @(model.redPacketId), model.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw2", model.redbag_symbol];
         
         NSString *codeStr = [NSString stringWithFormat:@"<iframe height=498 width=510 src='%@'></iframe>", createCodeUrl];
         self.codeLabel.text = codeStr;

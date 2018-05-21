@@ -19,9 +19,16 @@
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *feesLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *senderAddrTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *senderAddrLabel;
-@property (weak, nonatomic) IBOutlet UILabel *txidLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *authTxidValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *authTxidLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *redBagTxidValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *redBagTxidLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *createTimeTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createTimeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *lookBtn;
@@ -32,6 +39,7 @@
 
 @property (nonatomic, assign) BOOL canShare;
 @property (nonatomic, assign) RedBagStatus status;
+@property (nonatomic, assign) NSInteger global_status;
 
 @end
 
@@ -44,6 +52,9 @@
     self.feesLabel.text = FEES_TEXT(0.0);
     self.senderAddrTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Sender's Wallet Address", nil)];
     self.createTimeTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Creation Time", nil)];
+    
+    self.redBagTxidLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Creation Txid", nil)];
+    self.authTxidLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Packing Txid", nil)];
     
     NSString *text = DBHGetStringWithKeyFromTable(@"Red Packets not open within 24H will be refunded", nil);
     
@@ -61,8 +72,21 @@
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToCopyAddressLabel:)];
-    [self.senderAddrLabel addGestureRecognizer:longPressGR];
+    UILongPressGestureRecognizer *longPressGR1 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToCopyAddressLabel:)];
+    [self.senderAddrLabel addGestureRecognizer:longPressGR1];
+    
+    UILongPressGestureRecognizer *longPressGR2 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToCopyAddressLabel:)];
+    [self.redBagTxidValueLabel addGestureRecognizer:longPressGR2];
+    
+    UILongPressGestureRecognizer *longPressGR3 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToCopyAddressLabel:)];
+    [self.authTxidValueLabel addGestureRecognizer:longPressGR3];
+    
+    UITapGestureRecognizer *tapGR1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToPushToWebView:)];
+    [self.redBagTxidValueLabel addGestureRecognizer:tapGR1];
+    
+    UITapGestureRecognizer *tapGR2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondsToPushToWebView:)];
+    [self.authTxidValueLabel addGestureRecognizer:tapGR2];
+    
     [UIView setRoundForView:self.iconBgView borderColor:COLORFROM16(0xF2E6BC, 1)];
 }
 
@@ -78,8 +102,9 @@
     self.priceLabel.text = [NSString stringWithFormat:@"%.4lf%@", number.doubleValue, model.redbag_symbol];
     
     self.status = model.status;
+    self.global_status = model.global_status;
     
-    NSString *failedTipStr = DBHGetStringWithKeyFromTable(@",need to recreate redpacket.Please contact us if you have any questions.", nil);
+    NSString *failedTipStr = DBHGetStringWithKeyFromTable(@",You need to create Red Packet again. If you have any questions, please contact with us.", nil);
     switch (self.status) {
         case RedBagStatusDone: {
             self.lookBtn.enabled = YES;
@@ -92,7 +117,7 @@
             NSString *statusStr = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Packaging Assets", nil));
             if (model.auth_block != 0) {
                 NSInteger block = model.current_block - model.auth_block + 1;
-                if (block >= 12) { // 礼金打包成功
+                if (block >= 6) { // 礼金打包成功
                     statusStr = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Packet preparation sucessful", nil));
                 }
             }
@@ -106,7 +131,7 @@
             NSString *statusStr = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Creating Red Packet", nil));
             if (model.redbag_block != 0) {
                 NSInteger block = model.current_block - model.redbag_block + 1;
-                if (block >= 12) { // 红包创建成功
+                if (block >= 6) { // 红包创建成功
                     statusStr = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Red Packet creation successful", nil));
                 }
             }
@@ -137,16 +162,21 @@
         }
             
         case RedBagStatusCreateFailed: { // 创建失败
-            NSString *text = [DBHGetStringWithKeyFromTable(@"Creation Failed", nil) stringByAppendingString:failedTipStr];
-            
-            NSRange range = [text localizedStandardRangeOfString:DBHGetStringWithKeyFromTable(@"Failed", nil)];
-            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
-            [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];
-            
-            self.tipLabel.attributedText = attributedString;
-            
-            self.lookBtn.enabled = NO;
             self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Creation Failed", nil));
+            
+            if (model.global_status == 8) { // 可以重新创建
+                self.lookBtn.enabled = YES;
+            } else {
+                NSString *text = [DBHGetStringWithKeyFromTable(@"Creation Failed", nil) stringByAppendingString:failedTipStr];
+                
+                NSRange range = [text localizedStandardRangeOfString:DBHGetStringWithKeyFromTable(@"Failed", nil)];
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
+                [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];
+                
+                self.tipLabel.attributedText = attributedString;
+                
+                self.lookBtn.enabled = NO;
+            }
             
             break;
         }
@@ -175,13 +205,14 @@
     self.feesLabel.text = FEES_TEXT(number.doubleValue);
     
     self.senderAddrLabel.text = model.redbag_addr;
-    self.txidLabel.text = model.redbag_tx_id;
+    self.redBagTxidValueLabel.text = model.redbag_tx_id;
+    self.authTxidValueLabel.text = model.auth_tx_id;
     self.createTimeLabel.text = [NSString formatTimeDelayEight:model.created_at];
     
     if (self.status == RedBagStatusOpening ||
         self.status == RedBagStatusDone ||
-        self.status == RedBagStatusCreateFailed ||
-        self.status == RedBagStatusCashPackageFailed) {
+        self.status == RedBagStatusCashPackageFailed ||
+        (self.status == RedBagStatusCreateFailed && self.global_status != 8)) {
         _tipLabelHeight.constant = REDPACKET_ADD_HEIGHT;
     } else {
         _tipLabelHeight.constant = 0;
@@ -214,6 +245,13 @@
     UILabel *label = (UILabel *)recognizer.view;
     
     pasteboard.string = label.text;
-    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Copy success, you can send it to friends", nil)];
+    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Copy success", nil)];
+}
+
+- (void)respondsToPushToWebView:(UITapGestureRecognizer *)tapGesture {
+    UILabel *label = (UILabel *)tapGesture.view;
+    if (self.clickCopyBlock) {
+        self.clickCopyBlock(label.text);
+    }
 }
 @end

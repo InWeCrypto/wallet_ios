@@ -13,5 +13,6 @@
 @interface YYRedPacketSendFirstViewController : DBHBaseViewController
 
 @property (nonatomic, strong) NSMutableArray *ethWalletsArr;
+@property (nonatomic, strong) YYRedPacketDetailModel *model;
 
 @end

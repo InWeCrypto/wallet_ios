@@ -11,6 +11,8 @@
 #import "YYRedPacketSendThirdViewController.h"
 #import "LDProgressView.h"
 #import "SystemConvert.h"
+#import "YYRedPacketSendFirstViewController.h"
+#import "YYRedPacketSendSecondViewController.h"
 
 @interface YYRedPacketPackagingViewController () {
     dispatch_queue_t queue;
@@ -27,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 @property (weak, nonatomic) IBOutlet UIView *progressView;
 @property (weak, nonatomic) IBOutlet LDProgressView *progress;
+@property (weak, nonatomic) IBOutlet UIButton *tipBtn;
 
 @property (nonatomic, copy) NSString * minBlockNumber;  //最小块高 确认 12
 @property (nonatomic, assign) NSString *currentBlockNumber;  //当前块高
@@ -40,6 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.backIndex = 0;
     
     [self setUI];
     [self getData];
@@ -89,6 +93,9 @@
     [self.nextBtn setCorner:2];
     [self.nextBtn setBackgroundColor:COLORFROM16(0xD5D5D5, 1) forState:UIControlStateDisabled];
     [self.nextBtn setBackgroundColor:COLORFROM16(0xEA6204, 1) forState:UIControlStateNormal];
+   
+    [self.tipBtn setTitle:DBHGetStringWithKeyFromTable(@"No More Patience for Waiting? Raise Gas to Speed Up.", nil) forState:UIControlStateNormal];
+    self.tipBtn.hidden = YES;
     
     CALayer *layer = [CALayer layer];
     self.nextBtn.enabled = NO;
@@ -212,7 +219,7 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (type == 0) { // 最小块高
-            self.minBlockNumber = [responseObj objectForKey:MIN_BLOCK_NUM];
+            self.minBlockNumber =  @"6"; //[responseObj objectForKey:MIN_BLOCK_NUM];
             dispatch_group_leave(group);
         } else if (type == 1) { // 轮询时间
             self.blockPerSecond = [NSString stringWithFormat:@"%f", 1 / [[responseObj objectForKey:BPS] floatValue]];
@@ -258,8 +265,14 @@
                 self.model = model;
                 
                 RedBagStatus status = model.status;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.tipBtn.hidden = YES;
+                });
                 if (self.packageType == PackageTypeCash) { // 礼金打包
                     if (status == RedBagStatusCashAuthPending) { // 授权pending中
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.tipBtn.hidden = NO;
+                        });
                         dispatch_suspend(timer);
                         dispatch_source_set_event_handler(timer, ^{
                             [self getDetailData]; // 获取红包详情
@@ -282,6 +295,9 @@
                     }
                 } else if (self.packageType == PackageTypeRedPacket) { // 红包创建
                     if (status == RedBagStatusCreatePending) { // 创建pending中
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.tipBtn.hidden = NO;
+                        });
                         dispatch_suspend(timer);
                         dispatch_source_set_event_handler(timer, ^{
                             [self getDetailData]; // 获取红包详情
@@ -310,7 +326,9 @@
 
 #pragma mark ----- RespondsToSelector ---------
 - (IBAction)respondsToBackToHomeBtn:(UIButton *)sender {
-    self.backIndex = 2;
+    if (self.from != 2) {
+        self.backIndex = 2;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -323,6 +341,43 @@
     } else {
         YYRedPacketSendThirdViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_SEND_THIRD_STORYBOARD_ID];
         vc.model = self.model;
+        vc.ethWalletsArray = self.ethWalletsArray;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (IBAction)respondsToTipBtn:(UIButton *)sender {
+    NSArray *childVCs = self.navigationController.childViewControllers;
+    if (childVCs.count > 1) {
+        UIViewController *lastVC = childVCs[childVCs.count - 1];
+        if ([lastVC isKindOfClass:[YYRedPacketSendFirstViewController class]]) {
+            YYRedPacketSendFirstViewController *firstVC = (YYRedPacketSendFirstViewController *)lastVC;
+            firstVC.model = self.model;
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+            return;
+        } else if ([lastVC isKindOfClass:[YYRedPacketSendSecondViewController class]]) {
+            YYRedPacketSendSecondViewController *secondVC = (YYRedPacketSendSecondViewController *)lastVC;
+            secondVC.model = self.model;
+            secondVC.isReCreate = YES;
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+            return;
+        }
+    }
+    
+    if (self.model.status == RedBagStatusCashAuthPending) { // 礼金打包
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil];
+        YYRedPacketSendFirstViewController *vc = [sb instantiateViewControllerWithIdentifier:REDPACKET_SEND_FIRST_STORYBOARD_ID];
+        vc.ethWalletsArr = self.ethWalletsArray;
+        vc.model = self.model;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (self.model.status == RedBagStatusCreatePending) {
+        YYRedPacketSendSecondViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_SEND_SECOND_STORYBOARD_ID];
+        vc.model = self.model;
+        vc.isReCreate = YES;
         vc.ethWalletsArray = self.ethWalletsArray;
         [self.navigationController pushViewController:vc animated:YES];
     }

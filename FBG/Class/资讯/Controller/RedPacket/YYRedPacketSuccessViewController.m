@@ -123,13 +123,12 @@
     }
     
     YYRedPacketDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REDPACKET_DETAIL_CELL_ID forIndexPath:indexPath];
-    
     if (row == self.model.redbag.draw_redbag_number - 1) {
         cell.isLastCellInSection = YES;
     } else {
         cell.isLastCellInSection = NO;
     }
-    
+    cell.drawAddress = self.model.draw_addr;
     [cell setModel:self.model.redbag redbagCellType:RedBagCellTypeDrawNum index:row];
     return cell;
 }

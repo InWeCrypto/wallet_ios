@@ -11,7 +11,7 @@
 #import <WebKit/WKWebView.h>
 #import <WebKit/WKNavigationDelegate.h>
 
-@interface DBHWebViewController ()<WKNavigationDelegate>
+@interface DBHWebViewController ()<WKNavigationDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) UIView *grayLineView;
@@ -85,6 +85,18 @@
     [self.webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '250%'" completionHandler:nil];
 }
 
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
+    
+    NSLog(@"createWebViewWithConfiguration");
+    if (!navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
+    if (navigationAction.targetFrame == nil) {
+        [webView loadRequest:navigationAction.request];
+    }
+    return nil;
+}
+
 - (void)setHtmlString:(NSString *)htmlString {
     _htmlString = htmlString;
     
@@ -101,8 +113,15 @@
 
 - (WKWebView *)webView {
     if (!_webView) {
-        _webView = [[WKWebView alloc] init];
+        WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+        
+        WKPreferences *preferences = [WKPreferences new];
+        preferences.javaScriptCanOpenWindowsAutomatically = YES; //很重要，如果没有设置这个则不会回调createWebViewWithConfiguration方法，也不会回应window.open()方法
+        config.preferences = preferences;
+        
+        _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
         _webView.navigationDelegate = self;
+        _webView.UIDelegate = self;
     }
     return _webView;
 }

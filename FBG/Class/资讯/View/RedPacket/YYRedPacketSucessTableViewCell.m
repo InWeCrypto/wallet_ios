@@ -52,7 +52,7 @@
     
     NSString *value = model.value;
     
-    NSString *price = [NSString stringWithFormat:@"???%@", model.redbag.redbag_symbol];
+    NSString *price = [NSString stringWithFormat:@"***%@", model.redbag.redbag_symbol];
     
     if (done == RedBagLotteryStatusEnd && ![value isEqualToString:@"-"]) { // 开奖结束 且 领取金额已知
         self.tipLabel.hidden = YES;

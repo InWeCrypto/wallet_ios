@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) YYRedPacketDetailModel *model;
 @property (nonatomic, strong) NSMutableArray *ethWalletsArray;
+@property (nonatomic, assign) BOOL isReCreate;
 
 @end

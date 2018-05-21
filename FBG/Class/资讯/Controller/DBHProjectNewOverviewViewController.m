@@ -32,7 +32,7 @@ static NSString *const kDBHProjectOverviewNoTradingForRelevantInformationTableVi
 static NSString *const kDBHProjectOverviewNoTradingTableViewCell = @"kDBHProjectOverviewNoTradingTableViewCell";
 
 
-@interface DBHProjectNewOverviewViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, WKNavigationDelegate>
+@interface DBHProjectNewOverviewViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, WKNavigationDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) UIView *headerContentView;
 
@@ -641,10 +641,17 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCell = @"kDBHProject
     [tableView registerClass:[DBHProjectInformationTableViewCell class] forCellReuseIdentifier:kDBHProjectInformationTableViewCell];
     [self.contentScrollView addSubview:tableView];
     
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    
+    WKPreferences *preferences = [WKPreferences new];
+    preferences.javaScriptCanOpenWindowsAutomatically = YES; //很重要，如果没有设置这个则不会回调createWebViewWithConfiguration方法，也不会回应window.open()方法
+    config.preferences = preferences;
+    
     // 添加第二个webview
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectMake(SCREENWIDTH, 0, SCREENWIDTH, height)];
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectMake(SCREENWIDTH, 0, SCREENWIDTH, height) configuration:config];
     webView.tag = 301;
     webView.navigationDelegate = self;
+    webView.UIDelegate = self;
     
     NSString *htmlStr = self.projectDetailModel.categoryPresentation.content;
     if ([htmlStr containsString:@"<!doctype html>"]) {
@@ -713,6 +720,18 @@ static NSString *const kDBHProjectOverviewNoTradingTableViewCell = @"kDBHProject
     self.contentScrollView.contentOffset = CGPointMake(SCREENWIDTH * index, 0);
 }
 
+#pragma mark ------- WKUIDelegate ---------
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
+    
+    NSLog(@"createWebViewWithConfiguration");
+    if (!navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
+    if (navigationAction.targetFrame == nil) {
+        [webView loadRequest:navigationAction.request];
+    }
+    return nil;
+}
 
 #pragma mark - UIScrollViewDelegate
 

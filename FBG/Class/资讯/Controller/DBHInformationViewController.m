@@ -90,17 +90,16 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
 #pragma mark ------ Lifecycle ------
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if (![self isReview]) {
-        [[DBHCheckVersionModel sharedInstance] checkVersion:nil];
-    }
-    
     [self setUI];
     
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }else {
         self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
+    if (![self isReview]) {
+        [[DBHCheckVersionModel sharedInstance] checkVersion:nil];
     }
 }
 

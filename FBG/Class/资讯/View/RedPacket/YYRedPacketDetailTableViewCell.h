@@ -14,6 +14,7 @@
 @interface YYRedPacketDetailTableViewCell : DBHBaseTableViewCell
 
 @property (nonatomic, assign) BOOL isLastCellInSection;
+@property (nonatomic, copy) NSString *drawAddress;
 
 - (void)setModel:(YYRedPacketDetailModel *)model redbagCellType:(RedBagCellType)cellType index:(NSInteger)index;
 

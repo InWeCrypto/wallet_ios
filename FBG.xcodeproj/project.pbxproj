@@ -120,6 +120,8 @@
 		1B26296B20A59C3B000CEDCC /* YYRedPacketConfigGasModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B26296A20A59C3B000CEDCC /* YYRedPacketConfigGasModel.m */; };
 		1B26296E20A93459000CEDCC /* YYRedPacketProtocolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B26296D20A93459000CEDCC /* YYRedPacketProtocolView.m */; };
 		1B26297020A93460000CEDCC /* YYRedPacketProtocolView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B26296F20A93460000CEDCC /* YYRedPacketProtocolView.xib */; };
+		1B26297420ADA258000CEDCC /* YYShareAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B26297220ADA258000CEDCC /* YYShareAppViewController.m */; };
+		1B26297520ADA258000CEDCC /* YYShareAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B26297320ADA258000CEDCC /* YYShareAppViewController.xib */; };
 		1B27606D20721AB000FFB7B1 /* DBHRankDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27606C20721AB000FFB7B1 /* DBHRankDetailModel.m */; };
 		1B27607020723AFE00FFB7B1 /* DBHExchangeRankModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27606F20723AFE00FFB7B1 /* DBHExchangeRankModel.m */; };
 		1B27607320723C7600FFB7B1 /* DBHExchangeRankTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B27607220723C7600FFB7B1 /* DBHExchangeRankTypeModel.m */; };
@@ -927,6 +929,9 @@
 		1B26296C20A93459000CEDCC /* YYRedPacketProtocolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYRedPacketProtocolView.h; sourceTree = "<group>"; };
 		1B26296D20A93459000CEDCC /* YYRedPacketProtocolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYRedPacketProtocolView.m; sourceTree = "<group>"; };
 		1B26296F20A93460000CEDCC /* YYRedPacketProtocolView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYRedPacketProtocolView.xib; sourceTree = "<group>"; };
+		1B26297120ADA258000CEDCC /* YYShareAppViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYShareAppViewController.h; sourceTree = "<group>"; };
+		1B26297220ADA258000CEDCC /* YYShareAppViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYShareAppViewController.m; sourceTree = "<group>"; };
+		1B26297320ADA258000CEDCC /* YYShareAppViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YYShareAppViewController.xib; sourceTree = "<group>"; };
 		1B27606B20721AB000FFB7B1 /* DBHRankDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHRankDetailModel.h; sourceTree = "<group>"; };
 		1B27606C20721AB000FFB7B1 /* DBHRankDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBHRankDetailModel.m; sourceTree = "<group>"; };
 		1B27606E20723AFE00FFB7B1 /* DBHExchangeRankModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBHExchangeRankModel.h; sourceTree = "<group>"; };
@@ -3577,6 +3582,9 @@
 				1B244A89205764F000DE097C /* DBHFeedbackViewController.m */,
 				1B7661182064A67D00ACFCA7 /* DBHHelpCenterWebViewController.h */,
 				1B7661192064A67D00ACFCA7 /* DBHHelpCenterWebViewController.m */,
+				1B26297120ADA258000CEDCC /* YYShareAppViewController.h */,
+				1B26297220ADA258000CEDCC /* YYShareAppViewController.m */,
+				1B26297320ADA258000CEDCC /* YYShareAppViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4373,6 +4381,7 @@
 				1B2D33032085EC2F007E4F02 /* YYRedPacketReceiveProgressView.xib in Resources */,
 				1B99F88A2073863F004FD7F7 /* MyComments.storyboard in Resources */,
 				A8DC9B461F58428D006984D4 /* CommitOrderVC.xib in Resources */,
+				1B26297520ADA258000CEDCC /* YYShareAppViewController.xib in Resources */,
 				0FF783081F2B196900F5B3D2 /* Localizable.strings in Resources */,
 				1B2D32F92085DB88007E4F02 /* YYRedPacketSection0TableViewCell.xib in Resources */,
 				0FDD5F291F2D672300228CE0 /* PassWordView.xib in Resources */,
@@ -4980,6 +4989,7 @@
 				1BE63AE7205ACC9900AE53E1 /* DBHProjectInformationTableViewCell.m in Sources */,
 				D565E90A201743BC00930274 /* DBHMyQuotationReminderViewController.m in Sources */,
 				A8CD778D1F32457D00005027 /* TAPageControl.m in Sources */,
+				1B26297420ADA258000CEDCC /* YYShareAppViewController.m in Sources */,
 				A80713281F5558B900C5B862 /* CCTagModel.m in Sources */,
 				1B99F9352079DD44004FD7F7 /* YYRecommendScaleTableViewCell.m in Sources */,
 				D51E66E32015E20C0025B502 /* DBHTransferViewController.m in Sources */,

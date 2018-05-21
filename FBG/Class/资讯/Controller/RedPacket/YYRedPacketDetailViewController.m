@@ -12,7 +12,6 @@
 #import "YYRedPacketDetailSpecialTableViewCell.h"
 #import "YYRedPacketPackagingViewController.h"
 #import "YYRedPacketPreviewViewController.h"
-#import "YYRedPacketSendFirstViewController.h"
 #import "YYRedPacketSendSecondViewController.h"
 
 @interface YYRedPacketDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -39,6 +38,10 @@
     
     [self.tableView setContentOffset:CGPointZero animated:NO]; // 滚到顶部
 }
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+}
 
 /**
  父类方法
@@ -55,14 +58,20 @@
 
 #pragma mark ------- Data ---------
 - (void)getDetailData {
+    if (![UserSignData share].user.isLogin) {
+        return;
+    }
+    
     NSString *urlStr = [NSString stringWithFormat:@"redbag/send_record/%ld", self.model.redPacketId];
+    [LCProgressHUD showLoading:DBHGetStringWithKeyFromTable(@"Loading...", nil)];
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT,
                                              0), ^{
         WEAKSELF
-        [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:nil hudString:DBHGetStringWithKeyFromTable(@"Loading...", nil) success:^(id responseObject) {
+        [PPNetworkHelper GET:urlStr baseUrlType:3 parameters:nil hudString:nil success:^(id responseObject) {
             [weakSelf handleResponse:responseObject];
         } failure:^(NSString *error) {
+            [LCProgressHUD hide];
             [LCProgressHUD showFailure:error];
         }];
     });
@@ -70,6 +79,7 @@
 
 - (void)handleResponse:(id)responseObj {
     if ([NSObject isNulllWithObject:responseObj]) {
+        [LCProgressHUD hide];
         return;
     }
     
@@ -80,11 +90,15 @@
         [PPNetworkHelper POST:@"extend/blockNumber" baseUrlType:1 parameters:nil hudString:nil success:^(id responseObject) {
             [weakSelf loadCurrentBlockResponse:responseObject model:model];
         } failure:^(NSString *error) {
+            [LCProgressHUD hide];
         }];
+    } else {
+        [LCProgressHUD hide];
     }
 }
 
 - (void)loadCurrentBlockResponse:(id)responseObj model:(YYRedPacketDetailModel *)model {
+    [LCProgressHUD hide];
     if (![NSObject isNulllWithObject:responseObj]) {
         NSString *value = [responseObj objectForKey:VALUE];
         if (value.length > 2) {
@@ -167,7 +181,13 @@
             } else if (status == RedBagStatusDone || status == RedBagStatusOpening) {
                 // 预览界面
                 [weakSelf pushToPreviewVC:status];
+            } else if (status == RedBagStatusCreateFailed && self.detailModel.global_status == 8) { // 可以重新创建
+                [weakSelf pushToSecondVC];
             }
+        }];
+        
+        [cell setClickCopyBlock:^(NSString *orderNumber) {
+            [weakSelf pushToWebView:orderNumber];
         }];
         return cell;
     }
@@ -194,7 +214,7 @@
         if (status == RedBagStatusOpening ||
             status == RedBagStatusDone ||
             status == RedBagStatusCreateFailed ||
-            status == RedBagStatusCashPackageFailed) {
+            (status == RedBagStatusCashPackageFailed && self.detailModel.global_status != 8)) {
             height += REDPACKET_ADD_HEIGHT;
         }
         
@@ -241,6 +261,7 @@
     }
     vc.ethWalletsArray = self.ethWalletsArr;
     vc.model = self.detailModel;
+    vc.from = 2;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -253,6 +274,28 @@
     }
     vc.detailModel = self.detailModel;
     vc.from = PreViewVCFromDetail;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushToSecondVC {
+    YYRedPacketSendSecondViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_SEND_SECOND_STORYBOARD_ID];
+    vc.model = self.detailModel;
+    vc.ethWalletsArray = self.ethWalletsArr;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushToWebView:(NSString *)orderNumber {
+    NSString *url;
+    if ([APP_APIEHEAD isEqualToString:TESTAPIEHEAD1])  {
+        //测试
+        url = @"https://ropsten.etherscan.io/tx/";
+    } else {
+        //正式
+        url = @"https://etherscan.io/tx/";
+    }
+    
+    KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@", url, orderNumber]];
+    vc.title = DBHGetStringWithKeyFromTable(@"Check the balance", nil);
     [self.navigationController pushViewController:vc animated:YES];
 }
 

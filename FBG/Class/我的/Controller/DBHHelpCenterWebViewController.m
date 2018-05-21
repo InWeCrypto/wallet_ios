@@ -65,7 +65,13 @@
 
 
 -(void)setupUI {
-    WKWebView *webView=[[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64)];
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    
+    WKPreferences *preferences = [WKPreferences new];
+    preferences.javaScriptCanOpenWindowsAutomatically = YES; //很重要，如果没有设置这个则不会回调createWebViewWithConfiguration方法，也不会回应window.open()方法
+    config.preferences = preferences;
+    
+    WKWebView *webView=[[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64) configuration:config];
     webView.UIDelegate = self;
     webView.navigationDelegate = self;
     webView.backgroundColor = [UIColor whiteColor];
@@ -112,6 +118,18 @@
 }
 
 #pragma mark---WKNavigationDelegate
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
+    
+    NSLog(@"createWebViewWithConfiguration");
+    if (!navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
+    if (navigationAction.targetFrame == nil) {
+        [webView loadRequest:navigationAction.request];
+    }
+    return nil;
+}
+
 // 页面开始加载时调用
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
     

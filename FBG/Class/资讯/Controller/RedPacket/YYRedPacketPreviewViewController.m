@@ -11,7 +11,7 @@
 #import <WebKit/WKNavigationDelegate.h>
 #import "YYSharePromptView.h"
 
-@interface YYRedPacketPreviewViewController ()<WKNavigationDelegate>
+@interface YYRedPacketPreviewViewController ()<WKNavigationDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) UIView *grayLineView;
@@ -29,6 +29,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.webView.navigationDelegate = self;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:WHITE_COLOR] forBarMetrics:UIBarMetricsDefault];
 }
 
@@ -46,6 +50,11 @@
     if (self.from == PreViewVCFromProtocol) {
         _hideShareBtn = YES;
         titleStr = @"InWeCrypto Red Packet Use Agreement";
+        
+        CGFloat width = [NSString getWidthtWithString:titleStr fontSize:18];
+        if (SCREEN_WIDTH - width < 200) {
+            titleStr = @"InWeCrypto Red Pac...";
+        }
     }
     self.title = DBHGetStringWithKeyFromTable(titleStr, nil);
     
@@ -91,7 +100,7 @@
     }
     
     NSString *user = [self.detailModel.share_user stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&inwe", @(self.detailModel.redPacketId), self.detailModel.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw"];
+    NSString *createCodeUrl = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&symbol=%@&inwe", @(self.detailModel.redPacketId), self.detailModel.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw", self.detailModel.redbag_symbol];
     
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:createCodeUrl]]];
 }
@@ -106,6 +115,16 @@
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
+    NSLog(@"createWebViewWithConfiguration  request     %@",navigationAction.request);
+    if (!navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
+    if (navigationAction.targetFrame == nil) {
+        [webView loadRequest:navigationAction.request];
+    }
+    return nil;
+}
 
 #pragma mark ----- RespondsToSelector ---------
 - (void)respondsToShareBarButtonItem {
@@ -121,7 +140,14 @@
 #pragma mark ----- Setters And Getters ---------
 - (WKWebView *)webView {
     if (!_webView) {
-        _webView = [[WKWebView alloc] init];
+        WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+        
+        WKPreferences *preferences = [WKPreferences new];
+        preferences.javaScriptCanOpenWindowsAutomatically = YES; //很重要，如果没有设置这个则不会回调createWebViewWithConfiguration方法，也不会回应window.open()方法
+        config.preferences = preferences;
+        
+        _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
+        _webView.UIDelegate = self;//很重要，如果没有设置这个则不会回调UIDelegate相关所有方法
     }
     return _webView;
 }

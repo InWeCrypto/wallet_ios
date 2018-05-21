@@ -58,7 +58,7 @@
                 NSString *statusStr = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Packaging Assets", nil));
                 if (detailModel.auth_block != 0) {
                     NSInteger block = detailModel.current_block - detailModel.auth_block + 1;
-                    if (block >= 12) { // 礼金打包成功
+                    if (block >= 6) { // 礼金打包成功
                         statusStr = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Packet preparation sucessful", nil));
                     }
                 }
@@ -74,7 +74,7 @@
                 NSString *statusStr = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Creating Red Packet", nil));
                 if (detailModel.redbag_block != 0) {
                     NSInteger block = detailModel.current_block - detailModel.redbag_block + 1;
-                    if (block >= 12) { // 红包创建成功
+                    if (block >= 6) { // 红包创建成功
                         statusStr = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"Red Packet creation successful", nil));
                     }
                 }
@@ -121,7 +121,7 @@
         
         [self showProgressView:NO];
         RedBagLotteryStatus status = openedModel.redbag.done;
-        NSString *price = [NSString stringWithFormat:@"???%@", openedModel.redbag.redbag_symbol];
+        NSString *price = [NSString stringWithFormat:@"***%@", openedModel.redbag.redbag_symbol];
         switch (status) {
             case RedBagLotteryStatusHad: { // 已开奖
                 self.statusLabel.text = HAS_EMPTY(DBHGetStringWithKeyFromTable(@"To be launched", nil));
@@ -157,6 +157,9 @@
     self.progressView.hidden = !isShow;
     
     self.statusLabel.hidden = isShow;
+    if (self.statusLabel.isHidden) {
+        self.statusLabel.text = @"";
+    }
     
     if (!isShow) {
         return;

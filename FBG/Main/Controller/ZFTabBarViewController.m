@@ -96,7 +96,7 @@
     informationViewController.tabBarItem.badgeValue = @"";
     [self setupChildViewController:informationViewController title:DBHGetStringWithKeyFromTable(@"News", nil) imageName:@"zixun_ico_s" selectedImageName:@"zixun_ico"];
     
-    if (!self.isReview) { // 不在审核中
+    if (![self isReview]) { // 不在审核中
         // 2.钱包
 //        DBHHomePageViewController *homePageViewController = [[DBHHomePageViewController alloc] init];
         

@@ -721,6 +721,7 @@
 
 - (void)pushToPreviewVC {
     NSString *protocolURL = [APP_APIEHEAD isEqualToString:APIEHEAD1] ? REDPACKET_PROTOCOL_URL : TEST_REDPACKET_PROTOCOL_URL;
+    protocolURL = [protocolURL stringByAppendingFormat:@"%@", DBHGetStringWithKeyFromTable(@"rpAgreementEn.html", nil)];
     YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
     previewVC.from = PreViewVCFromProtocol;
     [self.navigationController pushViewController:previewVC animated:YES];

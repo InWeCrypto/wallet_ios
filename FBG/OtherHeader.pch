@@ -55,6 +55,10 @@
 #define DATA                    @"data"
 #define FEE_ADDR                @"fee_addr"
 #define REDBAG_ID               @"redbag_id"
+#define REDBAG_TX_NONCE         @"redbag_tx_nonce"
+#define AUTH_TX_NONCE           @"auth_tx_nonce"
+#define REPEAT_ID               @"repeat_id"
+#define AUTH_GAS                @"auth_gas"
 
 // 根据钱包地址存储密码
 #define KEYCHAIN_PWD(address) [NSString stringWithFormat:@"%@-password", address]

@@ -31,6 +31,10 @@
         return;
     }
     
+    self.addressLabel.textColor = COLORFROM16(0x333333, 1);
+    self.timeLabel.textColor = COLORFROM16(0xACACAC, 1);
+    self.priceLabel.textColor = COLORFROM16(0x333333, 1);
+    
     RedBagStatus status = model.status;
     self.statusLabel.hidden = NO;
     
@@ -76,12 +80,19 @@
             self.statusLabel.hidden = YES;
             
             NSArray *draws = model.draws;
+            BOOL isSelfDraw = NO;
             if (draws.count > 0 && index < draws.count) {
                 YYRedPacketDrawModel *draw = draws[index];
                 
+                if (![NSObject isNulllWithObject:self.drawAddress] && ![NSObject isNulllWithObject:draw.draw_addr]) {
+                    if ([[self.drawAddress lowercaseString] isEqualToString:[draw.draw_addr lowercaseString]]) {
+                        isSelfDraw = YES;
+                    }
+                }
+                
                 NSString *value = draw.value;
                 
-                NSString *price = [NSString stringWithFormat:@"???%@", model.redbag_symbol];
+                NSString *price = [NSString stringWithFormat:@"***%@", model.redbag_symbol];
                 
                 if (model.done == RedBagLotteryStatusEnd && ![value isEqualToString:@"-"]) { // 开奖结束 且 领取金额已知
                     NSString *drawValue = [NSString convertValue:value decimals:model.gnt_category.decimals];
@@ -96,6 +107,12 @@
                 self.timeLabel.text = [NSString formatTimeDelayEight:timeStr];
                 
                 self.addressLabel.text = draw.draw_addr;
+                
+                if (isSelfDraw) {
+                    self.addressLabel.textColor = COLORFROM16(0x4A90E2, 1);
+                    self.timeLabel.textColor = COLORFROM16(0x4A90E2, 1);
+                    self.priceLabel.textColor = COLORFROM16(0x4A90E2, 1);
+                }
             }
             break;
         }

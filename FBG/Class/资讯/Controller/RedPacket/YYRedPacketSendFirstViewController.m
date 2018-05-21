@@ -78,10 +78,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setUI];
-    self.walletInfoView.hidden = YES;
-    self.noWalletView.hidden = YES;
+    self.backIndex = 2;
     
+    [self setUI];
     [self getMaxSentCount];
     
     [[IQKeyboardManager sharedManager] setEnable:NO];
@@ -109,51 +108,106 @@
     
     self.firstLabel.text = DBHGetStringWithKeyFromTable(@"First:", nil);
     self.pullMoneyLabel.text = DBHGetStringWithKeyFromTable(@"Authorize Red Packet Usage", nil);
-    
-    [self.chooseETHBtn setTitle:DBHGetStringWithKeyFromTable(@"Pack ETH tokens", nil) forState:UIControlStateNormal];
-    
+    [self.slider addTarget:self action:@selector(respondsToGasSlider) forControlEvents:UIControlEventValueChanged];
     self.sendSumTitleLabel.text = DBHGetStringWithKeyFromTable(@" Amount ", nil);
     self.sendCountTitleLabel.text = DBHGetStringWithKeyFromTable(@"Package Number", nil);
     
     self.maxSendTipLabel.text = DBHGetStringWithKeyFromTable(@"(Max:", nil);
-    self.maxSendValueLabel.text = MAX_SEND_COUNT(MAX_SEND);
-    
-    self.maxSentCount = [NSString stringWithFormat:@"%@", @(MAX_SEND)];
-    
-    self.slider.value = 0;
-    
-    [self.payBtn setTitle:DBHGetStringWithKeyFromTable(@" Payment ", nil) forState:UIControlStateNormal];
-    self.walletMaxUseTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Max Amount", nil)];
-    
+   
     self.slowLabel.text = DBHGetStringWithKeyFromTable(@"Slow", nil);
     self.fastLabel.text = DBHGetStringWithKeyFromTable(@"Fast", nil);
     self.feeLabel.text = DBHGetStringWithKeyFromTable(@"Pitman Cost", nil);
+    
+    [self.payBtn setTitle:DBHGetStringWithKeyFromTable(@" Payment ", nil) forState:UIControlStateNormal];
+    [self.payBtn setCorner:2];
+    
+    [self.payBtn setBackgroundColor:COLORFROM16(0xEA6204, 1) forState:UIControlStateNormal];
+    [self.payBtn setBackgroundColor:COLORFROM16(0xD5D5D5, 1) forState:UIControlStateDisabled];
     
     CALayer *layer = [CALayer layer];
     layer.frame = CGRectMake(0, 0, SCREEN_WIDTH * 0.25, 4);
     layer.backgroundColor = COLORFROM16(0x029857, 1).CGColor;
     [self.progressView.layer addSublayer:layer];
     
-    [self.payBtn setCorner:2];
-    
-    [self.payBtn setBackgroundColor:COLORFROM16(0xEA6204, 1) forState:UIControlStateNormal];
-    [self.payBtn setBackgroundColor:COLORFROM16(0xD5D5D5, 1) forState:UIControlStateDisabled];
-    
     self.noWalletTip1Label.text = DBHGetStringWithKeyFromTable(@"Your wallet do not have this asset,", nil);
     self.noWalletTip2Label.text = DBHGetStringWithKeyFromTable(@"Please ", nil);
     [self.addWalletBtn setTitle:DBHGetStringWithKeyFromTable(@"Add Wallet", nil) forState:UIControlStateNormal];
     self.noWalletTip3Label.text = DBHGetStringWithKeyFromTable(@" Deposit assets before sending Red Packet", nil);
     
-    self.sendUnitLabel.text = @"";
-    [self.slider addTarget:self action:@selector(respondsToGasSlider) forControlEvents:UIControlEventValueChanged];
+    self.walletMaxUseTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@"Max Amount", nil)];
+    self.maxSentCount = [NSString stringWithFormat:@"%@", @(MAX_SEND)];
+    self.maxSendValueLabel.text = MAX_SEND_COUNT(MAX_SEND);
     
     self.payBtn.enabled = NO;
+    [self setReAuthStatusUI];
+}
+
+- (void)setReAuthStatusUI {
+    if (!self.model) { // 为空
+        [self.chooseETHBtn setTitle:DBHGetStringWithKeyFromTable(@"Pack ETH tokens", nil) forState:UIControlStateNormal];
+        self.slider.value = 0;
+        self.sendUnitLabel.text = @"";
+        
+        self.walletInfoView.hidden = YES;
+        self.noWalletView.hidden = YES;
+        self.chooseETHBtn.enabled = YES;
+        self.chooseWalletBtn.enabled = YES;
+    } else {
+        NSString *number = [NSString notRounding:self.model.auth_gas afterPoint:8];
+        self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+        
+        self.slider.value = 0;
+        self.sendSumValueTextField.text = self.model.redbag;
+        self.sendCountValueTextField.text = [NSString stringWithFormat:@"%ld", self.model.redbag_number];
+        
+        self.walletInfoView.hidden = NO;
+        self.noWalletView.hidden = YES;
+        self.chooseWalletBtn.enabled = NO;
+        self.chooseETHBtn.enabled = NO;
+        
+        NSString *addr = self.model.redbag_addr;
+        self.walletAddressLabel.text = addr;
+        
+        DBHWalletManagerForNeoModelList *walletModel = [self walletModelByAddress:addr];
+        _currentWalletModel = walletModel;
+        _tokenModel = self.model.gnt_category;
+        
+        [self getMinFees];
+        
+        NSString *balance = @"0";
+        NSString *tokenName = self.model.redbag_symbol;
+        [self.chooseETHBtn setTitle:tokenName forState:UIControlStateNormal];
+        self.sendUnitLabel.text = tokenName;
+        if (![NSObject isNulllWithObject:tokenName]) {
+            balance = [walletModel.tokenStatistics objectForKey:tokenName];
+        }
+        
+        number = [NSString notRounding:balance afterPoint:4];
+        number = [NSString stringWithFormat:@"%.4lf", number.doubleValue];
+        self.walletMaxUseValueLabel.text = [NSString stringWithFormat:@"%@%@", number, tokenName];
+    }
+}
+
+#pragma mark ------- PrivateMethod ---------
+- (DBHWalletManagerForNeoModelList *)walletModelByAddress:(NSString *)address {
+    if (self.ethWalletsArr.count == 0 || [NSObject isNulllWithObject:address]) {
+        return nil;
+    }
+    
+    DBHWalletManagerForNeoModelList *model = nil;
+    for (DBHWalletManagerForNeoModelList *walletModel in self.ethWalletsArr) {
+        if ([[walletModel.address lowercaseString] isEqualToString:[address lowercaseString]]) {
+            model = walletModel;
+            break;
+        }
+    }
+    
+    return model;
 }
 
 #pragma mark ----- respondsToBtn ---------
 - (void)respondsToGasSlider {
-    NSString *number = [NSString notRounding:[NSString stringWithFormat:@"%@", @(self.slider.value)] afterPoint:8];
-    self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+    self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", self.slider.value];
 }
 
 - (IBAction)respondsToPayBtn:(UIButton *)sender {
@@ -162,14 +216,14 @@
         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send assets is beyond max amount", nil)];
         return;
     }
-    
+
     if (self.sendCountValueTextField.text.integerValue > self.maxSendValueLabel.text.integerValue) {
         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The send number is beyond max amount", nil)];
         return;
     }
-    
+
     [[UIApplication sharedApplication].keyWindow addSubview:self.inputPasswordPromptView];
-    
+
     WEAKSELF
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [weakSelf.inputPasswordPromptView animationShow];
@@ -277,7 +331,7 @@
 /**
  授权
  */
-- (void)gotoAuth:(NSString *)data asset_id:(NSString *)asset_id transferNum:(NSString *)transferNum handleFee:(NSString *)handleFee contractAddr:(NSString *)contractAddr {
+- (void)gotoAuth:(NSString *)data asset_id:(NSString *)asset_id transferNum:(NSString *)transferNum handleFee:(NSString *)handleFee contractAddr:(NSString *)contractAddr nonce:(NSString *)nonce {
     @autoreleasepool {
         NSString *redBag_number = self.sendCountValueTextField.text;
         NSString *redBag = self.sendSumValueTextField.text;
@@ -291,6 +345,29 @@
             NSString *symbol = self.tokenModel.name;
             if (![NSObject isNulllWithObject:addr]) {
                 [params setObject:[addr lowercaseString] forKey:REDBAG_ADDR];
+            }
+            
+            NSString *authTxNonce = nonce;
+            
+            if (self.model) {
+                authTxNonce = self.model.auth_tx_nonce;
+                
+                [params setObject:@(self.model.redPacketId) forKey:REPEAT_ID];
+            } else {
+                if (![NSObject isNulllWithObject:authTxNonce]) {
+                    if ([authTxNonce hasPrefix:@"0x"]) {
+                        authTxNonce = [authTxNonce substringFromIndex:2];
+                    }
+                    authTxNonce = [NSString numberHexString:authTxNonce];
+                }
+            }
+            
+            if (![NSObject isNulllWithObject:poundage]) {
+                [params setObject:poundage forKey:AUTH_GAS];
+            }
+            
+            if (![NSObject isNulllWithObject:authTxNonce]) {
+                [params setObject:authTxNonce forKey:AUTH_TX_NONCE];
             }
             
             if (![NSObject isNulllWithObject:symbol]) {
@@ -342,7 +419,16 @@
                 [weakSelf handleResponseObj:responseObject type:1];
             } failure:^(NSString *error) {
                 [LCProgressHUD hide];
-                [LCProgressHUD showFailure:error];
+                
+                if ([error isEqualToString:@"nonce too low"]) {
+                    YYRedPacketPackagingViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:REDPACKET_PACKAGING_STORYBOARD_ID];
+                    vc.packageType = PackageTypeRedPacket;
+                    vc.model = self.model;
+                    vc.ethWalletsArray = self.ethWalletsArr;
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    [LCProgressHUD showFailure:error];
+                }
             }];
         });
     }
@@ -363,8 +449,6 @@
         return;
     }
     
-    NSString *redBag = self.sendSumValueTextField.text;
-    NSString *poundage = self.feeValueLabel.text;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (type == 0) { // getTransactionCount
             if (![responseObj isKindOfClass:[NSDictionary class]]) {
@@ -376,40 +460,11 @@
             
             NSString *count = responseObj[@"count"];
             if ([NSObject isNulllWithObject:count]) {
-                count = @"0";
+                count = @"0x0";
             }
             
-            NSError * error;
-            
-            long long transfer = redBag.doubleValue * pow(10, self.tokenModel.decimals);
-            
-            NSString *transferStr = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:transfer]];
-            
-            long long gas = poundage.doubleValue * pow(10, self.tokenModel.decimals);// YYTODO 测试需要替换
-//            long long gas =  2 * pow(10, 10);
-            NSString *gasPrice = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:gas]];
-            
-            NSString *gasLimit = [NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas.integerValue]];
-            
-            NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
-            if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) { // 正式网还没有 YYTODO
-                contractAddr = REDPACKET_CONTRACT_ADDRESS;
-            }
-            
-            NSString *data = [self.currentWalletModel.ethWallet approve:[self.tokenModel.address lowercaseString]
-                                                                  nonce:count
-                                                                     to:contractAddr
-                                                                  value:transferStr
-                                                               gasPrice:gasPrice
-                                                              gasLimits:gasLimit
-                                                                  error:&error];
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (!error) {
-                    [self gotoAuth:[NSString stringWithFormat:@"0x%@", data] asset_id:[self.tokenModel.address lowercaseString] transferNum:transferStr handleFee:gasLimit contractAddr:contractAddr];
-                } else {
-                    [LCProgressHUD hide];
-                    [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Authorization failed", nil)];
-                }
+                [self transactionCountHandle:count];
             });
         } else if (type == 1) { // 授权
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -438,26 +493,78 @@
                     minValue = gasModel.value;
                 }
                 
-                NSString *minSelfValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:self.tokenModel.gas value:8];
-                minSelfValue = [NSString DecimalFuncWithOperatorType:3 first:minSelfValue secend:@"21000" value:8];
+                NSString *minSelfValue = [NSString DecimalFuncWithOperatorType:2 first:MIN_ETH_TOKEN_GASPRICE secend:self.tokenModel.gas value:8];
+                minSelfValue = [NSString DecimalFuncWithOperatorType:3 first:minSelfValue secend:@"6" value:8];
                 minSelfValue = [NSString DecimalFuncWithOperatorType:3 first:minSelfValue secend:@"1000000000000000000" value:8];
                 
                 if (minValue.doubleValue < minSelfValue.doubleValue) {
                     minValue = minSelfValue;
                 }
                 
-                NSString *maxValue = [NSString DecimalFuncWithOperatorType:2 first:@"2520120000000000" secend:self.tokenModel.gas value:8];
-                maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"21000"  value:8];
+                NSString *maxValue = [NSString DecimalFuncWithOperatorType:2 first:MAX_ETH_TOKEN_GASPRICE secend:self.tokenModel.gas value:8];
+                maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"6"  value:8];
                 maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"1000000000000000000" value:8];
-                
-                NSString *number = [NSString notRounding:minValue afterPoint:8];
-                self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
                 
                 self.slider.minimumValue = minValue.doubleValue;
                 self.slider.maximumValue = maxValue.doubleValue;
-                self.slider.value = self.slider.minimumValue;
+                
+                if (self.model) {
+                    self.slider.value = self.feeValueLabel.text.doubleValue;
+                    
+                    self.payBtn.enabled = YES;
+                } else {
+                    NSString *number = [NSString notRounding:minValue afterPoint:8];
+                    self.feeValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+                    self.slider.value = self.slider.minimumValue;
+                }
             });
         }
+    });
+}
+
+// 16进制count
+- (void)transactionCountHandle:(NSString *)count {
+    NSString *redBag = self.sendSumValueTextField.text;
+    NSString *poundage = self.feeValueLabel.text;
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             0), ^{
+        
+        NSError * error;
+        
+        long long transfer = redBag.doubleValue * pow(10, self.tokenModel.decimals);
+        
+        NSString *transferStr = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:transfer]];
+        
+        NSString *gas = [NSString DecimalFuncWithOperatorType:2 first:poundage secend:@"1000000000000000000" value:10];
+        
+        NSString *gasPrice = [NSString DecimalFuncWithOperatorType:3 first:self.tokenModel.gas secend:@"6" value:0];
+        gas = [NSString DecimalFuncWithOperatorType:3 first:gas secend:gasPrice value:8];
+        
+        gas = [NSString stringWithFormat:@"0x%@", [SystemConvert decimalToHex:gas.doubleValue]];
+        
+        NSString *gasLimit = [NSString stringWithFormat:@"0x%@",[NSString getHexByDecimal:self.tokenModel.gas.integerValue]];
+        
+        NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
+        if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) {
+            contractAddr = REDPACKET_CONTRACT_ADDRESS;
+        }
+        
+        NSString *data = [self.currentWalletModel.ethWallet approve:[self.tokenModel.address lowercaseString]
+                                                              nonce:count
+                                                                 to:contractAddr
+                                                              value:transferStr
+                                                           gasPrice:gas
+                                                          gasLimits:gasLimit
+                                                              error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                [self gotoAuth:[NSString stringWithFormat:@"0x%@", data] asset_id:[self.tokenModel.address lowercaseString] transferNum:transferStr handleFee:gas contractAddr:contractAddr nonce:count];
+            } else {
+                [LCProgressHUD hide];
+                [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Authorization failed", nil)];
+            }
+        });
     });
 }
 
@@ -608,7 +715,15 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [LCProgressHUD hide];
                     if (!error) {
-                        [weakSelf getTransactionCount];
+                        if (self.model) {
+                            NSString *nonce = self.model.auth_tx_nonce;
+                            if (![NSObject isNulllWithObject:nonce]) { // 10进制
+                                nonce = [NSString stringWithFormat:@"0x%@", [NSString getHexByDecimal:nonce.integerValue]];
+                            }
+                            [weakSelf transactionCountHandle:nonce];
+                        } else {
+                            [weakSelf getTransactionCount];
+                        }
                     } else {
                         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"The password is incorrect. Please try again later", nil)];
                     }
@@ -617,6 +732,11 @@
         }];
     }
     return _inputPasswordPromptView;
+}
+
+- (void)setModel:(YYRedPacketDetailModel *)model {
+    _model = model;
+    [self setReAuthStatusUI];
 }
 
 - (YYRedPacketChoosePayStyleView *)choosePayStyleView {

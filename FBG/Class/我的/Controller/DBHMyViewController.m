@@ -19,6 +19,7 @@
 #import "DBHMyTableViewCell.h"
 #import "DBHHelpCenterWebViewController.h"
 #import "DBHMyCommentsViewController.h"
+#import "YYShareAppViewController.h"
 
 static NSString *const kDBHMyForUserInfomationTableViewCellIdentifier = @"kDBHMyForUserInfomationTableViewCellIdentifier";
 static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIdentifier";
@@ -42,7 +43,9 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
     
     [self setUI];
 }
+
 - (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREEN_WIDTH, STATUS_HEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
     [super viewWillAppear:animated];
     
     [self.tableView reloadData];
@@ -217,9 +220,19 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
             break;
         }
         case 3: {
-            // 关于我们
-            AboutVC *aboutVC = [[AboutVC alloc] init];
-            [self.navigationController pushViewController:aboutVC animated:YES];
+            switch (indexPath.row) {
+                case 0: {
+                    // 关于我们
+                    AboutVC *aboutVC = [[AboutVC alloc] init];
+                    [self.navigationController pushViewController:aboutVC animated:YES];
+                    break;
+                }
+                case 1: { // 分享APP
+                    YYShareAppViewController *shareAppVC = [[YYShareAppViewController alloc] init];
+                    [self.navigationController pushViewController:shareAppVC animated:YES];
+                }
+                    break;
+            }
             break;
         }
             
@@ -275,14 +288,18 @@ static NSString *const kDBHMyTableViewCellIdentifier = @"kDBHMyTableViewCellIden
 
 - (NSArray *)iconImageNameArray {
     if (!_iconImageNameArray) {
-        _iconImageNameArray = @[@[@"wode_zichanzhangben", @"wode_tongxunlu", @"wode_shoucang", @"wode_tixing", @"wode_pinglun"], @[@"wode_shezhi", @"profile_help"], @[@"wode_guanyuwo"]];
+        _iconImageNameArray = @[@[@"wode_zichanzhangben", @"wode_tongxunlu", @"wode_shoucang", @"wode_tixing", @"wode_pinglun"],
+                                @[@"wode_shezhi", @"profile_help"],
+                                @[@"wode_guanyuwo", @"profile_share_app"]];
 //         _iconImageNameArray = @[@[@"wode_zichanzhangben", @"wode_tongxunlu", @"wode_shoucang", @"wode_tixing"], @[@"wode_shezhi"], @[@"wode_guanyuwo"]];
     }
     return _iconImageNameArray;
 }
 - (NSArray *)titleArray {
     if (!_titleArray) {
-        _titleArray = @[@[@"Book of Assets", @"Contacts", @"My Reserves", @"My Notifications", @"Commented Project"], @[@"Settings", @"Help And Feedback"], @[@"About Us"]];
+        _titleArray = @[@[@"Book of Assets", @"Contacts", @"My Reserves", @"My Notifications", @"Commented Project"],
+                        @[@"Settings", @"Help And Feedback"],
+                        @[@"About Us", @"Share APP"]];
 //        _titleArray = @[@[@"Book of Assets", @"Contacts", @"My Reserves", @"My Notifications"], @[@"Settings"], @[@"About Us"]];
     }
     return _titleArray;

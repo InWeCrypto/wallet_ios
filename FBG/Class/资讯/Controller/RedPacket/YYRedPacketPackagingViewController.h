@@ -20,6 +20,7 @@ typedef enum _package_type {
 @property (nonatomic, assign) PackageType packageType; // 礼金打包还是红包创建
 @property (nonatomic, strong) YYRedPacketDetailModel *model;
 @property (nonatomic, strong) NSMutableArray *ethWalletsArray;
+@property (nonatomic, assign) NSInteger from; // from == 2 detail进来的
 /**
  红包授权
  */

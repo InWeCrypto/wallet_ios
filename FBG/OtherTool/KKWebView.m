@@ -62,6 +62,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self setNavigationBarTitleColor];
+    [self setNavigationTintColor];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self setupUI];
     
@@ -111,7 +114,17 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
-    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO; //YYTODO
+    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREEN_WIDTH, STATUS_HEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
+}
+
+- (void)setNavigationBarTitleColor {
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLORFROM16(0x333333, 1), NSFontAttributeName:FONT(18)}];
+}
+
+- (void)setNavigationTintColor {
+    self.navigationController.navigationBar.tintColor = COLORFROM16(0x333333, 1);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -126,7 +139,13 @@
 }
 
 -(void)setupUI {
-    WKWebView *webView=[[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64)];
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    
+    WKPreferences *preferences = [WKPreferences new];
+    preferences.javaScriptCanOpenWindowsAutomatically = YES; //很重要，如果没有设置这个则不会回调createWebViewWithConfiguration方法，也不会回应window.open()方法
+    config.preferences = preferences;
+    
+    WKWebView *webView=[[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64) configuration:config];
     webView.UIDelegate=self;
     webView.navigationDelegate=self;
     webView.backgroundColor = [UIColor whiteColor];
@@ -169,13 +188,12 @@
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
     
     NSLog(@"createWebViewWithConfiguration");
-    
     if (!navigationAction.targetFrame.isMainFrame) {
-        
         [webView loadRequest:navigationAction.request];
-        
     }
-    
+    if (navigationAction.targetFrame == nil) {
+        [webView loadRequest:navigationAction.request];
+    }
     return nil;
     
 }

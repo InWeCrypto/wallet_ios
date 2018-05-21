@@ -51,7 +51,7 @@
     
     [self setUI];
     
-    [self getDefaultGas];
+//    [self getDefaultGas];
     [self loadWalletData];
 }
 
@@ -130,13 +130,16 @@
         make.left.equalTo(weakSelf.transferNumberLabel);
         make.top.equalTo(weakSelf.gasLabel.mas_bottom).offset(AUTOLAYOUTSIZE(27));
     }];
-    [self.gasSlider mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(weakSelf.view).offset(- AUTOLAYOUTSIZE(101));
-        make.centerX.equalTo(weakSelf.view);
-        make.centerY.equalTo(weakSelf.slowLabel);
-    }];
+    
     [self.fastLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(weakSelf.firstLineView);
+        make.centerY.equalTo(weakSelf.slowLabel);
+    }];
+    
+    [self.gasSlider mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(weakSelf.slowLabel.mas_right).offset(AUTOLAYOUTSIZE(5));
+        make.right.equalTo(weakSelf.fastLabel.mas_left).offset(AUTOLAYOUTSIZE(-5));
+        make.centerX.equalTo(weakSelf.view);
         make.centerY.equalTo(weakSelf.slowLabel);
     }];
     [self.remarkLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -190,39 +193,46 @@
 - (void)getDefaultGas {
     WEAKSELF
     [PPNetworkHelper GET:@"extend/getGasPrice" baseUrlType:1 parameters:nil hudString:nil responseCache:^(id responseCache) {
-        NSString *defautlGas = [NSString stringWithFormat:@"%@", responseCache[@"gasPrice"]];
-        defautlGas = [NSString numberHexString:defautlGas];
-        defautlGas = [NSString DecimalFuncWithOperatorType:2 first:defautlGas secend:@"90000" value:8];
-        weakSelf.defaultGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"1000000000000000000" value:8];
-        if (weakSelf.defaultGas.doubleValue < weakSelf.gasSlider.minimumValue) {
-            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.minimumValue];
-            weakSelf.gasSlider.value = weakSelf.gasSlider.minimumValue;
-        } else if (weakSelf.defaultGas.doubleValue > weakSelf.gasSlider.maximumValue) {
-            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.maximumValue];
-            weakSelf.gasSlider.value = weakSelf.gasSlider.maximumValue;
-        } else {
-            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.defaultGas.doubleValue];
-            weakSelf.gasSlider.value = weakSelf.defaultGas.doubleValue;
-        }
+        [weakSelf handleReponseObj:responseCache];
     } success:^(id responseObject) {
-        NSString *defautlGas = [NSString stringWithFormat:@"%@", responseObject[@"gasPrice"]];
-        defautlGas = [NSString numberHexString:defautlGas];
-        defautlGas = [NSString DecimalFuncWithOperatorType:2 first:defautlGas secend:@"90000" value:8];
-        weakSelf.defaultGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"1000000000000000000" value:8];
-        if (weakSelf.defaultGas.doubleValue < weakSelf.gasSlider.minimumValue) {
-            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.minimumValue];
-            weakSelf.gasSlider.value = weakSelf.gasSlider.minimumValue;
-        } else if (weakSelf.defaultGas.doubleValue > weakSelf.gasSlider.maximumValue) {
-            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.gasSlider.maximumValue];
-            weakSelf.gasSlider.value = weakSelf.gasSlider.maximumValue;
-        } else {
-            weakSelf.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", weakSelf.defaultGas.doubleValue];
-            weakSelf.gasSlider.value = weakSelf.defaultGas.doubleValue;
-        }
+        [weakSelf handleReponseObj:responseObject];
     } failure:^(NSString *error) {
         
     } specialBlock:nil];
 }
+
+- (void)handleReponseObj:(id)responseObj {
+//    if ([NSObject isNulllWithObject:responseObj] || ![responseObj isKindOfClass:[NSDictionary class]]) {
+//        return;
+//    }
+//
+//    NSString *defautlGas = [NSString stringWithFormat:@"%@", responseObj[@"gasPrice"]];
+//    if ([defautlGas hasPrefix:@"0x"] && defautlGas.length > 2) {
+//        defautlGas = [defautlGas substringFromIndex:2];
+//    }
+//
+//    defautlGas = [NSString numberHexString:defautlGas];
+//    if ([self.tokenModel.flag isEqualToString:ETH]) { // ETH
+//        defautlGas = [NSString DecimalFuncWithOperatorType:2 first:defautlGas secend:@"90000" value:8];
+//        self.defaultGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"1000000000000000000" value:8];
+//    } else {
+//        defautlGas = [NSString DecimalFuncWithOperatorType:2 first:defautlGas secend:self.tokenModel.gas value:0];
+//        defautlGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"6" value:8];
+//        self.defaultGas = [NSString DecimalFuncWithOperatorType:3 first:defautlGas secend:@"1000000000000000000" value:8];
+//    }
+//
+//    if (self.defaultGas.doubleValue < self.gasSlider.minimumValue) {
+//        self.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", self.gasSlider.minimumValue];
+//        self.gasSlider.value = self.gasSlider.minimumValue;
+//    } else if (self.defaultGas.doubleValue > self.gasSlider.maximumValue) {
+//        self.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", self.gasSlider.maximumValue];
+//        self.gasSlider.value = self.gasSlider.maximumValue;
+//    } else {
+//        self.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", self.defaultGas.doubleValue];
+//        self.gasSlider.value = self.defaultGas.doubleValue;
+//    }
+}
+
 - (void)loadWalletData {
     //获取交易次数
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
@@ -295,7 +305,7 @@
     transferConfirmationViewController.tokenModel = self.tokenModel;
     transferConfirmationViewController.neoWalletModel = self.neoWalletModel;
     transferConfirmationViewController.transferNumber = numberStr;
-    transferConfirmationViewController.poundage = [NSString stringWithFormat:@"%lf", self.gasSlider.value];
+    transferConfirmationViewController.poundage = self.gasValueLabel.text;
     transferConfirmationViewController.address = self.walletAddressTextField.text;
     transferConfirmationViewController.remark = self.remarkTextField.text;
     transferConfirmationViewController.nonce = self.nonce;
@@ -305,19 +315,41 @@
     self.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", self.gasSlider.value];
 }
 
+- (NSString *)showGasPrice:(NSString *)gasPriceOrigin {
+    NSString *tokenGas = self.tokenModel.gas;
+    NSString *tempSecond = @"6";
+    
+    if ([_tokenModel.flag isEqualToString:@"ETH"]) {
+        tokenGas = @"90000";
+        tempSecond = @"21000";
+    }
+    
+    NSString *showValue = [NSString DecimalFuncWithOperatorType:2 first:gasPriceOrigin secend:tokenGas value:8];
+    showValue = [NSString DecimalFuncWithOperatorType:3 first:showValue secend:tempSecond value:8];
+    showValue = [NSString DecimalFuncWithOperatorType:3 first:showValue secend:@"1000000000000000000" value:8];
+    return showValue;
+}
+
 #pragma mark ------ Getters And Setters ------
 - (void)setTokenModel:(DBHWalletDetailTokenInfomationModelData *)tokenModel {
     _tokenModel = tokenModel;
     
-    NSString *minValue = [NSString DecimalFuncWithOperatorType:2 first:@"25200000000000" secend:[_tokenModel.flag isEqualToString:@"ETH"] ? @"90000" : _tokenModel.gas value:8];
-    minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"21000" value:8];
-    minValue = [NSString DecimalFuncWithOperatorType:3 first:minValue secend:@"1000000000000000000" value:8];
+    NSString *minGasPrice = MIN_ETH_TOKEN_GASPRICE;
+    NSString *maxGasPrice = MAX_ETH_TOKEN_GASPRICE;
+    if ([_tokenModel.flag isEqualToString:@"ETH"]) {
+        maxGasPrice = MAX_ETH_GASPRICE;
+        minGasPrice = MIN_ETH_GASPRICE;
+    }
     
-    NSString *maxValue = [NSString DecimalFuncWithOperatorType:2 first:@"2520120000000000" secend:[_tokenModel.flag isEqualToString:@"ETH"] ? @"90000" : _tokenModel.gas value:8];
-    maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"21000"  value:8];
-    maxValue = [NSString DecimalFuncWithOperatorType:3 first:maxValue secend:@"1000000000000000000" value:8];
+    NSString *defaultGasPrice = [NSString DecimalFuncWithOperatorType:2 first:minGasPrice secend:@"1.1" value:0];
+    defaultGasPrice = [self showGasPrice:defaultGasPrice];
     
-    self.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", minValue.doubleValue];
+    NSString *minValue = [self showGasPrice:minGasPrice];
+    NSString *maxValue = [self showGasPrice:maxGasPrice];
+    
+    NSString *number = [NSString notRounding:defaultGasPrice afterPoint:8];
+    self.gasValueLabel.text = [NSString stringWithFormat:@"%.8lf", number.doubleValue];
+    self.gasSlider.value = defaultGasPrice.doubleValue;
     self.gasSlider.minimumValue = minValue.doubleValue;
     self.gasSlider.maximumValue = maxValue.doubleValue;
 }

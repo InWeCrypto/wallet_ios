@@ -24,7 +24,7 @@
     if (self = [super initWithFrame:frame]) {
         self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil] lastObject];
         self.frame = frame;
-        self.totalTitleLabel.text = [NSString stringWithFormat:@"%@：", DBHGetStringWithKeyFromTable(@" Total ", nil)];
+        self.totalTitleLabel.text = [NSString stringWithFormat:@"%@:", DBHGetStringWithKeyFromTable(@" Total ", nil)];
     }
     return self;
 }
@@ -48,7 +48,7 @@
         showTotal = YES;
         titleStr = [NSString stringWithFormat:@"%@ %ld/%ld", DBHGetStringWithKeyFromTable(@"Opened Packet Number", nil), model.draw_redbag_number, model.redbag_number];
         
-        NSString *price = [NSString stringWithFormat:@"???%@", model.redbag_symbol];
+        NSString *price = [NSString stringWithFormat:@"***%@", model.redbag_symbol];
         if (model.done == RedBagLotteryStatusEnd) { // 已开奖
             NSString *total = model.redbag;
             

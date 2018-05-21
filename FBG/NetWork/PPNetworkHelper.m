@@ -431,10 +431,7 @@ static NetworkStatus _status;
                 }
                 
                 NSString *error = [responseObject objectForKey:@"msg"];
-//                if ([URL isEqualToString:@"wallet-order"] && code.integerValue == 4006) {
-//                    error = DBHGetStringWithKeyFromTable(@"Has Uncompleted Orders", nil);
-//                }
-                
+               
                 if (failure) {
                     failure(error);
                 }

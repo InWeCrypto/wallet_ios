@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define DETAIL_HEADERVIEW_HEIGHT 37
+#define DETAIL_HEADERVIEW_HEIGHT 39.5
 
 @interface YYRedPacketDetailHeaderView : UIView
 

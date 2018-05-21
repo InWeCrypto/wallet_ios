@@ -81,7 +81,9 @@ typedef void(^ResultBlock) (NSDictionary *dict);
     [userDefaults setBool:isReview forKey:CHECK_STATUS];
     [userDefaults synchronize];
     
-    if ([UserSignData share].user.token.length && [UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone && ([UserSignData share].user.isOpenTouchId || [UserSignData share].user.isOpenFaceId)) {
+    if ([UserSignData share].user.token.length &&
+        [UserSignData share].user.canUseUnlockType != DBHCanUseUnlockTypeNone &&
+        ([UserSignData share].user.isOpenTouchId || [UserSignData share].user.isOpenFaceId)) {
         [[AppDelegate delegate] showThirdLogin];
     } else {
         [[AppDelegate delegate] goToTabbar];

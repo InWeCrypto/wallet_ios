@@ -12,9 +12,12 @@
 
 @interface YYRedPacketShareViewController ()<WXApiDelegate>
 
+@property (weak, nonatomic) IBOutlet UIImageView *bgImgView;
 @property (weak, nonatomic) IBOutlet UIImageView *qrImgView;
 @property (weak, nonatomic) IBOutlet UILabel *senderNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messgeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
+@property (weak, nonatomic) IBOutlet UILabel *getTokenLabel;
 
 @property (nonatomic, strong) UIImage *sharedImg;
 
@@ -46,7 +49,7 @@
     
     NSString *user = [self.model.share_user stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
-    NSString *url = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&inwe", @(self.model.redPacketId), self.model.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw2"];
+    NSString *url = [tempURL stringByAppendingFormat:@"redbag/%@/%@?share_user=%@&lang=%@&target=%@&symbol=%@&inwe", @(self.model.redPacketId), self.model.redbag_addr, user, [[DBHLanguageTool sharedInstance].language isEqualToString:CNS] ? @"zh" : @"en", @"draw2", self.model.redbag_symbol];
     
     NSData *data = [url dataUsingEncoding:NSUTF8StringEncoding];
     // 注意，这里的value必须是NSData类型
@@ -102,7 +105,10 @@
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Share", nil) style:UIBarButtonItemStylePlain target:self action:@selector(shareClicked)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
  
-    self.senderNameLabel.text = self.model.share_user;
+    self.senderNameLabel.text = [NSString stringWithFormat:@"%@：", self.model.share_user];
+    self.bgImgView.image = [UIImage imageNamed:DBHGetStringWithKeyFromTable(@"redpacket_share_bg_en", nil)];
+    self.tipLabel.text = DBHGetStringWithKeyFromTable(@"Long press the QR code", nil);
+    self.getTokenLabel.text = [DBHGetStringWithKeyFromTable(@"and get ", nil) stringByAppendingString:self.model.redbag_symbol];
     
     NSString *msg = self.model.share_msg;
     if (msg.length > 0) {

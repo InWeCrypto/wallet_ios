@@ -77,7 +77,8 @@ static CGFloat min_distance = 60;// 最小回弹距离
                    [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthLinkViewController")] ||
                    [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSendFourthCodeViewController")] ||
                    [viewController isKindOfClass:NSClassFromString(@"YYRedPacketDetailViewController")] ||
-                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSuccessViewController")]) {
+                   [viewController isKindOfClass:NSClassFromString(@"YYRedPacketSuccessViewController")] ||
+                   [viewController isKindOfClass:NSClassFromString(@"YYShareAppViewController")]) {
             backImageName = @"white_back";
         } else { 
             backImageName = @"返回-3";
