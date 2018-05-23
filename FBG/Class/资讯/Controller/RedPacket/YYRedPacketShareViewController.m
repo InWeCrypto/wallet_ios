@@ -10,6 +10,9 @@
 #import "WXApi.h"
 #import <TencentOpenAPI/QQApiInterface.h>
 
+#import "YYRedPacketSendFourthTextViewController.h"
+#import "YYRedPacketPreviewViewController.h"
+
 @interface YYRedPacketShareViewController ()<WXApiDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *bgImgView;
@@ -122,12 +125,18 @@
 }
 
 - (void)setNavigationTintColor {
-    self.navigationController.navigationBar.tintColor = COLORFROM16(0x000000, 1);
+    self.navigationController.navigationBar.tintColor = WHITE_COLOR;
 }
 
 #pragma mark - respondsToSelector
 - (void)cancelClicked {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    if ([self.target isKindOfClass:[YYRedPacketSendFourthTextViewController class]]) { // 文本
+        self.backIndex = 2;
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        [self.target.navigationController popViewControllerAnimated:NO];
+    } else if ([self.target isKindOfClass:[YYRedPacketPreviewViewController class]]) { //预览
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)shareClicked {

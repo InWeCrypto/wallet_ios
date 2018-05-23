@@ -205,7 +205,11 @@
     self.poundageLabel.text = [NSString stringWithFormat:@"%@：%.8lf", DBHGetStringWithKeyFromTable(@"Fees", nil), [_model.handle_fee floatValue]];
     self.collectionAddressValueLabel.text = _model.from;
     self.payAddressValueLabel.text = _model.to;
-    self.timeValueLabel.text = [NSString getLocalDateFormateUTCDate:_model.createTime];
+    
+    NSString *timeStr = _model.createTime;
+    if (![NSObject isNulllWithObject:timeStr]) {
+        self.timeValueLabel.text = [NSString getLocalDateFormateUTCDate:timeStr];
+    }
     self.remarkValueLabel.text = [_model.remark isEqual:[NSNull null]] ? @"" : _model.remark;
     
     NSAttributedString *orderNumberAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@", DBHGetStringWithKeyFromTable(@"Transaction Number", nil), _model.tx] attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];

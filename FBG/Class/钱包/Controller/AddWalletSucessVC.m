@@ -43,7 +43,8 @@
 //        self.headImage.image = [UIImage imageNamed:@"BTC_pic_sucess"];
 //    }
     self.sucessLB.text = DBHGetStringWithKeyFromTable(@"Add Success", nil);
-    self.infoLB.text = DBHGetStringWithKeyFromTable(@"Please enter the wallet and back up your mnemonic and Key Store to protect your wallet. Once the security code is backed up, it will disappear on the app. You need to keep it in mind. Otherwise, the wallet cannot be retrieved.", nil);
+    self.infoLB.text = DBHGetStringWithKeyFromTable(@"Please enter the wallet and back up your mnemonic and Key Store to protect your wallet. Once the mnemonic is backed up, it will disappear on the app. You need to keep it in mind. Otherwise, the wallet cannot be retrieved.", nil);
+    
     [self.sureButton setTitle:DBHGetStringWithKeyFromTable(@"Start Backup Mnemonics", nil) forState:UIControlStateNormal];
     
    UIImageView *tipImageView = (UIImageView *)[self.view viewWithTag:998];

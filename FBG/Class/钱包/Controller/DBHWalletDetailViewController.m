@@ -899,8 +899,8 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                                                           {
                                                               //要分享内容
                                                               [LCProgressHUD hide];
-//                                                              [weakSelf activityOriginalShare];
-                                                              [weakSelf activityCustomShare];
+                                                              [weakSelf activityOriginalShare];
+//                                                              [weakSelf activityCustomShare];
                                                           } else {
                                                               [LCProgressHUD hide];
                                                               [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Wrong password, please re-enter", nil)];
@@ -975,7 +975,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activityArray];
     //applicationActivities可以指定分享的应用，不指定为系统默认支持的
-    activityVC.excludedActivityTypes = @[UIActivityTypeMessage, UIActivityTypeMail, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeOpenInIBooks];
+//    activityVC.excludedActivityTypes = @[UIActivityTypeMessage, UIActivityTypeMail, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeOpenInIBooks];
     kWeakSelf(activityVC)
     WEAKSELF
     activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {

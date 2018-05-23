@@ -38,6 +38,8 @@
     YYRedPacketShareViewController *shareVC = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_SHARE_STORYBOARD_ID];
     shareVC.model = self.model;
     shareVC.index = index;
+    shareVC.target = self.target;
+    
     DBHBaseNavigationController *navigationController = [[DBHBaseNavigationController alloc] initWithRootViewController:shareVC];
     [self.target presentViewController:navigationController animated:YES completion:nil];
 }

@@ -48,6 +48,10 @@
     
     [self setUI];
     [self checkGasCanUse];
+    
+    self.commitButton.userInteractionEnabled = YES;
+    self.commitButton.backgroundColor = MAIN_ORANGE_COLOR;
+    [self.commitButton setTitle:DBHGetStringWithKeyFromTable(@"Submit", nil) forState:UIControlStateNormal];
 }
 
 #pragma mark ------ UI ------
@@ -273,9 +277,11 @@
  检查Gas是否够使用
  */
 - (void)checkGasCanUse {
+    /**
     self.commitButton.userInteractionEnabled = self.canUseGasBalance.doubleValue && self.canUseGasBalance.doubleValue >= self.realityPoundage.doubleValue;
     self.commitButton.backgroundColor = !self.commitButton.userInteractionEnabled ? COLORFROM16(0xDADADA, 1) : MAIN_ORANGE_COLOR;
     [self.commitButton setTitle:DBHGetStringWithKeyFromTable(!self.commitButton.userInteractionEnabled ? @"The current wallet GAS balance is insufficient and cannot be submitted" : @"Submit", nil) forState:UIControlStateNormal];
+     */
 }
 
 #pragma mark ------ Getters And Setters ------

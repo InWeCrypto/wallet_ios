@@ -135,16 +135,16 @@
         CGContextSaveGState(context);
         [roundedRect addClip];
         [self colorGradualChangeStart: CGPointMake(insetRect.size.width / 2, 0) end:CGPointMake(insetRect.size.width / 2, insetRect.size.height)];
-        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-        CGFloat locations[] = {0.0, 1.0};
-        NSArray *colors = @[(__bridge id)[self.color lighterColor].CGColor, (__bridge id)[self.color darkerColor].CGColor];
-        CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
-        
-        CGContextDrawLinearGradient(context, gradient, CGPointMake(insetRect.size.width / 2, 0), CGPointMake(insetRect.size.width / 2, insetRect.size.height), 0);
-        CGContextRestoreGState(context);
-        
-        CGGradientRelease(gradient);
-        CGColorSpaceRelease(colorSpace);
+//        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+//        CGFloat locations[] = {0.0, 1.0};
+//        NSArray *colors = @[(__bridge id)[self.color lighterColor].CGColor, (__bridge id)[self.color darkerColor].CGColor];
+//        CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
+//        
+//        CGContextDrawLinearGradient(context, gradient, CGPointMake(insetRect.size.width / 2, 0), CGPointMake(insetRect.size.width / 2, insetRect.size.height), 0);
+//        CGContextRestoreGState(context);
+//        
+//        CGGradientRelease(gradient);
+//        CGColorSpaceRelease(colorSpace);
     }
 
     

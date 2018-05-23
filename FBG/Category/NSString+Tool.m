@@ -717,28 +717,31 @@ yy-MM-dd HH:mm:ss
     if (isETH) { //ETH
         NSString *lowerAddr = [address lowercaseString];
         if (![NSObject isNulllWithObject:keyChainData0]) {
-            [PDKeyChain save:keyChainData0 data:KEYCHAIN_KEY(lowerAddr)];
-            [PDKeyChain delete:address];
+            [PDKeyChain save:KEYCHAIN_KEY(lowerAddr) data:keyChainData0];
+//            [PDKeyChain delete:address];
         }
         
         // 不一样 才将大写转成小写
         if (![lowerAddr isEqualToString:address]) {
             NSString *keyChainData1 = [PDKeyChain load:KEYCHAIN_KEY(address)];
             if (![NSObject isNulllWithObject:keyChainData1]) {
-                [PDKeyChain save:keyChainData1 data:KEYCHAIN_KEY(lowerAddr)];
-                [PDKeyChain delete:KEYCHAIN_KEY(address)];
+                [PDKeyChain save:KEYCHAIN_KEY(lowerAddr) data:keyChainData1];
+//                [PDKeyChain delete:KEYCHAIN_KEY(address)];
             }
         }
         
         data = [PDKeyChain load:KEYCHAIN_KEY(lowerAddr)];
     } else { // NEO
         if (![NSObject isNulllWithObject:keyChainData0]) {
-            [PDKeyChain save:keyChainData0 data:KEYCHAIN_KEY(address)];
-            [PDKeyChain delete:address];
+            [PDKeyChain save:KEYCHAIN_KEY(address) data:keyChainData0];
+//            [PDKeyChain delete:address];
         }
-        data = [PDKeyChain load:KEYCHAIN_KEY(address)];
+        NSString *key = KEYCHAIN_KEY(address);
+        data = [PDKeyChain load:key];
     }
     return data;
+    
+    
 }
 
 /**
@@ -760,6 +763,59 @@ yy-MM-dd HH:mm:ss
         backValue = [NSString DecimalFuncWithOperatorType:3 first:backValue secend:@(pow(10, decimals)) value:0];
     }
     return backValue;
+}
+
+
++ (BOOL)isEmptyString:(NSString *)aStr {
+    if (!aStr) {
+        return YES;
+    }
+    
+    if ([aStr isKindOfClass:[NSNull class]]) {
+        return YES;
+    }
+    
+    if (![aStr isKindOfClass:[NSString class]]) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)isEmptyObject:(id)object {
+    if (!object) {
+        return YES;
+    }
+    
+    if ([object isKindOfClass:[NSNull class]]) {
+        return YES;
+    }
+    
+    if ([object isKindOfClass:[NSString class]]) {
+        NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        NSString *trimmedStr = [object stringByTrimmingCharactersInSet:set];
+        if (!trimmedStr.length) {
+            return YES;
+        }
+        return NO;
+    }
+    
+    if ([object isKindOfClass:[NSArray class]]) {
+        NSArray *arr = object;
+        if (arr.count == 0) {
+            return YES;
+        }
+        return NO;
+    }
+    
+    if ([object isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *dict = object;
+        if (dict.count == 0) {
+            return YES;
+        }
+        return NO;
+    }
+    
+    return NO;
 }
 
 @end

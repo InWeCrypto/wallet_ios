@@ -9,6 +9,7 @@
 #import "DBHQrCodeViewController.h"
 #import "WXApi.h"
 #import "LYShareMenuView.h"
+#import "CustomActivity.h"
 
 #import <TencentOpenAPI/QQApiInterface.h>
 
@@ -101,25 +102,35 @@
  分享
  */
 - (void)respondsToShareBarButtonItem {
-    [self activityCustomShare];
-//    [self activityOriginalShare];
+//    [self activityCustomShare];
+    [self activityOriginalShare];
 }
 
 - (void)activityOriginalShare {
     NSArray* activityItems = [[NSArray alloc] initWithObjects:self.walletModel.address, nil];
     
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    CustomActivity *weixinActivity = [[CustomActivity alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"WeChat", nil) ActivityImage:[UIImage imageNamed:@"fenxiang_weixin"] URL:[NSURL URLWithString:@"WeChat"] ActivityType:@"WeChat"];
+    
+    CustomActivity *momentsActivity = [[CustomActivity alloc] initWithTitle:DBHGetStringWithKeyFromTable(@"Moments", nil) ActivityImage:[UIImage imageNamed:@"friend_pr"] URL:[NSURL URLWithString:@"Moments"] ActivityType:@"Moments"];
+    
+    NSArray *activityArray = @[weixinActivity, momentsActivity];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activityArray];
     //applicationActivities可以指定分享的应用，不指定为系统默认支持的
     
     kWeakSelf(activityVC)
-    activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError)
-    {
-        if(completed)
-        {
-            NSLog(@"Share success");
-        }
-        else
-        {
+    WEAKSELF
+    activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        if(completed) {
+            if ([activityType isEqualToString:@"WeChat"]) {
+                [WXApi sendReq:[weakSelf shareToWX:1]];
+            } else if ([activityType isEqualToString:@"Moments"]) {
+                [WXApi sendReq:[weakSelf shareToWX:0]];
+            } else {
+                [weakSelf shareSuccess:YES];
+                NSLog(@"Share success");
+            }
+        } else {
             NSLog(@"Cancel the share");
         }
         [weakactivityVC dismissViewControllerAnimated:YES completion:nil];

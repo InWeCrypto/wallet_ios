@@ -138,5 +138,14 @@
  @return 十进制
  */
 + (NSString *)convertValue:(NSString *)value decimals:(NSInteger)decimals;
+
+/**
+ object是否是空对象
+
+ @param object 对象
+ @return 是否空对象
+ */
++ (BOOL)isEmptyObject:(id)object;
+
 @end
 

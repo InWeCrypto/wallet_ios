@@ -879,9 +879,9 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
                                dispatch_async(dispatch_get_main_queue(), ^ {
                                    //要分享内容
                                    [LCProgressHUD hide];
-//                                   [weakSelf activityOriginalShare];
-                                   [weakSelf activityCustomShare];
-                                          
+                                   [weakSelf activityOriginalShare];
+//                                   [weakSelf activityCustomShare];
+                                   
                                });
                                        
                         } else {
@@ -959,7 +959,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activityArray];
     //applicationActivities可以指定分享的应用，不指定为系统默认支持的
-    activityVC.excludedActivityTypes = @[UIActivityTypeMessage, UIActivityTypeMail, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeOpenInIBooks];
+//    activityVC.excludedActivityTypes = @[UIActivityTypeMessage, UIActivityTypeMail, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeOpenInIBooks];
     
     kWeakSelf(activityVC)
     WEAKSELF
@@ -971,7 +971,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
             } else if ([activityType isEqualToString:@"Moments"]) {
                 [WXApi sendReq:[weakSelf shareToWX:0 contet:result]];
             } else {
-                [self backupSuccess:YES];
+                [weakSelf backupSuccess:YES];
                 NSLog(@"Share success");
             }
         } else {

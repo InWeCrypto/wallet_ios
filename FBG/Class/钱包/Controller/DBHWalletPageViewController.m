@@ -485,9 +485,9 @@ static NSString *const kDBHHomePageTableViewCellIdentifier = @"kDBHHomePageTable
                     DBHWalletManagerForNeoModelList *model = [DBHWalletManagerForNeoModelList mj_objectWithKeyValues:dict];
                     
                     NSString *tempAddr = model.address;
-                   
                     NSString *data = [NSString keyChainDataFromKey:tempAddr isETH:(model.categoryId == 1)];
                     
+                    NSLog(@"lookwalletdata = %@ ---- %d", data, [NSString isNulllWithObject:data]);
                     model.isLookWallet = [NSString isNulllWithObject:data];
                     model.isBackUpMnemonnic = [[UserSignData share].user.walletIdsArray containsObject:@(model.listIdentifier)];
                     [tempArr addObject:model];

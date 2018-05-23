@@ -64,14 +64,13 @@
         [NSStringFromClass([self class]) isEqualToString:@"DBHWalletDetailViewController"] ||
         [NSStringFromClass([self class]) isEqualToString:@"DBHWalletDetailWithETHViewController"] ||
         [NSStringFromClass([self class]) isEqualToString:@"AddWalletSucessVC"] ||
-        [NSStringFromClass([self class]) isEqualToString:@"YYRedPacketPackagingViewController"] ||
-        [NSStringFromClass([self class]) isEqualToString:@"YYRedPacketSendSecondViewController"]) {
+        [NSStringFromClass([self class]) containsString:@"YYRedPacket"]) {
                 if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
                     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
                 }
     } else {
         if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-            self.navigationController.interactivePopGestureRecognizer.enabled = NO; //YYTODO
+            self.navigationController.interactivePopGestureRecognizer.enabled = YES;
         }
     }
 }

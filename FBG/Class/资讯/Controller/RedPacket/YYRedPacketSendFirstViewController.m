@@ -107,7 +107,7 @@
     self.title = DBHGetStringWithKeyFromTable(@"Send Red Packet", nil);
     
     self.firstLabel.text = DBHGetStringWithKeyFromTable(@"First:", nil);
-    self.pullMoneyLabel.text = DBHGetStringWithKeyFromTable(@"Authorize Red Packet Usage", nil);
+    self.pullMoneyLabel.text = DBHGetStringWithKeyFromTable(@"Packing Assets", nil);
     [self.slider addTarget:self action:@selector(respondsToGasSlider) forControlEvents:UIControlEventValueChanged];
     self.sendSumTitleLabel.text = DBHGetStringWithKeyFromTable(@" Amount ", nil);
     self.sendCountTitleLabel.text = DBHGetStringWithKeyFromTable(@"Package Number", nil);
@@ -427,7 +427,7 @@
                     vc.ethWalletsArray = self.ethWalletsArr;
                     [self.navigationController pushViewController:vc animated:YES];
                 } else {
-                    [LCProgressHUD showFailure:error];
+                    [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(error, nil)];
                 }
             }];
         });

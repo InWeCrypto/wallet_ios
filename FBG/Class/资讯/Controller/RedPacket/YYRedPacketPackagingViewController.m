@@ -95,7 +95,6 @@
     [self.nextBtn setBackgroundColor:COLORFROM16(0xEA6204, 1) forState:UIControlStateNormal];
    
     [self.tipBtn setTitle:DBHGetStringWithKeyFromTable(@"No More Patience for Waiting? Raise Gas to Speed Up.", nil) forState:UIControlStateNormal];
-    self.tipBtn.hidden = YES;
     
     CALayer *layer = [CALayer layer];
     self.nextBtn.enabled = NO;
@@ -110,6 +109,12 @@
     
     self.progress.progress = 0.0f;
     self.progress.showText = @0;
+    
+    if (self.model.status == RedBagStatusCreatePending || self.model.status == RedBagStatusCashAuthPending) {
+        self.tipBtn.hidden = NO;
+    } else {
+        self.tipBtn.hidden = YES;
+    }
 }
 
 

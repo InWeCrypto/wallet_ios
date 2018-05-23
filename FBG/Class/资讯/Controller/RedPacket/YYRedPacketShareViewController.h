@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) YYRedPacketDetailModel *model;
 @property (nonatomic, assign) NSInteger index; // 0 朋友圈   1 微信  2 qq 5 截图
+@property (nonatomic, strong) UIViewController *target;
 
 @end

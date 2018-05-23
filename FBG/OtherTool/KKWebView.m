@@ -114,7 +114,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
-    self.navigationController.interactivePopGestureRecognizer.enabled = NO; //YYTODO
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageFromColor:WHITE_COLOR Rect:CGRectMake(0, 0, SCREEN_WIDTH, STATUS_HEIGHT + 44)] forBarMetrics:UIBarMetricsDefault];
 }

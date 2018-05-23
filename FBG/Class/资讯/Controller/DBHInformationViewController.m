@@ -869,7 +869,7 @@ static NSString *const kDBHUnLoginTableCell = @"kDBHUnLoginTableCell";
     
     if ([object isKindOfClass:[NSString class]]) {
         NSString *str = object;
-        if ([str containsString:@"inwe"]) { // 如果是红包
+        if ([str hasSuffix:@"inwe"]) { // 如果结尾是红包
             YYRedPacketOpenViewController *openVC = [[UIStoryboard storyboardWithName:REDPACKET_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:REDPACKET_OPEN_STORYBOARD_ID];
             openVC.urlStr = str;
             [self.navigationController pushViewController:openVC animated:YES];

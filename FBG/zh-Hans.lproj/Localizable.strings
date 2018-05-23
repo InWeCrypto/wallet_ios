@@ -93,7 +93,7 @@
 "Case letters and numbers of not less than 8 digits are required" = "需包含不少于8位数的大小写字母及数字";
 "Confirm Add" = "确认添加";
 "Add Success" = "添加成功";
-"Please enter the wallet and back up your mnemonic and Key Store to protect your wallet. Once the security code is backed up, it will disappear on the app. You need to keep it in mind. Otherwise, the wallet cannot be retrieved." = "请及时进入钱包并备份助记词以及Key Store保障钱包的安全，安全码一经备份则会在APP上消失，需要牢记，否则钱包无法找回";
+"Please enter the wallet and back up your mnemonic and Key Store to protect your wallet. Once the mnemonic is backed up, it will disappear on the app. You need to keep it in mind. Otherwise, the wallet cannot be retrieved." = "请及时进入钱包并备份助记词以及Key Store保障钱包的安全，助记词一经备份则会在APP上消失，需要牢记，否则钱包无法找回";
 "No wallet, please go to 'Add Wallet' in the upper right corner to create wallet" = "暂无钱包，请至右上角'添加钱包'处创建钱包";
 
 "Mnemonic" = "助记词";
@@ -620,7 +620,7 @@
 "redpacket_home_bg_en" = "redpacket_home_bg";
 "Check Transaction Records" = "查看更多发送记录";
 "First:" = "第一步：";
-"Authorize Red Packet Usage" = "授权使用红包功能";
+"Packing Assets" = "授权使用红包功能";
 "Pack ETH tokens" = "选择ETH资产作为礼金";
 "Send Red Packet" = "发红包";
 "Start Authorize" = "开始授权";
@@ -737,3 +737,4 @@
 "rpAgreementEn.html" = "rpAgreement.html";
 "Long press the QR code" = "长按识别二维码";
 "and get " = "领取";
+"insufficient funds for gas * price + value" = "气费不足";
