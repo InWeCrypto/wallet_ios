@@ -1,0 +1,9 @@
+framework module "Neomobile" {
+	header "ref.h"
+    header "Neomobile.objc.h"
+    header "Ethmobile.objc.h"
+    header "universe.objc.h"
+    header "Neomobile.h"
+
+    export *
+}

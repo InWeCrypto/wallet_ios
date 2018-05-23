@@ -1,0 +1,6 @@
+framework module Pods_InWeCrypto {
+  umbrella header "Pods-InWeCrypto-umbrella.h"
+
+  export *
+  module * { export * }
+}
