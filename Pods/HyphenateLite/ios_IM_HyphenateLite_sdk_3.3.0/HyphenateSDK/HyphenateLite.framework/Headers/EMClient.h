@@ -233,6 +233,26 @@
                     password:(NSString *)aPassword
                   completion:(void (^)(NSString *aUsername, EMError *aError))aCompletionBlock;
 
+#pragma mark - Change AppKey
+
+/*!
+ *  \~chinese
+ *  修改appkey，注意只有在未登录状态才能修改appkey
+ *
+ *  @param aAppkey  appkey
+ *
+ *  @result 错误信息
+ *
+ *  \~english
+ *  Change appkey. Can only change appkey when the user is logged out
+ *
+ *  @param aAppkey  appkey
+ *
+ *  @result Error
+ */
+- (EMError *)changeAppkey:(NSString *)aAppkey;
+
+
 #pragma mark - Login
 
 /*!

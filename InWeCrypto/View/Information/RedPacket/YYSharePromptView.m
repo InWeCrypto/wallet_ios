@@ -8,8 +8,7 @@
 
 #import "YYSharePromptView.h"
 #import "LYShareMenuView.h"
-//pod故障注释
-//#import <TwitterKit/TWTRComposer.h>
+#import <TwitterKit/TWTRComposer.h>
 #import "YYRedPacketShareViewController.h"
 #import "DBHBaseNavigationController.h"
 #import "WKWebView+ZFJViewCapture.h"
@@ -50,19 +49,19 @@
 }
 
 - (void)shareToTwitter {
-     //pod故障注释
-//    NSString *urlStr = self.sharedUrl;
-//    NSString *titleStr = @"You have a redpacket to pick up！";
+
+    NSString *urlStr = self.sharedUrl;
+    NSString *titleStr = @"You have a redpacket to pick up！";
     
-//    TWTRComposer *composer = [[TWTRComposer alloc] init];
-//    [composer setURL:[NSURL URLWithString:urlStr]];
-//
-//    [composer setText:titleStr];
-//
-//    WEAKSELF
-//    [composer showFromViewController:self.target completion:^(TWTRComposerResult result) {
-//        [weakSelf shareSuccess:result == TWTRComposerResultDone];
-//    }];
+    TWTRComposer *composer = [[TWTRComposer alloc] init];
+    [composer setURL:[NSURL URLWithString:urlStr]];
+
+    [composer setText:titleStr];
+
+    WEAKSELF
+    [composer showFromViewController:self.target completion:^(TWTRComposerResult result) {
+        [weakSelf shareSuccess:result == TWTRComposerResultDone];
+    }];
 }
 
 - (void)shareToTelegram {

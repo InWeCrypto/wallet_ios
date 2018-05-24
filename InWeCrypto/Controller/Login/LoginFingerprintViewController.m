@@ -19,6 +19,14 @@
     // Do any additional setup after loading the view.
 }
 
+/**
+ 暂不开启
+ */
+- (void)respondsToNoOpenButton {
+    [self.target dismissViewControllerAnimated:YES completion:nil];
+    [[AppDelegate delegate] goToTabbar];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

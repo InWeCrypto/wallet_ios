@@ -57,10 +57,10 @@
                 self.imageSize = imgMessageBody.size;
                 if (!_isSender) {
                     self.fileURLPath = imgMessageBody.remotePath;
-                    //pod故障注释
-//                    if ([EMClient sharedClient].options.isAutoDownloadThumbnail) {
-//                        self.thumbnailFileURLPath = imgMessageBody.thumbnailRemotePath;
-//                    }
+
+                    if ([EMClient sharedClient].options.isAutoDownloadThumbnail) {
+                        self.thumbnailFileURLPath = imgMessageBody.thumbnailRemotePath;
+                    }
                 }
             }
                 break;

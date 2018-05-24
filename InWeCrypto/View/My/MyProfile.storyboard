@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--My View Controller-->
+        <scene sceneID="Gbq-8h-xo0">
+            <objects>
+                <viewController storyboardIdentifier="MYPROFILE_HOME_STORYBOARD_VC_ID" id="iho-Kp-apo" customClass="MyViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PML-KH-pI6"/>
+                        <viewControllerLayoutGuide type="bottom" id="C4n-ns-5Ko"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BXC-35-act">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vSv-gW-gQd">
+                                <rect key="frame" x="110" y="183" width="155" height="89"/>
+                                <color key="backgroundColor" red="0.24313725489999999" green="0.72941176470000002" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="头像登录">
+                                    <color key="titleColor" red="0.81568627449999997" green="0.01176470588" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="goToLoginBtnClick:" destination="iho-Kp-apo" eventType="touchUpInside" id="kTN-8Z-IDz"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96862745100000003" green="0.50980392159999999" blue="0.6705882353" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="vSv-gW-gQd" firstAttribute="leading" secondItem="BXC-35-act" secondAttribute="leadingMargin" constant="94" id="7Wm-Il-Mg3"/>
+                            <constraint firstItem="vSv-gW-gQd" firstAttribute="top" secondItem="PML-KH-pI6" secondAttribute="bottom" constant="163" id="BKO-eD-50K"/>
+                            <constraint firstItem="C4n-ns-5Ko" firstAttribute="top" secondItem="vSv-gW-gQd" secondAttribute="bottom" constant="395" id="ELM-Gl-8eL"/>
+                            <constraint firstItem="vSv-gW-gQd" firstAttribute="centerX" secondItem="BXC-35-act" secondAttribute="centerX" id="WPW-iW-xZD"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qsa-FE-dlx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-71.200000000000003" y="76.911544227886068"/>
+        </scene>
+    </scenes>
+</document>

@@ -570,11 +570,9 @@ typedef enum : NSUInteger {
             [weakSelf showHint:NSEaseLocalizedString(@"message.thumImageFail", @"thumbnail for failure!")];
         }
     };
-    //pod故障注释
-    BOOL isCustomDownload = NO;//代替
-    BOOL isAutoDownloadThumbnail = NO;//代替
-//    BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
-//    BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
+    
+    BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
+    BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
     EMMessageBody *messageBody = message.body;
     if ([messageBody type] == EMMessageBodyTypeImage) {
         EMImageMessageBody *imageBody = (EMImageMessageBody *)messageBody;
@@ -760,9 +758,8 @@ typedef enum : NSUInteger {
         moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
         [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
     };
-    //pod故障注释
-    BOOL isCustomDownload = NO;//代替
-//    BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
+    
+    BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
     __weak typeof(self) weakSelf = self;
     void (^completion)(EMMessage *aMessage, EMError *error) = ^(EMMessage *aMessage, EMError *error) {
         if (!error)
@@ -817,9 +814,8 @@ typedef enum : NSUInteger {
 {
     __weak EaseMessageViewController *weakSelf = self;
     EMImageMessageBody *imageBody = (EMImageMessageBody*)[model.message body];
-    //pod故障注释
-    BOOL isCustomDownload = NO;//代替
-//    BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
+    
+    BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
     if ([imageBody type] == EMMessageBodyTypeImage) {
         if (imageBody.thumbnailDownloadStatus == EMDownloadStatusSuccessed) {
             if (imageBody.downloadStatus == EMDownloadStatusSuccessed)
@@ -902,9 +898,8 @@ typedef enum : NSUInteger {
     else if (downloadStatus == EMDownloadStatusFailed || downloadStatus == EMDownloadStatusPending)
     {
         [self showHint:NSEaseLocalizedString(@"message.downloadingAudio", @"downloading voice, click later")];
-        //pod故障注释
-        BOOL isCustomDownload = NO;//代替
-//        BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
+    
+        BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
         if (isCustomDownload) {
             [self _customDownloadMessageFile:model.message];
         } else {
@@ -1924,10 +1919,9 @@ typedef enum : NSUInteger {
     }
     
     __weak typeof(self) weakself = self;
-    //pod故障注释
     
-//    if (!([EMClient sharedClient].options.isAutoTransferMessageAttachments) && isUploadFile)
-        if (1) {
+    if (!([EMClient sharedClient].options.isAutoTransferMessageAttachments) && isUploadFile){
+        
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:DBHGetStringWithKeyFromTable(@"message.autoTransfer", @"Please customize the transfer attachment method") delegate:nil cancelButtonTitle:DBHGetStringWithKeyFromTable(@"sure", @"OK") otherButtonTitles:nil, nil];
         [alertView show];
     } else {

@@ -9,11 +9,10 @@
 #import "YYRedPacketSendFourthImageViewController.h"
 #import "DBHPlaceHolderTextView.h"
 #import <AliyunOSSiOS/OSSService.h>
-//pod故障 注释
-//#import "TZImagePickerController.h"
+#import "TZImagePickerController.h"
 #import "YYRedPacketPreviewViewController.h"
 
-@interface YYRedPacketSendFourthImageViewController ()//<TZImagePickerControllerDelegate, UITextViewDelegate>
+@interface YYRedPacketSendFourthImageViewController ()<TZImagePickerControllerDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *progressView;
 @property (weak, nonatomic) IBOutlet UILabel *fourthLabel;

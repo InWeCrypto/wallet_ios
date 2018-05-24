@@ -19,6 +19,20 @@
     // Do any additional setup after loading the view.
 }
 
+
+- (IBAction)goToLoginBtnClick:(id)sender {
+    
+    if (![UserSignData share].user.isLogin) {
+        
+        [[AppDelegate delegate] goToLoginVC:self];
+    }
+    else {
+        // 个人信息
+//        DBHPersonalSettingViewController *personalSettingViewController = [[DBHPersonalSettingViewController alloc] init];
+//        [self.navigationController pushViewController:personalSettingViewController animated:YES];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

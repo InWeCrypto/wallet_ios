@@ -20,6 +20,37 @@
 		AA08974E20B2C1210065E70F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA08974D20B2C1210065E70F /* LoginViewController.m */; };
 		AA08975020B2C1470065E70F /* LoginStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA08974F20B2C1470065E70F /* LoginStoryboard.storyboard */; };
 		AA08975320B2C1C00065E70F /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA08975220B2C1C00065E70F /* UserModel.m */; };
+		AA2F03B220B6B2B7004A1383 /* DBHMarketDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03B120B6B2B7004A1383 /* DBHMarketDetailView.m */; };
+		AA2F03B520B6B2DE004A1383 /* DBHTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03B420B6B2DE004A1383 /* DBHTimeSelectView.m */; };
+		AA2F03BB20B6B368004A1383 /* DBHMarketDetailKLineViewModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03B920B6B367004A1383 /* DBHMarketDetailKLineViewModelDataBase.m */; };
+		AA2F03BC20B6B368004A1383 /* DBHMarketDetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03BA20B6B368004A1383 /* DBHMarketDetailViewModel.m */; };
+		AA2F03BF20B6B3BE004A1383 /* DBHMarketDetailKLineViewModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03BE20B6B3BD004A1383 /* DBHMarketDetailKLineViewModelData.m */; };
+		AA2F03C520B6B407004A1383 /* DBHMarketDetailMoneyRealTimePriceModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03C120B6B405004A1383 /* DBHMarketDetailMoneyRealTimePriceModelData.m */; };
+		AA2F03C620B6B407004A1383 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03C420B6B406004A1383 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m */; };
+		AA2F03C920B6B552004A1383 /* DBHLineValueView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03C820B6B552004A1383 /* DBHLineValueView.m */; };
+		AA2F03D320B6BA5D004A1383 /* CHExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03CB20B6BA5D004A1383 /* CHExtension.swift */; };
+		AA2F03D420B6BA5D004A1383 /* CHAxisModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03CC20B6BA5D004A1383 /* CHAxisModel.swift */; };
+		AA2F03D520B6BA5D004A1383 /* CHSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03CD20B6BA5D004A1383 /* CHSeries.swift */; };
+		AA2F03D620B6BA5D004A1383 /* CHKLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03CE20B6BA5D004A1383 /* CHKLineChart.swift */; };
+		AA2F03D720B6BA5D004A1383 /* CHSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03CF20B6BA5D004A1383 /* CHSection.swift */; };
+		AA2F03D820B6BA5D004A1383 /* CHChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03D020B6BA5D004A1383 /* CHChartModel.swift */; };
+		AA2F03D920B6BA5D004A1383 /* CHKLineChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03D120B6BA5D004A1383 /* CHKLineChartStyle.swift */; };
+		AA2F03DA20B6BA5D004A1383 /* CHChartAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03D220B6BA5D004A1383 /* CHChartAlgorithm.swift */; };
+		AA2F03DD20B6BBCF004A1383 /* DBHSharePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03DB20B6BBCE004A1383 /* DBHSharePictureViewController.m */; };
+		AA2F03E020B6BC2F004A1383 /* DBHQuotationReminderPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03DE20B6BC2E004A1383 /* DBHQuotationReminderPromptView.m */; };
+		AA2F03E320B6BC83004A1383 /* DBHSharedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03E220B6BC83004A1383 /* DBHSharedItem.m */; };
+		AA2F03E620B6C47A004A1383 /* CDNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03E520B6C479004A1383 /* CDNavigationController.m */; };
+		AA2F03E820B6CD3E004A1383 /* MyProfile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA2F03E720B6CD3E004A1383 /* MyProfile.storyboard */; };
+		AA2F03EB20B6D23E004A1383 /* UserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F03EA20B6D23D004A1383 /* UserLogin.m */; };
+		AA3A7F9320B6908A0058CD21 /* LoginFaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7F9220B6908A0058CD21 /* LoginFaceViewController.m */; };
+		AA3A7F9620B696190058CD21 /* DBHMarketDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7F9520B696180058CD21 /* DBHMarketDetailViewController.swift */; };
+		AA3A7F9920B696A40058CD21 /* DBHTradingMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7F9720B696A40058CD21 /* DBHTradingMarketView.swift */; };
+		AA3A7F9A20B696A40058CD21 /* DBHssViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7F9820B696A40058CD21 /* DBHssViewController.swift */; };
+		AA3A7F9D20B69CCE0058CD21 /* CommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7F9B20B69CCE0058CD21 /* CommonUtils.m */; };
+		AA3A7FA020B6A25B0058CD21 /* AreaSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7F9F20B6A25B0058CD21 /* AreaSelectViewController.m */; };
+		AA3A7FA320B6A5980058CD21 /* BlockBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7FA120B6A5970058CD21 /* BlockBaseViewController.m */; };
+		AA3A7FA920B6A6220058CD21 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7FA420B6A6210058CD21 /* pinyin.c */; };
+		AA3A7FAA20B6A6220058CD21 /* AIMTableViewIndexBar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A7FA720B6A6210058CD21 /* AIMTableViewIndexBar.m */; };
 		AAC4220B20B3B80600D2EB95 /* PPNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4220120B3B80600D2EB95 /* PPNetworkCache.m */; };
 		AAC4220C20B3B80600D2EB95 /* DBHGetTradingMarket.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4220220B3B80600D2EB95 /* DBHGetTradingMarket.m */; };
 		AAC4220D20B3B80600D2EB95 /* PPNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4220420B3B80600D2EB95 /* PPNetworkHelper.m */; };
@@ -391,6 +422,59 @@
 		AA08974F20B2C1470065E70F /* LoginStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginStoryboard.storyboard; sourceTree = "<group>"; };
 		AA08975120B2C1C00065E70F /* UserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		AA08975220B2C1C00065E70F /* UserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		AA2F03B020B6B2B6004A1383 /* DBHMarketDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailView.h; sourceTree = "<group>"; };
+		AA2F03B120B6B2B7004A1383 /* DBHMarketDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailView.m; sourceTree = "<group>"; };
+		AA2F03B320B6B2DE004A1383 /* DBHTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHTimeSelectView.h; sourceTree = "<group>"; };
+		AA2F03B420B6B2DE004A1383 /* DBHTimeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHTimeSelectView.m; sourceTree = "<group>"; };
+		AA2F03B620B6B367004A1383 /* DBHMarketDetailKLineViewModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailKLineViewModelDataBase.h; sourceTree = "<group>"; };
+		AA2F03B720B6B367004A1383 /* DBHMarketDetailKLineViewDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailKLineViewDataModels.h; sourceTree = "<group>"; };
+		AA2F03B820B6B367004A1383 /* DBHMarketDetailViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailViewModel.h; sourceTree = "<group>"; };
+		AA2F03B920B6B367004A1383 /* DBHMarketDetailKLineViewModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailKLineViewModelDataBase.m; sourceTree = "<group>"; };
+		AA2F03BA20B6B368004A1383 /* DBHMarketDetailViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailViewModel.m; sourceTree = "<group>"; };
+		AA2F03BD20B6B3BD004A1383 /* DBHMarketDetailKLineViewModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailKLineViewModelData.h; sourceTree = "<group>"; };
+		AA2F03BE20B6B3BD004A1383 /* DBHMarketDetailKLineViewModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailKLineViewModelData.m; sourceTree = "<group>"; };
+		AA2F03C020B6B405004A1383 /* DBHMarketDetailMoneyRealTimePriceDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailMoneyRealTimePriceDataModels.h; sourceTree = "<group>"; };
+		AA2F03C120B6B405004A1383 /* DBHMarketDetailMoneyRealTimePriceModelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailMoneyRealTimePriceModelData.m; sourceTree = "<group>"; };
+		AA2F03C220B6B406004A1383 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailMoneyRealTimePriceModelDataBase.h; sourceTree = "<group>"; };
+		AA2F03C320B6B406004A1383 /* DBHMarketDetailMoneyRealTimePriceModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHMarketDetailMoneyRealTimePriceModelData.h; sourceTree = "<group>"; };
+		AA2F03C420B6B406004A1383 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHMarketDetailMoneyRealTimePriceModelDataBase.m; sourceTree = "<group>"; };
+		AA2F03C720B6B552004A1383 /* DBHLineValueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHLineValueView.h; sourceTree = "<group>"; };
+		AA2F03C820B6B552004A1383 /* DBHLineValueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHLineValueView.m; sourceTree = "<group>"; };
+		AA2F03CB20B6BA5D004A1383 /* CHExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHExtension.swift; sourceTree = "<group>"; };
+		AA2F03CC20B6BA5D004A1383 /* CHAxisModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHAxisModel.swift; sourceTree = "<group>"; };
+		AA2F03CD20B6BA5D004A1383 /* CHSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHSeries.swift; sourceTree = "<group>"; };
+		AA2F03CE20B6BA5D004A1383 /* CHKLineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHKLineChart.swift; sourceTree = "<group>"; };
+		AA2F03CF20B6BA5D004A1383 /* CHSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHSection.swift; sourceTree = "<group>"; };
+		AA2F03D020B6BA5D004A1383 /* CHChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHChartModel.swift; sourceTree = "<group>"; };
+		AA2F03D120B6BA5D004A1383 /* CHKLineChartStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHKLineChartStyle.swift; sourceTree = "<group>"; };
+		AA2F03D220B6BA5D004A1383 /* CHChartAlgorithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CHChartAlgorithm.swift; sourceTree = "<group>"; };
+		AA2F03DB20B6BBCE004A1383 /* DBHSharePictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHSharePictureViewController.m; sourceTree = "<group>"; };
+		AA2F03DC20B6BBCF004A1383 /* DBHSharePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHSharePictureViewController.h; sourceTree = "<group>"; };
+		AA2F03DE20B6BC2E004A1383 /* DBHQuotationReminderPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHQuotationReminderPromptView.m; sourceTree = "<group>"; };
+		AA2F03DF20B6BC2E004A1383 /* DBHQuotationReminderPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHQuotationReminderPromptView.h; sourceTree = "<group>"; };
+		AA2F03E120B6BC82004A1383 /* DBHSharedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHSharedItem.h; sourceTree = "<group>"; };
+		AA2F03E220B6BC83004A1383 /* DBHSharedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHSharedItem.m; sourceTree = "<group>"; };
+		AA2F03E420B6C479004A1383 /* CDNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDNavigationController.h; sourceTree = "<group>"; };
+		AA2F03E520B6C479004A1383 /* CDNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDNavigationController.m; sourceTree = "<group>"; };
+		AA2F03E720B6CD3E004A1383 /* MyProfile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyProfile.storyboard; sourceTree = "<group>"; };
+		AA2F03E920B6D23D004A1383 /* UserLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLogin.h; sourceTree = "<group>"; };
+		AA2F03EA20B6D23D004A1383 /* UserLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLogin.m; sourceTree = "<group>"; };
+		AA3A7F9120B6908A0058CD21 /* LoginFaceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginFaceViewController.h; sourceTree = "<group>"; };
+		AA3A7F9220B6908A0058CD21 /* LoginFaceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginFaceViewController.m; sourceTree = "<group>"; };
+		AA3A7F9420B696170058CD21 /* InWeCrypto-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InWeCrypto-Bridging-Header.h"; sourceTree = "<group>"; };
+		AA3A7F9520B696180058CD21 /* DBHMarketDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBHMarketDetailViewController.swift; sourceTree = "<group>"; };
+		AA3A7F9720B696A40058CD21 /* DBHTradingMarketView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBHTradingMarketView.swift; sourceTree = "<group>"; };
+		AA3A7F9820B696A40058CD21 /* DBHssViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBHssViewController.swift; sourceTree = "<group>"; };
+		AA3A7F9B20B69CCE0058CD21 /* CommonUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUtils.m; sourceTree = "<group>"; };
+		AA3A7F9C20B69CCE0058CD21 /* CommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtils.h; sourceTree = "<group>"; };
+		AA3A7F9E20B6A25B0058CD21 /* AreaSelectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaSelectViewController.h; sourceTree = "<group>"; };
+		AA3A7F9F20B6A25B0058CD21 /* AreaSelectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AreaSelectViewController.m; sourceTree = "<group>"; };
+		AA3A7FA120B6A5970058CD21 /* BlockBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockBaseViewController.m; sourceTree = "<group>"; };
+		AA3A7FA220B6A5970058CD21 /* BlockBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockBaseViewController.h; sourceTree = "<group>"; };
+		AA3A7FA420B6A6210058CD21 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
+		AA3A7FA620B6A6210058CD21 /* AIMTableViewIndexBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMTableViewIndexBar.h; sourceTree = "<group>"; };
+		AA3A7FA720B6A6210058CD21 /* AIMTableViewIndexBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMTableViewIndexBar.m; sourceTree = "<group>"; };
+		AA3A7FA820B6A6220058CD21 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
 		AAC4220120B3B80600D2EB95 /* PPNetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkCache.m; sourceTree = "<group>"; };
 		AAC4220220B3B80600D2EB95 /* DBHGetTradingMarket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHGetTradingMarket.m; sourceTree = "<group>"; };
 		AAC4220320B3B80600D2EB95 /* PPNetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkHelper.h; sourceTree = "<group>"; };
@@ -1207,8 +1291,12 @@
 		AA08973F20B2BECB0065E70F /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				AA2F03CA20B6BA5D004A1383 /* CHKLineChart */,
+				AA3A7FA520B6A6210058CD21 /* AIMTableViewIndexBar */,
 				AACE518920B51548001F7C18 /* EaseUI */,
 				AACE505120B50B3F001F7C18 /* WechatSDK */,
+				AA3A7FA420B6A6210058CD21 /* pinyin.c */,
+				AA3A7FA820B6A6220058CD21 /* pinyin.h */,
 				AAC424C220B3F6B400D2EB95 /* KKWebView.h */,
 				AAC424C120B3F6B400D2EB95 /* KKWebView.m */,
 				AACE507020B50ECB001F7C18 /* ChoseCell.h */,
@@ -1247,6 +1335,8 @@
 		AA08974020B2BECB0065E70F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				AA3A7F9C20B69CCE0058CD21 /* CommonUtils.h */,
+				AA3A7F9B20B69CCE0058CD21 /* CommonUtils.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1353,10 +1443,14 @@
 				AAC4253520B41BCA00D2EB95 /* LoginPhoneViewController.m */,
 				AAC4253720B41BEE00D2EB95 /* LoginFingerprintViewController.h */,
 				AAC4253820B41BEE00D2EB95 /* LoginFingerprintViewController.m */,
+				AA3A7F9120B6908A0058CD21 /* LoginFaceViewController.h */,
+				AA3A7F9220B6908A0058CD21 /* LoginFaceViewController.m */,
 				AAC4253A20B41C0100D2EB95 /* SignUpViewController.h */,
 				AAC4253B20B41C0100D2EB95 /* SignUpViewController.m */,
 				AAC4253D20B41C1600D2EB95 /* ForgetPWViewController.h */,
 				AAC4253E20B41C1600D2EB95 /* ForgetPWViewController.m */,
+				AA3A7F9E20B6A25B0058CD21 /* AreaSelectViewController.h */,
+				AA3A7F9F20B6A25B0058CD21 /* AreaSelectViewController.m */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1370,6 +1464,8 @@
 				AA08975220B2C1C00065E70F /* UserModel.m */,
 				AAC4228520B3C5CC00D2EB95 /* UserSignData.h */,
 				AAC4228620B3C5CD00D2EB95 /* UserSignData.m */,
+				AA2F03E920B6D23D004A1383 /* UserLogin.h */,
+				AA2F03EA20B6D23D004A1383 /* UserLogin.m */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1389,6 +1485,8 @@
 				AACE533920B51AA0001F7C18 /* ZFTabBarViewController */,
 				AA08974920B2C0CB0065E70F /* BaseViewController.h */,
 				AA08974A20B2C0CB0065E70F /* BaseViewController.m */,
+				AA3A7FA220B6A5970058CD21 /* BlockBaseViewController.h */,
+				AA3A7FA120B6A5970058CD21 /* BlockBaseViewController.m */,
 				AACE534A20B51C31001F7C18 /* DBHBaseNavigationController.h */,
 				AACE534920B51C30001F7C18 /* DBHBaseNavigationController.m */,
 				AACE534720B51BD4001F7C18 /* DBHNavigationController.h */,
@@ -1397,13 +1495,53 @@
 				AAC4222720B3BDF100D2EB95 /* DBHBaseTableViewCell.m */,
 				AAC424C420B3F70700D2EB95 /* MyNavigationController.h */,
 				AAC424C520B3F70700D2EB95 /* MyNavigationController.m */,
+				AA2F03E420B6C479004A1383 /* CDNavigationController.h */,
+				AA2F03E520B6C479004A1383 /* CDNavigationController.m */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		AA2F03CA20B6BA5D004A1383 /* CHKLineChart */ = {
+			isa = PBXGroup;
+			children = (
+				AA2F03CB20B6BA5D004A1383 /* CHExtension.swift */,
+				AA2F03CC20B6BA5D004A1383 /* CHAxisModel.swift */,
+				AA2F03CD20B6BA5D004A1383 /* CHSeries.swift */,
+				AA2F03CE20B6BA5D004A1383 /* CHKLineChart.swift */,
+				AA2F03CF20B6BA5D004A1383 /* CHSection.swift */,
+				AA2F03D020B6BA5D004A1383 /* CHChartModel.swift */,
+				AA2F03D120B6BA5D004A1383 /* CHKLineChartStyle.swift */,
+				AA2F03D220B6BA5D004A1383 /* CHChartAlgorithm.swift */,
+			);
+			path = CHKLineChart;
+			sourceTree = "<group>";
+		};
+		AA3A7FA520B6A6210058CD21 /* AIMTableViewIndexBar */ = {
+			isa = PBXGroup;
+			children = (
+				AA3A7FA620B6A6210058CD21 /* AIMTableViewIndexBar.h */,
+				AA3A7FA720B6A6210058CD21 /* AIMTableViewIndexBar.m */,
+			);
+			path = AIMTableViewIndexBar;
 			sourceTree = "<group>";
 		};
 		AAC4221320B3BA3E00D2EB95 /* Information */ = {
 			isa = PBXGroup;
 			children = (
+				AA2F03E120B6BC82004A1383 /* DBHSharedItem.h */,
+				AA2F03E220B6BC83004A1383 /* DBHSharedItem.m */,
+				AA2F03C020B6B405004A1383 /* DBHMarketDetailMoneyRealTimePriceDataModels.h */,
+				AA2F03C320B6B406004A1383 /* DBHMarketDetailMoneyRealTimePriceModelData.h */,
+				AA2F03C120B6B405004A1383 /* DBHMarketDetailMoneyRealTimePriceModelData.m */,
+				AA2F03C220B6B406004A1383 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.h */,
+				AA2F03C420B6B406004A1383 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m */,
+				AA2F03BD20B6B3BD004A1383 /* DBHMarketDetailKLineViewModelData.h */,
+				AA2F03BE20B6B3BD004A1383 /* DBHMarketDetailKLineViewModelData.m */,
+				AA2F03B720B6B367004A1383 /* DBHMarketDetailKLineViewDataModels.h */,
+				AA2F03B620B6B367004A1383 /* DBHMarketDetailKLineViewModelDataBase.h */,
+				AA2F03B920B6B367004A1383 /* DBHMarketDetailKLineViewModelDataBase.m */,
+				AA2F03B820B6B367004A1383 /* DBHMarketDetailViewModel.h */,
+				AA2F03BA20B6B368004A1383 /* DBHMarketDetailViewModel.m */,
 				AACE508120B5110A001F7C18 /* DBHProjectDetailInformationModelCategoryDesc.h */,
 				AACE507C20B51109001F7C18 /* DBHProjectDetailInformationModelCategoryDesc.m */,
 				AACE508B20B5110C001F7C18 /* DBHProjectDetailInformationModelCategoryExplorer.h */,
@@ -1446,6 +1584,7 @@
 		AAC4221720B3BB6900D2EB95 /* Information */ = {
 			isa = PBXGroup;
 			children = (
+				AA3A7F9520B696180058CD21 /* DBHMarketDetailViewController.swift */,
 				AACE534C20B51D72001F7C18 /* RedPacket */,
 				AACE532F20B519E8001F7C18 /* Project */,
 				AACE532E20B519E8001F7C18 /* Ranking */,
@@ -1453,6 +1592,11 @@
 				AAC4221820B3BB6900D2EB95 /* DBHTradingMarketViewController.m */,
 				AACE533620B51A2A001F7C18 /* InformationViewController.h */,
 				AACE533720B51A2A001F7C18 /* InformationViewController.m */,
+				AA3A7F9420B696170058CD21 /* InWeCrypto-Bridging-Header.h */,
+				AA2F03DC20B6BBCF004A1383 /* DBHSharePictureViewController.h */,
+				AA2F03DB20B6BBCE004A1383 /* DBHSharePictureViewController.m */,
+				AA2F03DF20B6BC2E004A1383 /* DBHQuotationReminderPromptView.h */,
+				AA2F03DE20B6BC2E004A1383 /* DBHQuotationReminderPromptView.m */,
 			);
 			path = Information;
 			sourceTree = "<group>";
@@ -1460,11 +1604,19 @@
 		AAC4221E20B3BBC800D2EB95 /* Information */ = {
 			isa = PBXGroup;
 			children = (
+				AA3A7F9820B696A40058CD21 /* DBHssViewController.swift */,
+				AA3A7F9720B696A40058CD21 /* DBHTradingMarketView.swift */,
 				AACE538220B51DDD001F7C18 /* RedPacket */,
 				AACE504E20B50AFC001F7C18 /* CustomActivity.h */,
 				AACE504F20B50AFC001F7C18 /* CustomActivity.m */,
 				AAC4222020B3BC0400D2EB95 /* DBHTradingMarketTableViewCell.h */,
 				AAC4221F20B3BC0400D2EB95 /* DBHTradingMarketTableViewCell.m */,
+				AA2F03B020B6B2B6004A1383 /* DBHMarketDetailView.h */,
+				AA2F03B120B6B2B7004A1383 /* DBHMarketDetailView.m */,
+				AA2F03B320B6B2DE004A1383 /* DBHTimeSelectView.h */,
+				AA2F03B420B6B2DE004A1383 /* DBHTimeSelectView.m */,
+				AA2F03C720B6B552004A1383 /* DBHLineValueView.h */,
+				AA2F03C820B6B552004A1383 /* DBHLineValueView.m */,
 			);
 			path = Information;
 			sourceTree = "<group>";
@@ -2364,6 +2516,7 @@
 			children = (
 				AACE53D020B51E2F001F7C18 /* DBHPlaceHolderTextView.m */,
 				AACE53D120B51E2F001F7C18 /* DBHPlaceHolderTextView.h */,
+				AA2F03E720B6CD3E004A1383 /* MyProfile.storyboard */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -2389,6 +2542,7 @@
 				AA08970320B277B10065E70F /* Frameworks */,
 				AA08970420B277B10065E70F /* Resources */,
 				125E64BDFEBD4F3A5A647222 /* [CP] Embed Pods Frameworks */,
+				1A57143FCAAF2A54AEC74AF2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2446,6 +2600,7 @@
 				TargetAttributes = {
 					AA08970520B277B10065E70F = {
 						CreatedOnToolsVersion = 9.3.1;
+						LastSwiftMigration = 0930;
 					};
 					AA08971D20B277B30065E70F = {
 						CreatedOnToolsVersion = 9.3.1;
@@ -2484,6 +2639,7 @@
 			files = (
 				AAC422DB20B3C72400D2EB95 /* AAHighchartsMore.js in Resources */,
 				AACE538120B51D72001F7C18 /* RedPacket.storyboard in Resources */,
+				AA2F03E820B6CD3E004A1383 /* MyProfile.storyboard in Resources */,
 				AACE531E20B51549001F7C18 /* EaseUIResource.bundle in Resources */,
 				AACE53BC20B51DDE001F7C18 /* YYRedPacketSection1TableViewCell.xib in Resources */,
 				AACE53C720B51DDE001F7C18 /* YYRedPacketChooseWalletView.xib in Resources */,
@@ -2545,6 +2701,8 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-InWeCrypto/Pods-InWeCrypto-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/CHKLineChart/CHKLineChart.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/Daysquare/Daysquare.framework",
 				"${PODS_ROOT}/HyphenateLite/ios_IM_HyphenateLite_sdk_3.3.0/HyphenateSDK/HyphenateLite.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
@@ -2556,12 +2714,20 @@
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TTTAttributedLabel/TTTAttributedLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
+				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
+				"${BUILT_PRODUCTS_DIR}/YUSegment/YUSegment.framework",
 				"${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CHKLineChart.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Daysquare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HyphenateLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
@@ -2573,12 +2739,38 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTTAttributedLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TZImagePickerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YUSegment.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCache.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-InWeCrypto/Pods-InWeCrypto-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1A57143FCAAF2A54AEC74AF2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-InWeCrypto/Pods-InWeCrypto-resources.sh",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterShareExtensionUIResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterShareExtensionUIResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-InWeCrypto/Pods-InWeCrypto-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D095C604E87C8B444E75EEB7 /* [CP] Check Pods Manifest.lock */ = {
@@ -2608,9 +2800,13 @@
 			files = (
 				AACE52B020B51549001F7C18 /* FixFopen.c in Sources */,
 				AAC422FE20B3C72400D2EB95 /* AAJsonConverter.m in Sources */,
+				AA2F03B520B6B2DE004A1383 /* DBHTimeSelectView.m in Sources */,
 				AAC4250820B3F9A500D2EB95 /* YYWalletOrderListModel.m in Sources */,
+				AA2F03D320B6BA5D004A1383 /* CHExtension.swift in Sources */,
 				AACE530720B51549001F7C18 /* EaseUserCell.m in Sources */,
+				AA2F03DD20B6BBCF004A1383 /* DBHSharePictureViewController.m in Sources */,
 				AAC4227020B3C2C700D2EB95 /* UINavigationBar+Extension.m in Sources */,
+				AA2F03E320B6BC83004A1383 /* DBHSharedItem.m in Sources */,
 				AAC4228F20B3C6B100D2EB95 /* AlertView.m in Sources */,
 				AAC424E320B3F86E00D2EB95 /* YYRedPacketMySentModel.m in Sources */,
 				AACE533820B51A2A001F7C18 /* InformationViewController.m in Sources */,
@@ -2620,11 +2816,14 @@
 				AAC422F320B3C72400D2EB95 /* AAArea.m in Sources */,
 				AACE534320B51AA1001F7C18 /* ZFTabBarButton.m in Sources */,
 				AACE508C20B5110C001F7C18 /* DBHProjectDetailInformationModelCategoryPresentation.m in Sources */,
+				AA3A7FA320B6A5980058CD21 /* BlockBaseViewController.m in Sources */,
 				AAC422F220B3C72400D2EB95 /* AAOptions.m in Sources */,
 				AAC422EC20B3C72400D2EB95 /* AAColumn.m in Sources */,
+				AA3A7F9920B696A40058CD21 /* DBHTradingMarketView.swift in Sources */,
 				AACE530620B51549001F7C18 /* EaseViewController.m in Sources */,
 				AACE53C020B51DDE001F7C18 /* YYChoosePayStyleTableViewCell.m in Sources */,
 				AACE537520B51D72001F7C18 /* YYRedPacketSendThirdViewController.m in Sources */,
+				AA2F03D620B6BA5D004A1383 /* CHKLineChart.swift in Sources */,
 				AACE53BA20B51DDE001F7C18 /* YYRedPacketSucessTableViewCell.m in Sources */,
 				AAC422F420B3C72400D2EB95 /* AASeriesElement.m in Sources */,
 				AACE52B320B51549001F7C18 /* EaseChineseToPinyin.m in Sources */,
@@ -2652,6 +2851,7 @@
 				AACE52B820B51549001F7C18 /* EaseMessageModel.m in Sources */,
 				AACE53C120B51DDE001F7C18 /* YYRedPacketChoosePayStyleView.m in Sources */,
 				AACE505B20B50B74001F7C18 /* WalletLeftListModel.m in Sources */,
+				AA2F03B220B6B2B7004A1383 /* DBHMarketDetailView.m in Sources */,
 				AACE52DA20B51549001F7C18 /* MWPhotoBrowser.m in Sources */,
 				AACE537B20B51D72001F7C18 /* YYRedPacketSendFourthLinkViewController.m in Sources */,
 				AACE531C20B51549001F7C18 /* EaseBubbleView+Gif.m in Sources */,
@@ -2696,6 +2896,7 @@
 				AAC424E220B3F86E00D2EB95 /* YYRedPacketOpenedListModel.m in Sources */,
 				AACE537E20B51D72001F7C18 /* YYRedPacketSendFourthTextViewController.m in Sources */,
 				AACE53B720B51DDE001F7C18 /* YYRedPacketSection0TableViewCell.m in Sources */,
+				AA2F03D520B6BA5D004A1383 /* CHSeries.swift in Sources */,
 				AAC422E320B3C72400D2EB95 /* AALabels.m in Sources */,
 				AACE507920B510FF001F7C18 /* DBHProjectCommentUserModel.m in Sources */,
 				AACE534220B51AA1001F7C18 /* ZFTabBar.m in Sources */,
@@ -2706,7 +2907,9 @@
 				AACE531620B51549001F7C18 /* EaseBubbleView+Location.m in Sources */,
 				AAC4253120B3FBD200D2EB95 /* LYShareMenuView.m in Sources */,
 				AACE52FF20B51549001F7C18 /* UIImageView+EMHighlightedWebCache.m in Sources */,
+				AA3A7FA020B6A25B0058CD21 /* AreaSelectViewController.m in Sources */,
 				AACE52B920B51549001F7C18 /* EaseConversationModel.m in Sources */,
+				AA3A7F9320B6908A0058CD21 /* LoginFaceViewController.m in Sources */,
 				AACE53D220B51E30001F7C18 /* DBHPlaceHolderTextView.m in Sources */,
 				AAC4250B20B3F9A500D2EB95 /* YYWalletModel.m in Sources */,
 				AAC4251520B3FA6600D2EB95 /* ChoseWalletView.m in Sources */,
@@ -2730,7 +2933,9 @@
 				AACE532720B5196C001F7C18 /* MyViewController.m in Sources */,
 				AACE52B520B51549001F7C18 /* EaseEmotionEscape.m in Sources */,
 				AACE509220B5110C001F7C18 /* DBHProjectDetailInformationModelCategoryWallet.m in Sources */,
+				AA2F03C520B6B407004A1383 /* DBHMarketDetailMoneyRealTimePriceModelData.m in Sources */,
 				AAC422E720B3C72400D2EB95 /* AADataLabels.m in Sources */,
+				AA2F03C620B6B407004A1383 /* DBHMarketDetailMoneyRealTimePriceModelDataBase.m in Sources */,
 				AACE52F820B51549001F7C18 /* UIImageView+EMWebCache.m in Sources */,
 				AACE52E120B51549001F7C18 /* MWGridCell.m in Sources */,
 				AACE532220B5180C001F7C18 /* DBHLoadingViewController.m in Sources */,
@@ -2752,13 +2957,16 @@
 				AAC424F420B3F98000D2EB95 /* DBHWalletDetailTokenInfomationModelData.m in Sources */,
 				AAC422F720B3C72400D2EB95 /* AAMarker.m in Sources */,
 				AACE53CC20B51DDE001F7C18 /* UIColor+RGBValues.m in Sources */,
+				AA2F03E620B6C47A004A1383 /* CDNavigationController.m in Sources */,
 				AACE52B220B51549001F7C18 /* EaseConvertToCommonEmoticonsHelper.m in Sources */,
+				AA2F03BB20B6B368004A1383 /* DBHMarketDetailKLineViewModelDataBase.m in Sources */,
 				AACE506520B50DF6001F7C18 /* DBHExchangeNoticeModelData.m in Sources */,
 				AACE53CA20B51DDE001F7C18 /* YYRedPacketChooseCashTableViewCell.m in Sources */,
 				AAC4250920B3F9A500D2EB95 /* YYWalletConversionListModel.m in Sources */,
 				AAC4221620B3BA6800D2EB95 /* DBHProjectDetailInformationModelData.m in Sources */,
 				AACE52DD20B51549001F7C18 /* MWTapDetectingImageView.m in Sources */,
 				AACE530420B51549001F7C18 /* EaseRefreshTableViewController.m in Sources */,
+				AA2F03D920B6BA5D004A1383 /* CHKLineChartStyle.swift in Sources */,
 				AACE531820B51549001F7C18 /* EaseBubbleView.m in Sources */,
 				AACE52E620B51549001F7C18 /* PSTGridLayoutInfo.m in Sources */,
 				AACE506220B50DE6001F7C18 /* DBHProjectCommentDetailModel.m in Sources */,
@@ -2773,8 +2981,10 @@
 				AACE534520B51AA1001F7C18 /* ZFTabBarViewController.m in Sources */,
 				AACE531B20B51549001F7C18 /* EaseBubbleView+Image.m in Sources */,
 				AAC424E020B3F86E00D2EB95 /* YYRedPacketEthTokenModel.m in Sources */,
+				AA2F03D820B6BA5D004A1383 /* CHChartModel.swift in Sources */,
 				AACE537720B51D72001F7C18 /* YYRedPacketSendHistoryViewController.m in Sources */,
 				AAC422ED20B3C72400D2EB95 /* AAPlotLinesElement.m in Sources */,
+				AA2F03BF20B6B3BE004A1383 /* DBHMarketDetailKLineViewModelData.m in Sources */,
 				AACE53BD20B51DDE001F7C18 /* YYRedPacketReceiveProgressView.m in Sources */,
 				AACE531F20B51549001F7C18 /* EaseUI.m in Sources */,
 				AAC424DD20B3F86E00D2EB95 /* YYRedPacketConfigGasModel.m in Sources */,
@@ -2783,9 +2993,12 @@
 				AACE530C20B51549001F7C18 /* EaseBaseMessageCell.m in Sources */,
 				AACE52F120B51549001F7C18 /* NSData+EMImageContentType.m in Sources */,
 				AACE52EA20B51549001F7C18 /* PSTGridLayoutSection.m in Sources */,
+				AA3A7F9620B696190058CD21 /* DBHMarketDetailViewController.swift in Sources */,
 				AACE509020B5110C001F7C18 /* DBHProjectDetailInformationModelCategoryIndustry.m in Sources */,
+				AA2F03D420B6BA5D004A1383 /* CHAxisModel.swift in Sources */,
 				AAC422E620B3C72400D2EB95 /* AAPlotOptions.m in Sources */,
 				AACE52F320B51549001F7C18 /* EMSDWebImagePrefetcher.m in Sources */,
+				AA2F03C920B6B552004A1383 /* DBHLineValueView.m in Sources */,
 				AAC4227B20B3C2C700D2EB95 /* WKWebView+ZFJViewCapture.m in Sources */,
 				AACE509420B5110C001F7C18 /* DBHProjectDetailInformationModelCategoryExplorer.m in Sources */,
 				AACE531020B51549001F7C18 /* EaseFaceView.m in Sources */,
@@ -2802,16 +3015,19 @@
 				AAC4227920B3C2C700D2EB95 /* UIImage+ImageForColor.m in Sources */,
 				AAC424F220B3F98000D2EB95 /* DBHWalletManagerForNeoModelList.m in Sources */,
 				AACE53B920B51DDE001F7C18 /* YYRedPacketDetailSpecialTableViewCell.m in Sources */,
+				AA3A7F9D20B69CCE0058CD21 /* CommonUtils.m in Sources */,
 				AAC4227320B3C2C700D2EB95 /* NSString+Null.m in Sources */,
 				AACE52E820B51549001F7C18 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				AACE531720B51549001F7C18 /* EaseBubbleView+File.m in Sources */,
 				AAC424E420B3F86E00D2EB95 /* YYRedPacketSentCountModel.m in Sources */,
+				AA2F03EB20B6D23E004A1383 /* UserLogin.m in Sources */,
 				AACE531520B51549001F7C18 /* EaseBubbleView+Text.m in Sources */,
 				AAC4227420B3C2C700D2EB95 /* NSMutableString+Tool.m in Sources */,
 				AAC422FD20B3C72400D2EB95 /* AAChartModel.m in Sources */,
 				AACE537020B51D72001F7C18 /* YYRedPacketChooseCashViewController.m in Sources */,
 				AACE530A20B51549001F7C18 /* EaseCustomMessageCell.m in Sources */,
 				AAC422F520B3C72400D2EB95 /* AAAnimation.m in Sources */,
+				AA3A7F9A20B696A40058CD21 /* DBHssViewController.swift in Sources */,
 				AAC4250720B3F9A500D2EB95 /* YYWalletRecordGntModel.m in Sources */,
 				AACE506E20B50E8C001F7C18 /* DBHProjectHomeNewsModelArticleUser.m in Sources */,
 				AAC422F820B3C72400D2EB95 /* AASpline.m in Sources */,
@@ -2821,21 +3037,25 @@
 				AACE52EB20B51549001F7C18 /* PSTCollectionViewItemKey.m in Sources */,
 				AACE52E520B51549001F7C18 /* PSTCollectionViewCell.m in Sources */,
 				AACE52DC20B51549001F7C18 /* MWZoomingScrollView.m in Sources */,
+				AA2F03DA20B6BA5D004A1383 /* CHChartAlgorithm.swift in Sources */,
 				AACE53D620B51E90001F7C18 /* DBHInputPasswordPromptView.m in Sources */,
 				AACE53CD20B51DDE001F7C18 /* LDProgressView.m in Sources */,
 				AACE52F620B51549001F7C18 /* EMSDImageCache.m in Sources */,
 				AAC4227220B3C2C700D2EB95 /* UIButton+SDSetImage.m in Sources */,
 				AAC4228020B3C2C700D2EB95 /* NSDate+Tool.m in Sources */,
 				AACE52E920B51549001F7C18 /* PSTCollectionViewUpdateItem.m in Sources */,
+				AA2F03E020B6BC2F004A1383 /* DBHQuotationReminderPromptView.m in Sources */,
 				AACE537D20B51D72001F7C18 /* YYRedPacketSendSecondViewController.m in Sources */,
 				AAC4221D20B3BB7400D2EB95 /* DBHTradingMarketModelData.m in Sources */,
 				AACE531220B51549001F7C18 /* EaseChatToolbar.m in Sources */,
 				AAC4221220B3B96100D2EB95 /* DBHLanguageTool.m in Sources */,
+				AA3A7FA920B6A6220058CD21 /* pinyin.c in Sources */,
 				AAC4222820B3BDF100D2EB95 /* DBHBaseTableViewCell.m in Sources */,
 				AACE52D620B51549001F7C18 /* EMCDDeviceManager+Microphone.m in Sources */,
 				AAC4228120B3C2C700D2EB95 /* NSString+Height.m in Sources */,
 				AAC422F920B3C72400D2EB95 /* AAItemStyle.m in Sources */,
 				AACE52F920B51549001F7C18 /* EMSDWebImageManager.m in Sources */,
+				AA2F03BC20B6B368004A1383 /* DBHMarketDetailViewModel.m in Sources */,
 				AACE534820B51BD4001F7C18 /* DBHNavigationController.m in Sources */,
 				AAC4222520B3BCC500D2EB95 /* DBHTradingMarketModelDataBase.m in Sources */,
 				AACE52DB20B51549001F7C18 /* MWCaptionView.m in Sources */,
@@ -2861,6 +3081,7 @@
 				AACE537620B51D72001F7C18 /* YYRedPacketOpenViewController.m in Sources */,
 				AACE52BA20B51549001F7C18 /* EaseUserModel.m in Sources */,
 				AAC422FC20B3C72400D2EB95 /* AAChartView.m in Sources */,
+				AA3A7FAA20B6A6220058CD21 /* AIMTableViewIndexBar.m in Sources */,
 				AACE537A20B51D72001F7C18 /* YYRedPacketShareViewController.m in Sources */,
 				AACE53B220B51DDE001F7C18 /* YYRedPacketProtocolView.m in Sources */,
 				AACE531320B51549001F7C18 /* EaseRecordView.m in Sources */,
@@ -2879,6 +3100,7 @@
 				AACE52FB20B51549001F7C18 /* UIImage+EMGIF.m in Sources */,
 				AA08974E20B2C1210065E70F /* LoginViewController.m in Sources */,
 				AAC424E120B3F86E00D2EB95 /* YYRedPacketOpenedModel.m in Sources */,
+				AA2F03D720B6BA5D004A1383 /* CHSection.swift in Sources */,
 				AAC4223020B3C18E00D2EB95 /* LCProgressHUD.m in Sources */,
 				AAC4227E20B3C2C700D2EB95 /* SystemConvert.m in Sources */,
 				AACE537120B51D72001F7C18 /* YYRedPacketDetailViewController.m in Sources */,
@@ -2993,6 +3215,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -3044,6 +3267,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -3052,8 +3276,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E7E56365CC1C5BC5D8625CD2 /* Pods-InWeCrypto.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3078,6 +3304,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ApeAv.InWeCrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OBJC_BRIDGING_HEADER = "InWeCrypto/Controller/Information/InWeCrypto-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -3086,11 +3316,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 16C3DBB39C3D3AB5625D0CB4 /* Pods-InWeCrypto.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/InWeCrypto/ThirdParty/OneSDK",
+					"$(PROJECT_DIR)/InWeCrypto/ThirdParty",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/InWeCrypto/ThirdParty/OneSDK",
 					"$(PROJECT_DIR)/InWeCrypto/ThirdParty",
@@ -3112,6 +3349,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ApeAv.InWeCrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "InWeCrypto/Controller/Information/InWeCrypto-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -3119,6 +3359,7 @@
 		AA08973620B277B30065E70F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = InWeCryptoTests/Info.plist;
@@ -3137,6 +3378,7 @@
 		AA08973720B277B30065E70F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = InWeCryptoTests/Info.plist;
@@ -3155,6 +3397,7 @@
 		AA08973920B277B30065E70F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = InWeCryptoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3172,6 +3415,7 @@
 		AA08973A20B277B30065E70F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = InWeCryptoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

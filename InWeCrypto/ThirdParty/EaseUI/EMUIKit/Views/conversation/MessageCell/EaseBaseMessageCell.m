@@ -265,38 +265,37 @@
         self.avatarView.image = model.avatarImage;
     }
     _nameLabel.text = model.nickname;
-    //pod故障注释
-//    if (self.model.isSender) {
-//        _hasRead.hidden = YES;
-//        switch (self.model.messageStatus) {
-//            case EMMessageStatusDelivering:
-//            {
-//                _statusButton.hidden = YES;
-//                [_activity setHidden:NO];
-//                [_activity startAnimating];
-//            }
-//                break;
-//            case EMMessageStatusSucceed:
-//            {
-//                _statusButton.hidden = YES;
-//                [_activity stopAnimating];
-//                if (self.model.isMessageRead) {
-//                    _hasRead.hidden = NO;
-//                }
-//            }
-//                break;
-//            case EMMessageStatusPending:
-//            case EMMessageStatusFailed:
-//            {
-//                [_activity stopAnimating];
-//                [_activity setHidden:YES];
-//                _statusButton.hidden = NO;
-//            }
-//                break;
-//            default:
-//                break;
-//        }
-//    }
+    if (self.model.isSender) {
+        _hasRead.hidden = YES;
+        switch (self.model.messageStatus) {
+            case EMMessageStatusDelivering:
+            {
+                _statusButton.hidden = YES;
+                [_activity setHidden:NO];
+                [_activity startAnimating];
+            }
+                break;
+            case EMMessageStatusSuccessed:
+            {
+                _statusButton.hidden = YES;
+                [_activity stopAnimating];
+                if (self.model.isMessageRead) {
+                    _hasRead.hidden = NO;
+                }
+            }
+                break;
+            case EMMessageStatusPending:
+            case EMMessageStatusFailed:
+            {
+                [_activity stopAnimating];
+                [_activity setHidden:YES];
+                _statusButton.hidden = NO;
+            }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 - (void)setMessageNameFont:(UIFont *)messageNameFont

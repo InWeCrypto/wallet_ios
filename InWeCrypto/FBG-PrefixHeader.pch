@@ -180,6 +180,7 @@
 #define APP_DEVICEID [USER_DEFAULTS stringForKey:APP_DEVICE_ID]
 
 #pragma mark - 其他(import)
+#import "CommonUtils.h"
 #import "LCProgressHUD.h"
 #import "CoustromViewController.h"
 #import "NSArray+Tool.h"

@@ -7,6 +7,7 @@
 //
 
 #import "LoginPhoneViewController.h"
+#import "AreaSelectViewController.h"
 
 @interface LoginPhoneViewController ()
 
@@ -18,6 +19,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
+
+
+- (IBAction)areaSelectBtnClick:(id)sender {
+    AreaSelectViewController *areaVc = [[AreaSelectViewController alloc]init];
+    [areaVc completionSelectBlock:^(NSDictionary *areaDic) {
+        NSLog(@"--->%@",areaVc);
+    }];
+    [self.navigationController pushViewController:areaVc animated:YES];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

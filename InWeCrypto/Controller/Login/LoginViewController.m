@@ -7,8 +7,11 @@
 //
 
 #import "LoginViewController.h"
+#import "UserLogin.h"
 
 @interface LoginViewController ()
+@property (weak, nonatomic) IBOutlet UITextField        *accountTextField;
+@property (weak, nonatomic) IBOutlet UITextField        *passwordTextField;
 
 @end
 
@@ -18,6 +21,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
+
+/**
+ 登录
+ */
+- (IBAction)loginBtnClick:(id)sender {
+    
+    [UserLogin userLogin:self.accountTextField.text password:self.passwordTextField.text target:self];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

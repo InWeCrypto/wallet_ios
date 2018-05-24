@@ -10,4 +10,6 @@
 
 @interface LoginFingerprintViewController : BaseViewController
 
+@property (nonatomic, strong) id target;
+
 @end

@@ -14,13 +14,13 @@
 #import "WKWebView+Tool.h"
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "LYShareMenuView.h"
-//#import <TwitterKit/TWTRComposer.h>//pod故障注释
+#import <TwitterKit/TWTRComposer.h>
 
 #import "CustomActivity.h"
 #import "WXApi.h"
 #import "WalletLeftListModel.h"
-//#import "DBHSharePictureViewController.h"//pod故障注释
-//#import "DBHBaseNavigationController.h"//pod故障注释
+#import "DBHSharePictureViewController.h"
+#import "DBHBaseNavigationController.h"
 #import "WKWebView+ZFJViewCapture.h"
 
 @interface KKWebView ()<WKUIDelegate,WKNavigationDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, ChoseWalletViewDelegate, CommitOrderViewDelegate, LYShareMenuViewDelegate, WXApiDelegate>
@@ -614,26 +614,26 @@
 }
 
 #pragma mark - push vc
-- (void)pushToShareVC {//pod故障注释
-//    DBHSharePictureViewController *shareVC = [[DBHSharePictureViewController alloc] init];
-//    shareVC.longPictureImg = self.captureImg;
-//    DBHBaseNavigationController *navigationController = [[DBHBaseNavigationController alloc] initWithRootViewController:shareVC];
-//    [self presentViewController:navigationController animated:YES completion:nil];
+- (void)pushToShareVC {
+    DBHSharePictureViewController *shareVC = [[DBHSharePictureViewController alloc] init];
+    shareVC.longPictureImg = self.captureImg;
+    DBHBaseNavigationController *navigationController = [[DBHBaseNavigationController alloc] initWithRootViewController:shareVC];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark ------ Data ------
 - (void)shareToTwitter {
-    NSString *urlStr = [self sharedUrlStr];//pod故障注释
-//    TWTRComposer *composer = [[TWTRComposer alloc] init];
-//
-//    [composer setText:self.title];
-//    [composer setImage:self.shareIconImg];
-//    [composer setURL:[NSURL URLWithString:urlStr]];
-//
-//    WEAKSELF
-//    [composer showFromViewController:self completion:^(TWTRComposerResult result) {
-//        [weakSelf shareSuccess:result == TWTRComposerResultDone];
-//    }];
+    NSString *urlStr = [self sharedUrlStr];
+    TWTRComposer *composer = [[TWTRComposer alloc] init];
+
+    [composer setText:self.title];
+    [composer setImage:self.shareIconImg];
+    [composer setURL:[NSURL URLWithString:urlStr]];
+
+    WEAKSELF
+    [composer showFromViewController:self completion:^(TWTRComposerResult result) {
+        [weakSelf shareSuccess:result == TWTRComposerResultDone];
+    }];
 }
 
 - (void)reserves {

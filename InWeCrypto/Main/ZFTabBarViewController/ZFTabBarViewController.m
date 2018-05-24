@@ -118,9 +118,9 @@
     }
     
     // 5.我的
-    MyViewController * myVc = [[MyViewController alloc] init];
-    myVc.tabBarItem.badgeValue = @"";
-    [self setupChildViewController:myVc title:DBHGetStringWithKeyFromTable(@"My Profile", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
+    MyViewController *myViewController = [[UIStoryboard storyboardWithName:MYPROFILE_STORYBOARD_NAME bundle:nil] instantiateViewControllerWithIdentifier:MYPROFILE_HOME_STORYBOARD_VC_ID];
+    myViewController.tabBarItem.badgeValue = @"";
+    [self setupChildViewController:myViewController title:DBHGetStringWithKeyFromTable(@"My Profile", nil) imageName:@"wode_ico_s" selectedImageName:@"wode_ico"];
 }
 
 /**

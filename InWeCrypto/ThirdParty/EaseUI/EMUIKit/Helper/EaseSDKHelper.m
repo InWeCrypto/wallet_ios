@@ -148,13 +148,13 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     options.usingHttpsOnly = isHttpsOnly;
     
     NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
-    //pod故障注释
-//    if ([udefaults objectForKey:@"autoTransferMessageFile"]) {
-//        options.isAutoTransferMessageAttachments = [[udefaults objectForKey:@"autoTransferMessageFile"] boolValue];
-//    }
-//    if ([udefaults objectForKey:@"autoDownloadMessageThumbnail"]) {
-//        options.isAutoDownloadThumbnail = [[udefaults objectForKey:@"autoDownloadMessageThumbnail"] boolValue];
-//    }
+
+    if ([udefaults objectForKey:@"autoTransferMessageFile"]) {
+        options.isAutoTransferMessageAttachments = [[udefaults objectForKey:@"autoTransferMessageFile"] boolValue];
+    }
+    if ([udefaults objectForKey:@"autoDownloadMessageThumbnail"]) {
+        options.isAutoDownloadThumbnail = [[udefaults objectForKey:@"autoDownloadMessageThumbnail"] boolValue];
+    }
     
     BOOL sandBox = [otherConfig objectForKey:@"easeSandBox"] && [[otherConfig objectForKey:@"easeSandBox"] boolValue];
     if (!sandBox) {
