@@ -987,7 +987,7 @@ static NSString *const kDBHWalletDetailTableViewCellIdentifier = @"kDBHWalletDet
         [LCProgressHUD showSuccess:DBHGetStringWithKeyFromTable(@"Backup successfully", nil)];
         
         //本地记录备份了
-        if ([NSString isNulllWithObject:[UserSignData share].user.walletIdsArray]) {
+        if ([NSObject isNulllWithObject:[UserSignData share].user.walletIdsArray]) {
             [UserSignData share].user.walletIdsArray = [[NSMutableArray alloc] init];
         }
         if (![[UserSignData share].user.walletIdsArray containsObject:@(self.ethWalletModel.listIdentifier)]) {

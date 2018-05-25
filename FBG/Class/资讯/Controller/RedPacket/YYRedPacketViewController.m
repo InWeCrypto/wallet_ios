@@ -691,12 +691,12 @@
  */
 - (void)judgeIsShowProtocol {
     BOOL isShow = [[NSUserDefaults standardUserDefaults] boolForKey:IS_SHOW_REDPACKET_PROTOCOL];
-    if (!isShow) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:IS_SHOW_REDPACKET_PROTOCOL];
+//    if (!isShow) {
+//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:IS_SHOW_REDPACKET_PROTOCOL];
         [self addNoticeProtocolView];
-    } else {
-        [self pushToSendRedPacketVC];
-    }
+//    } else {
+//        [self pushToSendRedPacketVC];
+//    }
 }
 
 - (void)addNoticeProtocolView {

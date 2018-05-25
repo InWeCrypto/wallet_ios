@@ -42,7 +42,9 @@
     [allAttrStr addAttribute:NSUnderlineColorAttributeName value:self.infoLabel.textColor range:range];
     
     self.infoLabel.attributedText = allAttrStr;
-    
+}
+
+- (void)drawRect:(CGRect)rect {
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.sureBtn.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(3.0f, 3.0f)];
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
     maskLayer.frame = _sureBtn.bounds;
