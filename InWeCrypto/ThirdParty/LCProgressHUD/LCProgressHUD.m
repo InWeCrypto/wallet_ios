@@ -23,6 +23,9 @@
 }
 
 + (void)showStatus:(LCProgressHUDStatus)status text:(NSString *)text {
+    if (!text || [text isEqual:[NSNull null]] || [text isEqualToString:@""]) { // text为空
+        return;
+    }
 
     LCProgressHUD *hud = [LCProgressHUD sharedHUD];
     [hud showAnimated:YES];
@@ -136,6 +139,9 @@
 }
 
 + (void)hide {
+    if (![LCProgressHUD sharedHUD].isShowNow) {
+        return;
+    }
     
     [[LCProgressHUD sharedHUD] setShowNow:NO];
     [[LCProgressHUD sharedHUD] hideAnimated:YES];

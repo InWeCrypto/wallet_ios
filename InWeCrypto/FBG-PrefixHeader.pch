@@ -146,32 +146,39 @@
 //网络状态
 #define APP_APIEHEAD [USER_DEFAULTS stringForKey:APP_NETWORK_API_KEY]
 
-#pragma mark - 测试环境
-#define TESTAPIEHEAD1 @"https://dev.inwecrypto.com:4431/v2/api/"  //网络请求头
-#define TESTAPIEHEAD2 @"https://dev.inwecrypto.com:4431/v1/"  //网络请求头
-#define TESTAPIEHEAD3 @"https://dev.inwecrypto.com:4431/v2/"  //网络请求头
-#define TESTAPIEHEAD4 @"http://testnet.inwecrypto.com/newsdetail2?art_id="  //网络请求头
-#define TESTAPIEHEAD5 @"http://testnet.inwecrypto.com/share2app?code="  //网络请求头
-#define TESTAPIEHEAD6 @"http://testnet.inwecrypto.com/newsdetail?art_id="  //分享网络请求头
+typedef enum _baseurl_type {
+    BaseURLTypeV2API = 1,
+    BaseURLTypeV1,
+    BaseURLTypeV2
+}BaseURLType;
+
 #define IMAGEHEAD @"https://china.inwecrypto.com:4431/"  //图片头
+
+#pragma mark - 测试环境
+#define TESTV2API @"https://dev.inwecrypto.com:4431/v2/api/"  //网络请求头
+#define TESTV1 @"https://dev.inwecrypto.com:4431/v1/"  //网络请求头
+#define TESTV2 @"https://dev.inwecrypto.com:4431/v2/"  //网络请求头
+
+#define TESTNEWSDETAIL2 @"http://testnet.inwecrypto.com/newsdetail2?art_id="  //网络请求头
+#define TESTSHARE2APP @"http://testnet.inwecrypto.com/share2app?code="  //网络请求头
+#define TESTNEWSDETAIL @"http://testnet.inwecrypto.com/newsdetail?art_id="  //分享网络请求头
 #define TESTHELPCENTER @"http://testnet.inwecrypto.com/%@/helpcenter"
+
+#define TEST_OFFICIAL_WEBSITE  @"http://testnet.inwecrypto.com/" // 官网地址
 #define TEST_REDPACKET_CONTRACT_ADDRESS @"0x43d14d1360a5deb9df655944cc9624cce95d94b4" // 红包合约地址
-#define TEST_REDPACKET_CREATE_CODE  @"http://testnet.inwecrypto.com/" // 红包生成代码的地址
-#define TEST_REDPACKET_PROTOCOL_URL @"http://testnet.inwecrypto.com/" // 红包协议地址
-#define DOWNLOAD_APP_URL @"http://inwecrypto.com/"
+
 #pragma mark - 正式环境
-#define APIEHEAD1 @"https://china.inwecrypto.com:4431/v2/api/"  //网络请求头
-#define APIEHEAD2 @"https://china.inwecrypto.com:4431/v1/"  //网络请求头
-#define APIEHEAD3 @"https://china.inwecrypto.com:4431/v2/"  //网络请求头
-#define APIEHEAD4 @"http://inwecrypto.com/newsdetail2?art_id="  //网络请求头
-#define APIEHEAD5 @"http://inwecrypto.com/share2app?code="  //网络请求头
-#define APIEHEAD6 @"http://inwecrypto.com/newsdetail?art_id="  //分享网络请求头
-#define IMAGEHEAD1 @"https://china.inwecrypto.com:4431/"  //图片头
+#define V2API @"https://china.inwecrypto.com:4431/v2/api/"  //网络请求头
+#define V1 @"https://china.inwecrypto.com:4431/v1/"  //网络请求头
+#define V2 @"https://china.inwecrypto.com:4431/v2/"  //网络请求头
+
+#define NEWSDETAIL2 @"http://inwecrypto.com/newsdetail2?art_id="  //网络请求头
+#define SHARE2APP @"http://inwecrypto.com/share2app?code="  //网络请求头
+#define NEWSDETAIL @"http://inwecrypto.com/newsdetail?art_id="  //分享网络请求头
 #define HELPCENTER @"http://inwecrypto.com/%@/helpcenter" //帮助中心
-#define UPDATE_APP_URL  @"https://fir.im/InWeCrypto"
+
+#define OFFICIAL_WEBSITE @"http://inwecrypto.com/" // 官网地址
 #define REDPACKET_CONTRACT_ADDRESS @"0xf35a11211165e8c22ea9de3bbde2d72c244108d3" // 红包合约地址
-#define REDPACKET_CREATE_CODE  @"http://inwecrypto.com/" // 红包生成代码的地址
-#define REDPACKET_PROTOCOL_URL @"http://inwecrypto.com/"  // 红包协议地址
 
 #define KEYCHAIN_KEY(address) [NSString stringWithFormat:@"%@_%@_%@", address, [UserSignData share].user.email, [APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
 //钱包状态
@@ -217,6 +224,7 @@
 #import "UIView+Extension.h"
 #import "YYRedPacketModels.h"
 #import "DBHWalletManagerForNeoDataModels.h"
+#import "ProtocolAction.h"
 
 #define MAX_ETH_GASPRICE                @"2520120000000000"
 #define MIN_ETH_GASPRICE                @"25200000000000"

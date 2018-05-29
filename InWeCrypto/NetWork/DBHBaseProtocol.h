@@ -36,4 +36,5 @@
  */
 - (NSString *)getReplacedUrlByUrl:(NSString *)target;
 
+
 @end

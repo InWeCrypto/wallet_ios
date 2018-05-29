@@ -66,7 +66,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(BaseURLType)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  GET请求,自动缓存
@@ -79,7 +79,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure specialBlock:(HttpRequestSpecial)sepecial;
++ (PPURLSessionTask *)GET:(NSString *)URL baseUrlType:(BaseURLType)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  POST请求,无缓存
@@ -91,9 +91,7 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
-
-+ (PPURLSessionTask *)POSTOtherURL:(NSString *)URL parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(BaseURLType)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  POST请求,自动缓存
@@ -106,45 +104,15 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure special:(HttpRequestSpecial)special;
++ (PPURLSessionTask *)POST:(NSString *)URL baseUrlType:(BaseURLType)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 // PUT 请求
-+ (PPURLSessionTask *)PUT:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)PUT:(NSString *)URL baseUrlType:(BaseURLType)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 // DELETE 请求
-+ (PPURLSessionTask *)DELETE:(NSString *)URL baseUrlType:(NSInteger)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (PPURLSessionTask *)DELETE:(NSString *)URL baseUrlType:(BaseURLType)baseUrlType parameters:(NSDictionary *)parameters hudString:(NSString *)hudString success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
-/**
- *  上传图片文件
- *
- *  @param URL        请求地址
- *  @param parameters 请求参数
- *  @param images     图片数组
- *  @param name       文件对应服务器上的字段
- *  @param fileName   文件名
- *  @param mimeType   图片文件的类型,例:png、jpeg(默认类型)....
- *  @param progress   上传进度信息
- *  @param success    请求成功的回调
- *  @param failure    请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancle方法
- */
-+ (PPURLSessionTask *)uploadWithURL:(NSString *)URL parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images name:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType hudString:(NSString *)hudString progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
-
-/**
- *  下载文件
- *
- *  @param URL      请求地址
- *  @param fileDir  文件存储目录(默认存储目录为Download)
- *  @param progress 文件下载的进度信息
- *  @param success  下载成功的回调(回调参数filePath:文件的路径)
- *  @param failure  下载失败的回调
- *
- *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
- */
-+ (PPURLSessionTask *)downloadWithURL:(NSString *)URL fileDir:(NSString *)fileDir progress:(HttpProgress)progress success:(void(^)(NSString *filePath))success failure:(HttpRequestFailed)failure;
 + (BOOL)hasConnectedNetwork;
-
 
 #pragma mark -- 根据项目需求更改
 

@@ -55,7 +55,6 @@
 		AAC4220C20B3B80600D2EB95 /* DBHGetTradingMarket.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4220220B3B80600D2EB95 /* DBHGetTradingMarket.m */; };
 		AAC4220D20B3B80600D2EB95 /* PPNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4220420B3B80600D2EB95 /* PPNetworkHelper.m */; };
 		AAC4220E20B3B80600D2EB95 /* DBHBaseProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4220520B3B80600D2EB95 /* DBHBaseProtocol.m */; };
-		AAC4220F20B3B80600D2EB95 /* DBHNetWork.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4220820B3B80600D2EB95 /* DBHNetWork.m */; };
 		AAC4221220B3B96100D2EB95 /* DBHLanguageTool.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4221120B3B96100D2EB95 /* DBHLanguageTool.m */; };
 		AAC4221620B3BA6800D2EB95 /* DBHProjectDetailInformationModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4221420B3BA6700D2EB95 /* DBHProjectDetailInformationModelData.m */; };
 		AAC4221A20B3BB6900D2EB95 /* DBHTradingMarketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC4221820B3BB6900D2EB95 /* DBHTradingMarketViewController.m */; };
@@ -399,6 +398,7 @@
 
 /* Begin PBXFileReference section */
 		16C3DBB39C3D3AB5625D0CB4 /* Pods-InWeCrypto.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InWeCrypto.release.xcconfig"; path = "Pods/Target Support Files/Pods-InWeCrypto/Pods-InWeCrypto.release.xcconfig"; sourceTree = "<group>"; };
+		1B3BE07320B80EB6004A881C /* ProtocolAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProtocolAction.h; sourceTree = "<group>"; };
 		AA08970620B277B10065E70F /* InWeCrypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InWeCrypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA08970920B277B10065E70F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AA08970A20B277B10065E70F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -481,8 +481,6 @@
 		AAC4220420B3B80600D2EB95 /* PPNetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkHelper.m; sourceTree = "<group>"; };
 		AAC4220520B3B80600D2EB95 /* DBHBaseProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHBaseProtocol.m; sourceTree = "<group>"; };
 		AAC4220620B3B80600D2EB95 /* DBHGetTradingMarket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHGetTradingMarket.h; sourceTree = "<group>"; };
-		AAC4220720B3B80600D2EB95 /* DBHNetWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHNetWork.h; sourceTree = "<group>"; };
-		AAC4220820B3B80600D2EB95 /* DBHNetWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHNetWork.m; sourceTree = "<group>"; };
 		AAC4220920B3B80600D2EB95 /* PPNetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkCache.h; sourceTree = "<group>"; };
 		AAC4220A20B3B80600D2EB95 /* DBHBaseProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHBaseProtocol.h; sourceTree = "<group>"; };
 		AAC4221020B3B96100D2EB95 /* DBHLanguageTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHLanguageTool.h; sourceTree = "<group>"; };
@@ -1411,12 +1409,11 @@
 				AAC4220520B3B80600D2EB95 /* DBHBaseProtocol.m */,
 				AAC4220620B3B80600D2EB95 /* DBHGetTradingMarket.h */,
 				AAC4220220B3B80600D2EB95 /* DBHGetTradingMarket.m */,
-				AAC4220720B3B80600D2EB95 /* DBHNetWork.h */,
-				AAC4220820B3B80600D2EB95 /* DBHNetWork.m */,
 				AAC4220920B3B80600D2EB95 /* PPNetworkCache.h */,
 				AAC4220120B3B80600D2EB95 /* PPNetworkCache.m */,
 				AAC4220320B3B80600D2EB95 /* PPNetworkHelper.h */,
 				AAC4220420B3B80600D2EB95 /* PPNetworkHelper.m */,
+				1B3BE07320B80EB6004A881C /* ProtocolAction.h */,
 			);
 			path = NetWork;
 			sourceTree = "<group>";
@@ -2944,7 +2941,6 @@
 				AACE53C420B51DDE001F7C18 /* YYRedPacketHomeHeaderView.m in Sources */,
 				AAC4226A20B3C2C700D2EB95 /* NSString+Tool.m in Sources */,
 				AAC422FA20B3C72400D2EB95 /* AAPie.m in Sources */,
-				AAC4220F20B3B80600D2EB95 /* DBHNetWork.m in Sources */,
 				AAC4227A20B3C2C700D2EB95 /* UIViewController+BackButtonHandler.m in Sources */,
 				AACE52F220B51549001F7C18 /* UIButton+EMWebCache.m in Sources */,
 				AAC424F320B3F98000D2EB95 /* DBHWalletManagerForNeoModelCategory.m in Sources */,
@@ -3281,7 +3277,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9MQE599Q9A;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/InWeCrypto/ThirdParty/OneSDK",
@@ -3301,9 +3298,10 @@
 					"$(PROJECT_DIR)/InWeCrypto/ThirdParty/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/InWeCrypto/ThirdParty/WechatSDK",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ApeAv.InWeCrypto;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raistone.inwecrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "88b3b5f1-63e0-40b2-bd37-242dc3862bed";
+				PROVISIONING_PROFILE_SPECIFIER = iOS_development;
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OBJC_BRIDGING_HEADER = "InWeCrypto/Controller/Information/InWeCrypto-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -3321,7 +3319,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9MQE599Q9A;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/InWeCrypto/ThirdParty/OneSDK",
@@ -3346,9 +3345,10 @@
 					"$(PROJECT_DIR)/InWeCrypto/ThirdParty/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/InWeCrypto/ThirdParty/WechatSDK",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ApeAv.InWeCrypto;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raistone.inwecrypto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "88b3b5f1-63e0-40b2-bd37-242dc3862bed";
+				PROVISIONING_PROFILE_SPECIFIER = iOS_development;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "InWeCrypto/Controller/Information/InWeCrypto-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
