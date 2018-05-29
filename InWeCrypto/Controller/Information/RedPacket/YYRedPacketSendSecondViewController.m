@@ -92,7 +92,7 @@
         EthmobileEthCall *call = EthmobileNewEthCall();
         
         NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
-        if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) {
+        if ([APP_APIEHEAD isEqualToString:V2API]) {
             contractAddr = REDPACKET_CONTRACT_ADDRESS;
         }
         
@@ -335,7 +335,7 @@
     
         NSError * error;
         NSString *contractAddr = TEST_REDPACKET_CONTRACT_ADDRESS;
-        if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) {
+        if ([APP_APIEHEAD isEqualToString:V2API]) {
             contractAddr = REDPACKET_CONTRACT_ADDRESS;
         }
     

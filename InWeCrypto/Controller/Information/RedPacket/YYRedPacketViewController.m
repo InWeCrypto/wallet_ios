@@ -20,7 +20,7 @@
 
 #define HEADER_VIEW_HEIGHT 223
 
-#define REDPACKET_HOME_KEY(lastUserEmail) [NSString stringWithFormat:@"REDPACKET_HOME_%@_%@", lastUserEmail, [APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
+#define REDPACKET_HOME_KEY(lastUserEmail) [NSString stringWithFormat:@"REDPACKET_HOME_%@_%@", lastUserEmail, [APP_APIEHEAD isEqualToString:V2API] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
 
 #define DATASOURCE_LIST @"datasource_list"
 #define SENT_COUNT_MODEL @"sent_count_model"
@@ -720,7 +720,7 @@
 }
 
 - (void)pushToPreviewVC {
-    NSString *protocolURL = [APP_APIEHEAD isEqualToString:APIEHEAD1] ? REDPACKET_PROTOCOL_URL : TEST_REDPACKET_PROTOCOL_URL;
+    NSString *protocolURL = [APP_APIEHEAD isEqualToString:V2API] ? OFFICIAL_WEBSITE : TEST_OFFICIAL_WEBSITE;
     protocolURL = [protocolURL stringByAppendingFormat:@"%@", DBHGetStringWithKeyFromTable(@"rpAgreementEn.html", nil)];
     YYRedPacketPreviewViewController *previewVC = [[YYRedPacketPreviewViewController alloc] init];
     previewVC.from = PreViewVCFromProtocol;

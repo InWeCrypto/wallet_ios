@@ -543,7 +543,7 @@
 }
 
 - (void)activityOriginalShare {
-    NSString *sharedUrlStr = [NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD6 : TESTAPIEHEAD6, (NSInteger)[self.infomationId doubleValue]];
+    NSString *sharedUrlStr = [NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:V2API] ? NEWSDETAIL : TESTNEWSDETAIL, (NSInteger)[self.infomationId doubleValue]];
     
     NSMutableArray *items = [NSMutableArray array];
     if (self.title.length > 0) {
@@ -718,7 +718,7 @@
 }
 
 - (NSString *)sharedUrlStr {
-    return [NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:APIEHEAD1] ? APIEHEAD6 : TESTAPIEHEAD6, (NSInteger)[self.infomationId doubleValue]];
+    return [NSString stringWithFormat:@"%@%ld", [APP_APIEHEAD isEqualToString:V2API] ? NEWSDETAIL : TESTNEWSDETAIL, (NSInteger)[self.infomationId doubleValue]];
 }
 
 - (void)shareToTelegram {

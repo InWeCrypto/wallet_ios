@@ -71,7 +71,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     self.window.backgroundColor = WHITE_COLOR;
     
     if (!APP_APIEHEAD) { // 设置默认环境 APIEHEAD1 / TESTAPIEHEAD1
-        [[NSUserDefaults standardUserDefaults] setObject:APIEHEAD1 forKey:APP_NETWORK_API_KEY];
+        [[NSUserDefaults standardUserDefaults] setObject:V2API forKey:APP_NETWORK_API_KEY];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
@@ -103,7 +103,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
     // 环信sdk注册
     //AppKey:注册的AppKey，详细见下面注释。
     //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
-    EMOptions *options = [EMOptions optionsWithAppkey:[APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"1109180116115999#online" : @"1109180116115999#test"];
+    EMOptions *options = [EMOptions optionsWithAppkey:[APP_APIEHEAD isEqualToString:V2API] ? @"1109180116115999#online" : @"1109180116115999#test"];
     options.apnsCertName = @"aps_development";
     [[EMClient sharedClient] initializeSDKWithOptions:options];
     
@@ -555,7 +555,7 @@ static NSString *const testAppSecret = @"efb26f9fa9cc2afa2aef54e860e309a2";
 - (void)emregister {
     //AppKey:注册的AppKey，详细见下面注释。
     //apnsCertName:推送证书名（不需要加后缀），详细见下面注释。
-    [[EMClient sharedClient] changeAppkey:[APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"1109180116115999#online" : @"1109180116115999#test"];
+    [[EMClient sharedClient] changeAppkey:[APP_APIEHEAD isEqualToString:V2API] ? @"1109180116115999#online" : @"1109180116115999#test"];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

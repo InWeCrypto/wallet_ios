@@ -180,7 +180,7 @@ typedef enum _baseurl_type {
 #define OFFICIAL_WEBSITE @"http://inwecrypto.com/" // 官网地址
 #define REDPACKET_CONTRACT_ADDRESS @"0xf35a11211165e8c22ea9de3bbde2d72c244108d3" // 红包合约地址
 
-#define KEYCHAIN_KEY(address) [NSString stringWithFormat:@"%@_%@_%@", address, [UserSignData share].user.email, [APP_APIEHEAD isEqualToString:APIEHEAD1] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
+#define KEYCHAIN_KEY(address) [NSString stringWithFormat:@"%@_%@_%@", address, [UserSignData share].user.email, [APP_APIEHEAD isEqualToString:V2API] ? @"APPKEYCHAIN" : @"TESTAPPKEYCHIN"]
 //钱包状态
 #define APP_WALLETSTATUS [USER_DEFAULTS stringForKey:APP_WALLET_STATUS_KEY]
 //推送注册id 用于登录

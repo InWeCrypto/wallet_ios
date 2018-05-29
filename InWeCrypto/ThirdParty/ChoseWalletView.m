@@ -85,7 +85,7 @@
          }
      } failure:^(NSString *error)
      {
-     } specialBlock:nil];
+     }];
 }
 
 - (void)showWithView:(UIView *)view

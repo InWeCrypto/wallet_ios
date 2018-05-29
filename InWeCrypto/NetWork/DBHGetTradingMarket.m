@@ -33,7 +33,7 @@
         if(block) {
             block(nil);
         }
-    } specialBlock:nil];
+    }];
 }
 //        for (NSDictionary *dic in responseObject) {
 //            DBHTradingMarketModelData *model = [DBHTradingMarketModelData modelObjectWithDictionary:dic];

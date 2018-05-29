@@ -286,12 +286,12 @@
 
 - (void)pushToWebView:(NSString *)orderNumber {
     NSString *url;
-    if ([APP_APIEHEAD isEqualToString:TESTAPIEHEAD1])  {
-        //测试
-        url = @"https://ropsten.etherscan.io/tx/";
-    } else {
+    if ([APP_APIEHEAD isEqualToString:V2API])  {
         //正式
         url = @"https://etherscan.io/tx/";
+    } else {
+        //测试
+        url = @"https://ropsten.etherscan.io/tx/";
     }
     
     KKWebView * vc = [[KKWebView alloc] initWithUrl:[NSString stringWithFormat:@"%@%@", url, orderNumber]];

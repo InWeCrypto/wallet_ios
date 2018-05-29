@@ -94,9 +94,9 @@
         return;
     }
     
-    NSString *tempURL = TEST_REDPACKET_CREATE_CODE;
-    if ([APP_APIEHEAD isEqualToString:APIEHEAD1]) {
-        tempURL = REDPACKET_CREATE_CODE;
+    NSString *tempURL = TEST_OFFICIAL_WEBSITE;
+    if ([APP_APIEHEAD isEqualToString:V2API]) {
+        tempURL = OFFICIAL_WEBSITE;
     }
     
     NSString *user = [self.detailModel.share_user stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];

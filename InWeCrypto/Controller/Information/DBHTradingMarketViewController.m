@@ -124,8 +124,6 @@ static NSString *const kDBHTradingMarketTableViewCellIdentifier = @"kDBHTradingM
         });
     } failure:^(NSString *error) {
         [LCProgressHUD showFailure:DBHGetStringWithKeyFromTable(@"No Data", nil)];
-    } specialBlock:^{
-        
     }];
 }
 

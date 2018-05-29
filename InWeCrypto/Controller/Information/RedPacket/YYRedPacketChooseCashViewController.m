@@ -45,7 +45,7 @@
             [weakSelf handleResponse:responseObject];
         } failure:^(NSString *error) {
             [LCProgressHUD showFailure:error];
-        } specialBlock:nil];
+        }];
     });
 }
 
