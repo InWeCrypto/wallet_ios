@@ -163,7 +163,10 @@
  提交
  */
 - (void)respondsToCommitButton {
-    if (![NSString isNEOAdress:[self.walletAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+    //去除前后空格
+    NSString *EOAddress = [self.walletAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (![NSString isNEOAdress:EOAddress])
     {
         [LCProgressHUD showMessage:DBHGetStringWithKeyFromTable(@"Please enter the correct wallet address", nil)];
         return;
@@ -186,7 +189,7 @@
     transferConfirmationViewController.neoWalletModel = self.neoWalletModel;
     transferConfirmationViewController.transferNumber = numberStr;
     transferConfirmationViewController.poundage = @"0";
-    transferConfirmationViewController.address = self.walletAddressTextField.text;
+    transferConfirmationViewController.address = EOAddress;
     transferConfirmationViewController.remark = self.remarkTextField.text;
     [self.navigationController pushViewController:transferConfirmationViewController animated:YES];
 }

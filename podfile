@@ -1,6 +1,18 @@
 platform :ios, '9.0'
 target 'FBG' do
 use_frameworks!
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if ['SnapKit'].include? target.name
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '4.1'
+            end
+        end
+    end
+end
+
+
 pod 'AFNetworking', '~> 3.1.0'
 pod 'MBProgressHUD', '~> 1.0.0'
 

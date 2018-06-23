@@ -462,12 +462,15 @@
  上传后台提交ETH订单
  */
 - (void)creatOrderWithData:(NSString *)data asset_id:(NSString *)asset_id transferNum:(NSString *)transferNum handleFee:(NSString *)handleFee {
+    // 去除前后空格
+    NSString *EOAddress = [self.address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
     //创建钱包订单
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     [dic setObject:@(self.neoWalletModel.listIdentifier) forKey:WALLET_ID];
     [dic setObject:data forKey:@"data"];
     [dic setObject:[self.neoWalletModel.address lowercaseString] forKey:PAY_ADDRESS];
-    [dic setObject:[self.address lowercaseString] forKey:RECEIVE_ADDRESS];
+    [dic setObject:[EOAddress lowercaseString] forKey:RECEIVE_ADDRESS];
     [dic setObject:self.remark forKey:REMARK];
     [dic setObject:transferNum forKey:FEE];
     
@@ -535,12 +538,14 @@
             assert = [NSString stringWithFormat:@"0x%@", address];
         }
     }
+    // 去除前后空格
+    NSString *EOAddress = [self.address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
     [dic setObject:@(self.neoWalletModel.listIdentifier) forKey:WALLET_ID];
     [dic setObject:data forKey:@"data"];
     [dic setObject:self.neoWalletModel.address forKey:PAY_ADDRESS];
-    [dic setObject:self.address forKey:RECEIVE_ADDRESS];
+    [dic setObject:EOAddress forKey:RECEIVE_ADDRESS];
     [dic setObject:self.remark forKey:REMARK];
     
     NSString *feeStr = self.transferNumber;
